@@ -5,7 +5,7 @@ CREATE TYPE "public"."Role" AS ENUM ('ADMIN', 'STUDENT', 'TEACHER');
 CREATE TYPE "public"."ExerciseType" AS ENUM ('MOVING_BALLS', 'FLASHING_WORDS', 'TAKISTOSCOPE', 'CENTRAL_BALL', 'TEXT');
 
 -- CreateEnum
-CREATE TYPE "public"."Level" AS ENUM ('ILKOKUL', 'ORTAOKU', 'LISE', 'YETISKIN');
+CREATE TYPE "public"."Level" AS ENUM ('ILKOKUL', 'ORTAOKUL', 'LISE', 'YETISKIN');
 
 -- CreateTable
 CREATE TABLE "public"."User" (
