@@ -1,0 +1,126 @@
+// app/components/menuData.ts
+export const menuItems = [
+  {
+    name: "Dersler",
+    link: "/dersler",
+    subMenu: [
+      { name: "Dersler", link: "/dersler" },
+      { name: "Takistoskop Gelişimi", link: "/takistoskop/gelisimi" },
+      { name: "Hızlı Okuma Gelişimi", link: "/hizli-oku/gelisimi" },
+    ],
+  },
+  {
+    name: "Göz Egzersizleri",
+    link: "/goz-egzersiz",
+    subMenu: [
+      {
+        name: "Ritmini Renklendirme",
+        link: "/goz-egzersiz/ritmini-renklendirme",
+      },
+      { name: "Siyah-Beyaz", link: "/goz-egzersiz/siyah-beyaz" },
+      { name: "Geniş Bakış", link: "/goz-egzersiz/genis-bakis" },
+      { name: "Dörtlu Kelimeler", link: "/goz-egzersiz/dortlu-kelimeler" },
+      { name: "Kelimelerin Dansı", link: "/goz-egzersiz/kelimelerin-dansi" },
+      { name: "Satır Arası", link: "/goz-egzersiz/satir-arasi" },
+      {
+        name: "Satır Başı-Satrır sonu",
+        link: "/goz-egzersiz/satir-basi-satir-sonu",
+      },
+      { name: "Zigzag", link: "/goz-egzersiz/zigzag" },
+    ],
+  },
+  {
+    name: "Okuma Egzersizleri",
+    link: "/okuma-egzersiz",
+    subMenu: [
+      { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
+      { name: "Kelimeler-2", link: "/okuma-egzersiz/kelimeler-2" },
+      { name: "Kelimeler-3", link: "/okuma-egzersiz/kelimeler-3" },
+      { name: "Kelimeler-4", link: "/okuma-egzersiz/kelimeler-4" },
+      { name: "Kelimeler-5", link: "/okuma-egzersiz/kelimeler-5" },
+      { name: "Sayılar-1", link: "/okuma-egzersiz/sayilar-1" },
+      { name: "Sayılar-2", link: "/okuma-egzersiz/sayilar-2" },
+      { name: "Sayılar-3", link: "/okuma-egzersiz/sayilar-3" },
+      { name: "Sayılar-4", link: "/okuma-egzersiz/sayilar-4" },
+      { name: "Sayılar-5", link: "/okuma-egzersiz/sayilar-5" },
+      { name: "Kayan Okuma", link: "/okuma-egzersiz/kayan-okuma" },
+    ],
+  },
+  {
+    name: "Takistoskop",
+    link: "/takistoskop",
+    subMenu: [
+      { name: "Takistoskop", link: "/takistoskop/hizli-gorme" },
+      { name: "Takistoskop Gelişimi", link: "/takistoskop/gelisimi" },
+    ],
+  },
+  {
+    name: "Hızlı Oku",
+    link: "/hizli-oku",
+    subMenu: [
+      {
+        name: "Silinmeden Blok Okuma",
+        link: "/hizli-oku/silinmeden-blok-okuma",
+      },
+      { name: "Silinerek Blok Okuma", link: "/hizli-oku/silinerek-blok-okuma" },
+      { name: "Odaklı Blok Okuma", link: "/hizli-oku/odakli-blok-okuma" },
+      { name: "Hızlı Okuma Gelişimi", link: "/hizli-oku/gelisimi" },
+    ],
+  },
+  {
+    name: "Göster Kendini",
+    link: "/goster-kendini",
+    subMenu: [{ name: "Göster Kendini 1", link: "/goster-kendini/1" }],
+  },
+];
+
+export const lessons = {
+  "1": [
+    {
+      name: "Ritmini Renklendirme",
+      link: "/goz-egzersiz/ritmini-renklendirme",
+    },
+    { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
+    { name: "Takistoskop", link: "/takistoskop/hizli-gorme" },
+    {
+      name: "Silinmeden Blok Okuma",
+      link: "/hizli-oku/silinmeden-blok-okuma",
+    },
+    { name: "Silinerek Blok Okuma", link: "/hizli-oku/silinerek-blok-okuma" },
+  ],
+  "2": [
+    { name: "Siyah-Beyaz", link: "/goz-egzersiz/siyah-beyaz" },
+    { name: "Geniş Bakış", link: "/goz-egzersiz/genis-bakis" },
+    { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
+    { name: "Takistoskop", link: "/takistoskop/hizli-gorme" },
+    {
+      name: "Silinmeden Blok Okuma",
+      link: "/hizli-oku/silinmeden-blok-okuma",
+    },
+    { name: "Silinerek Blok Okuma", link: "/hizli-oku/silinerek-blok-okuma" },
+  ],
+  "3": [
+    { name: "Kelimeler-5", link: "/okuma-egzersiz/kelimeler-5" },
+    { name: "Sayılar-1", link: "/okuma-egzersiz/sayilar-1" },
+    { name: "Sayılar-2", link: "/okuma-egzersiz/sayilar-2" },
+    { name: "Sayılar-3", link: "/okuma-egzersiz/sayilar-3" },
+    { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
+    { name: "Takistoskop", link: "/takistoskop/hizli-gorme" },
+    {
+      name: "Silinmeden Blok Okuma",
+      link: "/hizli-oku/silinmeden-blok-okuma",
+    },
+    { name: "Silinerek Blok Okuma", link: "/hizli-oku/silinerek-blok-okuma" },
+  ],
+};
+
+export const playlists = [
+  {
+    type: "audio/mpeg",
+    src: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Vivaldi_-_Four_Seasons_1_Spring_mvt_1_Allegro_-_John_Harrison_violin.oga",
+  },
+  {
+    type: "audio/mpeg",
+    src: "https://www.coothead.co.uk/audio/You-Cant-Always-Get-What-You-Want.mp3",
+  },
+];

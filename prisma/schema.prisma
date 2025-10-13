@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String?    @unique
+  password  String
+  name      String     @unique
+  role      Role       @default(STUDENT)
+  active    Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  Student   Student?
+  Progress  Progress[]
+}
+
+model Student {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startDate DateTime?
+  endDate   DateTime?
+  level     Level     @default(ILKOKUL)
+  attempts  Attempt[]
+}
+
+model Lesson {
+  id        String     @id @default(cuid())
+  title     String
+  dayIndex  Int
+  sections  Json? // meta for which exercises
+  createdAt DateTime   @default(now())
+  updatedAt DateTime?  @updatedAt
+  Exercise  Exercise[]
+}
+
+model Exercise {
+  id        String       @id @default(cuid())
+  type      ExerciseType
+  title     String?
+  lessonId  String?
+  lesson    Lesson?      @relation(fields: [lessonId], references: [id])
+  config    Json?
+  createdAt DateTime     @default(now())
+  Attempt   Attempt[]
+  Progress  Progress[]
+}
+
+model Attempt {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id])
+  exerciseId  String
+  exercise    Exercise @relation(fields: [exerciseId], references: [id])
+  correct     Int?
+  wpm         Float? // words per minute measured
+  durationSec Int?
+  createdAt   DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  STUDENT
+  TEACHER
+}
+
+enum ExerciseType {
+  MOVING_BALLS
+  FLASHING_WORDS
+  TAKISTOSCOPE
+  CENTRAL_BALL
+  TEXT
+}
+
+enum Level {
+  ILKOKUL
+  ORTAOKUL
+  LISE
+  YETISKIN
+}
+
+model Progress {
+  id            String   @id @default(cuid())
+  wpm           Int
+  comprehension Int
+  createdAt     DateTime @default(now())
+  userId        String
+  exerciseId    String
+  user          User     @relation(fields: [userId], references: [id])
+  exercise      Exercise @relation(fields: [exerciseId], references: [id])
+}
+
+model Article {
+  id            String       @id @default(cuid())
+  title         String
+  description   String
+  level         Level        @default(ILKOKUL)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime?    @updatedAt
+  articleTest   ArticleTest? @relation(fields: [articleTestId], references: [id])
+  articleTestId String?      @unique
+}
+
+model ArticleTest {
+  id        String    @id @default(cuid())
+  question  String
+  answer    String
+  options   Json
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  article   Article?  @relation
+}

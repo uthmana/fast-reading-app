@@ -1,0 +1,257 @@
+export default {
+  user: [
+    {
+      key: "name",
+      name: "Kullanıcı Adı",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "name", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "email",
+      name: "Email",
+      placeholder: "example@mail.com",
+      type: "email",
+      value: { key: "email", type: "string", value: "" },
+      required: false,
+    },
+    {
+      key: "password",
+      name: "Password",
+      placeholder: "Password",
+      type: "password",
+      value: { key: "password", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "role",
+      name: "Role",
+      placeholder: "Select Role",
+      type: "select",
+      options: [
+        {
+          name: "ADMIN",
+          value: "ADMIN",
+        },
+        {
+          name: "STUDENT",
+          value: "STUDENT",
+        },
+        {
+          name: "TEACHER",
+          value: "TEACHER",
+        },
+      ],
+      value: { key: "role", type: "string", value: "ADMIN" },
+      required: true,
+      disabled: true,
+    },
+    {
+      key: "active",
+      name: "Durum",
+      placeholder: "Select state",
+      type: "select",
+      options: [
+        {
+          name: "AKTIF",
+          value: "true",
+        },
+        {
+          name: "PASSIF",
+          value: "false",
+        },
+      ],
+      value: { key: "role", type: "boolean", value: "true" },
+      required: true,
+    },
+    // {
+    //   key: "description",
+    //   name: "Description",
+    //   placeholder: "some desc text here !",
+    //   type: "textarea",
+    //   value: { key: "description", type: "string", value: "" },
+    //   required: true,
+    // },
+  ],
+  student: [
+    {
+      key: "name",
+      name: "Kullanıcı Adı",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "name", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "email",
+      name: "Email",
+      placeholder: "example@mail.com",
+      type: "email",
+      value: { key: "email", type: "string", value: "" },
+      required: false,
+    },
+    {
+      key: "password",
+      name: "Password",
+      placeholder: "Password",
+      type: "password",
+      value: { key: "password", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "role",
+      name: "Role",
+      placeholder: "Select Role",
+      type: "select",
+      options: [
+        {
+          name: "ADMIN",
+          value: "ADMIN",
+        },
+        {
+          name: "STUDENT",
+          value: "STUDENT",
+        },
+        {
+          name: "TEACHER",
+          value: "TEACHER",
+        },
+      ],
+      value: { key: "role", type: "string", value: "STUDENT" },
+      required: true,
+      disabled: true,
+    },
+    {
+      key: "level",
+      name: "Seviye",
+      placeholder: "Seviye seç",
+      type: "select",
+      options: [
+        {
+          name: "İLKOKUL",
+          value: "ILKOKUL",
+        },
+        {
+          name: "ORTAOKUL",
+          value: "ORTAOKUL",
+        },
+        {
+          name: "LİSE",
+          value: "LISE",
+        },
+        {
+          name: "YETİŞKİN",
+          value: "YETISKIN",
+        },
+      ],
+      value: { key: "role", type: "string", value: "ILKOKUL" },
+      required: true,
+    },
+    {
+      key: "active",
+      name: "Durum",
+      placeholder: "Select state",
+      type: "select",
+      options: [
+        {
+          name: "AKTIF",
+          value: "true",
+        },
+        {
+          name: "PASSIF",
+          value: "false",
+        },
+      ],
+      value: { key: "role", type: "boolean", value: "true" },
+      required: true,
+    },
+    // {
+    //   key: "description",
+    //   name: "Description",
+    //   placeholder: "some desc text here !",
+    //   type: "textarea",
+    //   value: { key: "description", type: "string", value: "" },
+    //   required: true,
+    // },
+    {
+      key: "startDate",
+      name: "Başlama Tarihi",
+      placeholder: "Başlama Tarihi",
+      type: "date",
+      value: { key: "startDate", type: "date", value: "" },
+      required: true,
+    },
+    {
+      key: "endDate",
+      name: "Bitiş Tarihi",
+      placeholder: "Bitiş Tarihi",
+      type: "date",
+      value: { key: "endDate", type: "date", value: "" },
+      required: true,
+    },
+  ],
+  article: [
+    {
+      key: "title",
+      name: "Başlık",
+      placeholder: "Başlık",
+      type: "text",
+      value: { key: "title", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "description",
+      name: "Makale",
+      placeholder: "Metin Ekle",
+      type: "textarea",
+      value: { key: "description", type: "string", value: "" },
+      required: true,
+      rows: 12,
+    },
+    {
+      key: "level",
+      name: "Seviye",
+      placeholder: "Seviye seç",
+      type: "select",
+      options: [
+        {
+          name: "İLKOKUL",
+          value: "ILKOKUL",
+        },
+        {
+          name: "ORTAOKUL",
+          value: "ORTAOKUL",
+        },
+        {
+          name: "LİSE",
+          value: "LISE",
+        },
+        {
+          name: "YETİŞKİN",
+          value: "YETISKIN",
+        },
+      ],
+      value: { key: "role", type: "string", value: "ILKOKUL" },
+      required: true,
+    },
+  ],
+  login: [
+    {
+      key: "name",
+      name: "Kullanıcı Adı",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "name", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "password",
+      name: "Şifre",
+      placeholder: "Şifre",
+      type: "password",
+      value: { key: "password", type: "string", value: "" },
+      required: true,
+    },
+  ],
+};
