@@ -1,6 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { PrismaClient, Role, User } from "@prisma/client";
+import { PrismaClient, Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
@@ -17,8 +17,11 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await prisma.user.findUnique({
             where: { name: credentials.name },
+            include: {
+              Student: true,
+            },
           });
-
+          console.log(user);
           if (!user) return null;
 
           const isValid = await bcrypt.compare(
@@ -33,6 +36,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             role: user.role as Role,
             name: user.name ?? "",
+            student: user.Student ?? null,
           };
         } catch (error) {
           console.error(error);
@@ -55,6 +59,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.name = user.name;
         token.id = user.id;
+        token.student = user.student ?? null;
       }
 
       return token;
@@ -65,9 +70,15 @@ export const authOptions: NextAuthOptions = {
         session.user.email = token.email as string;
         session.user.name = token.name as string;
         session.user.id = token.id as string;
+        session.user.student = token.student ?? null;
       }
 
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
   },
 };

@@ -28,9 +28,9 @@ function TextInput(props: InputProps) {
   } = props;
 
   return (
-    <div className="w-full flex-col">
+    <div className="w-full flex-col text-sm ">
       <label
-        className="text-sm font-semibold flex gap-1 items-center"
+        className="font-semibold flex gap-1 items-center"
         htmlFor={inputKey}
       >
         {name}

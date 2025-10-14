@@ -59,22 +59,22 @@ export default function Home() {
       <div className="flex flex-wrap gap-4 w-full mb-10">
         <Widget
           icon={<MdAccountCircle className="w-8 h-8 text-blue-500" />}
-          title="Group"
-          description={
+          description="Group"
+          title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
           }
           className="flex-1"
         />
         <Widget
           icon={<MdScheduleSend className="w-8 h-8 text-blue-500" />}
-          title="Başlama Tarihi"
-          description={user?.Student?.startDate?.split("T")[0]}
+          description="Başlama Tarihi"
+          title={user?.Student?.startDate?.split("T")[0]}
           className="flex-1"
         />
         <Widget
           icon={<MdSchedule className="w-8 h-8 text-blue-500" />}
-          title="Bitiş Tarihi"
-          description={user?.Student?.endDate?.split("T")[0]}
+          description="Bitiş Tarihi"
+          title={user?.Student?.endDate?.split("T")[0]}
           className="flex-1"
         />
         <Link className="flex" href={"/dersler"}>
@@ -88,7 +88,7 @@ export default function Home() {
 
       <div className="flex w-full flex-wrap gap-4">
         <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
-          <h2 className="text-xl mb-4 font-semibold">Hızlı Okuma Gelişimi</h2>
+          <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
           <BarChart
             chartData={[
               {
@@ -109,7 +109,7 @@ export default function Home() {
           />
         </div>
         <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
-          <h2 className="text-xl mb-4 font-semibold">Takistoskop Gelişimi</h2>
+          <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
           <BarChart
             chartData={[
               {
