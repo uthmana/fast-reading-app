@@ -155,7 +155,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
             </li>
           ))}
           <li>
-            <LogOutInput />
+            <LogOutInput className="text-black" />
           </li>
         </ul>
       </nav>

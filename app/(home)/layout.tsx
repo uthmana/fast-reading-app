@@ -1,13 +1,14 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/authOptions";
-import Providers from "../../components/providers";
+import SessionProvider from "../../components/providers";
 import ClientLayout from "../../components/clientLayout";
+
 import "../globals.css";
 
 export const metadata = {
-  title: "Fast Reading App",
-  description: "Speed reading practice platform",
+  title: "Etkin Hızlı Okuma",
+  description: "Hızlı okuma pratik platformu",
 };
 
 export default async function RootLayout({
@@ -15,15 +16,19 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session: { user: { id: string; role: string; name: string } } | null =
+  const session: { user: { id: string; role: string; name: string } } | any =
     await getServerSession(authOptions);
 
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <ClientLayout session={session}>{children}</ClientLayout>
-        </Providers>
+        <SessionProvider>
+          {!session ? (
+            <main>{children}</main>
+          ) : (
+            <ClientLayout>{children}</ClientLayout>
+          )}
+        </SessionProvider>
       </body>
     </html>
   );

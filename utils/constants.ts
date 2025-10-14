@@ -5,9 +5,11 @@ export const menuItems = [
     link: "/dersler",
     subMenu: [
       { name: "Dersler", link: "/dersler" },
-      { name: "Takistoskop Gelişimi", link: "/takistoskop/gelisimi" },
+      { name: "Takistoskop", link: "/takistoskop" },
       { name: "Hızlı Okuma Gelişimi", link: "/hizli-oku/gelisimi" },
     ],
+    description: "Tüm dersler",
+    youtubeId: "",
   },
   {
     name: "Göz Egzersizleri",
@@ -28,6 +30,9 @@ export const menuItems = [
       },
       { name: "Zigzag", link: "/goz-egzersiz/zigzag" },
     ],
+    description:
+      "Göz egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün görme çevikliğini artırmak. Bu uygulamadan yeterince yararlanmak için her egzersizi 1. sevi- den 5. seviyeye kadar kademe kademe uygulayınız.",
+    youtubeId: "xiTK523Ot5U",
   },
   {
     name: "Okuma Egzersizleri",
@@ -45,14 +50,17 @@ export const menuItems = [
       { name: "Sayılar-5", link: "/okuma-egzersiz/sayilar-5" },
       { name: "Kayan Okuma", link: "/okuma-egzersiz/kayan-okuma" },
     ],
+    description:
+      "Okuma egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün kelimeleri hızlı tanımasını sağlamak.Bu uygulamadan yeterince yararlanmak için her egzersizi 1. seviden 5. seviyeye kadar kademe kademe uygulayınız.",
+    youtubeId: "xiTK523Ot5U",
   },
   {
     name: "Takistoskop",
     link: "/takistoskop",
-    subMenu: [
-      { name: "Takistoskop", link: "/takistoskop/hizli-gorme" },
-      { name: "Takistoskop Gelişimi", link: "/takistoskop/gelisimi" },
-    ],
+    subMenu: [{ name: "Takistoskop", link: "/takistoskop/hizli-gorme" }],
+    description:
+      "Hızlı Görme Uygulaması Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır.",
+    youtubeId: "xiTK523Ot5U",
   },
   {
     name: "Hızlı Oku",
@@ -66,11 +74,19 @@ export const menuItems = [
       { name: "Odaklı Blok Okuma", link: "/hizli-oku/odakli-blok-okuma" },
       { name: "Hızlı Okuma Gelişimi", link: "/hizli-oku/gelisimi" },
     ],
+    description:
+      "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar.",
+    youtubeId: "xiTK523Ot5U",
   },
   {
     name: "Göster Kendini",
     link: "/goster-kendini",
-    subMenu: [{ name: "Göster Kendini 1", link: "/goster-kendini/1" }],
+    subMenu: [
+      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
+      { name: "Anlama Gelişimi", link: "/goster-kendini/gelisim" },
+    ],
+    description: "Göster Kendini",
+    youtubeId: "xiTK523Ot5U",
   },
 ];
 
