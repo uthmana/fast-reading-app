@@ -1,5 +1,69 @@
-import React from "react";
+"use client";
+
+import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
+import Whiteboard from "@/components/whiteboard/whiteboard";
+import { fetchData } from "@/utils/fetchData";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export default function page() {
-  return <div className="p-4">Göster Kendini home</div>;
+  const [articles, setArticles] = useState([] as any);
+  const [data, setData] = useState([] as any);
+  const [selectedArticle, setSelectedArticle] = useState({} as any);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session) return;
+
+    const fetchArticles = async () => {
+      try {
+        const resData = await fetchData({ apiPath: "/api/articles" });
+        const userLevel = session.user?.student?.level;
+
+        const filteredArticles = userLevel
+          ? resData.filter((article: any) => article.level === userLevel)
+          : resData;
+
+        setArticles(filteredArticles);
+        setData(
+          filteredArticles.map((article: any) => ({
+            name: article.title,
+            value: article.id,
+          }))
+        );
+        const randomArticle =
+          articles[Math.floor(Math.random() * articles.length)];
+        setSelectedArticle(randomArticle);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      }
+    };
+
+    fetchArticles();
+  }, [session]);
+
+  const handleTest = (values: {
+    speed: string;
+    start: boolean;
+    value: string;
+    counter?: number;
+  }) => {
+    console.log({ values });
+  };
+
+  return (
+    <Whiteboard
+      articles={articles}
+      body={
+        <div className="w-full h-full text-left">
+          <h1>{selectedArticle?.title}</h1>
+          <p>{selectedArticle?.description} </p>
+        </div>
+      }
+      description={<ControlPanelGuide showOptionSelect={true} />}
+      onFinishTest={handleTest}
+      options={data || []}
+      isTest={true}
+    />
+  );
 }

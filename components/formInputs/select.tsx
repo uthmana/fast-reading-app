@@ -28,7 +28,7 @@ function Select({
   disabled = false,
 }: SelectPropTypes) {
   return (
-    <div className="w-full flex-col">
+    <div className="w-full flex-col text-sm">
       {showLabel ? (
         <label
           className="text-sm font-semibold flex gap-1 items-center"

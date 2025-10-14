@@ -1,8 +1,8 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import FormBuilder from "../../../components/formBuilder";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import reading_icon from "/public/images/reading-icon.png";
 import { fetchData } from "@/utils/fetchData";
@@ -14,23 +14,8 @@ type ValuesTypes = {
 };
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resError, setResError] = useState("" as any);
-
-  useEffect(() => {
-    if (status === "loading") return;
-    if (session) {
-      if (typeof window !== "undefined") {
-        if (session.user.role === "ADMIN") {
-          window.location.replace("/admin");
-        } else {
-          window.location.replace("/");
-        }
-      }
-    }
-  }, [session, status]);
 
   const handleFormSubmit = async (values: ValuesTypes) => {
     const { isValid, formData, event } = values;
