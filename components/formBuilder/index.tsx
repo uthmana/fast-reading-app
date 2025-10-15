@@ -7,6 +7,7 @@ import formFields from "./formFields";
 import TextArea from "../formInputs/textArea";
 import Button from "../button/button";
 import { convertToISO8601 } from "@/utils/helpers";
+import JsonEditor from "../formInputs/jsonEditor";
 
 type FormId = keyof typeof formFields;
 
@@ -49,6 +50,9 @@ export default function FormBuilder({
       const value = data[fd.key];
 
       if (value !== undefined) {
+        if (fd.type === "json") {
+          return { ...fd, value: { ...fd.value, value: value } };
+        }
         return { ...fd, value: { ...fd.value, value: value.toString() } };
       }
       return fd;
@@ -63,38 +67,51 @@ export default function FormBuilder({
     targetValue,
     inputKey,
   }: {
-    targetValue: string | number;
+    targetValue: any; // can be string, number, object, etc.
     inputKey: string;
   }) => {
-    let newValues = [...formData].map((d) => {
-      if (d.key === inputKey) {
-        return { ...d, value: { ...d.value, value: targetValue } };
-      }
-      return d;
-    });
-
+    // update formData
+    const newValues = formData.map((d: any) =>
+      d.key === inputKey
+        ? { ...d, value: { ...d.value, value: targetValue } }
+        : d
+    );
     setFormData(newValues);
 
-    const newData = [...newValues].map((newVal) => {
-      let val = newVal.value.value?.toString();
-      if (newVal.value.type === "number") {
-        val = parseInt(newVal.value.value);
-      }
-      if (newVal.value.type === "boolean") {
-        const valStr = newVal.value.value;
-        val = valStr === "true" || valStr === true;
+    // build newData for submission
+    const newDataObj = newValues.reduce((acc: any, newVal: any) => {
+      let val: any = newVal.value.value;
+
+      switch (newVal.value.type) {
+        case "number":
+          val = Number(val);
+          break;
+        case "boolean":
+          val = val === "true" || val === true;
+          break;
+        case "date":
+          val = convertToISO8601(val);
+          break;
+        case "json":
+          // only parse if it's a string
+          if (typeof val === "string") {
+            try {
+              val = JSON.parse(val);
+            } catch (err) {
+              console.error("Invalid JSON:", val);
+              val = null;
+            }
+          }
+          break;
+        default:
+          val = val?.toString();
       }
 
-      if (newVal.value.type === "date") {
-        val = convertToISO8601(newVal.value.value);
-      }
+      acc[newVal.key] = val;
+      return acc;
+    }, {} as Record<string, any>);
 
-      return {
-        [newVal.key]: val,
-      };
-    });
-
-    setNewData(Object.assign({}, ...newData));
+    setNewData(newDataObj);
     setIsFormValid(true);
   };
 
@@ -167,6 +184,22 @@ export default function FormBuilder({
                   required={v.required}
                   disabled={v.disabled}
                   rows={v.rows}
+                />
+              );
+            }
+
+            if (v.type === "json") {
+              return (
+                <JsonEditor
+                  key={idx + v.type}
+                  placeholder={v.placeholder}
+                  value={v.value}
+                  onChange={handleChange}
+                  inputKey={v.key}
+                  required={v.required}
+                  disabled={v.disabled}
+                  rows={v.rows}
+                  name={v.name}
                 />
               );
             }

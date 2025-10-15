@@ -131,7 +131,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 <ul
                   className={`flex flex-col pl-4 border-l mt-2 space-y-1 transition-all duration-300 ${
                     activeMenu === item.name
-                      ? "max-h-96 opacity-100"
+                      ? "max-h-96 opacity-100 overflow-y-auto"
                       : "max-h-0 opacity-0 overflow-hidden"
                   }  `}
                 >

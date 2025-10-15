@@ -4,7 +4,7 @@ import { MdInfo, MdPauseCircle, MdPlayCircle } from "react-icons/md";
 
 export default function ControlPanelGuide({ showOptionSelect = false }) {
   return (
-    <div className="p-6 text-gray-800 lg:max-w-[90%] max-w-full !text-lg mx-auto">
+    <div className=" text-gray-800 lg:max-w-[90%] max-w-full !text-lg mx-auto">
       <div className="flex items-center gap-2 mb-4">
         <MdInfo className="text-blue-600 w-6 h-6" />
         <h2 className="text-xl font-semibold">

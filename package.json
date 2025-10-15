@@ -12,6 +12,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@microlink/react-json-view": "^1.27.0",
     "@prisma/client": "latest",
     "@tanstack/react-table": "^8.21.3",
     "bcryptjs": "^2.4.3",
