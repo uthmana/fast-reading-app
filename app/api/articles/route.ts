@@ -13,9 +13,6 @@ export async function GET(req: NextRequest) {
       // Fetch a single user by name
       const article = await prisma.article.findUnique({
         where: { id },
-        include: {
-          articleTest: true,
-        },
       });
 
       if (!article) {
@@ -46,7 +43,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, title, description, level }: Article | any = await req.json();
+  const { id, title, description, level, tests }: Article | any =
+    await req.json();
   if (!title || !description || !level) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -63,6 +61,7 @@ export async function POST(req: Request) {
             title,
             description,
             level,
+            tests: tests,
           },
         });
         return NextResponse.json(article, { status: 200 });
@@ -74,6 +73,7 @@ export async function POST(req: Request) {
         title,
         description,
         level,
+        tests: tests,
       },
     });
     return NextResponse.json(article, { status: 201 });

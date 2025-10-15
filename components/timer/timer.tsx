@@ -49,7 +49,7 @@ export default function Timer({
 
   return (
     <div
-      className={`text-3xl font-mono font-semibold text-gray-800 ${className}`}
+      className={`text-2xl font-mono font-semibold text-green-800 ${className}`}
     >
       {formatTime(seconds)}
     </div>

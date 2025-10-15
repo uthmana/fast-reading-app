@@ -19,7 +19,6 @@ export default function page() {
     <Whiteboard
       body={<>Lesson page {queryParams.id} exercise</>}
       description={<ControlPanelGuide />}
-      onFinishTest={handleTest}
     />
   );
 }
