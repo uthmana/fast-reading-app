@@ -6,7 +6,7 @@ export const menuItems = [
     subMenu: [
       { name: "Dersler", link: "/dersler" },
       { name: "Takistoskop", link: "/takistoskop" },
-      { name: "Hızlı Okuma Gelişimi", link: "/hizli-oku/gelisimi" },
+      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
     ],
     description: "Tüm dersler",
     youtubeId: "",
@@ -15,6 +15,10 @@ export const menuItems = [
     name: "Göz Egzersizleri",
     link: "/goz-egzersiz",
     subMenu: [
+      {
+        name: "Göz Egzersizleri",
+        link: "/goz-egzersiz",
+      },
       {
         name: "Ritmini Renklendirme",
         link: "/goz-egzersiz/ritmini-renklendirme",
@@ -38,6 +42,7 @@ export const menuItems = [
     name: "Okuma Egzersizleri",
     link: "/okuma-egzersiz",
     subMenu: [
+      { name: "Okuma Egzersizleri", link: "/okuma-egzersiz" },
       { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
       { name: "Kelimeler-2", link: "/okuma-egzersiz/kelimeler-2" },
       { name: "Kelimeler-3", link: "/okuma-egzersiz/kelimeler-3" },
@@ -57,7 +62,10 @@ export const menuItems = [
   {
     name: "Takistoskop",
     link: "/takistoskop",
-    subMenu: [{ name: "Takistoskop", link: "/takistoskop/hizli-gorme" }],
+    subMenu: [
+      { name: "Takistoskop", link: "/takistoskop" },
+      { name: "Hızlı Görme", link: "/takistoskop/hizli-gorme" },
+    ],
     description:
       "Hızlı Görme Uygulaması Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır.",
     youtubeId: "xiTK523Ot5U",
@@ -66,6 +74,10 @@ export const menuItems = [
     name: "Hızlı Oku",
     link: "/hizli-oku",
     subMenu: [
+      {
+        name: "Hızlı Oku",
+        link: "/hizli-oku",
+      },
       {
         name: "Silinmeden Blok Okuma",
         link: "/hizli-oku/silinmeden-blok-okuma",
@@ -82,6 +94,7 @@ export const menuItems = [
     name: "Göster Kendini",
     link: "/goster-kendini",
     subMenu: [
+      { name: "Göster Kendini", link: "/goster-kendini" },
       { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
       { name: "Anlama Gelişimi", link: "/goster-kendini/gelisim" },
     ],

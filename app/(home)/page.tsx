@@ -14,11 +14,16 @@ import {
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
+import { formatDateTime } from "@/utils/helpers";
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [user, setUser] = useState({} as any);
+
+  const [categories, setCategories] = useState([]);
+  const [speed, setSpeed] = useState([]);
+  const [comprehension, setComprehension] = useState([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -34,6 +39,19 @@ export default function Home() {
           apiPath: `/api/users?name=${encodeURIComponent(session.user.name)}`,
         });
         setUser(resData);
+        if (resData?.Student?.attempts?.length) {
+          const mappedData = resData.Student.attempts.map(
+            ({ wpm, createdAt, correct }: any) => ({
+              wpm,
+              category: formatDateTime(createdAt),
+              correct,
+            })
+          );
+
+          setCategories(mappedData.map(({ category }: any) => category));
+          setSpeed(mappedData.map(({ wpm }: any) => wpm));
+          setComprehension(mappedData.map(({ correct }: any) => correct));
+        }
       } catch (error) {}
     };
     requestData();
@@ -59,7 +77,7 @@ export default function Home() {
       <div className="flex flex-wrap gap-4 w-full mb-10">
         <Widget
           icon={<MdAccountCircle className="w-8 h-8 text-blue-500" />}
-          description="Group"
+          description="Eğitim Grubunuz"
           title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
           }
@@ -67,20 +85,20 @@ export default function Home() {
         />
         <Widget
           icon={<MdScheduleSend className="w-8 h-8 text-blue-500" />}
-          description="Başlama Tarihi"
+          description="Eğitim Başlangç"
           title={user?.Student?.startDate?.split("T")[0]}
           className="flex-1"
         />
         <Widget
           icon={<MdSchedule className="w-8 h-8 text-blue-500" />}
-          description="Bitiş Tarihi"
+          description="Eğitim Bitiş"
           title={user?.Student?.endDate?.split("T")[0]}
           className="flex-1"
         />
         <Link className="flex" href={"/dersler"}>
           <Widget
             icon={<MdPlayCircle className="w-8 h-8 text-white" />}
-            title="Eğitim Başla"
+            title="Eğitime Başla"
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
           />
         </Link>
@@ -92,8 +110,8 @@ export default function Home() {
           <BarChart
             chartData={[
               {
-                name: "series-1",
-                data: [30, 40, 45, 50, 49, 60, 70, 91],
+                name: "Okuma Hızı",
+                data: speed,
               },
             ]}
             chartOptions={{
@@ -101,9 +119,7 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: [
-                  1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-                ],
+                categories: categories,
               },
             }}
           />
@@ -113,8 +129,8 @@ export default function Home() {
           <BarChart
             chartData={[
               {
-                name: "series-1",
-                data: [30, 40, 45, 50, 49, 60, 70, 91],
+                name: "Anlama",
+                data: comprehension,
               },
             ]}
             chartOptions={{
@@ -122,9 +138,15 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: [
-                  1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-                ],
+                categories: categories,
+              },
+              dataLabels: {
+                enabled: true,
+                formatter: (val: number) => `${val}%`, // 👈 adds percentage symbol
+                style: {
+                  fontSize: "12px",
+                  colors: ["#333"],
+                },
               },
             }}
           />

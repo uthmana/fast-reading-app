@@ -49,7 +49,6 @@ model Exercise {
   lesson    Lesson?      @relation(fields: [lessonId], references: [id])
   config    Json?
   createdAt DateTime     @default(now())
-  Attempt   Attempt[]
   Progress  Progress[]
 }
 
@@ -57,8 +56,6 @@ model Attempt {
   id          String   @id @default(cuid())
   studentId   String
   student     Student  @relation(fields: [studentId], references: [id])
-  exerciseId  String
-  exercise    Exercise @relation(fields: [exerciseId], references: [id])
   correct     Int?
   wpm         Float? // words per minute measured
   durationSec Int?
@@ -98,14 +95,13 @@ model Progress {
 }
 
 model Article {
-  id            String       @id @default(cuid())
-  title         String
-  description   String
-  level         Level        @default(ILKOKUL)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime?    @updatedAt
-  articleTest   ArticleTest? @relation(fields: [articleTestId], references: [id])
-  articleTestId String?      @unique
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  level       Level     @default(ILKOKUL)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  tests       Json
 }
 
 model ArticleTest {
@@ -115,5 +111,4 @@ model ArticleTest {
   options   Json
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  article   Article?  @relation
 }

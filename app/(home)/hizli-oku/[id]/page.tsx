@@ -52,7 +52,6 @@ export default function page() {
 
   return (
     <Whiteboard
-      articles={articles}
       body={
         <div className="w-full h-full text-left">
           <h1>{selectedArticle?.title}</h1>
@@ -60,7 +59,6 @@ export default function page() {
         </div>
       }
       description={<ControlPanelGuide showOptionSelect={true} />}
-      onFinishTest={handleTest}
       options={data || []}
     />
   );

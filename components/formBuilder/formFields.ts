@@ -201,15 +201,6 @@ export default {
       required: true,
     },
     {
-      key: "description",
-      name: "Makale",
-      placeholder: "Metin Ekle",
-      type: "textarea",
-      value: { key: "description", type: "string", value: "" },
-      required: true,
-      rows: 12,
-    },
-    {
       key: "level",
       name: "Seviye",
       placeholder: "Seviye seç",
@@ -234,6 +225,25 @@ export default {
       ],
       value: { key: "role", type: "string", value: "ILKOKUL" },
       required: true,
+    },
+    {
+      key: "description",
+      name: "Makale",
+      placeholder: "Metin Ekle",
+      type: "textarea",
+      value: { key: "description", type: "string", value: "" },
+      required: true,
+      rows: 8,
+    },
+
+    {
+      key: "tests",
+      name: "Test",
+      placeholder: "Test",
+      type: "json",
+      value: { key: "description", type: "json", value: "" },
+      required: false,
+      rows: 8,
     },
   ],
   login: [

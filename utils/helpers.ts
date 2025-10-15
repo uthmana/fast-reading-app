@@ -149,3 +149,47 @@ export const exportToExcel = (tableData: any, fileName = "table-data.xlsx") => {
 
   saveAs(data, fileName);
 };
+
+export const countWords = (text: string) => {
+  if (!text || typeof text !== "string") return 0;
+  const words = text
+    .trim()
+    .replace(/\s+/g, " ")
+    .match(/\b\w+\b/g);
+
+  return words ? words.length : 0;
+};
+
+export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
+  if (
+    typeof wordCount !== "number" ||
+    typeof seconds !== "number" ||
+    seconds <= 0
+  ) {
+    throw new Error(
+      "Invalid input: wordCount and seconds must be positive numbers"
+    );
+  }
+
+  const speed = (wordCount * 60) / seconds;
+  return Math.round(speed);
+};
+
+export const calculateQuizScore = (
+  questions: { id: string }[],
+  answers: Record<string, string>,
+  correctAnswers: Record<string, string>
+): number => {
+  if (!questions?.length) return 0;
+
+  let correctCount = 0;
+
+  questions.forEach((q) => {
+    if (answers[q.id] && answers[q.id] === correctAnswers[q.id]) {
+      correctCount++;
+    }
+  });
+
+  const percentage = (correctCount / questions.length) * 100;
+  return Math.round(percentage); // round to nearest whole number
+};
