@@ -1,15 +1,23 @@
 "use client";
 
+import { menuItems } from "@/utils/constants";
+import { usePathname } from "next/navigation";
 import { MdInfo, MdPauseCircle, MdPlayCircle } from "react-icons/md";
 
 export default function ControlPanelGuide({ showOptionSelect = false }) {
+  const pathname = usePathname();
+  const menu = menuItems.find((item) =>
+    item.subMenu.find((sub) => sub.link === pathname)
+  );
+  const title =
+    menu?.subMenu.find((sub) => sub.link === pathname)?.name ||
+    "Kontrol Paneli Nasıl Kullanılır";
+
   return (
     <div className=" text-gray-800 lg:max-w-[90%] max-w-full !text-lg mx-auto">
       <div className="flex items-center gap-2 mb-4">
         <MdInfo className="text-blue-600 w-6 h-6" />
-        <h2 className="text-xl font-semibold">
-          Kontrol Paneli Nasıl Kullanılır
-        </h2>
+        <h2 className="text-xl font-semibold">{title}</h2>
       </div>
 
       <ul className="ml-5 space-y-3 text-sm leading-relaxed">

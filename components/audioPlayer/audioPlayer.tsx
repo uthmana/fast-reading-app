@@ -63,7 +63,7 @@ export default function AudioPlayer({
 
   return (
     <div
-      className="fixed right-8 bottom-8 z-50 flex h-9
+      className="fixed right-5 bottom-5 z-50 flex h-9
                  shadow-xl overflow-hidden rounded-xl bg-white border-2 rounded-tl-xl rounded-bl-xl rounded-tr-xl rounded-br-xl"
     >
       {/* Prev */}

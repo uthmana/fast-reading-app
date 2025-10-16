@@ -65,16 +65,16 @@ export default function Whiteboard({
             <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {body}
             </div>
-          </div>
 
-          {!isTest ? (
-            <Button
-              text=""
-              className="max-w-fit bg-blue-600 hover:bg-blue-700"
-              icon={<MdPauseCircle className="w-7 h-7 text-white" />}
-              onClick={handlePause}
-            />
-          ) : null}
+            {!isTest ? (
+              <Button
+                text=""
+                className="max-w-fit absolute z-10 right-[3%] bottom-[4%] bg-blue-600 hover:bg-blue-700"
+                icon={<MdPauseCircle className="w-7 h-7 text-white" />}
+                onClick={handlePause}
+              />
+            ) : null}
+          </div>
         </div>
       )}
 
@@ -115,7 +115,9 @@ export default function Whiteboard({
 
           <Button
             text=""
-            className="flex-1 max-w-16 bg-blue-600 hover:bg-blue-700 shadow-lg"
+            className={`flex-1 max-w-16 bg-blue-600 hover:bg-blue-700 shadow-lg ${
+              isTest ? "ml-auto" : ""
+            }`}
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
             onClick={handlePlay}
           />

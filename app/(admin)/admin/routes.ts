@@ -12,10 +12,6 @@ const routes = [
     path: "/admin/articles",
   },
   {
-    name: "Okuma Testleri",
-    path: "/admin/tests",
-  },
-  {
     name: "Kullanıcılar",
     path: "/admin/users",
   },

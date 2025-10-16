@@ -3,6 +3,7 @@
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
+import { menuItems } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import {
   calculateQuizScore,
@@ -10,6 +11,7 @@ import {
   countWords,
 } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function page() {

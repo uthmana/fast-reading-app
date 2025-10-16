@@ -235,7 +235,6 @@ export default {
       required: true,
       rows: 8,
     },
-
     {
       key: "tests",
       name: "Test",
@@ -244,6 +243,67 @@ export default {
       value: { key: "description", type: "json", value: "" },
       required: false,
       rows: 8,
+      jsonFields: [
+        {
+          key: "id",
+          name: "Id",
+          placeholder: "Id",
+          type: "text",
+          value: { key: "id", type: "string", value: "" },
+          required: true,
+        },
+        {
+          key: "question",
+          name: "Soru",
+          placeholder: "Soru",
+          type: "text",
+          value: { key: "question", type: "string", value: "" },
+          required: true,
+        },
+        {
+          key: "answer",
+          name: "Cevap",
+          placeholder: "Cevap",
+          type: "select",
+          options: [
+            {
+              name: "A",
+              value: "a",
+            },
+            {
+              name: "B",
+              value: "b",
+            },
+            {
+              name: "C",
+              value: "c",
+            },
+            {
+              name: "D",
+              value: "d",
+            },
+          ],
+          value: { key: "answer", type: "string", value: "" },
+          required: true,
+        },
+        {
+          key: "options",
+          name: "Seçenek",
+          placeholder: "Seçenek",
+          type: "array",
+          value: {
+            key: "options",
+            type: "array",
+            value: [
+              { id: "a", text: "" },
+              { id: "b", text: "" },
+              { id: "c", text: "" },
+              { id: "d", text: "" },
+            ],
+          },
+          required: true,
+        },
+      ],
     },
   ],
   login: [
