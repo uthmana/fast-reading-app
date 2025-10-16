@@ -22,7 +22,7 @@ export default function ExerciseDetail({
   menuItems: MenuPropsTypes[];
 }) {
   const menu = menuItems.find((item) => item.link === pathname);
-  const startLink = menu?.subMenu?.[0]?.link || "";
+  const startLink = menu?.subMenu?.[1]?.link || "";
 
   return (
     <div className="p-4 w-full flex flex-col">

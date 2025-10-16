@@ -2,7 +2,8 @@
 
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
 import Whiteboard from "@/components/whiteboard/whiteboard";
-import { useParams } from "next/navigation";
+import { menuItems } from "@/utils/constants";
+import { useParams, usePathname } from "next/navigation";
 
 export default function page() {
   const queryParams = useParams();
@@ -11,9 +12,7 @@ export default function page() {
     speed: string;
     start: boolean;
     value: string;
-  }) => {
-    console.log(values);
-  };
+  }) => {};
 
   return (
     <Whiteboard
