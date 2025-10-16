@@ -17,6 +17,7 @@ type JsonEditorProps = {
   disabled?: boolean;
   placeholder?: string;
   rows?: number;
+  jsonFields?: any;
 };
 
 export default function JsonEditor({
@@ -26,6 +27,7 @@ export default function JsonEditor({
   onChange,
   required,
   disabled,
+  jsonFields,
 }: JsonEditorProps) {
   const jsonValue = value?.value || {};
 

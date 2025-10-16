@@ -26,7 +26,6 @@ export const useFormHandler = () => {
       return;
     }
 
-    console.log("formData", formData);
     try {
       setIsSubmitting(true);
       const res = await fetch(apiPath, {

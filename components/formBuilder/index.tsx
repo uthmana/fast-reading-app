@@ -152,6 +152,7 @@ export default function FormBuilder({
               required: boolean;
               disabled: boolean;
               rows: number;
+              jsonFields: any;
             },
             idx: number
           ) => {
@@ -200,6 +201,7 @@ export default function FormBuilder({
                   disabled={v.disabled}
                   rows={v.rows}
                   name={v.name}
+                  jsonFields={v.jsonFields}
                 />
               );
             }

@@ -86,7 +86,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 )}
               </div>
             ))}
-            <LogOutInput />
+            <LogOutInput className="!ml-3 border-0 font-semibold" />
           </nav>
         </div>
 

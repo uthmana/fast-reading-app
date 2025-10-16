@@ -11,9 +11,7 @@ export default function page() {
     speed: string;
     start: boolean;
     value: string;
-  }) => {
-    console.log(values);
-  };
+  }) => {};
 
   return (
     <Whiteboard

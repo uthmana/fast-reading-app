@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
               Student: true,
             },
           });
-          console.log(user);
+
           if (!user) return null;
 
           const isValid = await bcrypt.compare(

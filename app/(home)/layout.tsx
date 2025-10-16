@@ -21,7 +21,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <body className="pb-16">
         <SessionProvider>
           {!session ? (
             <main>{children}</main>

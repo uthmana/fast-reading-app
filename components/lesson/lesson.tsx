@@ -20,9 +20,9 @@ export default function Lesson({ lessons, id }: { lessons: any; id: string }) {
       showControlPanel={false}
       description={
         <div className="p-4">
-          <div className="flex justify-between mb-7">
+          <div className="flex flex-wrap  gap-3 justify-center lg:justify-between mb-7">
             <h1
-              className="font-semibold text-lg 
+              className="font-semibold text-base 
          lg:text-xl "
             >
               {id}. Ders aşağıdaki egzersizleri yapınız.
