@@ -41,17 +41,13 @@ export default function page() {
     fetchArticles();
   }, [session]);
 
-  const handleTest = (values: {
-    speed: string;
-    start: boolean;
-    value: string;
-  }) => {
-    const { speed, start, value } = values;
-    setSelectedArticle([...articles].find((article) => article.id === value));
+  const handleControl = (values: { speed: string; articleId: string }) => {
+    console.log(values);
   };
 
   return (
     <Whiteboard
+      onControl={handleControl}
       body={
         <div className="w-full h-full text-left">
           <h1>{selectedArticle?.title}</h1>

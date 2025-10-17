@@ -21,10 +21,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className="pb-16">
+      <body className="bg-gray-100 w-full h-full">
         <SessionProvider>
           {!session ? (
-            <main>{children}</main>
+            <main className="bg-white w-full h-full">{children}</main>
           ) : (
             <ClientLayout>{children}</ClientLayout>
           )}

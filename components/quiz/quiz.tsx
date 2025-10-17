@@ -83,7 +83,13 @@ export default function Quiz({ questions, onFinish }: QuizProps) {
               onChange={() => setSelectedOption(option.id)} // ✅ store id instead of text
               className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
             />
-            <span className="text-gray-700">{option.text}</span>
+            <span className="text-gray-700">
+              <span className="capitalize mr-2">
+                {option.id}
+                {")"}
+              </span>
+              {option.text}
+            </span>
           </label>
         ))}
       </form>

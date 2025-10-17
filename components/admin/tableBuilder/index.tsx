@@ -5,6 +5,7 @@ import {
   MdOutlineDelete,
   MdAdd,
   MdFileDownload,
+  MdChecklist,
 } from "react-icons/md";
 
 import {
@@ -58,6 +59,17 @@ function TableBuilder({
     if (type === "boolean") {
       return value ? "Active" : "Passive";
     }
+    if (type === "json") {
+      return (
+        <Button
+          className="!p-1 !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
+          text=""
+          onClick={() => onAction("quiz", info)}
+          icon={<MdChecklist className="w-7 h-7" />}
+        />
+      );
+    }
+
     return value;
   };
 
