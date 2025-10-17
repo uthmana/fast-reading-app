@@ -11,6 +11,7 @@ import {
 } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const [articles, setArticles] = useState([] as any);
@@ -18,6 +19,7 @@ export default function page() {
   const { data: session } = useSession();
   const [questions, setQuestions] = useState([] as any);
   const [correctAnswers, setCorrectAnswers] = useState({} as any);
+  const router = useRouter();
 
   useEffect(() => {
     if (!session || !session.user) return;
@@ -76,6 +78,9 @@ export default function page() {
           studentId: session?.user.student.id,
         },
       });
+      if (!userAnswers) {
+        router.push("/goster-kendini/gelisim");
+      }
     } catch (error) {
       console.error(error);
     }

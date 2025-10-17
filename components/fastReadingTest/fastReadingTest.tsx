@@ -18,7 +18,11 @@ export default function FastReadingTest({
 
   const handleTest = () => {
     setIsReading(false);
-    setIsTesting(true);
+    if (!questions?.length) {
+      onFinishTest(null, counter, article);
+    } else {
+      setIsTesting(true);
+    }
   };
 
   return (
@@ -37,7 +41,7 @@ export default function FastReadingTest({
             <p>{article?.description} </p>
           </div>
           <Button
-            text="TEST ET"
+            text={`${questions?.length ? "TEST ET" : "TAMAMLA"}`}
             className="flex-1 max-w-fit my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
             onClick={handleTest}
           />

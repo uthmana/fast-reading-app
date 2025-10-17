@@ -42,7 +42,7 @@ export default function page() {
   }, [session]);
 
   const handleControl = (values: { speed: string; articleId: string }) => {
-    console.log(values);
+    //console.log(values);
   };
 
   return (
