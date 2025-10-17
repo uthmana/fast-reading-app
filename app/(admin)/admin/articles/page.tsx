@@ -116,7 +116,6 @@ export default function page() {
     setFormTouched(true);
 
     if (id) {
-      console.log({ quiz });
       const filteredQuiz = [...(quiz || [])].filter((q) => q.id !== id);
       filteredQuiz.push(mappedData);
       setQuiz(filteredQuiz);
