@@ -25,6 +25,7 @@ export default function page() {
     optionsC: "",
     optionsD: "",
   };
+
   const [quiz, setQuiz] = useState([] as any);
   const [isShowQuizPopUp, setIsShowQuizPopUp] = useState(false);
   const [isQuizSubmitting, setIsQuizSubmitting] = useState(false);
@@ -115,19 +116,22 @@ export default function page() {
     setFormTouched(true);
 
     if (id) {
-      const filteredQuiz = [...quiz].filter((q) => q.id !== id);
+      console.log({ quiz });
+      const filteredQuiz = [...(quiz || [])].filter((q) => q.id !== id);
       filteredQuiz.push(mappedData);
       setQuiz(filteredQuiz);
       setQuizFormData(defaultQuizValue);
 
       return;
     }
-    setQuiz([...quiz, mappedData]);
+    setQuiz([...(quiz || []), mappedData]);
     setQuizFormData(defaultQuizValue);
   };
 
   const deleteQuiz = (selectedQuiz: any) => {
-    const filteredQuiz = [...quiz].filter((q) => q.id !== selectedQuiz.id);
+    const filteredQuiz = [...(quiz || [])].filter(
+      (q) => q.id !== selectedQuiz.id
+    );
     setQuiz(filteredQuiz);
     setFormTouched(true);
   };
@@ -217,7 +221,7 @@ export default function page() {
         <div className="flex gap-2">
           <div className="w-full flex flex-col justify-between">
             <div className="w-full pb-5 space-y-4 max-h-[480px] overflow-y-auto">
-              {quiz.map((q: any, idx: number) => (
+              {quiz?.map((q: any, idx: number) => (
                 <div className="text-sm text-gray-800 text-left" key={idx}>
                   <p className="font-semibold relative pr-5">
                     {idx + 1}. {q.question}
