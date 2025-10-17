@@ -12,6 +12,7 @@ interface WhiteboardProps {
   options?: any;
   isTest?: boolean;
   showControlPanel?: boolean;
+  onControl?: (v: any) => void;
 }
 
 export default function Whiteboard({
@@ -20,11 +21,17 @@ export default function Whiteboard({
   options = [],
   isTest = false,
   showControlPanel = true,
+  onControl,
 }: WhiteboardProps) {
   const [speed, setSpeed] = useState("1");
   const [isPlaying, setIsPlaying] = useState(false);
-  const [value, setValue] = useState(options[0] ?? "");
+  const [value, setValue] = useState(options[0]?.id ?? "");
   const speedList = ["1", "2", "3", "4", "5"];
+
+  const [controlVal, setControlVal] = useState({
+    speed: 1,
+    articleId: options[0]?.id,
+  });
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -34,8 +41,33 @@ export default function Whiteboard({
     setIsPlaying(false);
   };
 
-  const handleChange = ({ targetValue }: { targetValue: string }) => {
-    setValue(targetValue);
+  const handleChange = ({
+    targetValue,
+    value,
+    inputKey,
+  }: {
+    targetValue: string;
+    value: string;
+    inputKey: string;
+  }) => {
+    let crtVal = { ...controlVal };
+
+    if (inputKey === "textSelect") {
+      setValue(targetValue);
+      if (targetValue) {
+        crtVal.articleId = targetValue;
+      }
+    }
+    if (inputKey === "speed") {
+      setSpeed(targetValue);
+      if (targetValue) {
+        crtVal.speed = parseInt(targetValue);
+      }
+    }
+    setControlVal(crtVal);
+    if (onControl) {
+      onControl(crtVal);
+    }
   };
 
   return (
@@ -106,7 +138,13 @@ export default function Whiteboard({
                     className={`max-w-fit !p-3 h-8 bg-blue-300 hover:bg-blue-500 ${
                       speed === s ? "!bg-blue-800" : ""
                     }`}
-                    onClick={() => setSpeed(s)}
+                    onClick={() =>
+                      handleChange({
+                        inputKey: "speed",
+                        targetValue: s,
+                        value: s,
+                      })
+                    }
                   />
                 ))}
               </div>

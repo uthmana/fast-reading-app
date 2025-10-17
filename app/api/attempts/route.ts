@@ -43,7 +43,6 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const { wpm, correct, durationSec, studentId }: Attempt = await req.json();
-  console.log({ wpm, correct, durationSec, studentId });
   if (!studentId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
