@@ -100,7 +100,7 @@ model Article {
   level       Level     @default(ILKOKUL)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
-  tests       Json
+  tests       Json?
 }
 
 model ArticleTest {
