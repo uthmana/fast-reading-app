@@ -180,7 +180,7 @@ export const calculateQuizScore = (
   answers: Record<string, string>,
   correctAnswers: Record<string, string>
 ): number => {
-  if (!questions?.length) return 0;
+  if (!questions?.length || !answers) return 0;
 
   let correctCount = 0;
 
