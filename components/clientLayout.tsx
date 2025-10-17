@@ -16,7 +16,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   const pathname = usePathname();
 
   return (
-    <div className="w-full relative flex flex-col min-h-screen">
+    <div className="w-full pb-16 relative flex flex-col min-h-screen">
       <div className="lg:bg-blue-500 w-full lg:before:absolute lg:before:top-0 lg:before:left-0 lg:before:w-full lg:before:h-40 lg:before:bg-blue-500 lg:before:z-0">
         <Menu
           pathname={pathname}

@@ -21,6 +21,7 @@ export const columnsData = {
     { id: "level", name: "Seviye", type: "string" },
     { id: "title", name: "Başlık", type: "string" },
     { id: "description", name: "Metin", type: "string" },
+    { id: "tests", name: "Test", type: "json" },
     { id: "updatedAt", name: "Tarih", type: "date" },
   ],
 } as const;

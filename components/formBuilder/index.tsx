@@ -7,7 +7,6 @@ import formFields from "./formFields";
 import TextArea from "../formInputs/textArea";
 import Button from "../button/button";
 import { convertToISO8601 } from "@/utils/helpers";
-import JsonEditor from "../formInputs/jsonEditor";
 
 type FormId = keyof typeof formFields;
 
@@ -50,9 +49,6 @@ export default function FormBuilder({
       const value = data[fd.key];
 
       if (value !== undefined) {
-        if (fd.type === "json") {
-          return { ...fd, value: { ...fd.value, value: value } };
-        }
         return { ...fd, value: { ...fd.value, value: value.toString() } };
       }
       return fd;
@@ -92,17 +88,6 @@ export default function FormBuilder({
         case "date":
           val = convertToISO8601(val);
           break;
-        case "json":
-          // only parse if it's a string
-          if (typeof val === "string") {
-            try {
-              val = JSON.parse(val);
-            } catch (err) {
-              console.error("Invalid JSON:", val);
-              val = null;
-            }
-          }
-          break;
         default:
           val = val?.toString();
       }
@@ -120,7 +105,6 @@ export default function FormBuilder({
       (fd: { required: Boolean; value: { value: any } }) =>
         !fd.required || Boolean(fd.value?.value)
     );
-
     onSubmit({
       isValid,
       formData: { ...(data ? data : {}), ...newData },
@@ -152,7 +136,6 @@ export default function FormBuilder({
               required: boolean;
               disabled: boolean;
               rows: number;
-              jsonFields: any;
             },
             idx: number
           ) => {
@@ -185,23 +168,6 @@ export default function FormBuilder({
                   required={v.required}
                   disabled={v.disabled}
                   rows={v.rows}
-                />
-              );
-            }
-
-            if (v.type === "json") {
-              return (
-                <JsonEditor
-                  key={idx + v.type}
-                  placeholder={v.placeholder}
-                  value={v.value}
-                  onChange={handleChange}
-                  inputKey={v.key}
-                  required={v.required}
-                  disabled={v.disabled}
-                  rows={v.rows}
-                  name={v.name}
-                  jsonFields={v.jsonFields}
                 />
               );
             }

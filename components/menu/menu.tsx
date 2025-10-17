@@ -33,22 +33,16 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
     <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:border-b-0 text-white border-b ">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
-          <h1 className="font-medium text-gray-800">
+          <h1 className="text-gray-800">
             <Link
               className="flex gap-3 items-center text-white"
               href="/"
               onClick={() => setMenuOpen(false)}
             >
-              <Image
-                src={reading_icon}
-                alt={"Etkin Hızlı Okuma"}
-                width="34"
-                height="34"
-                unoptimized
-                priority
-                className="mx-auto"
-              />
-              <span> {session?.user?.name} </span>
+              <span className="w-10 font-semibold h-10 border tex capitalize text-lg bg-blue-800  flex items-center justify-center rounded-full">
+                {session?.user?.name[0]?.toUpperCase()}
+              </span>
+              <span className="-tracking-tighter"> {session?.user?.name} </span>
             </Link>
           </h1>
 
@@ -59,8 +53,8 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex items-center text-sm font-bold text-white  hover:bg-blue-400 rounded-md px-2 py-2 ${
-                      pathname?.includes(item.link) ? "!bg-blue-700 " : ""
+                    className={`flex relative items-center text-sm font-bold text-white  hover:bg-blue-400 rounded-md px-2 py-2 ${
+                      pathname?.includes(item.link) ? "!bg-blue-700" : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
                   >
@@ -69,8 +63,8 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 ) : (
                   <button
                     onClick={() => toggleSubMenu(item.name)}
-                    className={`flex items-center text-gray-800 hover:text-blue-600 font-medium ${
-                      activeMenu === item.name ? "text-blue-600" : ""
+                    className={`flex relative items-center text-gray-800 hover:text-blue-600 font-medium ${
+                      activeMenu === item.name ? "text-blue-600 " : ""
                     }`}
                   >
                     {item.name}
@@ -96,7 +90,10 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
-          <Icon name={menuOpen ? "close" : "menu"} className="w-6 h-6" />
+          <Icon
+            name={menuOpen ? "close" : "menu"}
+            className="w-6 h-6 text-white"
+          />
         </button>
       </div>
 

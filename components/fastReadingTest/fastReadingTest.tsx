@@ -12,7 +12,7 @@ export default function FastReadingTest({
   onFinishTest: (v: any, w: any, a: any) => void;
   questions: any;
 }) {
-  const [isReading, setIsReading] = useState(true);
+  const [isReading, setIsReading] = useState(article ? true : false);
   const [counter, setCounter] = useState(0);
   const [isTesting, setIsTesting] = useState(false);
 
