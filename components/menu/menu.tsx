@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { menuItems } from "../../utils/constants";
+
 import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
-import Image from "next/image";
-import reading_icon from "/public/images/reading-icon.png";
 import { useSession } from "next-auth/react";
+import { MdAccountCircle } from "react-icons/md";
+import { menuItems } from "@/app/routes";
 
 interface MenuProps {
   onActiveMenu: (menuName: string | null) => void;
@@ -40,7 +40,11 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
               onClick={() => setMenuOpen(false)}
             >
               <span className="w-10 font-semibold h-10 border tex capitalize text-lg bg-blue-800  flex items-center justify-center rounded-full">
-                {session?.user?.name[0]?.toUpperCase()}
+                {!session ? (
+                  <MdAccountCircle className="w-8 h-8 text-blue-400" />
+                ) : (
+                  session?.user?.name[0]?.toUpperCase()
+                )}
               </span>
               <span className="-tracking-tighter"> {session?.user?.name} </span>
             </Link>
@@ -104,7 +108,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
         }`}
       >
         <ul className="flex flex-col p-4 space-y-2">
-          {menuItems.map((item) => (
+          {menuItems?.map((item) => (
             <li key={item.name}>
               <button
                 onClick={() => toggleSubMenu(item.name)}

@@ -1,7 +1,7 @@
 "use client";
 
+import { menuItems } from "@/app/routes";
 import Link from "next/link";
-import { menuItems } from "../../utils/constants";
 
 export default function Sidebar({
   activeMenu,

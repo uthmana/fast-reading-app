@@ -12,8 +12,8 @@ type LessonItem = {
 type LessonsMap = Record<string, LessonItem[]>;
 
 export default function page() {
-  const queryParams = useParams<{ id: string }>();
-  const id = queryParams.id;
+  const queryParams = useParams<{ slug: string }>();
+  const id = queryParams.slug;
 
   const currentLesson = (lessons as LessonsMap)[id];
 
@@ -21,5 +21,5 @@ export default function page() {
     return null;
   }
 
-  return <Lesson lessons={lessons} id={queryParams.id} />;
+  return <Lesson lessons={lessons} id={queryParams.slug} />;
 }

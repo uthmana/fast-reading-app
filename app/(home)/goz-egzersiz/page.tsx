@@ -2,8 +2,8 @@
 
 import React from "react";
 import { usePathname } from "next/navigation";
-import { menuItems } from "@/utils/constants";
 import ExerciseDetail from "@/components/exerciseDetail/exerciseDetail";
+import { menuItems } from "@/app/routes";
 
 export default function page() {
   const pathname = usePathname();

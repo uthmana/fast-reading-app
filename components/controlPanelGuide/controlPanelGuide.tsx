@@ -1,6 +1,6 @@
 "use client";
 
-import { menuItems } from "@/utils/constants";
+import { menuItems } from "@/app/routes";
 import { usePathname } from "next/navigation";
 import { MdInfo, MdPauseCircle, MdPlayCircle } from "react-icons/md";
 
