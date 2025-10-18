@@ -23,13 +23,13 @@ export default function Whiteboard({
   showControlPanel = true,
   onControl,
 }: WhiteboardProps) {
-  const [speed, setSpeed] = useState("1");
+  const [level, setLevel] = useState("1");
   const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState(options[0]?.id ?? "");
-  const speedList = ["1", "2", "3", "4", "5"];
+  const levelList = ["1", "2", "3", "4", "5"];
 
   const [controlVal, setControlVal] = useState({
-    speed: 1,
+    level: 1,
     articleId: options[0]?.id,
   });
 
@@ -58,10 +58,10 @@ export default function Whiteboard({
         crtVal.articleId = targetValue;
       }
     }
-    if (inputKey === "speed") {
-      setSpeed(targetValue);
+    if (inputKey === "level") {
+      setLevel(targetValue);
       if (targetValue) {
-        crtVal.speed = parseInt(targetValue);
+        crtVal.level = parseInt(targetValue);
       }
     }
     setControlVal(crtVal);
@@ -131,16 +131,16 @@ export default function Whiteboard({
               ) : null}
 
               <div className="flex gap-[1px] w-fit shadow-lg">
-                {speedList.map((s) => (
+                {levelList.map((s) => (
                   <Button
                     key={s}
                     text={s}
                     className={`max-w-fit !p-3 h-8 bg-blue-300 hover:bg-blue-500 ${
-                      speed === s ? "!bg-blue-800" : ""
+                      level === s ? "!bg-blue-800" : ""
                     }`}
                     onClick={() =>
                       handleChange({
-                        inputKey: "speed",
+                        inputKey: "level",
                         targetValue: s,
                         value: s,
                       })

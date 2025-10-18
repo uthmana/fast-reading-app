@@ -7,7 +7,7 @@ export default function Widget({
   className,
 }: {
   icon?: ReactElement;
-  title?: string;
+  title?: string | null;
   description?: string;
   className?: string;
 }) {
