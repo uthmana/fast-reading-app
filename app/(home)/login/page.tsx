@@ -92,7 +92,7 @@ export default function LoginPage() {
           Admin Kullanıcı adı: <b>mahmutyilmaz </b>,Şifre: <b>1234</b>
         </div>
         <div>
-          Öğrenci Kullanıcı adı: <b>mahmutyilmaz </b>,Şifre: <b>1234</b>
+          Öğrenci Kullanıcı adı: <b>mahmutyilmaz1 </b>,Şifre: <b>1234</b>
         </div>
       </p>
       <p className="text-xs my-2 text-white">2025 @copyright reserved</p>
