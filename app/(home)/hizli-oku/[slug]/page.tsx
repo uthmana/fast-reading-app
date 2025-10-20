@@ -1,17 +1,21 @@
 "use client";
 
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
-import Tachistoscope from "@/components/exercises/Tachistoscope";
+import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function page() {
-  const [selectedArticle, setSelectedArticle] = useState({} as any);
   const { data: session } = useSession();
-
-  const [control, setControl] = useState({ speed: 1, articleId: "" } as any);
+  const [selectedArticle, setSelectedArticle] = useState({} as any);
+  const [control, setControl] = useState({
+    level: 1,
+    articleId: "",
+    text: "",
+    wordsPerFrame: 3,
+  });
 
   useEffect(() => {
     if (!session) return;
@@ -43,16 +47,18 @@ export default function page() {
 
   return (
     <Whiteboard
-      onControl={handleControl}
+      description={<ControlPanelGuide />}
       body={
-        <Tachistoscope
-          text={selectedArticle?.description}
-          milliseconds={control?.speed * 30000}
-          wordsPerFrame={2}
-          autoStart={true}
+        <RenderExercise
+          controls={{
+            ...control,
+            text: selectedArticle?.description,
+            level: control?.level * 30000,
+            wordsPerFrame: control?.wordsPerFrame,
+          }}
         />
       }
-      description={<ControlPanelGuide />}
+      onControl={handleControl}
     />
   );
 }

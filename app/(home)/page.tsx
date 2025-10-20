@@ -5,12 +5,7 @@ import Popup from "../../components/popup/popup";
 import { useEffect, useState } from "react";
 import Button from "../../components/button/button";
 import { fetchData } from "@/utils/fetchData";
-import {
-  MdAccountCircle,
-  MdPlayCircle,
-  MdSchedule,
-  MdScheduleSend,
-} from "react-icons/md";
+import { MdGroups, MdPlayCircle, MdSchedule, MdTimeline } from "react-icons/md";
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
@@ -76,7 +71,7 @@ export default function Home() {
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
       <div className="flex flex-wrap gap-4 w-full mb-10">
         <Widget
-          icon={<MdAccountCircle className="w-8 h-8 text-blue-500" />}
+          icon={<MdGroups className="w-10 h-10 text-blue-500" />}
           description="Eğitim Grubunuz"
           title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
@@ -84,20 +79,20 @@ export default function Home() {
           className="flex-1"
         />
         <Widget
-          icon={<MdScheduleSend className="w-8 h-8 text-blue-500" />}
+          icon={<MdTimeline className="w-10 h-10 text-blue-500" />}
           description="Eğitim Başlangç"
-          title={user?.Student?.startDate?.split("T")[0]}
+          title={formatDateTime(user?.Student?.startDate)}
           className="flex-1"
         />
         <Widget
-          icon={<MdSchedule className="w-8 h-8 text-blue-500" />}
+          icon={<MdSchedule className="w-10 h-10 text-blue-500" />}
           description="Eğitim Bitiş"
-          title={user?.Student?.endDate?.split("T")[0]}
+          title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
         <Link className="flex" href={"/dersler"}>
           <Widget
-            icon={<MdPlayCircle className="w-8 h-8 text-white" />}
+            icon={<MdPlayCircle className="w-10 h-10 text-white" />}
             title="Eğitime Başla"
             className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
           />

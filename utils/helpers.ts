@@ -4,7 +4,13 @@ import saveAs from "file-saver";
 
 export const formatDateTime = (data: any) => {
   if (!data) return null;
-  return new Date(data).toLocaleString("tr-TR")?.slice(0, -3);
+  // return new Date(data).toLocaleString("tr-TR")?.slice(0, -3);
+  const date = new Date(data);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 };
 
 export function extractPrismaErrorMessage(error: any) {

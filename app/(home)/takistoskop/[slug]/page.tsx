@@ -1,18 +1,21 @@
 "use client";
 
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
+import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function page() {
-  const queryParams = useParams();
-  const [articles, setArticles] = useState([] as any);
-  const [data, setData] = useState([] as any);
-  const [selectedArticle, setSelectedArticle] = useState({} as any);
   const { data: session } = useSession();
+  const [selectedArticle, setSelectedArticle] = useState({} as any);
+  const [control, setControl] = useState({
+    level: 1,
+    articleId: "",
+    text: "",
+    wordsPerFrame: 1,
+  });
 
   useEffect(() => {
     if (!session) return;
@@ -26,13 +29,10 @@ export default function page() {
           ? resData.filter((article: any) => article.level === userLevel)
           : resData;
 
-        setArticles(filteredArticles);
-        setData(
-          filteredArticles.map((article: any) => ({
-            name: article.title,
-            value: article.id,
-          }))
-        );
+        const randomArticle =
+          filteredArticles[Math.floor(Math.random() * filteredArticles.length)];
+
+        setSelectedArticle(randomArticle);
       } catch (error) {
         console.error("Error fetching articles:", error);
       }
@@ -41,21 +41,24 @@ export default function page() {
     fetchArticles();
   }, [session]);
 
-  const handleControl = (values: { speed: string; articleId: string }) => {
-    //console.log(values);
+  const handleControl = (val: any) => {
+    setControl(val);
   };
 
   return (
     <Whiteboard
       onControl={handleControl}
       body={
-        <div className="w-full h-full text-left">
-          <h1>{selectedArticle?.title}</h1>
-          <p>{selectedArticle?.description} </p>
-        </div>
+        <RenderExercise
+          controls={{
+            ...control,
+            text: selectedArticle?.description,
+            level: control?.level * 30000,
+            wordsPerFrame: control?.wordsPerFrame,
+          }}
+        />
       }
-      description={<ControlPanelGuide showOptionSelect={true} />}
-      options={data || []}
+      description={<ControlPanelGuide />}
     />
   );
 }

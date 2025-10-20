@@ -5,15 +5,15 @@ import React, { useEffect, useRef, useState } from "react";
 type TachistoProps = {
   autoStart?: boolean;
   className?: string;
+  onComplete?: () => void;
   controls?: {
     text?: string;
     level?: 1 | 2 | 3 | 4 | 5;
     wordsPerFrame: number;
   };
-  onComplete?: () => void;
 };
 
-export default function Tachistoscope({
+export default function FastReading({
   autoStart = true,
   className = "",
   controls,
