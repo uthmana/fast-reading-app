@@ -13,6 +13,7 @@ interface WhiteboardProps {
   isTest?: boolean;
   showControlPanel?: boolean;
   onControl?: (v: any) => void;
+  control?: any;
 }
 
 export default function Whiteboard({
@@ -22,16 +23,13 @@ export default function Whiteboard({
   isTest = false,
   showControlPanel = true,
   onControl,
+  control,
 }: WhiteboardProps) {
-  const [level, setLevel] = useState("1");
+  const levelList = [1, 2, 3, 4, 5];
+  const [level, setLevel] = useState(control?.level ? control.level : 1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState(options[0]?.id ?? "");
-  const levelList = ["1", "2", "3", "4", "5"];
-
-  const [controlVal, setControlVal] = useState({
-    level: 1,
-    articleId: options[0]?.id,
-  });
+  const [controlVal, setControlVal] = useState(control);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -134,15 +132,15 @@ export default function Whiteboard({
                 {levelList.map((s) => (
                   <Button
                     key={s}
-                    text={s}
+                    text={s?.toString()}
                     className={`max-w-fit !p-3 h-8 bg-blue-300 hover:bg-blue-500 ${
-                      level === s ? "!bg-blue-800" : ""
+                      level === s || control?.level === s ? "!bg-blue-800" : ""
                     }`}
                     onClick={() =>
                       handleChange({
                         inputKey: "level",
-                        targetValue: s,
-                        value: s,
+                        targetValue: s?.toString(),
+                        value: s?.toString(),
                       })
                     }
                   />

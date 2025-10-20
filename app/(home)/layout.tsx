@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/authOptions";
 import SessionProvider from "../../components/providers";
 import ClientLayout from "../../components/clientLayout";
-
 import "../globals.css";
 
 export const metadata = {
