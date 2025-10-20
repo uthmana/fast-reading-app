@@ -89,7 +89,7 @@ export default function FormBuilder({
           val = convertToISO8601(val);
           break;
         default:
-          val = val?.toString();
+          val = val?.toString()?.trim();
       }
 
       acc[newVal.key] = val;

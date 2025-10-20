@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useMemo } from "react";
-import LogOutInput from "../../formInputs/logoutInput";
 
 interface Route {
   path: string;
@@ -86,10 +85,6 @@ export default function SideBar({
           );
         })}
       </nav>
-
-      <div className="p-4 absolute bottom-0">
-        <LogOutInput />
-      </div>
     </aside>
   );
 }

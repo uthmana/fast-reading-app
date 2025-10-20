@@ -65,7 +65,7 @@ function TableBuilder({
           className="!p-1 !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
           text=""
           onClick={() => onAction("quiz", info)}
-          icon={<MdChecklist className="w-7 h-7" />}
+          icon={<MdChecklist className="w-6 h-6" />}
         />
       );
     }
@@ -98,7 +98,7 @@ function TableBuilder({
       let temp: any = columnHelper.accessor(item.id, {
         header: () => <p className="font-bold text-black">{item.name}</p>,
         cell: (info) => (
-          <p className="line-clamp-2">{renderValue(item.type, info)}</p>
+          <p className="line-clamp-1">{renderValue(item.type, info)}</p>
         ),
       });
       col.push(temp);

@@ -11,10 +11,10 @@ export default function page() {
   const { data: session } = useSession();
   const [selectedArticle, setSelectedArticle] = useState({} as any);
   const [control, setControl] = useState({
-    level: 1,
+    level: 3,
     articleId: "",
     text: "",
-    wordsPerFrame: 1,
+    wordsPerFrame: 2,
   });
 
   useEffect(() => {
@@ -47,18 +47,19 @@ export default function page() {
 
   return (
     <Whiteboard
-      onControl={handleControl}
       body={
         <RenderExercise
           controls={{
             ...control,
             text: selectedArticle?.description,
-            level: control?.level * 30000,
+            level: control?.level,
             wordsPerFrame: control?.wordsPerFrame,
           }}
         />
       }
       description={<ControlPanelGuide />}
+      control={control}
+      onControl={handleControl}
     />
   );
 }

@@ -6,7 +6,6 @@ import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
 import { useSession } from "next-auth/react";
-import { MdAccountCircle } from "react-icons/md";
 import { menuItems } from "@/app/routes";
 
 interface MenuProps {
@@ -33,20 +32,16 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
     <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:border-b-0 text-white border-b ">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
-          <h1 className="text-gray-800">
+          <h1>
             <Link
-              className="flex gap-3 items-center text-white"
+              className="flex gap-3 items-center text-white text-base"
               href="/"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 font-semibold h-10 border tex capitalize text-lg bg-blue-800  flex items-center justify-center rounded-full">
-                {!session ? (
-                  <MdAccountCircle className="w-8 h-8 text-blue-400" />
-                ) : (
-                  session?.user?.name[0]?.toUpperCase()
-                )}
+              <span className="w-10 h-10 border capitalize font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
+                {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="-tracking-tighter"> {session?.user?.name} </span>
+              <span className="hover:text-blue-900">{session?.user?.name}</span>
             </Link>
           </h1>
 
@@ -156,7 +151,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
             </li>
           ))}
           <li>
-            <LogOutInput className="text-black" />
+            <LogOutInput text=" " className="text-black" />
           </li>
         </ul>
       </nav>

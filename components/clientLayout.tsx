@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "./menu/menu";
 import Sidebar from "./sideBar/sideBar";
 import { usePathname } from "next/navigation";
 import AudioPlayer from "./audioPlayer/audioPlayer";
 import { playlists } from "../utils/constants";
+import { menuItems } from "@/app/routes";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,12 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [activeMenu, setActiveMenu] = useState("" as string | null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const firstSegment = pathname?.split("/")[1] || "";
+    const menuItem = menuItems.find((item) => item.link === `/${firstSegment}`);
+    setActiveMenu(menuItem?.name ?? null);
+  }, [pathname]);
 
   return (
     <div className="w-full pb-16 relative flex flex-col min-h-screen">
