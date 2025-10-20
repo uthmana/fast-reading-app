@@ -5,12 +5,12 @@ import React, { useEffect, useRef, useState } from "react";
 type TachistoProps = {
   autoStart?: boolean;
   className?: string;
+  onComplete?: () => void;
   controls?: {
     text?: string;
-    level?: 1 | 2 | 3 | 4 | 5;
+    level?: 1 | 2 | 3 | 4 | 5; // Now 1 = slowest, 5 = fastest
     wordsPerFrame: number;
   };
-  onComplete?: () => void;
 };
 
 export default function Tachistoscope({
@@ -28,8 +28,17 @@ export default function Tachistoscope({
   const onCompleteRef = useRef(onComplete);
 
   const text = controls?.text;
-  const milliseconds = controls?.level || 1;
+  const level = controls?.level || 1;
   const wordsPerFrame = controls?.wordsPerFrame || 1;
+
+  // Level → speed map (1 = slowest, 5 = fastest)
+  const speedMap = {
+    1: 1200, // slowest
+    2: 900,
+    3: 600,
+    4: 350,
+    5: 150, // fastest
+  };
 
   // keep latest onComplete
   useEffect(() => {
@@ -54,16 +63,9 @@ export default function Tachistoscope({
     }
 
     setFrames(chunks);
-
-    // compute frame duration, capped between 100ms and 1500ms
-    const durationMs =
-      chunks.length > 0 && milliseconds > 0
-        ? Math.min(1500, Math.max(100, milliseconds / chunks.length))
-        : 1000;
-
-    setFrameDurationMs(durationMs);
+    setFrameDurationMs(speedMap[level]);
     setIndex(0);
-  }, [text, wordsPerFrame, milliseconds]);
+  }, [text, wordsPerFrame, level]);
 
   // Auto start when frames are ready
   useEffect(() => {
@@ -87,12 +89,11 @@ export default function Tachistoscope({
       return;
     }
 
-    const fadeDuration = frameDurationMs * 0.3; // fade-out in last 30% of the frame
+    const fadeDuration = frameDurationMs * 0.3; // fade-out in last 30%
 
     intervalRef.current = window.setInterval(() => {
-      setFadeOut(true); // start fading
+      setFadeOut(true);
 
-      // after fade completes, change frame
       setTimeout(() => {
         setFadeOut(false);
         setIndex((prev) => {
@@ -111,7 +112,6 @@ export default function Tachistoscope({
       }, fadeDuration);
     }, frameDurationMs);
 
-    // Cleanup
     return () => {
       if (intervalRef.current) {
         window.clearInterval(intervalRef.current);

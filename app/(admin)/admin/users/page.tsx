@@ -44,7 +44,7 @@ export default function page() {
     const currentUser = info?.row?.original;
 
     if (actionType === "add") {
-      setData({ ...data });
+      setData({});
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
@@ -55,25 +55,27 @@ export default function page() {
       setIsShowPopUp(true);
     }
     if (actionType === "delete") {
-      try {
-        setIsloading(true);
-        const res = await fetch("/api/users", {
-          method: "DELETE",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id: currentUser.id }),
-        });
+      if (confirm("Silmek istediğini emin misin ?")) {
+        try {
+          setIsloading(true);
+          const res = await fetch("/api/users", {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: currentUser.id }),
+          });
 
-        if (res.ok) {
-          await res.json();
-          setStudents(
-            [...students].filter((val: any) => val.id !== currentUser.id)
-          );
+          if (res.ok) {
+            await res.json();
+            setStudents(
+              [...students].filter((val: any) => val.id !== currentUser.id)
+            );
+            setIsloading(false);
+          }
+        } catch (error) {
           setIsloading(false);
+          console.error(error);
+          return;
         }
-      } catch (error) {
-        setIsloading(false);
-        console.error(error);
-        return;
       }
     }
   };

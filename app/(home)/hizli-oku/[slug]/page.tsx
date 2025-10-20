@@ -11,7 +11,7 @@ export default function page() {
   const { data: session } = useSession();
   const [selectedArticle, setSelectedArticle] = useState({} as any);
   const [control, setControl] = useState({
-    level: 1,
+    level: 3,
     articleId: "",
     text: "",
     wordsPerFrame: 3,
@@ -53,11 +53,12 @@ export default function page() {
           controls={{
             ...control,
             text: selectedArticle?.description,
-            level: control?.level * 30000,
+            level: control?.level,
             wordsPerFrame: control?.wordsPerFrame,
           }}
         />
       }
+      control={control}
       onControl={handleControl}
     />
   );

@@ -228,7 +228,7 @@ export default {
     },
     {
       key: "description",
-      name: "Makale",
+      name: "Metin",
       placeholder: "Metin Ekle",
       type: "textarea",
       value: { key: "description", type: "string", value: "" },

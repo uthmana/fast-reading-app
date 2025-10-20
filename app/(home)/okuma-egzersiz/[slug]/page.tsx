@@ -21,6 +21,7 @@ export default function page() {
     <Whiteboard
       description={<ControlPanelGuide />}
       body={<RenderExercise controls={control} />}
+      control={control}
       onControl={handleControl}
     />
   );

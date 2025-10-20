@@ -3,6 +3,8 @@
 import Link from "next/link";
 import reading_icon from "/public/images/reading-icon.png";
 import Image from "next/image";
+import Profile from "../profile/profile";
+import { useSession } from "next-auth/react";
 
 export default function NavBar({
   toggleSidebar,
@@ -11,6 +13,8 @@ export default function NavBar({
   toggleSidebar: () => void;
   isSidebarOpen: boolean;
 }) {
+  const { data: session, status } = useSession();
+
   return (
     <header className="flex items-center justify-between px-4 py-4 bg-white shadow-md sticky top-0 z-20">
       <button
@@ -26,7 +30,9 @@ export default function NavBar({
       </button>
 
       <div className="space-x-4">
-        <Link
+        <Profile user={session?.user} />
+
+        {/* <Link
           href="/"
           title="Çalışma platformu"
           className="text-blue-600 underline"
@@ -39,7 +45,7 @@ export default function NavBar({
             unoptimized
             className="mx-auto"
           />
-        </Link>
+        </Link> */}
       </div>
     </header>
   );
