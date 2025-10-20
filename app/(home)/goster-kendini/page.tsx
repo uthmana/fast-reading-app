@@ -83,6 +83,7 @@ export default function page() {
       }
     } catch (error) {
       console.error(error);
+      router.push("/goster-kendini/gelisim");
     }
   };
 
