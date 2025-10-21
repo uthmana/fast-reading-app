@@ -15,10 +15,16 @@ import FastReading from "./fastReading";
 import Words from "./reading/words";
 import Numbers from "./reading/numbers";
 import ScrollingReading from "./reading/scrollingReading";
+import { letterNumbers, letterWords } from "@/utils/constants";
 
 export default function RenderExercise(props: any) {
   const queryParams = useParams();
   const pathname = queryParams.slug;
+
+  const fourWordsPerFrame =
+    pathname === "sayilar-3" ||
+    pathname === "sayilar-4" ||
+    pathname === "sayilar-5";
 
   if (!pathname) return null;
 
@@ -48,13 +54,22 @@ export default function RenderExercise(props: any) {
     case "kelimeler-3":
     case "kelimeler-4":
     case "kelimeler-5":
-      return <Words pathname={pathname} {...props} />;
+      return (
+        <Words pathname={pathname} words={letterWords[pathname]} {...props} />
+      );
     case "sayilar-1":
     case "sayilar-2":
     case "sayilar-3":
     case "sayilar-4":
     case "sayilar-5":
-      return <Numbers pathname={pathname} {...props} />;
+      return (
+        <Numbers
+          {...props}
+          pathname={pathname}
+          words={letterNumbers[pathname]}
+          {...(fourWordsPerFrame ? { wordsPerFrame: 4 } : {})}
+        />
+      );
     case "kayan-okuma":
       return <ScrollingReading {...props} />;
     default:

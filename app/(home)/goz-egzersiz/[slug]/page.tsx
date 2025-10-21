@@ -10,7 +10,7 @@ export default function page() {
     level: 1,
     articleId: "",
     text: "",
-    wordsPerFrame: 0,
+    wordsPerFrame: 2,
   });
 
   const handleControl = (val: any) => {
