@@ -113,11 +113,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
           menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul
-          className={`flex flex-col p-4 space-y-2  w-full bg-slate-50 ${
-            menuOpen ? "absolute" : ""
-          }`}
-        >
+        <ul className={`flex flex-col p-4 space-y-2  w-full bg-slate-50 `}>
           {menuItems?.map((item) => (
             <li key={item.name}>
               <button
