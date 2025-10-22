@@ -10,6 +10,7 @@ import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
 import { formatDateTime } from "@/utils/helpers";
+import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -52,8 +53,13 @@ export default function Home() {
     requestData();
   }, [session]);
 
-  if (status === "loading") return <p className="text-center">Loading...</p>;
-  if (!session) return <p>Please log in</p>;
+  if (status === "loading") return <DashboardSkeleton />;
+  if (!session)
+    return (
+      <Link href="/login">
+        <Button text="Giriş Yap" />
+      </Link>
+    );
 
   const handleUserPolicy = () => {
     if (typeof window !== "undefined") {

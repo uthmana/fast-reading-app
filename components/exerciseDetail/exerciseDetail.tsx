@@ -25,7 +25,7 @@ export default function ExerciseDetail({
   const startLink = menu?.subMenu?.[1]?.link || "";
 
   return (
-    <div className="p-4 w-full flex flex-col">
+    <div className="px-4 w-full flex flex-col">
       {menu?.youtubeId ? (
         <YouTubeEmbed
           videoId={menu?.youtubeId}

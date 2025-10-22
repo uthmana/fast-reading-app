@@ -51,7 +51,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative  group flex-col items-center text-sm font-bold text-white hover:shadow  hover:bg-blue-600 rounded-md px-2 py-2 ${
+                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow  hover:bg-blue-600 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link) ? "!bg-blue-700 shadow" : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
@@ -109,11 +109,15 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
 
       {/* Mobile Menu */}
       <nav
-        className={`lg:hidden transition-all duration-300 bg-white border-t overflow-hidden ${
+        className={`lg:hidden transition-all duration-300 bg-white border-t  overflow-hidden  ${
           menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col p-4 space-y-2 absolute w-full bg-slate-50">
+        <ul
+          className={`flex flex-col p-4 space-y-2  w-full bg-slate-50 ${
+            menuOpen ? "absolute" : ""
+          }`}
+        >
           {menuItems?.map((item) => (
             <li key={item.name}>
               <button

@@ -69,7 +69,7 @@ export default function Whiteboard({
   };
 
   return (
-    <div className="flex flex-col py-7 px-5">
+    <div className="flex flex-col px-5">
       {/* Whiteboard preview */}
       <div className="relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[460px] mx-auto mb-7 flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img

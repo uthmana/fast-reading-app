@@ -26,7 +26,7 @@ export default function Sidebar({
   if (!selected) return null;
 
   return (
-    <aside className="hidden min-h-96 lg:block w-64 bg-white  py-4 pl-4">
+    <aside className="hidden min-h-96 lg:block w-64 bg-white  pl-4">
       <ul className="space-y-2">
         {selected?.subMenu?.map((item) => (
           <li key={item.name}>
