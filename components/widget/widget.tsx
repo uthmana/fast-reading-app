@@ -17,7 +17,7 @@ export default function Widget({
     >
       {icon}
       <div>
-        <h3 className="font-semibold text-xl">{title}</h3>
+        <h3 className="font-semibold text-xl whitespace-nowrap">{title}</h3>
         <p className="text-sm whitespace-nowrap">{description}</p>
       </div>
     </div>

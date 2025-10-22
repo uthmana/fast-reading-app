@@ -90,7 +90,7 @@ export default function Home() {
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
-        <Link className="flex" href={"/dersler"}>
+        <Link className="flex flex-1" href={"/dersler"}>
           <Widget
             icon={<MdPlayCircle className="w-10 h-10 text-white" />}
             title="Eğitime Başla"
@@ -137,7 +137,7 @@ export default function Home() {
               },
               dataLabels: {
                 enabled: true,
-                formatter: (val: number) => `${val}%`, // 👈 adds percentage symbol
+                formatter: (val: number) => `${val}%`,
                 style: {
                   fontSize: "12px",
                   colors: ["#333"],
