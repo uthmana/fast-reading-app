@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import NavBar from "../../../components/admin/navBar/navBar";
 import SideBar from "../../../components/admin/sideBar/sideBar";
-import routes from "./routes";
+
 import "../../globals.css";
 import { SessionProvider } from "next-auth/react";
+import routes from "./routes";
 
 export default function DashboardLayout({
   children,
@@ -54,7 +55,7 @@ export default function DashboardLayout({
 
             {/* Main content: pushed on large screens when sidebar is open */}
             <div
-              className="flex flex-col flex-1 transition-all duration-300 ease-in-out"
+              className="flex w-full flex-col flex-1 transition-all duration-300 ease-in-out"
               style={{
                 // push content only on large screens
                 marginLeft:
@@ -65,7 +66,7 @@ export default function DashboardLayout({
                 toggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
                 isSidebarOpen={isSidebarOpen}
               />
-              <main className="flex-1 p-6 overflow-y-auto">{children}</main>
+              <main className="flex-1 p-5 overflow-y-auto">{children}</main>
             </div>
           </div>
         </SessionProvider>

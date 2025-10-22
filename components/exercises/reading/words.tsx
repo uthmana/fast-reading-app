@@ -41,6 +41,8 @@ export default function Words({
   const frameDuration = speedMap[level] || 2000;
   const frameWords = words.slice(index, index + itemsPerFrame) || [];
 
+  const isThreeLetterAndBellow = words[0]?.length <= 4;
+
   // Frame switching logic
   useEffect(() => {
     if (words.length === 0) return;
@@ -70,7 +72,11 @@ export default function Words({
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="relative w-[180px] h-[100px] mx-auto flex items-center justify-center overflow-visible">
+      <div
+        className={`relative h-[100px] mx-auto flex items-center justify-center overflow-visible ${
+          isThreeLetterAndBellow ? "w-[110px]" : "w-[176px]"
+        }`}
+      >
         <div className="w-5 h-5 border-4 border-black bg-red-500 rounded-full"></div>
         {frameWords?.map((word: string, i: number) => (
           <div

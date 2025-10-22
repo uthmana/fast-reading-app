@@ -69,13 +69,13 @@ export default function Whiteboard({
   };
 
   return (
-    <div className="flex flex-col py-7 px-5">
+    <div className="flex flex-col px-5">
       {/* Whiteboard preview */}
       <div className="relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[460px] mx-auto mb-7 flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img
           src={wood_img.src}
           alt="Wood background"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
         />
 
         <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
@@ -90,7 +90,7 @@ export default function Whiteboard({
             <img
               src={wood_img.src}
               alt="Wood background"
-              className="absolute inset-0 w-full h-full object-cover z-0"
+              className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
             <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {body}

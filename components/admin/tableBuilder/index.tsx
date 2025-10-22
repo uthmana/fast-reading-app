@@ -130,9 +130,9 @@ function TableBuilder({
   });
 
   return (
-    <>
-      <header className="relative mb-7 flex items-center justify-between gap-4 border-b">
-        <div className="text-md w-[60%] font-medium">
+    <div className="w-full">
+      <header className="w-full relative mb-7 flex flex-wrap items-center justify-between gap-4">
+        <div className="text-md w-full border-b lg:w-[40%] font-medium">
           <Search
             className="w-full"
             onSubmit={(val) => setGlobalFilter(val)}
@@ -152,7 +152,7 @@ function TableBuilder({
         </div>
       </header>
 
-      <div className="w-full h-full sm:overflow-auto px-10  pt-10 border bg-white rounded-lg">
+      <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-10 border bg-white rounded-lg">
         <Button
           text="Excel"
           className="hover:!bg-blue-400  hover:!text-white text-sm -mt-5 !bg-black/0 border !py-1 !text-black !max-w-fit mb-3"
@@ -161,13 +161,13 @@ function TableBuilder({
         />
 
         <div
-          className="custom-scrollbar--hidden overflow-x-auto"
+          className="w-full overflow-x-auto"
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
         >
-          <table className="w-full mb-10">
+          <table className="w-full mb-10 ">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
@@ -227,7 +227,7 @@ function TableBuilder({
           {showPagination ? <TablePagination table={table} /> : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
