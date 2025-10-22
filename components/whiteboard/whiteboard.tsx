@@ -75,7 +75,7 @@ export default function Whiteboard({
         <img
           src={wood_img.src}
           alt="Wood background"
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
         />
 
         <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
@@ -90,7 +90,7 @@ export default function Whiteboard({
             <img
               src={wood_img.src}
               alt="Wood background"
-              className="absolute inset-0 w-full h-full object-cover z-0"
+              className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
             <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {body}
