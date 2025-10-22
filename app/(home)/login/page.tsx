@@ -3,9 +3,8 @@
 import { signIn } from "next-auth/react";
 import FormBuilder from "../../../components/formBuilder";
 import { useState } from "react";
-import Image from "next/image";
-import reading_icon from "/public/images/reading-icon.png";
 import { fetchData } from "@/utils/fetchData";
+import Icon from "@/components/icon/icon";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -60,19 +59,12 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="flex w-full  flex-col items-center gap-2 h-screen justify-center  bg-blue-500">
-      <Image
-        src={reading_icon}
-        alt={"reading icon"}
-        width="84"
-        height="84"
-        unoptimized
-        priority
-        className="mx-auto"
-      />
-
+    <section className="flex w-full relative z-10  flex-col items-center gap-2 h-screen justify-center">
       <div className="w-[80%] bg-white max-w-[430px] shadow-2xl border rounded-lg py-8 px-8">
-        <h1 className="text-xl font-bold mb-2 mt-0 text-center">Hızlı Okuma</h1>
+        <Icon name="book" className="w-10 h-10 mx-auto text-blue-600" />
+        <h1 className="text-xl font-bold mb-1 mt-0 text-center">
+          Etkın Hızlı Okuma
+        </h1>
         <p className="mb-10 text-sm text-center">
           Öğrenci Çalışma Platformu Girişi
         </p>

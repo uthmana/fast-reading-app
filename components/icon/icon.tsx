@@ -12,7 +12,13 @@ type IconProps = {
     | "chevron-down"
     | "menu"
     | "close"
-    | "loading";
+    | "loading"
+    | "lesson"
+    | "eye"
+    | "text"
+    | "test"
+    | "book"
+    | "fast-reading";
   className?: string;
   fill?: string;
   stroke?: string;
@@ -196,6 +202,124 @@ function Icon({
               repeatCount="indefinite"
             />
           </path>
+        </svg>
+      );
+    case "book":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 7v14"></path>
+          <path d="M16 12h2"></path>
+          <path d="M16 8h2"></path>
+          <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"></path>
+          <path d="M6 12h2"></path>
+          <path d="M6 8h2"></path>
+        </svg>
+      );
+    case "eye":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      );
+    case "text":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 4v16"></path>
+          <path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"></path>
+          <path d="M9 20h6"></path>
+        </svg>
+      );
+    case "test":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+          <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+          <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+        </svg>
+      );
+    case "lesson":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+        >
+          <rect x="3" y="5" width="18" height="12" rx="2" ry="2" />
+          <line x1="7" y1="10" x2="17" y2="10" />
+          <rect
+            x="9"
+            y="13.5"
+            width="6"
+            height="1.5"
+            rx="0.5"
+            fill={fill}
+            stroke="none"
+          />
+        </svg>
+      );
+    case "fast-reading":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+        >
+          <path d="M2 7.5C2 6.119 3.119 5 4.5 5h15c1.381 0 2.5 1.119 2.5 2.5v9c0 .966-.784 1.75-1.75 1.75H3.75C2.784 18.25 2 17.466 2 16.5v-9z" />
+          <path d="M3 7v9" />
+          <path d="M12 7v9" />
+          <path d="M17 6v4.5l-1.5-0.9L14 10.5V6z" fill={fill} stroke="none" />
+
+          <path
+            d="M4.5 18c2.2-1.2 4.6-1.2 7.5 0 2.9-1.2 5.3-1.2 7.5 0"
+            stroke={fill}
+            opacity="0.5"
+            fill="none"
+          />
         </svg>
       );
 

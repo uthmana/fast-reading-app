@@ -10,6 +10,7 @@ import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
 import { formatDateTime } from "@/utils/helpers";
+import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -52,8 +53,13 @@ export default function Home() {
     requestData();
   }, [session]);
 
-  if (status === "loading") return <p className="text-center">Loading...</p>;
-  if (!session) return <p>Please log in</p>;
+  if (status === "loading") return <DashboardSkeleton />;
+  if (!session)
+    return (
+      <Link href="/login">
+        <Button text="Giriş Yap" />
+      </Link>
+    );
 
   const handleUserPolicy = () => {
     if (typeof window !== "undefined") {
@@ -90,7 +96,7 @@ export default function Home() {
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
-        <Link className="flex" href={"/dersler"}>
+        <Link className="flex flex-1" href={"/dersler"}>
           <Widget
             icon={<MdPlayCircle className="w-10 h-10 text-white" />}
             title="Eğitime Başla"
@@ -137,7 +143,7 @@ export default function Home() {
               },
               dataLabels: {
                 enabled: true,
-                formatter: (val: number) => `${val}%`, // 👈 adds percentage symbol
+                formatter: (val: number) => `${val}%`,
                 style: {
                   fontSize: "12px",
                   colors: ["#333"],

@@ -26,14 +26,14 @@ export default function Sidebar({
   if (!selected) return null;
 
   return (
-    <aside className="hidden min-h-96 lg:block w-64 bg-white  py-4 pl-4">
+    <aside className="hidden min-h-96 lg:block w-64 bg-white  pl-4">
       <ul className="space-y-2">
         {selected?.subMenu?.map((item) => (
           <li key={item.name}>
             <Link
               href={item.link || "#"}
-              className={`block px-3 py-2 border  rounded-lg text-white bg-blue-600  hover:bg-blue-900 transition ${
-                pathname === item.link ? "bg-blue-900" : ""
+              className={`block px-3 py-2 border  rounded-lg text-white bg-blue-500  hover:bg-blue-700 transition ${
+                pathname === item.link ? "bg-blue-700" : ""
               }`}
             >
               {item.name}

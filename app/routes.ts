@@ -2,6 +2,7 @@ export const menuItems = [
   {
     name: "Dersler",
     link: "/dersler",
+    icon: "lesson",
     subMenu: [
       { name: "Dersler", link: "/dersler" },
       { name: "Takistoskop", link: "/takistoskop" },
@@ -13,6 +14,7 @@ export const menuItems = [
   {
     name: "Göz Egzersizleri",
     link: "/goz-egzersiz",
+    icon: "eye",
     subMenu: [
       {
         name: "Göz Egzersizleri",
@@ -40,6 +42,7 @@ export const menuItems = [
   {
     name: "Okuma Egzersizleri",
     link: "/okuma-egzersiz",
+    icon: "book",
     subMenu: [
       { name: "Okuma Egzersizleri", link: "/okuma-egzersiz" },
       { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
@@ -61,6 +64,7 @@ export const menuItems = [
   {
     name: "Takistoskop",
     link: "/takistoskop",
+    icon: "text",
     subMenu: [
       { name: "Takistoskop", link: "/takistoskop" },
       { name: "Hızlı Görme", link: "/takistoskop/hizli-gorme" },
@@ -72,6 +76,7 @@ export const menuItems = [
   {
     name: "Hızlı Oku",
     link: "/hizli-oku",
+    icon: "fast-reading",
     subMenu: [
       {
         name: "Hızlı Oku",
@@ -89,6 +94,7 @@ export const menuItems = [
   {
     name: "Göster Kendini",
     link: "/goster-kendini",
+    icon: "test",
     subMenu: [
       { name: "Göster Kendini", link: "/goster-kendini" },
       { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },

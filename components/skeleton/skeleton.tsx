@@ -54,3 +54,40 @@ export function NewTableRowSkeleton(props: { header?: boolean }) {
     </div>
   );
 }
+
+export function DashboardSkeleton() {
+  return (
+    <div className="w-full animate-pulse h-full mt-5 bg-[#f4f7fe] p-6 dark:bg-navy-800">
+      <div className="mb-5 flex gap-3">
+        {[1, 2, 3, 4].map((item, idx) => {
+          return <NewCardSkeleton key={idx} />;
+        })}
+      </div>
+      <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+        <LargeBoxSkeleton />
+        <LargeBoxSkeleton />
+      </div>
+    </div>
+  );
+}
+
+export function NewCardSkeleton() {
+  return (
+    <div className="flex flex-1 items-center gap-2 rounded-xl bg-white p-6">
+      <div className="h-10 w-10 rounded-full bg-gray-200" />
+      <div className="flex flex-col gap-2">
+        <div className="h-2 w-20 rounded-md bg-gray-200" />
+        <div className="h-2 w-16 rounded-md bg-gray-200" />
+      </div>
+    </div>
+  );
+}
+
+export function LargeBoxSkeleton() {
+  return (
+    <div className="flex min-h-[300px] flex-col gap-2 rounded-lg bg-white p-8">
+      <div className="h-2 w-20 rounded-md bg-gray-200" />
+      <div className="h-2 w-16 rounded-md bg-gray-200" />
+    </div>
+  );
+}
