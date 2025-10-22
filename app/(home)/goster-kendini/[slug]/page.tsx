@@ -40,7 +40,7 @@ export default function page() {
   }, [session]);
 
   return (
-    <div className="flex w-full flex-wrap gap-4">
+    <div className="flex w-full flex-wrap px-6 gap-4">
       <div className="w-full max-h-[400px] border py-10 px-4 rounded shadow">
         <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
         <BarChart
