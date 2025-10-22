@@ -32,10 +32,11 @@ export default function Button({
       } ${className}`}
     >
       {isSubmiting || loading ? (
-        <Icon name="loading" className="w-8 h-8 text-gray-600" />
-      ) : null}
+        <Icon name="loading" className="w-6 h-6 text-white" />
+      ) : (
+        text
+      )}
       {icon}
-      {text}
     </button>
   );
 }
