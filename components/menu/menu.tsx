@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
@@ -29,7 +28,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   };
 
   return (
-    <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:border-b-0 text-white border-b ">
+    <header className="w-full sticky top-0 z-10 container bg-blue-500 bg-[url('/images/blue-gradient.jpeg')] bg-no-repeat bg-top bg-cover lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b ">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
           <h1>
@@ -38,10 +37,10 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
               href="/"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 h-10 border capitalize font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
+              <span className="w-10 h-10 border-2 capitalize font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
                 {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="hover:text-blue-900">{session?.user?.name}</span>
+              <span className="hover:underline">{session?.user?.name}</span>
             </Link>
           </h1>
 
@@ -52,11 +51,19 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative items-center text-sm font-bold text-white  hover:bg-blue-400 rounded-md px-2 py-2 ${
-                      pathname?.includes(item.link) ? "!bg-blue-700" : ""
+                    className={`flex relative  group flex-col items-center text-sm font-bold text-white hover:shadow  hover:bg-blue-600 rounded-md px-2 py-2 ${
+                      pathname?.includes(item.link) ? "!bg-blue-700 shadow" : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
                   >
+                    {item.icon ? (
+                      <Icon
+                        name={`${item.icon as "menu"}`}
+                        className="w-6 h-6 transition group-hover:scale-110"
+                        fill="white"
+                      />
+                    ) : null}
+
                     {item.name}
                   </Link>
                 ) : (
@@ -79,7 +86,11 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 )}
               </div>
             ))}
-            <LogOutInput className="!ml-3 border-0 font-semibold" />
+
+            <LogOutInput
+              text="Çıkış"
+              className="border-0 py-0 font-semibold flex-col !gap-0 hover:text-red-400"
+            />
           </nav>
         </div>
 
@@ -102,16 +113,25 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
           menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col p-4 space-y-2">
+        <ul className="flex flex-col p-4 space-y-2 absolute w-full bg-slate-50">
           {menuItems?.map((item) => (
             <li key={item.name}>
               <button
                 onClick={() => toggleSubMenu(item.name)}
                 className={`flex justify-between items-center w-full text-gray-800 font-medium ${
-                  pathname?.includes(item.link) ? "!text-blue-400" : ""
+                  pathname?.includes(item.link) ? "!text-blue-600" : ""
                 }`}
               >
-                {item.name}
+                <span className="flex gap-3">
+                  {item.icon ? (
+                    <Icon
+                      name={`${item.icon as "menu"}`}
+                      className="w-6 h-6"
+                      fill="white"
+                    />
+                  ) : null}
+                  {item.name}{" "}
+                </span>
                 {item.subMenu && (
                   <Icon
                     name="chevron-down"
@@ -137,7 +157,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                         href={sub.link}
                         className={`block py-2 px-2 text-sm text-gray-700 hover:text-blue-600 ${
                           pathname === sub.link
-                            ? "!bg-blue-300 text-white rounded"
+                            ? "!bg-blue-600 text-white rounded"
                             : ""
                         }`}
                         onClick={() => setMenuOpen(false)}
@@ -151,7 +171,10 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
             </li>
           ))}
           <li>
-            <LogOutInput text=" " className="text-black" />
+            <LogOutInput
+              text="Çıkış"
+              className="text-black border-none !px-0 flex-row gap-3"
+            />
           </li>
         </ul>
       </nav>

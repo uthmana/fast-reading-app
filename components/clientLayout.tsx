@@ -24,7 +24,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
 
   return (
     <div className="w-full pb-16 relative flex flex-col min-h-screen">
-      <div className="lg:bg-blue-500 w-full lg:before:absolute lg:before:top-0 lg:before:left-0 lg:before:w-full lg:before:h-40 lg:before:bg-blue-500 lg:before:z-0">
+      <div className="lg:bg-black/0 w-full lg:before:absolute lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-[170px] lg:before:bg-blue-500 lg:before:z-0 lg:before:bg-[url('/images/blue-gradient.jpeg')] lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top">
         <Menu
           pathname={pathname}
           onActiveMenu={(menuName) => setActiveMenu(menuName)}

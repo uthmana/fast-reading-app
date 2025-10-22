@@ -32,8 +32,8 @@ export default function Sidebar({
           <li key={item.name}>
             <Link
               href={item.link || "#"}
-              className={`block px-3 py-2 border  rounded-lg text-white bg-blue-600  hover:bg-blue-900 transition ${
-                pathname === item.link ? "bg-blue-900" : ""
+              className={`block px-3 py-2 border  rounded-lg text-white bg-blue-500  hover:bg-blue-700 transition ${
+                pathname === item.link ? "bg-blue-700" : ""
               }`}
             >
               {item.name}
