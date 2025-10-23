@@ -5,12 +5,12 @@ export default function Breadcrumb({ menuItem }: any) {
   if (menuItem === undefined) return null;
 
   return (
-    <div className="w-full max-h-[53px] px-6 pt-4 pb-10 mb-4 flex-wrap  border-b border-dotted flex justify-between items-center">
-      <h1 className="lg:text-2xl whitespace-nowrap  text-base font-sans font-semibold ">
+    <div className="w-full min-h-[43px] px-6 pt-4 pb-5 mb-4 flex-wrap  border-b border-dotted flex justify-between items-center">
+      <h1 className="lg:text-2xl whitespace-nowrap  text-base font-sans font-semibold">
         {menuItem[0]?.name}
       </h1>
 
-      <ul className="inline-flex  ml-auto text-sm w-fit text-black space-x-2 overflow-x-auto">
+      <ul className="inline-flex  text-sm w-fit text-black space-x-2 overflow-x-auto">
         {menuItem?.map((item: any, idx: number) => {
           if (menuItem.length !== idx + 1) {
             return (

@@ -56,8 +56,10 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow  hover:bg-blue-600 rounded-md px-2 py-2 ${
-                      pathname?.includes(item.link) ? "!bg-blue-700 shadow" : ""
+                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 rounded-md px-2 py-2 ${
+                      pathname?.includes(item.link)
+                        ? "!bg-blue-700 shadow !border-slate-300"
+                        : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
                   >
@@ -74,7 +76,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 ) : (
                   <button
                     onClick={() => toggleSubMenu(item.name)}
-                    className={`flex relative items-center text-gray-800 hover:text-blue-600 font-medium ${
+                    className={`flex relative items-center text-gray-800  hover:text-blue-600 font-medium ${
                       activeMenu === item.name ? "text-blue-600 " : ""
                     }`}
                   >

@@ -162,26 +162,21 @@ export default function Home() {
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <div className="text-justify text-sm mt-2 space-y-3 mb-4">
-          <h1 className="text-2xl font-bold"> Kullanım Şartları </h1>
+          <h1 className="text-2xl font-bold"> KULLANIM SÖZLEŞMESİ </h1>
           <p>
-            "Lorem ipsum" is a nonsensical pseudo-Latin placeholder text used in
-            graphic design, publishing, and web development to demonstrate the
-            visual form of a document or typeface without distracting with
-            meaningful content. It is derived from a 1st-century B.C. Latin text
-            by the philosopher Cicero, but its words and letters have been
-            altered, making it essentially meaningless while still resembling
-            classical Latin
+            Mahmut YILMAZ Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
+            hakkı ve bu yazılımda yer alan bilgilerin ve yazılımların telif
+            hakları Mahmut YILMAZ'a aittir. Tüm hakları saklıdır. Bu yazılımda
+            yer alan bilgi ve yazılım yeniden üretilemez, çoğaltılamaz,
+            kopyalanamaz, aktarılamaz, dağıtılamaz, depolanamaz, değiştirilemez,
+            indirilemez veya Mahmut YILMAZ önceden yazılı bir onay vermeden
+            herhangi bir ticari amaçla, başka şekillerde kullanılamaz.
           </p>
-
           <p>
-            Placeholder for content: It serves as a temporary replacement for
-            real text when the final copy isn't ready, enabling the client to
-            see a complete-looking document or presentation.
-          </p>
-
-          <p>
-            Versatility: The text is used in various fields, from print media
-            and books to web design and desktop publishing software.
+            Bu bilgi veya yazılım hiçbir koşulda üçüncü şahıslara tedarik
+            edilemez. Aksi takdirde Telif Hakları kanunu gereğince hukuki işlem
+            başlatıcaktır. Bu yazılım eğitim amaçlı hazırlanmış olup,
+            kullanıcılara hediye edilmiştir.
           </p>
         </div>
 
