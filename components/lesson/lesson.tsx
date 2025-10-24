@@ -19,16 +19,16 @@ export default function Lesson({ lessons, id }: { lessons: any; id: string }) {
     <Whiteboard
       showControlPanel={false}
       description={
-        <div className="p-4">
-          <div className="flex flex-wrap  gap-3 justify-center lg:justify-between mb-7">
+        <div className="w-full py-2 lg:pt-3 lg:pb-4">
+          <div className="flex flex-wrap  gap-3  justify-between mb-7">
             <h1
-              className="font-semibold text-base 
-         lg:text-xl "
+              className="font-semibold text-sm
+         lg:text-xl"
             >
               {id}. Ders aşağıdaki egzersizleri yapınız.
             </h1>
 
-            <div className="flex gap-3 items-center whitespace-nowrap justify-start font-medium">
+            <div className="flex gap-3 items-center whitespace-nowrap ml-auto justify-start font-medium">
               <Button
                 text=""
                 className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
@@ -64,7 +64,7 @@ export default function Lesson({ lessons, id }: { lessons: any; id: string }) {
             {currentLesson.map((lesson: any, idx: number) => (
               <li
                 key={lesson.link + idx}
-                className="text-base border-2  border-blue-600 rounded-md  hover:shadow-lg transition-shadow"
+                className="text-base border-2  border-blue-600 rounded-md overflow-x-auto  hover:shadow-lg transition-shadow"
               >
                 <Link href={lesson.link} className="block px-5 py-2">
                   {idx + 1}. {lesson.name}

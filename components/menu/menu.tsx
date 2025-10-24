@@ -28,12 +28,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   };
 
   return (
-    <header
-      className="w-full sticky top-0 z-10 container bg-blue-500 lg:!bg-[url('/images/blue-gradient.jpeg')] bg-no-repeat bg-top bg-cover lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b "
-      style={{
-        backgroundImage: "linear-gradient(to right, #1D63F0, #1AD7FD",
-      }}
-    >
+    <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:!bg-[url('/images/blue-gradient.jpeg')] bg-no-repeat bg-top bg-cover lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
           <h1>
@@ -56,9 +51,9 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 rounded-md px-2 py-2 ${
+                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link)
-                        ? "!bg-blue-700 shadow !border-slate-300"
+                        ? "!bg-blue-700 shadow !border-blue-800"
                         : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
@@ -162,9 +157,9 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                     <li key={sub.name}>
                       <Link
                         href={sub.link}
-                        className={`block py-2 px-2 text-sm text-gray-700 hover:text-blue-600 ${
+                        className={`block py-2 px-2 text-sm text-gray-700  hover:text-blue-600 ${
                           pathname === sub.link
-                            ? "!bg-blue-600 text-white rounded"
+                            ? "!bg-blue-600 !text-white rounded bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
                             : ""
                         }`}
                         onClick={() => setMenuOpen(false)}
