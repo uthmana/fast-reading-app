@@ -31,12 +31,12 @@ export default function Button({
         disabled ? "opacity-30" : ""
       } ${className}`}
     >
+      {icon}
       {isSubmiting || loading ? (
         <Icon name="loading" className="w-6 h-6 text-white" />
       ) : (
         text
       )}
-      {icon}
     </button>
   );
 }

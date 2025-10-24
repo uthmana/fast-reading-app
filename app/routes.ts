@@ -4,9 +4,13 @@ export const menuItems = [
     link: "/dersler",
     icon: "lesson",
     subMenu: [
-      { name: "Dersler", link: "/dersler" },
-      { name: "Takistoskop", link: "/takistoskop" },
-      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
+      { name: "Dersler", link: "/dersler", type: "info" },
+      { name: "Takistoskop", link: "/takistoskop", type: "info" },
+      {
+        name: "Hızlı Okuma Gelişimi",
+        link: "/goster-kendini/gelisim",
+        type: "info",
+      },
     ],
     description: "Tüm dersler",
     youtubeId: "",
