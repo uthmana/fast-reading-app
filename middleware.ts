@@ -24,6 +24,5 @@ export default withAuth(
   }
 );
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$|login|register).*)"],
-  //matcher: ["/admin/:path*"],
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.[^/]+$|login|register).*)"],
 };

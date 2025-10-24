@@ -8,9 +8,10 @@ export default function LogOutInput({ text = "", className = "" }) {
     <button
       title="Çıkış"
       className={` items-center rounded px-3 py-1 border flex gap-2 ${className}`}
-      onClick={() => signOut()}
+      onClick={() => signOut({ callbackUrl: "/login" })}
     >
-      <MdLogout className="w-6 h-6 rotate-180" /> {text}
+      <MdLogout className="w-6 h-6 transition rotate-180 group-hover:scale-110" />{" "}
+      {text}
     </button>
   );
 }

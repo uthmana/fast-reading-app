@@ -40,11 +40,13 @@ export default function Sidebar({
               <li key={item.name}>
                 <Link
                   href={item.link || "#"}
-                  className={`block px-3 py-5 border  text-lg hover:border-blue-600 hover:shadow-lg hover:text-blue-600 rounded-lg text-black transition `}
+                  className={`block px-3 py-5 border-2 border-blue-600 group text-lg  hover:shadow-md  rounded-lg text-black transition `}
                 >
-                  {item.name}
+                  <span className="block transition-transform group-hover:text-blue-600 group-hover:translate-x-2">
+                    {item.name}
+                  </span>
                 </Link>
-                <div className="space-y-[2px]">
+                <div className="space-y-[3px] mt-1">
                   <hr className="w-[calc(100%-16px)] mx-auto" />
                   <hr className="w-[calc(100%-32px)] mx-auto" />
                   <hr className="w-[calc(100%-48px)] mx-auto" />
@@ -57,7 +59,7 @@ export default function Sidebar({
             <li key={item.name}>
               <Link
                 href={item.link || "#"}
-                className={`block px-3 py-2 border  rounded-lg text-white bg-blue-500 group  hover:bg-blue-600 transition ${
+                className={`block px-3 py-2 border  rounded-lg text-white bg-blue-600 group  hover:bg-blue-700 transition ${
                   pathname === item.link
                     ? "bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
                     : ""
