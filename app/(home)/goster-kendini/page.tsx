@@ -20,6 +20,7 @@ export default function page() {
   const [questions, setQuestions] = useState([] as any);
   const [correctAnswers, setCorrectAnswers] = useState({} as any);
   const router = useRouter();
+  const [pause, setPause] = useState(false);
 
   useEffect(() => {
     if (!session || !session.user) return;
@@ -63,6 +64,11 @@ export default function page() {
     counter: number,
     article: any
   ) => {
+    if (!userAnswers && !counter && !article) {
+      setPause(!pause);
+      return;
+    }
+
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
     const correct = calculateQuizScore(questions, userAnswers, correctAnswers);
@@ -90,6 +96,7 @@ export default function page() {
   return (
     <Whiteboard
       isTest={true}
+      pause={pause}
       options={data || []}
       description={<ControlPanelGuide showOptionSelect={true} />}
       body={

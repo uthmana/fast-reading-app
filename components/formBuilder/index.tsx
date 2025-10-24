@@ -203,7 +203,7 @@ export default function FormBuilder({
       <Button
         text={submitBtnProps?.text || "Submit"}
         type={submitBtnProps?.type || "button"}
-        className="mt-5"
+        className="mt-5 hover:bg-blue-600 transition"
         isSubmiting={isSubmitting}
       />
     </form>

@@ -14,7 +14,7 @@ export default function page() {
     level: 3,
     articleId: "",
     text: "",
-    wordsPerFrame: 2,
+    wordsPerFrame: 3,
   });
 
   useEffect(() => {

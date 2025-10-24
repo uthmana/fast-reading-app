@@ -28,7 +28,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   };
 
   return (
-    <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:!bg-[url('/images/blue-gradient.jpeg')] bg-no-repeat bg-top bg-cover lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
+    <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
           <h1>
@@ -91,7 +91,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
 
             <LogOutInput
               text="Çıkış"
-              className="border-0 py-0 font-semibold flex-col !gap-0 hover:text-red-400"
+              className="border-0 py-0 font-semibold flex-col !gap-0 group"
             />
           </nav>
         </div>

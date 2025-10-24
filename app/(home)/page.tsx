@@ -5,7 +5,12 @@ import Popup from "../../components/popup/popup";
 import { useEffect, useState } from "react";
 import Button from "../../components/button/button";
 import { fetchData } from "@/utils/fetchData";
-import { MdGroups, MdPlayCircle, MdSchedule, MdTimeline } from "react-icons/md";
+import {
+  MdGroups,
+  MdHourglassBottom,
+  MdHourglassTop,
+  MdPlayCircle,
+} from "react-icons/md";
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
@@ -77,7 +82,9 @@ export default function Home() {
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
       <div className="flex flex-wrap gap-4 w-full mb-10">
         <Widget
-          icon={<MdGroups className="w-10 h-10 text-blue-500" />}
+          icon={
+            <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
           description="Eğitim Grubunuz"
           title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
@@ -85,22 +92,28 @@ export default function Home() {
           className="flex-1"
         />
         <Widget
-          icon={<MdTimeline className="w-10 h-10 text-blue-500" />}
+          icon={
+            <MdHourglassTop className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
           description="Eğitim Başlangç"
           title={formatDateTime(user?.Student?.startDate)}
           className="flex-1"
         />
         <Widget
-          icon={<MdSchedule className="w-10 h-10 text-blue-500" />}
+          icon={
+            <MdHourglassBottom className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
         <Link className="flex flex-1" href={"/dersler"}>
           <Widget
-            icon={<MdPlayCircle className="w-10 h-10 text-white" />}
+            icon={
+              <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />
+            }
             title="Eğitime Başla"
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+            className="flex-1 bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] hover:!bg-blue-700 text-white"
           />
         </Link>
       </div>
