@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ReactElement } from "react";
+import { useState, ReactElement, useEffect } from "react";
 import { MdPauseCircle, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import Select from "../formInputs/select";
@@ -11,6 +11,7 @@ interface WhiteboardProps {
   description: ReactElement;
   options?: any;
   isTest?: boolean;
+  pause?: boolean;
   showControlPanel?: boolean;
   onControl?: (v: any) => void;
   control?: any;
@@ -24,12 +25,19 @@ export default function Whiteboard({
   showControlPanel = true,
   onControl,
   control,
+  pause,
 }: WhiteboardProps) {
   const levelList = [1, 2, 3, 4, 5];
   const [level, setLevel] = useState(control?.level ? control.level : 1);
   const [isPlaying, setIsPlaying] = useState(false);
   const [value, setValue] = useState(options[0]?.id ?? "");
   const [controlVal, setControlVal] = useState(control);
+
+  useEffect(() => {
+    if (pause !== undefined) {
+      setIsPlaying(pause ? !isPlaying : pause);
+    }
+  }, [pause]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -109,7 +117,6 @@ export default function Whiteboard({
       )}
 
       {/* Control panel */}
-
       {!showControlPanel ? null : (
         <div className="flex justify-between gap-4 flex-wrap items-center w-full">
           {!isTest ? (

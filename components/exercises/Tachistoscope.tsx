@@ -29,7 +29,7 @@ export default function Tachistoscope({
 
   const text = controls?.text;
   const level = controls?.level || 1;
-  const wordsPerFrame = controls?.wordsPerFrame || 1;
+  const wordsPerFrame = controls?.wordsPerFrame || 3;
 
   // Level → speed map (1 = slowest, 5 = fastest)
   const speedMap = {
@@ -124,14 +124,14 @@ export default function Tachistoscope({
     <div
       className={`tachisto w-full h-full flex justify-center items-center ${className}`}
     >
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col min-w-[90%] lg:min-w-[400px] rounded-full p-[6px] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] items-center gap-4">
         <div
           aria-live="polite"
           role="status"
-          className="w-full flex items-center justify-center bg-white rounded-3xl py-3 text-center"
+          className="w-full flex items-center rounded-full  px-10 justify-center bg-white  py-3 text-center"
         >
           <div
-            className={`text-2xl font-semibold leading-tight transition-opacity duration-300 ${
+            className={`text-lg font-semibold  leading-tight transition-opacity duration-300 ${
               fadeOut ? "opacity-0" : "opacity-100"
             }`}
             style={{

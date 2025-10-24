@@ -23,14 +23,7 @@ export default async function RootLayout({
       <body className="bg-gray-100 w-full h-full">
         <SessionProvider>
           {!session ? (
-            <main
-              className="w-full h-full bg-cover bg-no-repeat bg-blue-700 bg-center"
-              style={{
-                backgroundImage: "linear-gradient(to right, #1D63F0, #1AD7FD",
-              }}
-            >
-              {children}
-            </main>
+            <main className="w-full h-full">{children}</main>
           ) : (
             <ClientLayout>{children}</ClientLayout>
           )}

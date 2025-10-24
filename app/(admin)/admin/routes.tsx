@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  MdHome,
-  MdPerson,
-  MdGroupWork,
-  MdOutlineArticle,
-} from "react-icons/md";
+import { MdHome, MdPerson, MdOutlineArticle, MdGroups } from "react-icons/md";
 
 const routes = [
   {
@@ -21,7 +16,7 @@ const routes = [
   {
     name: "Öğrenciler",
     path: "/admin/students",
-    icon: <MdGroupWork className="w-6 h-6" />,
+    icon: <MdGroups className="w-6 h-6" />,
   },
   {
     name: "Kullanıcılar",
