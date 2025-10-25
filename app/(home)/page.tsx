@@ -95,7 +95,7 @@ export default function Home() {
           icon={
             <MdHourglassTop className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
           }
-          description="Eğitim Başlangç"
+          description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
           className="flex-1"
         />
@@ -107,7 +107,7 @@ export default function Home() {
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
-        <Link className="flex flex-1" href={"/dersler"}>
+        <Link className="inline-block flex-1" href={"/dersler"}>
           <Widget
             icon={
               <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />
