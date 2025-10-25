@@ -31,9 +31,9 @@ export default function Profile({ user }: any) {
               <Link
                 href="/"
                 title="Çalışma platformu"
-                className="hover:text-blue-600"
+                className="hover:text-blue-600 tracking-tight"
               >
-                Çalışma Platformu
+                Öğrenci Çalışma Platformu
               </Link>
             </li>
             <li>

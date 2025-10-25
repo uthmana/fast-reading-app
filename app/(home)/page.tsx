@@ -107,7 +107,10 @@ export default function Home() {
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
-        <Link className="inline-block flex-1" href={"/dersler"}>
+        <Link
+          className="inline-block flex-1 lg:max-w-[32.3%]"
+          href={"/dersler"}
+        >
           <Widget
             icon={
               <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />

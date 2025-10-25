@@ -54,7 +54,7 @@ export default function LoginPage() {
           }
         }
       } else {
-        setResError(res?.error || "Login failed");
+        setResError("Kullanıcı Adı veya Şifre Hatalı");
       }
     } catch (error: any) {
       console.error("Login error:", error);
