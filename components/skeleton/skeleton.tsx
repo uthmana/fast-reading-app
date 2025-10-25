@@ -58,7 +58,7 @@ export function NewTableRowSkeleton(props: { header?: boolean }) {
 export function DashboardSkeleton() {
   return (
     <div className="w-full animate-pulse h-full mt-5 bg-[#f4f7fe] p-6 dark:bg-navy-800">
-      <div className="mb-5 flex gap-3">
+      <div className="mb-5 flex flex-wrap gap-3">
         {[1, 2, 3, 4].map((item, idx) => {
           return <NewCardSkeleton key={idx} />;
         })}

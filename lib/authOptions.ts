@@ -31,6 +31,18 @@ export const authOptions: NextAuthOptions = {
 
           if (!isValid) return null;
 
+          if (user?.active === false) {
+            return null;
+          }
+
+          if (user?.Student?.endDate) {
+            const now = new Date();
+            const endDate = new Date(user.Student.endDate);
+            if (endDate < now) {
+              return null;
+            }
+          }
+
           return {
             id: user.id,
             email: user.email,
