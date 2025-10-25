@@ -67,9 +67,9 @@ export default function LoginPage() {
   return (
     <section className="flex w-full relative z-10 bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] items-center gap-2 h-screen justify-center">
       <div className="flex-1 h-full flex items-center bg-no-repeat bg-[url('/images/book.jpg')] bg-center bg-cover">
-        <div className="w-full bg-white/20 backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  py-8 px-8">
+        <div className="w-[90%] bg-white/20 backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">
-            Etkın Hızlı Okuma
+            Etkin Hızlı Okuma
           </h1>
           <p className="mb-7 text-sm text-center">
             Öğrenci Çalışma Platformu Girişi
@@ -85,7 +85,7 @@ export default function LoginPage() {
             }}
           />
           <p className="text-xs my-2  text-center">
-            © 2025 Tüm Hakları saklıdır.
+            © {new Date().getFullYear()} Tüm Hakları saklıdır.
           </p>
         </div>
       </div>
