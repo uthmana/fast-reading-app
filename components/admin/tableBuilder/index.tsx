@@ -34,8 +34,12 @@ function TableBuilder({
   showAddButton = true,
   showEditColumn = true,
   showPagination = true,
+  showSearchbar = true,
+  showHeader = true,
+  title = "",
   columnKey,
   isLoading = false,
+  className = "",
 }: any) {
   if (isLoading) {
     return <TableSkeleton />;
@@ -130,35 +134,44 @@ function TableBuilder({
   });
 
   return (
-    <div className="w-full">
-      <header className="w-full relative mb-7 flex flex-wrap items-center justify-between gap-4">
-        <div className="text-md w-full border-b lg:w-[40%] font-medium">
-          <Search
-            className="w-full"
-            onSubmit={(val) => setGlobalFilter(val)}
-            onChange={(val) => setGlobalFilter(val)}
-          />
-        </div>
-
-        <div className="flex gap-2">
-          {showAddButton ? (
-            <Button
-              text="EKLE"
-              className="!w-[140px] h-[38px] font-bold mb-3"
-              onClick={() => onAction("add")}
-              icon={<MdAdd className="ml-1 h-6 w-6" />}
-            />
+    <div className={`w-full ${className}`}>
+      {showHeader ? (
+        <header className="w-full relative mb-7 flex flex-wrap items-center justify-between gap-4">
+          {showSearchbar ? (
+            <div className="text-md w-full border-b lg:w-[40%] font-medium">
+              <Search
+                className="w-full"
+                onSubmit={(val) => setGlobalFilter(val)}
+                onChange={(val) => setGlobalFilter(val)}
+              />
+            </div>
           ) : null}
-        </div>
-      </header>
+
+          <div className="flex gap-2">
+            {showAddButton ? (
+              <Button
+                text="EKLE"
+                className="!w-[140px] h-[38px] font-bold mb-3"
+                onClick={() => onAction("add")}
+                icon={<MdAdd className="ml-1 h-6 w-6" />}
+              />
+            ) : null}
+          </div>
+        </header>
+      ) : null}
 
       <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-10 border bg-white rounded-lg">
-        <Button
-          text="Excel"
-          className="hover:!bg-blue-400  hover:!text-white text-sm -mt-5 !bg-black/0 border !py-1 !text-black !max-w-fit mb-3"
-          onClick={() => exportToExcel(data, `ogrenciler.xlsx`)}
-          icon={<MdFileDownload className="w-4 h-4" />}
-        />
+        <div className="flex justify-between">
+          {title ? <h2 className="text-lg font-semibold">{title}</h2> : null}
+          <Button
+            text="Excel"
+            className={`hover:!bg-blue-400  hover:!text-white text-sm !bg-black/0 border !py-1 !text-black !max-w-fit mb-3 ${
+              title ? "ml-auto" : ""
+            }`}
+            onClick={() => exportToExcel(data, `ogrenciler.xlsx`)}
+            icon={<MdFileDownload className="w-4 h-4" />}
+          />
+        </div>
 
         <div
           className="w-full overflow-x-auto"
