@@ -19,13 +19,11 @@ export default function BetweenLine({
   columns = 4,
   controls,
 }: BetweenLineProps) {
-  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 400 };
+  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 200 };
   const speed = speedMap[controls?.level || 3];
-
-  const words = text.split(/\s+/);
+  const words = text.split(/\s+/).slice(0, 14 * 4 - 1);
   const wordsPerColumn = Math.ceil(words.length / columns);
   const [highlightIndex, setHighlightIndex] = useState(0);
-
   useEffect(() => {
     const interval = setInterval(() => {
       setHighlightIndex((prev) => (prev + 1) % words.length);
@@ -48,7 +46,7 @@ export default function BetweenLine({
         gap: "20px",
       }}
     >
-      {columnsArray.slice(0, 14).map((colWords, colIndex) => (
+      {columnsArray.map((colWords, colIndex) => (
         <div
           key={colIndex}
           style={{ display: "flex", flexDirection: "column", gap: "4px" }}
@@ -62,12 +60,14 @@ export default function BetweenLine({
                 key={wordIndex}
                 style={{
                   position: "relative",
-                  padding: "2px 6px",
+                  marginRight: "2px",
+                  padding: "2px 3px",
                   borderRadius: "4px",
                   backgroundColor: isHighlighted
-                    ? "rgba(255,0,0,0.2)"
+                    ? "transparent"
                     : "transparent",
-                  fontWeight: isHighlighted ? "bold" : "normal",
+                  //fontWeight: isHighlighted ? "bold" : "normal",
+                  fontWeight: "normal",
                   transition: "all 0.3s ease",
                 }}
               >
@@ -80,7 +80,7 @@ export default function BetweenLine({
                       height: "8px",
                       backgroundColor: "red",
                       borderRadius: "50%",
-                      left: "-12px",
+                      // left: "-12px",
                       top: "50%",
                       transform: "translateX(-50%)",
                     }}

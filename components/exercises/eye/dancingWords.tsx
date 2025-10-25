@@ -46,7 +46,7 @@ export default function DancingWords({ controls }: DancingWordsProps) {
       setCurrentIndex((prev) => (prev + 1) % words.length);
       setRandomPos(positions[Math.floor(Math.random() * positions.length)]);
       setRandomColor(colors[Math.floor(Math.random() * colors.length)]);
-      setRotation((Math.random() - 0.5) * 20); // between -10° and +10°
+      setRotation((Math.random() - 0.5) * 40); // between -10° and +10°
     }, speed);
     return () => clearInterval(timer);
   }, [speed, words.length]);

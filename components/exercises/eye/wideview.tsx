@@ -45,14 +45,13 @@ export default function Wideview({ controls }: WideViewProps) {
           const pos = (i - index + lines.length) % lines.length;
           const half = lines.length / 2;
           const distanceFromCenter = Math.abs(pos - half);
-
           // Map distance from center to scale (1.5 at center → 0.4 at edges)
           const scale = 1.5 - (distanceFromCenter / half) * 1.1;
           const opacity = 1 - distanceFromCenter / half;
 
-          const highlight =
-            Math.abs(pos - half) < 0.5 ? "bg-red-500 text-white" : "";
-
+          //const highlight =
+          //  Math.abs(pos - half) < 0.5 ? "bg-red-500 text-white" : "";
+          const highlight = "bg-red-500 text-white";
           const words = line.split(" ");
           const first = words[0];
           const last = words.length > 1 ? words[words.length - 1] : "";
@@ -69,11 +68,14 @@ export default function Wideview({ controls }: WideViewProps) {
               }}
               className="transition-all duration-300"
             >
+              <span className={` ${highlight} px-1 rounded`}>{line}</span>{" "}
+              {/*
               <span className={`${highlight} px-1 rounded`}>{first}</span>{" "}
-              <span>{middle}</span>{" "}
+               <span>{middle}</span>{" "}
               {last && (
                 <span className={`${highlight} px-1 rounded`}>{last}</span>
               )}
+              */}
             </motion.div>
           );
         })}
