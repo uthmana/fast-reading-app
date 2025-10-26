@@ -8,7 +8,7 @@ type RhythmicColoringProps = {
 };
 
 export default function RhythmicColoring({
-  objectSize = 60,
+  objectSize = 40,
   controls,
 }: RhythmicColoringProps) {
   const [visible, setVisible] = useState(true);
