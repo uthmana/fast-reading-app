@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Article, PrismaClient } from "@prisma/client";
+import { Article } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
