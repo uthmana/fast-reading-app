@@ -24,12 +24,12 @@ export default function LineBeginingEnd({
   );
 
   // Speed map in ms
-  const speedMap: { [key: number]: number } = {
-    1: 1500,
-    2: 1000,
-    3: 700,
-    4: 500,
-    5: 300,
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
   };
   const speed = controls?.level ? speedMap[controls.level] : speedMap[3];
 

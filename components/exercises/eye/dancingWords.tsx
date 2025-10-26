@@ -33,7 +33,13 @@ export default function DancingWords({ controls }: DancingWordsProps) {
     "Güzel Bir Gün.",
   ];
 
-  const speedMap = { 1: 2500, 2: 2000, 3: 1500, 4: 1000, 5: 600 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const speed = speedMap[controls?.level || 3];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -52,11 +58,11 @@ export default function DancingWords({ controls }: DancingWordsProps) {
   }, [speed, words.length]);
 
   return (
-    <div className="relative w-full h-full flex justify-center items-center overflow-hidden rounded-2xl ">
+    <div className="relative w-full h-full flex justify-center items-center overflow-hidden rounded-2xl">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          className={`absolute text-4xl md:text-5xl font-bold whitespace-nowrap m-2 ${randomPos}`}
+          className={`absolute text-2xl md:text-xl font-bold whitespace-nowrap m-2 ${randomPos}`}
           style={{
             color: randomColor,
             rotate: rotation,

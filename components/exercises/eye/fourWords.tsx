@@ -29,7 +29,13 @@ export default function FourWords({
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const level = controls?.level || 3;
-  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 400 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const duration = speedMap[level];
 
   // Helper to generate random words
