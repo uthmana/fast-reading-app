@@ -32,12 +32,12 @@ export default function Tachistoscope({
   const wordsPerFrame = controls?.wordsPerFrame || 3;
 
   // Level → speed map (1 = slowest, 5 = fastest)
-  const speedMap = {
-    1: 1200, // slowest
-    2: 900,
-    3: 600,
-    4: 350,
-    5: 150, // fastest
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
   };
 
   // keep latest onComplete

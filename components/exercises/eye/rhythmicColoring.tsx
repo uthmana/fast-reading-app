@@ -24,7 +24,13 @@ export default function RhythmicColoring({
   const jump = step * 2; // move 2 rows per step
 
   // Level → speed map
-  const speedMap = { 1: 1200, 2: 900, 3: 600, 4: 400, 5: 250 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const duration = speedMap[level];
 
   useEffect(() => {
@@ -103,6 +109,7 @@ export default function RhythmicColoring({
           top: y,
           left: side === "left" ? "15%" : "75%",
           transform: "translate(-50%, 0)",
+          border: "4px solid #000",
         }}
       />
     </div>

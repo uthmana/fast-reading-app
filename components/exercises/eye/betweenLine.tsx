@@ -19,7 +19,13 @@ export default function BetweenLine({
   columns = 4,
   controls,
 }: BetweenLineProps) {
-  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 200 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const speed = speedMap[controls?.level || 3];
   const words = text.split(/\s+/).slice(0, 14 * 4 - 1);
   const wordsPerColumn = Math.ceil(words.length / columns);
