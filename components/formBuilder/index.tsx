@@ -153,7 +153,7 @@ export default function FormBuilder({
                   name={v.name}
                   required={v.required}
                   disabled={v.disabled}
-                  styleClass={v?.styleClass}
+                  styleClass={v.styleClass}
                 />
               );
             }

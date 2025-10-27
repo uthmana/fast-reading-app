@@ -14,7 +14,7 @@ type SelectPropTypes = {
     inputKey: string;
   }) => void;
   inputKey: string;
-  styleClass: string;
+  styleClass?: string;
 };
 
 function Select({
