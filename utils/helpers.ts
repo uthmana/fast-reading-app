@@ -2,6 +2,11 @@ import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
 
+type UserWhereInput =
+  | { email: string }
+  | { username: string }
+  | { tcId: string };
+
 export const formatDateTime = (data: any) => {
   if (!data) return null;
   // return new Date(data).toLocaleString("tr-TR")?.slice(0, -3);
@@ -198,4 +203,16 @@ export const calculateQuizScore = (
 
   const percentage = (correctCount / questions.length) * 100;
   return Math.round(percentage); // round to nearest whole number
+};
+
+export const getInputTypeValue = (value: string): UserWhereInput | null => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;
+  const tcIdRegex = /^\d{11}$/;
+
+  if (emailRegex.test(value)) return { email: value };
+  if (tcIdRegex.test(value)) return { tcId: value };
+  if (usernameRegex.test(value)) return { username: value };
+
+  return null;
 };

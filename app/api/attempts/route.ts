@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Attempt } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);

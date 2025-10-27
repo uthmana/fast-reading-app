@@ -20,9 +20,11 @@ datasource db {
 
 model User {
   id        String     @id @default(cuid())
-  email     String?    @unique
+  name      String
+  username  String     @unique
+  email     String     @unique
+  tcId      String     @unique
   password  String
-  name      String     @unique
   role      Role       @default(STUDENT)
   active    Boolean    @default(true)
   createdAt DateTime   @default(now())

@@ -14,6 +14,9 @@ type TextAreaProps = {
   inputKey: string;
   disabled?: boolean;
   rows?: number;
+  maxlength?: number;
+
+  styleClass: string;
 };
 
 function TextArea(props: TextAreaProps) {
@@ -26,14 +29,13 @@ function TextArea(props: TextAreaProps) {
     inputKey,
     disabled,
     rows = 4,
+    maxlength,
+    styleClass = "",
   } = props;
 
   return (
-    <div className="w-full flex-col text-sm">
-      <label
-        className="font-semibold flex gap-1 items-center"
-        htmlFor={inputKey}
-      >
+    <div className={`w-full mb-2 text-sm ${styleClass}`}>
+      <label className="font-medium flex gap-1 items-center" htmlFor={inputKey}>
         {name}
         {
           <span className={!value?.value ? "text-red-400" : "text-green-400"}>
@@ -48,6 +50,7 @@ function TextArea(props: TextAreaProps) {
         id={name}
         name={name}
         rows={rows}
+        maxLength={maxlength}
         placeholder={placeholder}
         value={value?.value}
         onChange={(e) =>
