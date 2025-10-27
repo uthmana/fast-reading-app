@@ -4,8 +4,9 @@ import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  const { id, name, email, password, role, active }: User = await req.json();
-  if (!name || !password || !role) {
+  const { id, name, username, tcId, email, password, role, active }: User =
+    await req.json();
+  if (!name || !username || !tcId || !password || !role) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -21,7 +22,15 @@ export async function POST(req: Request) {
             : userExit.password;
         const user = await prisma.user.update({
           where: { id },
-          data: { name, email, password: pwd, role: role, active },
+          data: {
+            name,
+            username,
+            tcId,
+            email,
+            password: pwd,
+            role: role,
+            active,
+          },
         });
         return NextResponse.json(user, { status: 200 });
       }
@@ -29,7 +38,14 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword, role: role },
+      data: {
+        name,
+        username,
+        tcId,
+        email,
+        password: hashedPassword,
+        role: role,
+      },
     });
     return NextResponse.json(user, { status: 201 });
   } catch (err) {
