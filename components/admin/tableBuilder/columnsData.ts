@@ -10,7 +10,7 @@ export const columnsData = {
   ],
   studentColumn: [
     { id: "id", name: "Id", type: "string" },
-    { id: "name", name: "Kullanıcı Adı", type: "string" },
+    { id: "name", name: "Adı Soyadı", type: "string" },
     { id: "username", name: "Kullanıcı Adı", type: "string" },
     { id: "tcId", name: "TC Kimlik No", type: "string" },
     { id: "email", name: "E-posta", type: "string" },
