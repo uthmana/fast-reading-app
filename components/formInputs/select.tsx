@@ -14,6 +14,7 @@ type SelectPropTypes = {
     inputKey: string;
   }) => void;
   inputKey: string;
+  styleClass: string;
 };
 
 function Select({
@@ -26,12 +27,13 @@ function Select({
   inputKey,
   showLabel = true,
   disabled = false,
+  styleClass = "",
 }: SelectPropTypes) {
   return (
-    <div className="w-full flex-col text-sm">
+    <div className={`w-full mb-2 text-sm ${styleClass}`}>
       {showLabel ? (
         <label
-          className="text-sm font-semibold flex gap-1 items-center"
+          className="text-sm font-medium flex gap-1 items-center"
           htmlFor={inputKey}
         >
           {name}

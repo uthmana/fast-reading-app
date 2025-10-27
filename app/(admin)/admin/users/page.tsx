@@ -103,7 +103,7 @@ export default function page() {
       <Popup
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
-        title="Öğrenci Ekle"
+        title="Yönetici Ekle"
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <FormBuilder

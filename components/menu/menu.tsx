@@ -33,11 +33,11 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
         <div className="w-full flex items-center justify-between gap-8">
           <h1>
             <Link
-              className="flex gap-3 items-center text-white text-base"
+              className="flex gap-3 items-center capitalize text-white text-base"
               href="/"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 h-10 border-2 capitalize font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
+              <span className="w-10 h-10 border-2  font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
                 {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
               <span className="hover:underline">{session?.user?.name}</span>

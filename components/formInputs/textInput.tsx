@@ -13,6 +13,8 @@ type InputProps = {
   }) => void;
   inputKey: string;
   disabled?: boolean;
+  maxlength?: number;
+  styleClass?: string;
 };
 
 function TextInput(props: InputProps) {
@@ -25,12 +27,14 @@ function TextInput(props: InputProps) {
     onChange,
     inputKey,
     disabled,
+    maxlength,
+    styleClass = "",
   } = props;
 
   return (
-    <div className="w-full flex-col text-sm ">
+    <div className={`w-full mb-2 text-sm  ${styleClass}`}>
       <label
-        className="font-semibold flex gap-1 items-center"
+        className="font-medium flex gap-1 w-full items-center whitespace-nowrap"
         htmlFor={inputKey}
       >
         {name}
@@ -42,6 +46,7 @@ function TextInput(props: InputProps) {
       </label>
       <input
         autoComplete={`new-${type}`}
+        maxLength={maxlength}
         required={required}
         id={inputKey}
         name={inputKey}

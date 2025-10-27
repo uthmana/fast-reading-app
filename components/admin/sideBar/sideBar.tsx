@@ -76,7 +76,7 @@ export default function SideBar({
             <Link
               key={route.name + idx}
               href={route.path}
-              className={`px-3 py-2 flex gap-4 rounded border-b transition-colors duration-200 text-black hover:text-white  hover:bg-blue-600 ${
+              className={`px-3 py-2 flex gap-5 rounded border-b transition-colors duration-200 text-black hover:text-white  hover:bg-blue-600 ${
                 active ? "bg-blue-600 text-white font-semibold" : ""
               }`}
             >

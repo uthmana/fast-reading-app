@@ -6,6 +6,7 @@ import { useState } from "react";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { getInputTypeValue } from "@/utils/helpers";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -37,8 +38,14 @@ export default function LoginPage() {
       });
 
       if (res?.ok) {
+        const where = getInputTypeValue(formData.name);
+        if (!where) {
+          throw new Error("Invalid user identifier");
+        }
+        const query = encodeURIComponent(JSON.stringify(where));
+
         const resData = await fetchData({
-          apiPath: `/api/users?name=${encodeURIComponent(formData.name)}`,
+          apiPath: `/api/users?where=${query}`,
         });
 
         if (!resData || !resData.role) {
@@ -54,7 +61,7 @@ export default function LoginPage() {
           }
         }
       } else {
-        setResError("Kullanıcı Adı veya Şifre Hatalı");
+        setResError("Kullanıcı Adı, E-posta, TC Kimlik No veya Parola Hatalı");
       }
     } catch (error: any) {
       console.error("Login error:", error);

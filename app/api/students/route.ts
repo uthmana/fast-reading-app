@@ -34,6 +34,8 @@ export async function POST(req: Request) {
   const {
     id,
     name,
+    username,
+    tcId,
     email,
     password,
     role,
@@ -42,7 +44,15 @@ export async function POST(req: Request) {
     endDate,
     level,
   }: User | any = await req.json();
-  if (!name || !password || !role || !startDate || !endDate || !level) {
+  if (
+    !username ||
+    !tcId ||
+    !password ||
+    !role ||
+    !startDate ||
+    !endDate ||
+    !level
+  ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -64,6 +74,8 @@ export async function POST(req: Request) {
           data: {
             name,
             email,
+            username,
+            tcId,
             password: pwd,
             role: role,
             active,
@@ -84,6 +96,8 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name,
+        username,
+        tcId,
         email,
         password: hashedPassword,
         role: role,

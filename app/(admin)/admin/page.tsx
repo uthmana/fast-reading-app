@@ -19,7 +19,6 @@ export default function DashboardPage() {
         setIsloading(true);
         const resData = await fetchData({ apiPath: "/api/dashboard" });
         setData(resData);
-        console.log(resData);
         setIsloading(false);
       } catch (error) {
         setIsloading(false);
@@ -65,7 +64,7 @@ export default function DashboardPage() {
 
       <div className="flex w-full flex-wrap gap-4 mb-10">
         <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow bg-white">
-          <h2 className="text-xl mb-4 font-semibold ">
+          <h2 className="text-xl mb-4 font-semibold">
             Hızlı Okuma Başarılı Öğrenciler
           </h2>
           <BarChart

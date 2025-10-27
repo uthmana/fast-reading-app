@@ -7,12 +7,24 @@ import prisma from "@/lib/prisma";
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const name = searchParams.get("name");
+    const whereParam = searchParams.get("where");
 
-    if (name) {
-      // Fetch a single user by name
+    let where: any | undefined;
+
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (where) {
       const user = await prisma.user.findUnique({
-        where: { name },
+        where,
         include: {
           Student: {
             include: {
@@ -35,6 +47,7 @@ export async function GET(req: NextRequest) {
     const users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
     });
+
     return NextResponse.json(users, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -53,6 +66,8 @@ export async function POST(req: Request) {
   const {
     id,
     name,
+    username,
+    tcId,
     email,
     password,
     role,
@@ -81,6 +96,8 @@ export async function POST(req: Request) {
           where: { id },
           data: {
             name,
+            username,
+            tcId,
             email,
             password: pwd,
             role: role,
@@ -105,6 +122,8 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name,
+        username,
+        tcId,
         email,
         password: hashedPassword,
         role: role,
