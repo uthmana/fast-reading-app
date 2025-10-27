@@ -8,7 +8,7 @@ export default {
       value: { key: "name", type: "string", value: "" },
       required: true,
       maxlength: 40,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "username",
@@ -18,7 +18,7 @@ export default {
       value: { key: "username", type: "string", value: "" },
       required: true,
       maxlength: 40,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "tcId",
@@ -28,7 +28,7 @@ export default {
       value: { key: "tcId", type: "string", value: "" },
       required: true,
       maxlength: 11,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "email",
@@ -38,7 +38,7 @@ export default {
       value: { key: "email", type: "string", value: "" },
       required: false,
       maxlength: 50,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "password",
@@ -47,7 +47,7 @@ export default {
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "role",
@@ -71,7 +71,7 @@ export default {
       value: { key: "role", type: "string", value: "ADMIN" },
       required: true,
       disabled: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "active",
@@ -102,7 +102,7 @@ export default {
       value: { key: "name", type: "string", value: "" },
       required: true,
       maxlength: 40,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "username",
@@ -112,7 +112,7 @@ export default {
       value: { key: "username", type: "string", value: "" },
       required: true,
       maxlength: 40,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "tcId",
@@ -122,7 +122,7 @@ export default {
       value: { key: "tcId", type: "string", value: "" },
       required: true,
       maxlength: 11,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "email",
@@ -132,7 +132,7 @@ export default {
       value: { key: "email", type: "string", value: "" },
       required: false,
       maxlength: 50,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "password",
@@ -141,7 +141,7 @@ export default {
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "role",
@@ -165,7 +165,7 @@ export default {
       value: { key: "role", type: "string", value: "STUDENT" },
       required: true,
       disabled: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "level",
@@ -192,7 +192,7 @@ export default {
       ],
       value: { key: "role", type: "string", value: "ILKOKUL" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "active",
@@ -211,7 +211,7 @@ export default {
       ],
       value: { key: "role", type: "boolean", value: "true" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "startDate",
@@ -220,7 +220,7 @@ export default {
       type: "date",
       value: { key: "startDate", type: "date", value: "" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "endDate",
@@ -229,7 +229,7 @@ export default {
       type: "date",
       value: { key: "endDate", type: "date", value: "" },
       required: true,
-      styleClass: "w-[calc(50%-6px)]",
+      styleClass: "!w-[calc(50%-6px)]",
     },
   ],
   article: [

@@ -90,7 +90,7 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Yönetim</h1>
+      <h1 className="text-2xl mb-4 p-2 font-bold">Kullanıcılar</h1>
 
       <TableBuilder
         key={isLoading}
@@ -103,7 +103,7 @@ export default function page() {
       <Popup
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
-        title="Yönetici Ekle"
+        title="Kullanıcı Ekle"
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <FormBuilder

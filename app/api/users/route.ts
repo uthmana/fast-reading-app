@@ -8,8 +8,31 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
+    const username = searchParams.get("username");
 
     let where: any | undefined;
+
+    if (username) {
+      const user = await prisma.user.findUnique({
+        where: { username },
+        include: {
+          Student: {
+            include: {
+              attempts: true,
+            },
+          },
+        },
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "Kullanıcı bulunamadı" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(user, { status: 200 });
+    }
 
     if (whereParam) {
       try {
