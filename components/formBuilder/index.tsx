@@ -123,7 +123,7 @@ export default function FormBuilder({
         <h2 className="text-xl font-bold mb-5"> {formTitle} </h2>
       ) : null}
 
-      <div className="w-full flex flex-col gap-3">
+      <div className="w-full flex flex-wrap gap-3">
         {formData.map(
           (
             v: {
@@ -136,6 +136,8 @@ export default function FormBuilder({
               required: boolean;
               disabled: boolean;
               rows: number;
+              maxlength: number;
+              styleClass: string;
             },
             idx: number
           ) => {
@@ -151,6 +153,7 @@ export default function FormBuilder({
                   name={v.name}
                   required={v.required}
                   disabled={v.disabled}
+                  styleClass={v?.styleClass}
                 />
               );
             }
@@ -168,6 +171,8 @@ export default function FormBuilder({
                   required={v.required}
                   disabled={v.disabled}
                   rows={v.rows}
+                  maxlength={v?.maxlength}
+                  styleClass={v?.styleClass}
                 />
               );
             }
@@ -183,6 +188,8 @@ export default function FormBuilder({
                 onChange={handleChange}
                 required={v.required}
                 disabled={v.disabled}
+                maxlength={v.maxlength}
+                styleClass={v.styleClass}
               />
             );
           }

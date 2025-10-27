@@ -19,7 +19,7 @@ export default function Profile({ user }: any) {
       <div className="flex w-56 flex-col justify-start  pb-5 shadow-xl shadow-shadow-500">
         <div className="ml-4 mt-3">
           <div className="flex items-center gap-2">
-            <p className="text-sm font-bold text-navy-700 ">
+            <p className="text-sm font-bold text-navy-700 capitalize">
               👋 Merhaba, {user?.name}
             </p>
           </div>

@@ -36,7 +36,7 @@ export default function Popup({
       >
         <div className="flex w-full justify-between items-center">
           {title ? (
-            <h2 className="text-xl flex-1  font-semibold ">{title}</h2>
+            <h2 className="text-xl flex-1 mb-4 font-semibold ">{title}</h2>
           ) : null}
           {showCloseIcon ? (
             <button onClick={handleClose} className="px-4 py-2  rounded ">

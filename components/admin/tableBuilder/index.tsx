@@ -100,9 +100,13 @@ function TableBuilder({
 
     columnData.map((item: any) => {
       let temp: any = columnHelper.accessor(item.id, {
-        header: () => <p className="font-bold text-black">{item.name}</p>,
+        header: () => (
+          <p className="font-bold px-1 text-black whitespace-nowrap">
+            {item.name}
+          </p>
+        ),
         cell: (info) => (
-          <p className="line-clamp-1">{renderValue(item.type, info)}</p>
+          <p className="line-clamp-1 px-1">{renderValue(item.type, info)}</p>
         ),
       });
       col.push(temp);
