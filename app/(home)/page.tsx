@@ -35,10 +35,14 @@ export default function Home() {
 
     const requestData = async () => {
       if (!session) return;
+      console.log(session);
       try {
         const resData = await fetchData({
-          apiPath: `/api/users?name=${encodeURIComponent(session.user.name)}`,
+          apiPath: `/api/users?username=${encodeURIComponent(
+            session.user.username
+          )}`,
         });
+        console.log(resData);
         setUser(resData);
         if (resData?.Student?.attempts?.length) {
           const mappedData = resData.Student.attempts.map(

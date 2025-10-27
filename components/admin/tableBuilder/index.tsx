@@ -106,7 +106,9 @@ function TableBuilder({
           </p>
         ),
         cell: (info) => (
-          <p className="line-clamp-1 px-1">{renderValue(item.type, info)}</p>
+          <p className="line-clamp-1 px-1" title={renderValue(item.type, info)}>
+            {renderValue(item.type, info)}
+          </p>
         ),
       });
       col.push(temp);

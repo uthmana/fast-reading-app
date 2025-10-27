@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
             email: user.email,
             role: user.role as Role,
             name: user.name ?? "",
-            username: user.name ?? "",
+            username: user.username ?? "",
             student: user.Student ?? null,
           };
         } catch (error) {

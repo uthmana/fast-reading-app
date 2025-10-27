@@ -17,7 +17,9 @@ export default function page() {
       if (!session) return;
       try {
         const resData = await fetchData({
-          apiPath: `/api/users?name=${encodeURIComponent(session.user.name)}`,
+          apiPath: `/api/users?username=${encodeURIComponent(
+            session.user.username
+          )}`,
         });
         if (resData?.Student?.attempts?.length) {
           const mappedData = resData.Student.attempts.map(
