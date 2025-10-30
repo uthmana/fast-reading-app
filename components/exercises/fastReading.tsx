@@ -1,150 +1,146 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
-type TachistoProps = {
-  autoStart?: boolean;
-  className?: string;
-  onComplete?: () => void;
-  controls?: {
-    text?: string;
-    level?: 1 | 2 | 3 | 4 | 5; // Now 1 = slowest, 5 = fastest
-    wordsPerFrame: number;
-  };
-};
+import Button from "../button/button";
+import { MdPauseCircle } from "react-icons/md";
 
 export default function FastReading({
-  autoStart = true,
-  className = "",
+  article,
+  onFinishTest,
   controls,
-  onComplete,
-}: TachistoProps) {
-  const [frames, setFrames] = useState<string[]>([]);
-  const [index, setIndex] = useState(0);
+}: {
+  article: { id: string; title: string; description: string; tests: any };
+  onFinishTest: (
+    v: {
+      wpm: number;
+      correct: number;
+      counter: number;
+      variant: string;
+    } | null
+  ) => void;
+  controls: {
+    categorySelect: string;
+    articleSelect: string;
+    font: string;
+    level: number;
+    wordsPerFrame: number;
+  };
+}) {
+  const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
-  const [frameDurationMs, setFrameDurationMs] = useState<number>(1000);
-  const [fadeOut, setFadeOut] = useState(false);
   const intervalRef = useRef<number | null>(null);
-  const onCompleteRef = useRef(onComplete);
+  const currentLevelRef = useRef<number>(controls.level);
 
-  const text = controls?.text;
-  const level = controls?.level || 1;
-  const wordsPerFrame = controls?.wordsPerFrame || 3;
+  const { font, level, wordsPerFrame } = controls;
 
-  // Level → speed map (1 = slowest, 5 = fastest)
+  // Level → speed map (milliseconds per frame)
   const speedMap: Record<number, number> = {
-    1: 900, // slowest
+    1: 900,
     2: 750,
     3: 450,
     4: 250,
-    5: 100, // fastest
+    5: 100,
   };
 
-  // keep latest onComplete
-  useEffect(() => {
-    onCompleteRef.current = onComplete;
-  }, [onComplete]);
+  const words = article?.description
+    ? article.description.trim().split(/\s+/)
+    : [];
 
-  // Build frames when text or config changes
-  useEffect(() => {
-    const normalized = (text ?? "").trim().replace(/\s+/g, " ");
-    if (!normalized) {
-      setFrames([]);
-      setIndex(0);
-      setFrameDurationMs(1000);
-      setRunning(false);
-      return;
-    }
-
-    const words = normalized.split(" ");
-    const chunks: string[] = [];
-    for (let i = 0; i < words.length; i += wordsPerFrame) {
-      chunks.push(words.slice(i, i + wordsPerFrame).join(" "));
-    }
-
-    setFrames(chunks);
-    setFrameDurationMs(speedMap[level]);
-    setIndex(0);
-  }, [text, wordsPerFrame, level]);
-
-  // Auto start when frames are ready
-  useEffect(() => {
-    if (autoStart && frames.length > 0) {
-      setIndex(0);
-      setRunning(true);
-    }
-  }, [autoStart, frames]);
-
-  // Frame interval handler with fade-out timing
-  useEffect(() => {
-    if (intervalRef.current) {
-      window.clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-
-    if (!running) return;
-
-    if (frames.length === 0) {
-      setRunning(false);
-      return;
-    }
-
-    const fadeDuration = frameDurationMs * 0.3; // fade-out in last 30%
+  const startInterval = (fromIndex: number, speed: number) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
 
     intervalRef.current = window.setInterval(() => {
-      setFadeOut(true);
+      setActiveWordIndex((prev) => {
+        const next = prev + wordsPerFrame;
+        if (next >= words.length) {
+          clearInterval(intervalRef.current!);
+          intervalRef.current = null;
+          setRunning(false);
+          onFinishTest?.({
+            wpm: 0,
+            correct: 0,
+            counter: words.length,
+            variant: "fast-reading",
+          });
+          return prev;
+        }
+        return next;
+      });
+    }, speed);
+  };
 
-      setTimeout(() => {
-        setFadeOut(false);
-        setIndex((prev) => {
-          const next = prev + 1;
-          if (next >= frames.length) {
-            if (intervalRef.current) {
-              window.clearInterval(intervalRef.current);
-              intervalRef.current = null;
-            }
-            setRunning(false);
-            if (onCompleteRef.current) onCompleteRef.current();
-            return frames.length - 1;
-          }
-          return next;
-        });
-      }, fadeDuration);
-    }, frameDurationMs);
-
+  useEffect(() => {
+    if (!words.length) return;
+    setActiveWordIndex(0);
+    setRunning(true);
+    currentLevelRef.current = level;
+    startInterval(0, speedMap[level]);
     return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+      if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [running, frames, frameDurationMs]);
+  }, [article?.description]);
+
+  useEffect(() => {
+    if (!running) return;
+    if (level === currentLevelRef.current) return;
+
+    currentLevelRef.current = level;
+    startInterval(activeWordIndex, speedMap[level]);
+  }, [level]);
+
+  const handlePause = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    setRunning(false);
+    onFinishTest?.(null);
+  };
+
+  // 🔹 Get the current highlighted frame as a single string
+  const highlightedWords = words
+    .slice(activeWordIndex, activeWordIndex + wordsPerFrame)
+    .join(" ");
+
+  // 🔹 Remaining (non-highlighted) parts
+  const beforeText = words.slice(0, activeWordIndex).join(" ");
+  const afterText = words.slice(activeWordIndex + wordsPerFrame).join(" ");
 
   return (
-    <div
-      className={`tachisto w-full h-full flex justify-center items-center ${className}`}
-    >
-      <div className="flex flex-col min-w-[90%] lg:min-w-[400px] rounded-full p-[6px] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] items-center gap-4">
-        <div
-          aria-live="polite"
-          role="status"
-          className="w-full flex items-center rounded-full  px-10 justify-center bg-white  py-3 text-center"
-        >
+    <div className="w-full">
+      <div className="w-full h-full text-left relative">
+        {words.length > 0 ? (
           <div
-            className={`text-lg font-semibold  leading-tight transition-opacity duration-300 ${
-              fadeOut ? "opacity-0" : "opacity-100"
-            }`}
+            className="w-full transition-all"
             style={{
-              transitionDuration: `${frameDurationMs * 0.3}ms`,
+              fontSize: `${parseInt(font)}px`,
+              lineHeight: `${parseInt(font) * 1.5}px`,
+              whiteSpace: "pre-wrap",
+              wordWrap: "break-word",
             }}
           >
-            {frames.length > 0 ? (
-              frames[index]
-            ) : (
-              <span className="text-gray-400">No text</span>
-            )}
+            {/* Before highlighted */}
+            <span className="opacity-25">{beforeText} </span>
+
+            {/* Highlighted section (no gaps) */}
+            <span className="bg-blue-800 text-white  px-1 rounded-sm">
+              {highlightedWords}
+            </span>
+
+            {/* After highlighted */}
+            <span className="opacity-25"> {afterText}</span>
           </div>
-        </div>
+        ) : (
+          <p className="font-semibold text-center">
+            Önce Kategori ve Makale seçmeniz gerekiyor
+          </p>
+        )}
+
+        <Button
+          icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+          className="max-w-fit my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+          onClick={handlePause}
+        />
       </div>
     </div>
   );

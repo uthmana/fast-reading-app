@@ -40,7 +40,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { wpm, correct, durationSec, studentId }: Attempt = await req.json();
+  const { wpm, correct, durationSec, studentId, variant }: Attempt =
+    await req.json();
   if (!studentId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
         correct,
         durationSec,
         studentId: studentId,
+        variant,
       },
     });
     return NextResponse.json(attempt, { status: 201 });

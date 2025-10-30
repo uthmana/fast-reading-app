@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 type InputProps = {
   placeholder?: string;
@@ -15,6 +15,8 @@ type InputProps = {
   disabled?: boolean;
   maxlength?: number;
   styleClass?: string;
+  min?: string;
+  max?: string;
 };
 
 function TextInput(props: InputProps) {
@@ -29,6 +31,7 @@ function TextInput(props: InputProps) {
     disabled,
     maxlength,
     styleClass = "",
+    ...rest
   } = props;
 
   return (
@@ -38,11 +41,14 @@ function TextInput(props: InputProps) {
         htmlFor={inputKey}
       >
         {name}
-        {
+        {type === "range" ? (
+          <span>: {value?.value}</span>
+        ) : (
           <span className={!value?.value ? "text-red-400" : "text-green-400"}>
             *
           </span>
-        }
+        )}
+        {}
       </label>
       <input
         autoComplete={`new-${type}`}
@@ -54,10 +60,11 @@ function TextInput(props: InputProps) {
         placeholder={placeholder}
         type={type}
         value={value?.value}
-        onChange={(e) =>
-          onChange({ targetValue: e.target.value, value, inputKey })
-        }
+        onChange={(e) => {
+          onChange({ targetValue: e.target.value, value, inputKey });
+        }}
         disabled={disabled}
+        {...rest}
       />
     </div>
   );

@@ -22,9 +22,12 @@ export default function Home() {
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [user, setUser] = useState({} as any);
 
-  const [categories, setCategories] = useState([]);
-  const [speed, setSpeed] = useState([]);
-  const [comprehension, setComprehension] = useState([]);
+  const [understandingData, setUnderstandingData] = useState(
+    {} as { data: []; categories: [] }
+  );
+  const [fastReadingData, setFastReadingData] = useState(
+    {} as { data: []; categories: [] }
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -35,28 +38,36 @@ export default function Home() {
 
     const requestData = async () => {
       if (!session) return;
-      console.log(session);
       try {
         const resData = await fetchData({
           apiPath: `/api/users?username=${encodeURIComponent(
             session.user.username
           )}`,
         });
-        console.log(resData);
         setUser(resData);
-        if (resData?.Student?.attempts?.length) {
-          const mappedData = resData.Student.attempts.map(
-            ({ wpm, createdAt, correct }: any) => ({
-              wpm,
-              category: formatDateTime(createdAt),
-              correct,
-            })
-          );
 
-          setCategories(mappedData.map(({ category }: any) => category));
-          setSpeed(mappedData.map(({ wpm }: any) => wpm));
-          setComprehension(mappedData.map(({ correct }: any) => correct));
-        }
+        const attempts = resData?.Student?.attempts || [];
+        if (!attempts.length) return;
+
+        const formatted = attempts.map(
+          ({ wpm, createdAt, correct, variant }: any) => ({
+            wpm,
+            correct,
+            variant,
+            category: formatDateTime(createdAt),
+          })
+        );
+
+        const buildData = (key: "wpm" | "correct", variant: string) => {
+          const filtered = formatted.filter((i: any) => i.variant === variant);
+          return {
+            data: filtered.map((i: any) => i[key]),
+            categories: filtered.map((i: any) => i.category),
+          };
+        };
+
+        setFastReadingData(buildData("wpm", "FASTREADING"));
+        setUnderstandingData(buildData("correct", "UNDERSTANDING"));
       } catch (error) {}
     };
     requestData();
@@ -132,7 +143,7 @@ export default function Home() {
             chartData={[
               {
                 name: "Okuma Hızı",
-                data: speed,
+                data: fastReadingData.data || [],
               },
             ]}
             chartOptions={{
@@ -140,7 +151,7 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: categories,
+                categories: fastReadingData.categories || [],
               },
             }}
           />
@@ -151,7 +162,7 @@ export default function Home() {
             chartData={[
               {
                 name: "Anlama",
-                data: comprehension,
+                data: understandingData.data || [],
               },
             ]}
             chartOptions={{
@@ -159,7 +170,7 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: categories,
+                categories: understandingData.categories || [],
               },
               dataLabels: {
                 enabled: true,

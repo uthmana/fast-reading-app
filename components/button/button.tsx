@@ -3,7 +3,7 @@ import Icon from "../icon/icon";
 
 type ButtonProps = {
   type?: "button" | "submit" | "reset";
-  text: string;
+  text?: string;
   onClick?: (e: React.FormEvent) => void;
   className?: string;
   isSubmiting?: boolean;

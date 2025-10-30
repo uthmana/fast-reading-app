@@ -70,6 +70,7 @@ model Attempt {
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
   wpm         Float? // words per minute measured
+  variant     TestType @default(FASTREADING)
   durationSec Int?
   createdAt   DateTime @default(now())
 }
@@ -78,6 +79,11 @@ enum Role {
   ADMIN
   STUDENT
   TEACHER
+}
+
+enum TestType {
+  FASTREADING
+  UNDERSTANDING
 }
 
 enum ExerciseType {

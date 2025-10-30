@@ -8,7 +8,7 @@ export const menuItems = [
       { name: "Takistoskop", link: "/takistoskop", type: "info" },
       {
         name: "Hızlı Okuma Gelişimi",
-        link: "/goster-kendini/gelisim",
+        link: "/goster-kendini",
         type: "info",
       },
     ],
@@ -101,8 +101,13 @@ export const menuItems = [
     icon: "test",
     subMenu: [
       { name: "Göster Kendini", link: "/goster-kendini" },
-      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
-      { name: "Anlama Gelişimi", link: "/goster-kendini/gelisim" },
+      { name: "Hızlı Okuma Testi", link: "/goster-kendini/hizli-okuma-testi" },
+      {
+        name: "Hızlı Okuma Gelişimi",
+        link: "/goster-kendini/hizli-okuma-testi-gelisim",
+      },
+      { name: "Anlama Testi", link: "/goster-kendini/anlama-testi" },
+      { name: "Anlama Gelişimi", link: "/goster-kendini/anlama-testi-gelisim" },
     ],
     description: "Göster Kendini",
     youtubeId: "xiTK523Ot5U",
