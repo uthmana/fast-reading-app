@@ -31,6 +31,7 @@ function TextArea(props: TextAreaProps) {
     rows = 4,
     maxlength,
     styleClass = "",
+    ...rest
   } = props;
 
   return (
@@ -56,6 +57,7 @@ function TextArea(props: TextAreaProps) {
         onChange={(e) =>
           onChange({ targetValue: e.target.value, value, inputKey })
         }
+        {...rest}
       />
     </div>
   );

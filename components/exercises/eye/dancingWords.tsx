@@ -2,12 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Button from "@/components/button/button";
+import { MdPauseCircle } from "react-icons/md";
 
 type DancingWordsProps = {
   controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  onFinishTest?: (v: any) => void;
 };
 
-export default function DancingWords({ controls }: DancingWordsProps) {
+export default function DancingWords({
+  controls,
+  onFinishTest,
+}: DancingWordsProps) {
   const colors = [
     "#FF4D4D",
     "#4D79FF",
@@ -57,6 +63,12 @@ export default function DancingWords({ controls }: DancingWordsProps) {
     return () => clearInterval(timer);
   }, [speed, words.length]);
 
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
+
   return (
     <div className="relative w-full h-full flex justify-center items-center overflow-hidden rounded-2xl">
       <AnimatePresence mode="wait">
@@ -75,6 +87,12 @@ export default function DancingWords({ controls }: DancingWordsProps) {
           {words[currentIndex]}
         </motion.div>
       </AnimatePresence>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

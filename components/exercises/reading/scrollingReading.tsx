@@ -1,16 +1,22 @@
 "use client";
 
+import Button from "@/components/button/button";
 import { sampleText } from "@/utils/constants";
 import React, { useEffect, useRef } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 interface ScrollingReadingProps {
   controls?: {
     text: string;
     level: number; // speed level
   };
+  onFinishTest?: (val: any) => void;
 }
 
-export default function ScrollingReading({ controls }: ScrollingReadingProps) {
+export default function ScrollingReading({
+  controls,
+  onFinishTest,
+}: ScrollingReadingProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
@@ -49,18 +55,35 @@ export default function ScrollingReading({ controls }: ScrollingReadingProps) {
     requestAnimationFrame(animate);
   }, [text, level]);
 
-  return (
-    <div ref={containerRef} className="relative overflow-hidden w-full h-full">
-      <textarea
-        ref={contentRef}
-        readOnly
-        value={text}
-        className="leading-6 w-full resize-none bg-transparent outline-none"
-      />
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
 
+  return (
+    <div className="w-full h-full">
       <div
-        ref={circleRef}
-        className="absolute top-0 left-0 w-3 h-3 bg-red-600 rounded-full animate-myAnim1"
+        ref={containerRef}
+        className="relative overflow-hidden w-full h-full"
+      >
+        <textarea
+          ref={contentRef}
+          readOnly
+          value={text}
+          className="leading-6 w-full resize-none bg-transparent outline-none"
+        />
+
+        <div
+          ref={circleRef}
+          className="absolute top-0 left-0 w-3 h-3 bg-red-600 rounded-full animate-myAnim1"
+        />
+      </div>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
       />
     </div>
   );
