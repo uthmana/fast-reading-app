@@ -28,6 +28,7 @@ function Select({
   showLabel = true,
   disabled = false,
   styleClass = "",
+  ...rest
 }: SelectPropTypes) {
   return (
     <div className={`w-full mb-2 text-sm ${styleClass}`}>
@@ -55,6 +56,7 @@ function Select({
         onChange={(e) =>
           onChange({ targetValue: e.target.value, value, inputKey })
         }
+        {...rest}
       >
         <option value=""> {placeholder}</option>
         {options?.map((v: { name: string; value: string }, idx) => {

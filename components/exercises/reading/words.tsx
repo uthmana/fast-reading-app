@@ -1,14 +1,18 @@
 "use client";
+import Button from "@/components/button/button";
 import React, { useEffect, useState } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 interface EyeExerciseProps {
   controls?: {
     text?: string | string[];
     level?: 1 | 2 | 3 | 4 | 5; // Now 1 = slowest, 5 = fastest
     wordsPerFrame: number;
+    font?: string;
   };
   words: string[];
   wordsPerFrame?: number;
+  onFinishTest?: (val: any) => void;
 }
 
 export default function Words({
@@ -24,6 +28,7 @@ export default function Words({
     "kiwi",
   ],
   wordsPerFrame,
+  onFinishTest,
 }: EyeExerciseProps) {
   const [index, setIndex] = useState(0);
 
@@ -70,8 +75,14 @@ export default function Words({
           "right-0 top-1/2 -translate-y-1/2",
         ];
 
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
+
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full relative h-full flex items-center justify-center">
       <div
         className={`relative h-[100px] mx-auto flex items-center justify-center overflow-visible ${
           isThreeLetterAndBellow ? "w-[110px]" : "w-[176px]"
@@ -82,11 +93,18 @@ export default function Words({
           <div
             key={i}
             className={`absolute text-base font-medium  ${positions[i]}`}
+            style={{ fontSize: `${controls && controls.font}px` }}
           >
             {word}
           </div>
         ))}
       </div>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

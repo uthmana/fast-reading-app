@@ -3,7 +3,6 @@
 import React from "react";
 import RhythmicColoring from "./eye/rhythmicColoring";
 import Tachistoscope from "./Tachistoscope";
-import { useParams } from "next/navigation";
 import BlackWhite from "./eye/blackWhite";
 import Wideview from "./eye/wideview";
 import FourWords from "./eye/fourWords";
@@ -16,17 +15,16 @@ import Words from "./reading/words";
 import Numbers from "./reading/numbers";
 import ScrollingReading from "./reading/scrollingReading";
 import { letterNumbers, letterWords } from "@/utils/constants";
+import NotFound from "@/app/(home)/not-found";
 
 export default function RenderExercise(props: any) {
-  const queryParams = useParams();
-  const pathname = queryParams.slug;
+  const pathname: string = props.pathname;
+  if (!pathname) return null;
 
   const fourWordsPerFrame =
     pathname === "sayilar-3" ||
     pathname === "sayilar-4" ||
     pathname === "sayilar-5";
-
-  if (!pathname) return null;
 
   switch (pathname) {
     case "ritmini-renklendirme":
@@ -73,6 +71,6 @@ export default function RenderExercise(props: any) {
     case "kayan-okuma":
       return <ScrollingReading {...props} />;
     default:
-      return <div>Oops! Sayfa bulunamadı</div>;
+      return <NotFound />;
   }
 }

@@ -1,11 +1,14 @@
 "use client";
 
+import Button from "@/components/button/button";
 import React, { useEffect, useState } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 type BetweenLineProps = {
   text: string;
   columns?: number;
   controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  onFinishTest?: (v: any) => void;
 };
 
 let texttouse: string = `
@@ -18,6 +21,7 @@ export default function BetweenLine({
   text = texttouse,
   columns = 4,
   controls,
+  onFinishTest,
 }: BetweenLineProps) {
   const speedMap: Record<number, number> = {
     1: 900, // slowest
@@ -42,6 +46,12 @@ export default function BetweenLine({
   const columnsArray = Array.from({ length: columns }, (_, i) =>
     words.slice(i * wordsPerColumn, (i + 1) * wordsPerColumn)
   );
+
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
 
   return (
     <div
@@ -97,6 +107,12 @@ export default function BetweenLine({
           })}
         </div>
       ))}
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

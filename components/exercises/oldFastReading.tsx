@@ -3,21 +3,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "../button/button";
 import { MdPauseCircle } from "react-icons/md";
-import { WordsPerSentence } from "@/utils/constants";
 
 type TachistoProps = {
   autoStart?: boolean;
   className?: string;
   onComplete?: () => void;
   controls?: {
-    level?: 1 | 2 | 3 | 4 | 5;
+    text?: string;
+    level?: 1 | 2 | 3 | 4 | 5; // Now 1 = slowest, 5 = fastest
     wordsPerFrame: number;
-    font: string;
   };
   onFinishTest?: (val: any) => void;
 };
 
-export default function Tachistoscope({
+export default function FastReading({
   autoStart = true,
   className = "",
   controls,
@@ -32,45 +31,47 @@ export default function Tachistoscope({
   const intervalRef = useRef<number | null>(null);
   const onCompleteRef = useRef(onComplete);
 
-  const wordsPerFrame = controls?.wordsPerFrame || 1;
+  const text = controls?.text;
   const level = controls?.level || 1;
+  const wordsPerFrame = controls?.wordsPerFrame || 3;
 
-  // 🧠 Dynamically get words array based on wordsPerFrame
-  const text =
-    WordsPerSentence[
-      wordsPerFrame.toString() as keyof typeof WordsPerSentence
-    ] ?? [];
-
-  // Level → speed map
+  // Level → speed map (1 = slowest, 5 = fastest)
   const speedMap: Record<number, number> = {
-    1: 900,
+    1: 900, // slowest
     2: 750,
     3: 450,
     4: 250,
-    5: 100,
+    5: 100, // fastest
   };
 
-  // Keep the latest onComplete reference
+  // keep latest onComplete
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // 🧩 Setup frames from WordsPerSentence directly
+  // Build frames when text or config changes
   useEffect(() => {
-    if (!text.length) {
+    const normalized = (text ?? "").trim().replace(/\s+/g, " ");
+    if (!normalized) {
       setFrames([]);
       setIndex(0);
+      setFrameDurationMs(1000);
       setRunning(false);
       return;
     }
 
-    // No need to split; WordsPerSentence already contains grouped words
-    setFrames(text);
+    const words = normalized.split(" ");
+    const chunks: string[] = [];
+    for (let i = 0; i < words.length; i += wordsPerFrame) {
+      chunks.push(words.slice(i, i + wordsPerFrame).join(" "));
+    }
+
+    setFrames(chunks);
     setFrameDurationMs(speedMap[level]);
     setIndex(0);
-  }, [text, level]);
+  }, [text, wordsPerFrame, level]);
 
-  // ▶️ Auto start playback
+  // Auto start when frames are ready
   useEffect(() => {
     if (autoStart && frames.length > 0) {
       setIndex(0);
@@ -78,15 +79,21 @@ export default function Tachistoscope({
     }
   }, [autoStart, frames]);
 
-  // ⏱ Handle interval updates
+  // Frame interval handler with fade-out timing
   useEffect(() => {
     if (intervalRef.current) {
       window.clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-    if (!running || frames.length === 0) return;
 
-    const fadeDuration = frameDurationMs * 0.3;
+    if (!running) return;
+
+    if (frames.length === 0) {
+      setRunning(false);
+      return;
+    }
+
+    const fadeDuration = frameDurationMs * 0.3; // fade-out in last 30%
 
     intervalRef.current = window.setInterval(() => {
       setFadeOut(true);
@@ -96,9 +103,12 @@ export default function Tachistoscope({
         setIndex((prev) => {
           const next = prev + 1;
           if (next >= frames.length) {
-            clearInterval(intervalRef.current!);
+            if (intervalRef.current) {
+              window.clearInterval(intervalRef.current);
+              intervalRef.current = null;
+            }
             setRunning(false);
-            onCompleteRef.current?.();
+            if (onCompleteRef.current) onCompleteRef.current();
             return frames.length - 1;
           }
           return next;
@@ -108,38 +118,40 @@ export default function Tachistoscope({
 
     return () => {
       if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+        window.clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
   }, [running, frames, frameDurationMs]);
 
-  const handlePause = () => onFinishTest?.(null);
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
 
   return (
     <div
-      className={`relative w-full h-full flex justify-center items-center ${className}`}
+      className={`tachisto w-full h-full flex justify-center items-center ${className}`}
     >
       <div className="flex flex-col min-w-[90%] lg:min-w-[400px] rounded-full p-[6px] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] items-center gap-4">
         <div
           aria-live="polite"
           role="status"
-          className="w-full flex items-center rounded-full px-10 justify-center bg-white py-3 text-center"
+          className="w-full flex items-center rounded-full  px-10 justify-center bg-white  py-3 text-center"
         >
           <div
-            className={`text-base font-semibold leading-tight transition-opacity duration-300 ${
+            className={`text-lg font-semibold  leading-tight transition-opacity duration-300 ${
               fadeOut ? "opacity-0" : "opacity-100"
             }`}
             style={{
               transitionDuration: `${frameDurationMs * 0.3}ms`,
-              fontSize: `${controls && controls.font}px`,
-              lineHeight: 1.5,
             }}
           >
             {frames.length > 0 ? (
               frames[index]
             ) : (
-              <span className="text-gray-400">Metin yok</span>
+              <span className="text-gray-400">No text</span>
             )}
           </div>
         </div>
@@ -147,7 +159,7 @@ export default function Tachistoscope({
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit absolute right-1 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
         onClick={handlePause}
       />
     </div>
