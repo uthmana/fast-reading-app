@@ -68,7 +68,10 @@ export default function FastReadingTest({
     setShowResult(false);
 
     if (variant === "UNDERSTANDING") {
-      if (!questions?.length) return;
+      if (!questions?.length) {
+        alert("Test bulunamadı, Diğer okuma metni seçmeniz gerekiyor.");
+        return;
+      }
       setIsTesting(true);
       return;
     }

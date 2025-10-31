@@ -63,6 +63,9 @@ function TableBuilder({
     if (type === "boolean") {
       return value ? "Active" : "Passive";
     }
+    if (type === "category") {
+      return value.title;
+    }
     if (type === "json") {
       return (
         <Button

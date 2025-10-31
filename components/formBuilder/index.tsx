@@ -138,6 +138,7 @@ export default function FormBuilder({
               rows: number;
               maxlength: number;
               styleClass: string;
+              asyncOption: () => any;
             },
             idx: number
           ) => {
@@ -145,6 +146,7 @@ export default function FormBuilder({
               return (
                 <Select
                   key={idx + v.type}
+                  asyncOption={v.asyncOption}
                   placeholder={v.placeholder}
                   options={v.options}
                   value={v.value}

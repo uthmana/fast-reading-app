@@ -1,3 +1,5 @@
+import { getCategoryOptions } from "./request";
+
 export default {
   user: [
     {
@@ -242,29 +244,13 @@ export default {
       required: true,
     },
     {
-      key: "level",
-      name: "Seviye",
-      placeholder: "Seviye seç",
+      key: "categoryId",
+      name: "Kategori",
+      placeholder: "Kategori seç",
       type: "select",
-      options: [
-        {
-          name: "İLKOKUL",
-          value: "ILKOKUL",
-        },
-        {
-          name: "ORTAOKUL",
-          value: "ORTAOKUL",
-        },
-        {
-          name: "LİSE",
-          value: "LISE",
-        },
-        {
-          name: "YETİŞKİN",
-          value: "YETISKIN",
-        },
-      ],
-      value: { key: "role", type: "string", value: "ILKOKUL" },
+      options: [],
+      asyncOption: getCategoryOptions,
+      value: { key: "categoryId", type: "string", value: "" },
       required: true,
     },
     {
@@ -362,6 +348,25 @@ export default {
       ],
       value: { key: "answer", type: "string", value: "" },
       required: true,
+    },
+  ],
+  category: [
+    {
+      key: "title",
+      name: "Başlık",
+      placeholder: "Başlık",
+      type: "text",
+      value: { key: "title", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "description",
+      name: "Açıklama",
+      placeholder: "Açıklama Ekle",
+      type: "textarea",
+      value: { key: "description", type: "string", value: "" },
+      required: true,
+      rows: 8,
     },
   ],
 };
