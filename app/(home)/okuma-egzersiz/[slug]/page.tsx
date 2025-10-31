@@ -60,6 +60,7 @@ export default function page() {
           onFinishTest={onFinishTest}
           controls={control}
           pathname={pathname}
+          article={control.articleSelect as any}
         />
       }
       control={control}

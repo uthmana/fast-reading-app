@@ -33,7 +33,7 @@ export const controlItems: any = {
   "sayilar-3": ["level", "font"],
   "sayilar-4": ["level", "font"],
   "sayilar-5": ["level", "font"],
-  "kayan-okuma": ["level", "font"],
+  "kayan-okuma": ["level", "font", "categorySelect", "articleSelect"],
   "hizli-okuma-testi": ["font", "categorySelect", "articleSelect"],
   "anlama-testi": ["font", "categorySelect", "articleSelect"],
   zigzag: ["level", "font"],

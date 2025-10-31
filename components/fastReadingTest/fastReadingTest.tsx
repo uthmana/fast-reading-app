@@ -9,13 +9,7 @@ import {
   countWords,
 } from "@/utils/helpers";
 
-export default function FastReadingTest({
-  article,
-  onFinishTest,
-  questions = [],
-  control,
-  variant = "FASTREADING",
-}: {
+type FastReadingTestProps = {
   article: { id: string; title: string; description: string; tests: any };
   onFinishTest: (
     v: {
@@ -26,9 +20,23 @@ export default function FastReadingTest({
     } | null
   ) => void;
   questions: any;
-  control: any;
+  control: {
+    categorySelect: string;
+    articleSelect: string;
+    font: string;
+    level: number;
+    wordsPerFrame: number;
+  };
   variant?: string;
-}) {
+};
+
+export default function FastReadingTest({
+  article,
+  onFinishTest,
+  questions = [],
+  control,
+  variant = "FASTREADING",
+}: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [isTesting, setIsTesting] = useState(false);
@@ -68,7 +76,11 @@ export default function FastReadingTest({
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
 
-    if (confirm(`Hızlı okuma oranınız ${wpm} olarak kaydedilsin mi ?`)) {
+    if (
+      confirm(
+        `Hızlı okuma hızınız ${wpm} kelime/dakika olarak kaydedilsin mi ?`
+      )
+    ) {
       setResult({ countWord, wpm, correct: 0 });
       setIsTesting(true);
       setShowResult(true);
@@ -158,7 +170,8 @@ export default function FastReadingTest({
                 </p>
               ) : (
                 <p className="text-lg">
-                  Hızlı okuma oranınız {result.wpm} olarak kaydedilmiştir.
+                  Hızlı okuma hızınız {result.wpm} kelime/dakika olarak
+                  kaydedilmiştir.
                 </p>
               )}
 
