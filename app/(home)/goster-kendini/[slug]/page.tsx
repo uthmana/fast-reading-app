@@ -83,7 +83,7 @@ export default function page() {
       variant: string;
     } | null
   ) => {
-    if (!val) {
+    if (!val || !session?.user?.student?.id) {
       setPause(!pause);
       return;
     }
@@ -98,7 +98,7 @@ export default function page() {
           correct,
           durationSec: counter,
           variant,
-          studentId: session?.user.student.id,
+          studentId: session?.user?.student?.id,
         },
       });
     } catch (error) {

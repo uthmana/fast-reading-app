@@ -4,6 +4,7 @@ import { useState, ReactElement, useEffect, useRef } from "react";
 import { MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import wood_img from "/public/images/wood.jpg";
+import book_loader from "/public/images/book-loader.gif";
 import ControlPanel from "../controlPanel/controlPanel";
 
 interface WhiteboardProps {
@@ -23,7 +24,13 @@ export default function Whiteboard({
   pause,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [articles, setArticles] = useState([] as any);
+  const [categoryOptions, setCategoryOptions] = useState([] as any);
+  const [articleOptions, setArticleOptions] = useState([] as any);
+
   const { categorySelect, articleSelect, font, level, wordsPerFrame } = control;
+
   const [controlVal, setControlVal] = useState({
     categorySelect: {
       value: categorySelect ? categorySelect : "",
@@ -80,6 +87,11 @@ export default function Whiteboard({
             onClick={handlePlay}
           />
         </div>
+        {isLoading ? (
+          <div className="w-full h-full bg-black/5 absolute top-0 left-0 flex justify-center items-center z-30">
+            <img src={book_loader.src} alt="book loader" className="max-w-20" />
+          </div>
+        ) : null}
       </div>
       {/* Control panel */}
 
@@ -89,6 +101,13 @@ export default function Whiteboard({
           controlVal={controlVal}
           setControlVal={setControlVal}
           onControlChange={handleControlChange}
+          setIsLoading={setIsLoading}
+          articles={articles}
+          setArticles={setArticles}
+          categoryOptions={categoryOptions}
+          setCategoryOptions={setCategoryOptions}
+          articleOptions={articleOptions}
+          setArticleOptions={setArticleOptions}
         />
       </div>
 
@@ -104,6 +123,16 @@ export default function Whiteboard({
             <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {body}
             </div>
+
+            {isLoading ? (
+              <div className="w-full h-full absolute top-0 left-0 bg-black/5 flex justify-center items-center z-30">
+                <img
+                  src={book_loader.src}
+                  alt="book loader"
+                  className="max-w-20"
+                />
+              </div>
+            ) : null}
           </div>
 
           <div className="lg:max-w-[900px] w-full">
@@ -112,6 +141,13 @@ export default function Whiteboard({
               controlVal={controlVal}
               setControlVal={setControlVal}
               onControlChange={handleControlChange}
+              setIsLoading={setIsLoading}
+              articles={articles}
+              setArticles={setArticles}
+              categoryOptions={categoryOptions}
+              setCategoryOptions={setCategoryOptions}
+              articleOptions={articleOptions}
+              setArticleOptions={setArticleOptions}
             />
           </div>
         </div>

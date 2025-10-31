@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Button from "../button/button";
-import Link from "next/link";
+import { MdPauseCircle } from "react-icons/md";
 
 type Option = {
   id: string;
@@ -49,15 +49,6 @@ export default function Quiz({ questions, onFinish }: QuizProps) {
 
   if (isFinished) {
     return null;
-
-    // (
-    //   <div className="max-w-[80%] mx-auto text-center p-6 ">
-    //     <h2 className="text-2xl font-semibold mb-4">Test Tamamlandı 🎉</h2>
-    //     <p className="text-gray-600 mb-6">
-    //       {questions.length} soruyu tamamladınız.
-    //     </p>
-    //   </div>
-    // );
   }
 
   return (

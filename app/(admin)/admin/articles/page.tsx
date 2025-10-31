@@ -194,14 +194,14 @@ export default function page() {
           key={"article"}
           id={"article"}
           data={data}
-          onSubmit={(values) =>
+          onSubmit={(values) => {
             handleFormSubmit({
               values,
               method: "POST",
               apiPath: "/api/articles",
               callback: (res: Response) => handleFormResponse(res),
-            })
-          }
+            });
+          }}
           isSubmitting={isSubmitting}
           resError={resError}
           submitBtnProps={{

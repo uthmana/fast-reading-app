@@ -1,8 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 
 type SelectPropTypes = {
   placeholder?: string;
-  options: Array<{ name: string; value: string }>;
+  options?: Array<{ name: string; value: string }>;
   value: any;
   name?: string;
   required?: boolean;
@@ -15,11 +17,12 @@ type SelectPropTypes = {
   }) => void;
   inputKey: string;
   styleClass?: string;
+  asyncOption?: () => any;
 };
 
 function Select({
   placeholder,
-  options,
+  options = [],
   name,
   required = false,
   value,
@@ -28,8 +31,21 @@ function Select({
   showLabel = true,
   disabled = false,
   styleClass = "",
+  asyncOption,
   ...rest
 }: SelectPropTypes) {
+  const [localOptions, setLocalOptions] = useState(options as any);
+
+  useEffect(() => {
+    if (!options.length && asyncOption) {
+      const getOptions = async () => {
+        const res = await asyncOption();
+        setLocalOptions(res);
+      };
+      getOptions();
+    }
+  }, [asyncOption]);
+
   return (
     <div className={`w-full mb-2 text-sm ${styleClass}`}>
       {showLabel ? (
@@ -59,13 +75,22 @@ function Select({
         {...rest}
       >
         <option value=""> {placeholder}</option>
-        {options?.map((v: { name: string; value: string }, idx) => {
+        {localOptions?.map(
+          (item: { name: string; value: string }, idx: number) => {
+            return (
+              <option value={item.value} key={idx}>
+                {item.name}
+              </option>
+            );
+          }
+        )}
+        {/* {options?.map((v: { name: string; value: string }, idx) => {
           return (
             <option value={v.value} key={idx}>
               {v.name}
             </option>
           );
-        })}
+        })} */}
       </select>
     </div>
   );
