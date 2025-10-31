@@ -6,14 +6,19 @@ import React, { useEffect, useRef } from "react";
 import { MdPauseCircle } from "react-icons/md";
 
 interface ScrollingReadingProps {
+  article: { id: string; title: string; description: string; tests: any };
   controls?: {
-    text: string;
-    level: number; // speed level
+    categorySelect: string;
+    articleSelect: string;
+    font: string;
+    level: number;
+    wordsPerFrame: number;
   };
   onFinishTest?: (val: any) => void;
 }
 
 export default function ScrollingReading({
+  article,
   controls,
   onFinishTest,
 }: ScrollingReadingProps) {
@@ -21,7 +26,7 @@ export default function ScrollingReading({
   const contentRef = useRef<HTMLTextAreaElement>(null);
   const circleRef = useRef<HTMLDivElement>(null);
 
-  const text = controls?.text || sampleText;
+  const text = article?.description || sampleText;
   const level = controls?.level || 1;
 
   useEffect(() => {
@@ -72,6 +77,10 @@ export default function ScrollingReading({
           readOnly
           value={text}
           className="leading-6 w-full resize-none bg-transparent outline-none"
+          style={{
+            fontSize: `${controls && parseInt(controls.font)}px`,
+            lineHeight: `${controls && parseInt(controls.font) * 1.5}px`,
+          }}
         />
 
         <div
