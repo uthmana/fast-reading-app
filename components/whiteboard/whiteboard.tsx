@@ -24,7 +24,7 @@ export default function Whiteboard({
   pause,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [articles, setArticles] = useState([] as any);
   const [categoryOptions, setCategoryOptions] = useState([] as any);
   const [articleOptions, setArticleOptions] = useState([] as any);
