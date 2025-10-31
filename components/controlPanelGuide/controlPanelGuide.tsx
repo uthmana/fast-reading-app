@@ -17,13 +17,13 @@ export default function ControlPanelGuide({
     "Kontrol Paneli Nasıl Kullanılır";
 
   return (
-    <div className="h-full lg:px-5 flex flex-col justify-center text-gray-800 lg:max-w-[90%] max-w-full  mx-auto">
-      <div className="flex items-center gap-2 mb-4">
+    <div className="w-full h-full px-1 lg:px-7 flex flex-col justify-center space-y-2">
+      <div className="flex items-center gap-2">
         <MdInfo className="text-blue-600 w-6 h-6" />
         <h2 className="font-bold">{title}</h2>
       </div>
-      <p className="mb-4">{description ? description : ""}</p>
-      <h3 className="mb-1  font-semibold">Nasıl Kullanılır :</h3>
+      <div>{description ? description : ""}</div>
+      <h3 className=" font-semibold">Nasıl Kullanılır :</h3>
       <div dangerouslySetInnerHTML={{ __html: howToPlay }} />
     </div>
   );

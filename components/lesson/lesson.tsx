@@ -63,11 +63,11 @@ export default function Lesson({ lessons, id }: { lessons: any; id: string }) {
               {currentLesson.map((lesson: any, idx: number) => (
                 <li
                   key={lesson.link + idx}
-                  className="text-base border-2  text-white border-blue-700 hover:border-white rounded-md overflow-x-auto  hover:shadow-lg transition-shadow"
+                  className=" hover:translate-x-1 text-base border-2  text-white border-blue-700 hover:border-white rounded-md overflow-x-auto  hover:shadow-lg transition-shadow bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] "
                 >
                   <Link
                     href={lesson.link}
-                    className="block drop-shadow-lg px-5 py-2"
+                    className="block drop-shadow-lg px-5 py-2 "
                   >
                     {idx + 1}. {lesson.name}
                   </Link>
