@@ -116,10 +116,11 @@ model Article {
   id          String    @id @default(cuid())
   title       String
   description String    @db.Text
-  level       Level     @default(ILKOKUL)
+  category    Category  @relation(fields: [categoryId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   tests       Json?
+  categoryId  String
 }
 
 model ArticleTest {
@@ -129,4 +130,13 @@ model ArticleTest {
   options   Json
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  Article     Article[]
 }

@@ -22,11 +22,17 @@ export const columnsData = {
   ],
   articlesColumn: [
     { id: "id", name: "Id", type: "string" },
-    { id: "level", name: "Seviye", type: "string" },
+    { id: "category", name: "kategori", type: "category" },
     { id: "title", name: "Başlık", type: "string" },
     { id: "description", name: "Metin", type: "string" },
     { id: "tests", name: "Test", type: "json" },
-    { id: "updatedAt", name: "Tarih", type: "date" },
+    { id: "updatedAt", name: "Düzenleme", type: "date" },
+  ],
+  categoryColumn: [
+    { id: "id", name: "Id", type: "string" },
+    { id: "title", name: "Başlık", type: "string" },
+    { id: "description", name: "Açıklama", type: "string" },
+    { id: "updatedAt", name: "Düzenleme", type: "date" },
   ],
 } as const;
 

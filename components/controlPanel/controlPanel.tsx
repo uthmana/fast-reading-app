@@ -1,17 +1,28 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Select from "../formInputs/select";
 import wood_img from "/public/images/wood.jpg";
 import TextInput from "../formInputs/textInput";
 import { useParams } from "next/navigation";
-import { fetchData } from "@/utils/fetchData";
+import {
+  getArticleByCategoryId,
+  getCategoryOptions,
+} from "../formBuilder/request";
 
 interface ControlPanelProps {
   onControlChange?: (v: any) => void;
   controlVal?: any;
   setControlVal?: any;
   className?: string;
+  setIsLoading?: any;
+  isLoading?: boolean;
+  articles?: [];
+  setArticles?: any;
+  categoryOptions: [];
+  setCategoryOptions?: any;
+  articleOptions: [];
+  setArticleOptions?: any;
 }
 
 export const controlItems: any = {
@@ -45,15 +56,19 @@ export default function ControlPanel({
   controlVal,
   setControlVal,
   className,
+  setIsLoading,
+  articles,
+  setArticles,
+  categoryOptions,
+  setCategoryOptions,
+  articleOptions,
+  setArticleOptions,
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug;
   const controlItem = controlItems[pathname as any] || ["level"];
-  const [articles, setArticles] = useState([] as any);
-  const [categoryOptions, setCategoryOptions] = useState([] as any);
-  const [articleOptions, setArticleOptions] = useState([] as any);
 
-  const handleChange: any = ({
+  const handleChange: any = async ({
     targetValue,
     value,
     inputKey,
@@ -65,15 +80,20 @@ export default function ControlPanel({
     let crtVal = { ...controlVal };
     if (inputKey === "categorySelect") {
       crtVal["categorySelect"].value = targetValue;
-      setArticleOptions(
-        [...articles]
-          .filter((item) => item.level === targetValue)
-          ?.map((item) => {
+      try {
+        setArticleOptions([]);
+        setIsLoading(true);
+        const articleRes = await getArticleByCategoryId(targetValue);
+        setArticles(articleRes);
+        setArticleOptions(
+          [...articleRes]?.map((item) => {
             return { name: item.title, value: item.id };
           })
-      );
+        );
+        setIsLoading(false);
+      } catch (error) {}
     } else if (inputKey === "articleSelect") {
-      const selectedArticle = [...articles].find(
+      const selectedArticle = [...(articles as any)].find(
         (item) => item.id === targetValue
       );
       if (selectedArticle) {
@@ -90,9 +110,11 @@ export default function ControlPanel({
         font: crtVal.font.value,
         level: parseInt(crtVal.level.value),
         categorySelect: crtVal.categorySelect.value,
-        articleSelect: [...articles].find(
-          (item) => item.id === crtVal.articleSelect.value
-        ),
+        articleSelect:
+          articles &&
+          [...articles].find(
+            (item: { id: string }) => item.id === crtVal.articleSelect.value
+          ),
         wordsPerFrame: parseInt(crtVal.wordsPerFrame.value),
       });
     }
@@ -100,33 +122,19 @@ export default function ControlPanel({
 
   useEffect(() => {
     if (!controlItem.includes("categorySelect")) return;
-    const fetchArticles = async () => {
+    const fetchCategory = async () => {
+      if (categoryOptions.length) return;
       try {
-        const resData = await fetchData({
-          apiPath: "/api/articles",
-        });
-        setArticles(resData);
-        setCategoryOptions(
-          resData.map((item: any) => {
-            return { name: item.level, value: item.level };
-          })
-        );
-        if (controlVal.articleSelect.value) {
-          setArticleOptions(
-            resData
-              .filter((item: any) => item.id === controlVal.articleSelect.value)
-              ?.map((item: any) => {
-                return { name: item.title, value: item.id };
-              })
-          );
-        }
+        setIsLoading(true);
+        const opts = await getCategoryOptions();
+        setCategoryOptions(opts);
+        setIsLoading(false);
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error(error);
       }
     };
-
-    fetchArticles();
-  }, []);
+    fetchCategory();
+  }, [categoryOptions]);
 
   return (
     <div className={`flex w-full flex-col ${className}`}>
@@ -146,6 +154,7 @@ export default function ControlPanel({
                 }`}
               >
                 <Select
+                  key={categoryOptions as any}
                   placeholder="Kategori Seçin"
                   options={categoryOptions}
                   name="Kategori Seçin"
@@ -161,6 +170,7 @@ export default function ControlPanel({
                 }`}
               >
                 <Select
+                  key={articleOptions as any}
                   placeholder="Metin Seçin"
                   options={articleOptions}
                   name="Metin Seçin"
