@@ -24,3 +24,16 @@ export const getArticleByCategoryId = async (id: string) => {
     return;
   }
 };
+
+export const getExerciseOptions = async () => {
+  try {
+    const resData = await fetchData({ apiPath: "/api/exercises" });
+    const res = resData?.map((item: { title: string; id: string }) => {
+      return { name: item.title, value: item.id };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};

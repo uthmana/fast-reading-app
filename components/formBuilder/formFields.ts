@@ -1,4 +1,4 @@
-import { getCategoryOptions } from "./request";
+import { getCategoryOptions, getExerciseOptions } from "./request";
 
 export default {
   user: [
@@ -367,6 +367,36 @@ export default {
       value: { key: "description", type: "string", value: "" },
       required: true,
       rows: 8,
+    },
+  ],
+  lessons: [
+    {
+      key: "title",
+      name: "Başlık",
+      placeholder: "Başlık",
+      type: "text",
+      value: { key: "title", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "order",
+      name: "Sıralama",
+      placeholder: "Sıralama",
+      type: "number",
+      min: "1",
+      value: { key: "order", type: "number", value: "" },
+      required: true,
+    },
+    {
+      key: "Exercise",
+      name: "Egzersizler",
+      placeholder: "Egzersiz seç",
+      type: "select",
+      options: [],
+      asyncOption: getExerciseOptions,
+      multipleSelect: true,
+      value: { key: "Exercise", type: "multipleSelect", value: [] },
+      required: true,
     },
   ],
 };

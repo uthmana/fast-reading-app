@@ -5,10 +5,19 @@ export const menuItems = [
     icon: "lesson",
     subMenu: [
       { name: "Dersler", link: "/dersler", type: "info" },
-      { name: "Takistoskop", link: "/takistoskop", type: "info" },
+      {
+        name: "Takistoskop Gelişimi",
+        link: "/kelime-egzersizleri/seviye-gelisim",
+        type: "info",
+      },
       {
         name: "Hızlı Okuma Gelişimi",
-        link: "/goster-kendini",
+        link: "/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
+        type: "info",
+      },
+      {
+        name: "Anlama Gelişimi",
+        link: "/okuma-anlama-testleri/anlama-testi-gelisim",
         type: "info",
       },
     ],
@@ -17,78 +26,107 @@ export const menuItems = [
   },
   {
     name: "Göz Egzersizleri",
-    link: "/goz-egzersiz",
+    link: "/goz-egzersizleri",
     icon: "eye",
     subMenu: [
       {
         name: "Göz Egzersizleri",
-        link: "/goz-egzersiz",
+        link: "/goz-egzersizleri",
       },
       {
-        name: "Ritmini Renklendirme",
-        link: "/goz-egzersiz/ritmini-renklendirme",
+        name: "Göz Kaslarını Geliştirme",
+        link: "/goz-egzersizleri/goz-kaslarini-gelistirme",
       },
-      { name: "Siyah-Beyaz", link: "/goz-egzersiz/siyah-beyaz" },
-      { name: "Geniş Bakış", link: "/goz-egzersiz/genis-bakis" },
-      { name: "Dörtlu Kelimeler", link: "/goz-egzersiz/dortlu-kelimeler" },
-      { name: "Kelimelerin Dansı", link: "/goz-egzersiz/kelimelerin-dansi" },
-      { name: "Satır Arası", link: "/goz-egzersiz/satir-arasi" },
       {
-        name: "Satır Başı-Satrır sonu",
-        link: "/goz-egzersiz/satir-basi-satir-sonu",
+        name: "Aktif Görme Alanını Genişletme 1",
+        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
       },
-      { name: "Zigzag", link: "/goz-egzersiz/zigzag" },
+      {
+        name: "Aktif Görme Alanını Genişletme 2",
+        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+      },
+      {
+        name: "Aktif Görme Alanını Genişletme 3",
+        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+      },
+      {
+        name: "Satır Boyu Görme",
+        link: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+      },
+      { name: "Metronom", link: "/goz-egzersizleri/metronom" },
     ],
     description:
       "Göz egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün görme çevikliğini artırmak. Bu uygulamadan yeterince yararlanmak için her egzersizi 1. sevi- den 5. seviyeye kadar kademe kademe uygulayınız.",
     youtubeId: "xiTK523Ot5U",
   },
   {
-    name: "Okuma Egzersizleri",
-    link: "/okuma-egzersiz",
-    icon: "book",
+    name: "Beyin Egzersizleri",
+    link: "/beyin-egzersizleri",
+    icon: "brain",
     subMenu: [
-      { name: "Okuma Egzersizleri", link: "/okuma-egzersiz" },
-      { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
-      { name: "Kelimeler-2", link: "/okuma-egzersiz/kelimeler-2" },
-      { name: "Kelimeler-3", link: "/okuma-egzersiz/kelimeler-3" },
-      { name: "Kelimeler-4", link: "/okuma-egzersiz/kelimeler-4" },
-      { name: "Kelimeler-5", link: "/okuma-egzersiz/kelimeler-5" },
-      { name: "Sayılar-1", link: "/okuma-egzersiz/sayilar-1" },
-      { name: "Sayılar-2", link: "/okuma-egzersiz/sayilar-2" },
-      { name: "Sayılar-3", link: "/okuma-egzersiz/sayilar-3" },
-      { name: "Sayılar-4", link: "/okuma-egzersiz/sayilar-4" },
-      { name: "Sayılar-5", link: "/okuma-egzersiz/sayilar-5" },
-      { name: "Kayan Okuma", link: "/okuma-egzersiz/kayan-okuma" },
+      { name: "Beyin Egzersizleri", link: "/beyin-egzersizleri" },
+      { name: "Doğru Rengi Bul", link: "/beyin-egzersizleri/dogru-rengi-bul" },
+      {
+        name: "Doğru Kelmeyi Bil",
+        link: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+      },
+      {
+        name: "Doğru Sayıyı Bul",
+        link: "/beyin-egzersizleri/dogru-sayiyi-bul",
+      },
     ],
     description:
       "Okuma egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün kelimeleri hızlı tanımasını sağlamak.Bu uygulamadan yeterince yararlanmak için her egzersizi 1. seviden 5. seviyeye kadar kademe kademe uygulayınız.",
     youtubeId: "xiTK523Ot5U",
   },
   {
-    name: "Takistoskop",
-    link: "/takistoskop",
+    name: "Kelime Egzersizleri",
+    link: "/kelime-egzersizleri",
     icon: "text",
     subMenu: [
-      { name: "Takistoskop", link: "/takistoskop" },
-      { name: "Hızlı Görme", link: "/takistoskop/hizli-gorme" },
+      { name: "Kelime Egzersizleri", link: "/kelime-egzersizleri" },
+      { name: "Hızlı Görme", link: "/kelime-egzersizleri/hizli-gorme" },
+      {
+        name: "Göz Çevikliğini Arttırma",
+        link: "/kelime-egzersizleri/goz-cevikligi-artirma",
+      },
+      {
+        name: "Seviyenizi Yükseltin",
+        link: "/kelime-egzersizleri/seviye-yukselt",
+      },
+      {
+        name: "Gelişim Durumunuz",
+        link: "/kelime-egzersizleri/seviye-gelisim",
+      },
     ],
     description:
       "Hızlı Görme Uygulaması Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır.",
     youtubeId: "xiTK523Ot5U",
   },
   {
-    name: "Hızlı Oku",
-    link: "/hizli-oku",
-    icon: "fast-reading",
+    name: "Metin Egzersizleri",
+    link: "/metin-egzersizleri",
+    icon: "book",
     subMenu: [
       {
-        name: "Hızlı Oku",
-        link: "/hizli-oku",
+        name: "Metin Egzersizleri",
+        link: "/metin-egzersizleri",
       },
       {
-        name: "Silinmeden Okuma",
-        link: "/hizli-oku/okuma",
+        name: "Silinmeden Blok Okuma",
+        link: "/metin-egzersizleri/silinmeden-okuma",
+      },
+      {
+        name: "Silinerek Blok Okuma",
+        link: "/metin-egzersizleri/silinerek-okuma",
+      },
+      {
+        name: "Odaklı Blok Okuma",
+        link: "/metin-egzersizleri/odakli-okuma",
+      },
+      {
+        name: "Grup Okuma",
+        link: "/metin-egzersizleri/grup-okuma",
       },
     ],
     description:
@@ -96,20 +134,26 @@ export const menuItems = [
     youtubeId: "xiTK523Ot5U",
   },
   {
-    name: "Göster Kendini",
-    link: "/goster-kendini",
+    name: "Okuma ve Anlama Testleri",
+    link: "/okuma-anlama-testleri",
     icon: "test",
     subMenu: [
-      { name: "Göster Kendini", link: "/goster-kendini" },
-      { name: "Hızlı Okuma Testi", link: "/goster-kendini/hizli-okuma-testi" },
+      { name: "Okuma ve Anlama Testleri", link: "/okuma-anlama-testleri" },
+      {
+        name: "Hızlı Okuma Testi",
+        link: "/okuma-anlama-testleri/hizli-okuma-testi",
+      },
       {
         name: "Hızlı Okuma Gelişimi",
-        link: "/goster-kendini/hizli-okuma-testi-gelisim",
+        link: "/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
       },
-      { name: "Anlama Testi", link: "/goster-kendini/anlama-testi" },
-      { name: "Anlama Gelişimi", link: "/goster-kendini/anlama-testi-gelisim" },
+      { name: "Anlama Testi", link: "/okuma-anlama-testleri/anlama-testi" },
+      {
+        name: "Anlama Gelişimi",
+        link: "/okuma-anlama-testleri/anlama-testi-gelisim",
+      },
     ],
-    description: "Göster Kendini",
+    description: "Okuma ve Anlama Testleri",
     youtubeId: "xiTK523Ot5U",
   },
 ];

@@ -76,6 +76,16 @@ function TableBuilder({
         />
       );
     }
+    if (type === "exercisesJson") {
+      return (
+        <Button
+          className="!p-1 !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
+          text=""
+          onClick={() => onAction("exercises", info)}
+          icon={<MdChecklist className="w-6 h-6" />}
+        />
+      );
+    }
 
     return value;
   };

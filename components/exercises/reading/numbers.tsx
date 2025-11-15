@@ -6,7 +6,7 @@ import { MdPauseCircle } from "react-icons/md";
 interface EyeExerciseProps {
   controls?: {
     text?: string | string[];
-    level?: 1 | 2 | 3 | 4 | 5; // Now 1 = slowest, 5 = fastest
+    level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // Now 1 = slowest, 10 = fastest
     wordsPerFrame: number;
     font?: string;
   };
@@ -27,11 +27,16 @@ export default function Numbers({
   const level = controls?.level || 1;
   // Faster at higher level
   const speedMap: Record<number, number> = {
-    1: 900, // slowest
-    2: 750,
+    1: 600,
+    2: 500,
     3: 450,
-    4: 250,
-    5: 100, // fastest
+    4: 425,
+    5: 400,
+    6: 380,
+    7: 370,
+    8: 360,
+    9: 350,
+    10: 340,
   };
 
   const frameDuration = speedMap[level] || 2000;

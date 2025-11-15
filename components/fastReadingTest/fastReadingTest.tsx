@@ -28,6 +28,11 @@ type FastReadingTestProps = {
     wordsPerFrame: number;
   };
   variant?: string;
+  readingStatus?: (v: {
+    counter: number;
+    totalWords: number;
+    wpm: number;
+  }) => void;
 };
 
 export default function FastReadingTest({
@@ -36,6 +41,7 @@ export default function FastReadingTest({
   questions = [],
   control,
   variant = "FASTREADING",
+  readingStatus,
 }: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -115,11 +121,18 @@ export default function FastReadingTest({
     }
   };
 
+  useEffect(() => {
+    if (!readingStatus) return;
+    const countWord = countWords(article?.description || "");
+    const wpm = calculateReadingSpeed(countWord || 1, counter || 1);
+    readingStatus({ counter: counter || 1, totalWords: countWord, wpm });
+  }, [counter, article?.description]);
+
   return (
     <div className="w-full">
       <div className="w-full text-right sticky top-0">
         <Timer
-          className="drop-shadow w-fit ml-auto rounded"
+          className="drop-shadow w-fit ml-auto rounded opacity-10"
           onValue={(v) => setCounter(v)}
           start={isReading}
         />

@@ -17,6 +17,9 @@ type InputProps = {
   styleClass?: string;
   min?: string;
   max?: string;
+  step?: string;
+  showRangeIcon?: boolean;
+  description?: string;
 };
 
 function TextInput(props: InputProps) {
@@ -31,6 +34,11 @@ function TextInput(props: InputProps) {
     disabled,
     maxlength,
     styleClass = "",
+    step,
+    showRangeIcon = false,
+    description,
+    min,
+    max,
     ...rest
   } = props;
 
@@ -42,13 +50,22 @@ function TextInput(props: InputProps) {
       >
         {name}
         {type === "range" ? (
-          <span>: {value?.value}</span>
+          <div className="w-full relative flex justify-between items-center">
+            <span className="inline-block">: {value?.value}</span>
+            {type === "range" && showRangeIcon ? (
+              <span className="absolute right-1 -top-[5px]">
+                <img
+                  className="h-8 inline-block"
+                  src={`/images/objects/icon${value?.value}.png`}
+                />
+              </span>
+            ) : null}
+          </div>
         ) : (
           <span className={!value?.value ? "text-red-400" : "text-green-400"}>
             *
           </span>
         )}
-        {}
       </label>
       <input
         autoComplete={`new-${type}`}
@@ -56,9 +73,14 @@ function TextInput(props: InputProps) {
         required={required}
         id={inputKey}
         name={inputKey}
-        className="w-full border h-10 px-2"
+        className={`w-full border h-10  ${
+          type === "range" ? "cursor-grab !h-auto mt-1" : "px-2"
+        }`}
+        min={min}
+        max={max}
         placeholder={placeholder}
         type={type}
+        step={step}
         value={value?.value}
         onChange={(e) => {
           onChange({ targetValue: e.target.value, value, inputKey });
@@ -66,6 +88,10 @@ function TextInput(props: InputProps) {
         disabled={disabled}
         {...rest}
       />
+
+      {description ? (
+        <div className="text-xs text-center lg:text-left">{description}</div>
+      ) : null}
     </div>
   );
 }

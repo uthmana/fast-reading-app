@@ -4,6 +4,99 @@ import bcrypt from "bcryptjs";
 async function main() {
   const hashedPassword = await bcrypt.hash("1234", 10);
 
+  const exerciseData = [
+    {
+      title: "Göz Kaslarını Geliştirme",
+      pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 1",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 2",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 3",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Satır Boyu Görme",
+      pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Metronom",
+      pathName: "/goz-egzersizleri/metronom",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Rengi Bul",
+      pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Kelmeyi Bil",
+      pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Sayıyı Bul",
+      pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Hızlı Görme",
+      pathName: "/kelime-egzersizleri/hizli-gorme",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Göz Çevikliğini Arttırma",
+      pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Silinmeden Blok Okuma",
+      pathName: "/metin-egzersizleri/silinmeden-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Silinerek Blok Okuma",
+      pathName: "/metin-egzersizleri/silinerek-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Odaklı Blok Okuma",
+      pathName: "/metin-egzersizleri/odakli-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Grup Okuma",
+      pathName: "/metin-egzersizleri/grup-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+  ];
+
   const user = await prisma.user.upsert({
     where: { username: "deneme" },
     update: {},
@@ -161,7 +254,23 @@ async function main() {
     },
   });
 
-  console.log({ user, student, article });
+  const createdExercises = await prisma.$transaction(
+    exerciseData.map((item) => prisma.exercise.create({ data: item }))
+  );
+
+  const lesson = await prisma.lesson.create({
+    data: {
+      title: "1. Ders aşağıdaki egzersizleri yapınız.",
+      order: 1,
+      Exercise: {
+        connect: createdExercises?.slice(0, 10)?.map((item) => ({
+          id: item.id,
+        })),
+      },
+    },
+    include: { Exercise: true },
+  });
+  console.log({ user, student, article, createdExercises, lesson });
 }
 
 main()

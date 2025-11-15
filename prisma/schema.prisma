@@ -19,18 +19,18 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
+  id        String    @id @default(cuid())
   name      String
-  username  String     @unique
-  email     String     @unique
-  tcId      String     @unique
+  username  String    @unique
+  email     String    @unique
+  tcId      String    @unique
   password  String
-  role      Role       @default(STUDENT)
-  active    Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime?  @updatedAt
+  role      Role      @default(STUDENT)
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
   Student   Student?
-  Progress  Progress[]
+  //Progress  Progress[]
 }
 
 model Student {
@@ -44,25 +44,38 @@ model Student {
 }
 
 model Lesson {
-  id        String     @id @default(cuid())
-  title     String
-  dayIndex  Int
-  sections  Json? // meta for which exercises
-  createdAt DateTime   @default(now())
-  updatedAt DateTime?  @updatedAt
-  Exercise  Exercise[]
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  order       Int        @default(1)
+  Exercise    Exercise[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
 }
 
 model Exercise {
-  id        String       @id @default(cuid())
-  type      ExerciseType
-  title     String?
-  lessonId  String?
-  lesson    Lesson?      @relation(fields: [lessonId], references: [id])
-  config    Json?
-  createdAt DateTime     @default(now())
-  Progress  Progress[]
+  id          String   @id @default(cuid())
+  title       String?
+  pathName    String
+  minDuration Int      @default(180) // minimum Duration in seconds
+  lessonId    String?
+  lesson      Lesson?  @relation(fields: [lessonId], references: [id])
+  config      Json?
+  createdAt   DateTime @default(now())
+  taken       Boolean  @default(false)
+  //Progress    Progress[]
 }
+
+// model Progress {
+//   id            String   @id @default(cuid())
+//   wpm           Int
+//   comprehension Int
+//   createdAt     DateTime @default(now())
+//   userId        String
+//   exerciseId    String
+//   user          User     @relation(fields: [userId], references: [id])
+//   exercise      Exercise @relation(fields: [exerciseId], references: [id])
+// }
 
 model Attempt {
   id          String   @id @default(cuid())
@@ -70,6 +83,7 @@ model Attempt {
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
   wpm         Float? // words per minute measured
+  wpf         Int?     @default(1) // words per frame
   variant     TestType @default(FASTREADING)
   durationSec Int?
   createdAt   DateTime @default(now())
@@ -84,6 +98,7 @@ enum Role {
 enum TestType {
   FASTREADING
   UNDERSTANDING
+  FASTVISION
 }
 
 enum ExerciseType {
@@ -99,17 +114,6 @@ enum Level {
   ORTAOKUL
   LISE
   YETISKIN
-}
-
-model Progress {
-  id            String   @id @default(cuid())
-  wpm           Int
-  comprehension Int
-  createdAt     DateTime @default(now())
-  userId        String
-  exerciseId    String
-  user          User     @relation(fields: [userId], references: [id])
-  exercise      Exercise @relation(fields: [exerciseId], references: [id])
 }
 
 model Article {
@@ -139,4 +143,13 @@ model Category {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   Article     Article[]
+}
+
+model Words {
+  id        String    @id @default(cuid())
+  title     String?
+  wpc       Int       @default(1) // words per count
+  list      Json
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }

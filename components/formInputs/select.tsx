@@ -11,13 +11,14 @@ type SelectPropTypes = {
   disabled?: boolean;
   showLabel?: boolean;
   onChange: (e: {
-    targetValue: string;
+    targetValue: string | string[];
     value: string;
     inputKey: string;
   }) => void;
   inputKey: string;
   styleClass?: string;
   asyncOption?: () => any;
+  multipleSelect?: boolean;
 };
 
 function Select({
@@ -32,15 +33,18 @@ function Select({
   disabled = false,
   styleClass = "",
   asyncOption,
+  multipleSelect = false,
   ...rest
 }: SelectPropTypes) {
   const [localOptions, setLocalOptions] = useState(options as any);
-
+  const [isLodingOption, setisLodingOption] = useState(false);
   useEffect(() => {
     if (!options.length && asyncOption) {
       const getOptions = async () => {
+        setisLodingOption(true);
         const res = await asyncOption();
         setLocalOptions(res);
+        setisLodingOption(false);
       };
       getOptions();
     }
@@ -65,16 +69,31 @@ function Select({
       <select
         disabled={disabled}
         required={required}
-        className="w-full border h-10 px-2"
+        className={`w-full border h-10 px-2 ${
+          multipleSelect ? "!h-[160px]" : ""
+        }`}
         id={name}
         name={name}
-        value={value?.value}
-        onChange={(e) =>
-          onChange({ targetValue: e.target.value, value, inputKey })
+        value={
+          multipleSelect
+            ? Array.isArray(value?.value)
+              ? value.value
+              : []
+            : value?.value ?? ""
         }
+        multiple={multipleSelect}
+        onChange={(e) => {
+          const newValue = multipleSelect
+            ? Array.from(e.target.selectedOptions).map((opt) => opt.value)
+            : e.target.value;
+
+          onChange({ targetValue: newValue, value, inputKey });
+        }}
         {...rest}
       >
         <option value=""> {placeholder}</option>
+        {isLodingOption ? <option value=""> Loading... </option> : null}
+
         {localOptions?.map(
           (item: { name: string; value: string }, idx: number) => {
             return (
@@ -84,13 +103,6 @@ function Select({
             );
           }
         )}
-        {/* {options?.map((v: { name: string; value: string }, idx) => {
-          return (
-            <option value={v.value} key={idx}>
-              {v.name}
-            </option>
-          );
-        })} */}
       </select>
     </div>
   );

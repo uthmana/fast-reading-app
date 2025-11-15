@@ -33,7 +33,7 @@ export default function Sidebar({
 
   return (
     <aside className="hidden min-h-96 lg:block w-64 bg-white  pl-4">
-      <ul className="space-y-2">
+      <ul className="space-y-[1px]">
         {selected?.subMenu?.map((item: MenuItem) => {
           if (item?.type === "info") {
             return (
@@ -59,7 +59,7 @@ export default function Sidebar({
             <li key={item.name}>
               <Link
                 href={item.link || "#"}
-                className={`block px-3 py-2 border  rounded-lg text-white bg-blue-600 group  hover:bg-blue-700 transition ${
+                className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-blue-600 group  hover:bg-blue-700 transition ${
                   pathname === item.link
                     ? "bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
                     : ""

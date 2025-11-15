@@ -6,6 +6,7 @@ import {
   MdOutlineArticle,
   MdGroups,
   MdCategory,
+  MdBookmark,
 } from "react-icons/md";
 
 const routes = [
@@ -23,6 +24,11 @@ const routes = [
     name: "Kategori",
     path: "/admin/category",
     icon: <MdCategory className="w-6 h-6" />,
+  },
+  {
+    name: "Dersler",
+    path: "/admin/lessons",
+    icon: <MdBookmark className="w-6 h-6" />,
   },
   {
     name: "Öğrenciler",
