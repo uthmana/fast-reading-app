@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useMemo } from "react";
-import LogOutInput from "../../formInputs/logoutInput";
 
 interface Route {
   path: string;
@@ -70,26 +69,22 @@ export default function SideBar({
       </div>
 
       <nav className="p-4">
-        {routes.map((route, idx) => {
+        {routes.map((route: any, idx) => {
           const rp = normalize(route.path);
           const active = rp === activePath;
           return (
             <Link
               key={route.name + idx}
               href={route.path}
-              className={`block px-3 py-2 rounded border-b transition-colors duration-200 text-black hover:text-white  hover:bg-blue-600 ${
+              className={`px-3 py-2 flex gap-5 rounded border-b transition-colors duration-200 text-black hover:text-white  hover:bg-blue-600 ${
                 active ? "bg-blue-600 text-white font-semibold" : ""
               }`}
             >
-              {route.name}
+              {route.icon} {route.name}
             </Link>
           );
         })}
       </nav>
-
-      <div className="p-4 absolute bottom-0">
-        <LogOutInput />
-      </div>
     </aside>
   );
 }

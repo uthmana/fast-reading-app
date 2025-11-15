@@ -1,11 +1,14 @@
 "use client";
 
+import Button from "@/components/button/button";
 import React, { useEffect, useState } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 type BetweenLineProps = {
   text: string;
   columns?: number;
-  controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  controls?: { level?: 1 | 2 | 3 | 4 | 5; font: "12" };
+  onFinishTest?: (v: any) => void;
 };
 
 let texttouse: string = `
@@ -18,12 +21,20 @@ export default function BetweenLine({
   text = texttouse,
   columns = 4,
   controls,
+  onFinishTest,
 }: BetweenLineProps) {
-  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 200 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const speed = speedMap[controls?.level || 3];
   const words = text.split(/\s+/).slice(0, 14 * 4 - 1);
   const wordsPerColumn = Math.ceil(words.length / columns);
   const [highlightIndex, setHighlightIndex] = useState(0);
+  const font = controls?.font || "12";
   useEffect(() => {
     const interval = setInterval(() => {
       setHighlightIndex((prev) => (prev + 1) % words.length);
@@ -36,6 +47,12 @@ export default function BetweenLine({
   const columnsArray = Array.from({ length: columns }, (_, i) =>
     words.slice(i * wordsPerColumn, (i + 1) * wordsPerColumn)
   );
+
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
 
   return (
     <div
@@ -69,6 +86,7 @@ export default function BetweenLine({
                   //fontWeight: isHighlighted ? "bold" : "normal",
                   fontWeight: "normal",
                   transition: "all 0.3s ease",
+                  fontSize: `${font}px`,
                 }}
               >
                 {word}
@@ -91,6 +109,12 @@ export default function BetweenLine({
           })}
         </div>
       ))}
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

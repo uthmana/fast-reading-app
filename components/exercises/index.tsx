@@ -3,7 +3,6 @@
 import React from "react";
 import RhythmicColoring from "./eye/rhythmicColoring";
 import Tachistoscope from "./Tachistoscope";
-import { useParams } from "next/navigation";
 import BlackWhite from "./eye/blackWhite";
 import Wideview from "./eye/wideview";
 import FourWords from "./eye/fourWords";
@@ -15,12 +14,24 @@ import FastReading from "./fastReading";
 import Words from "./reading/words";
 import Numbers from "./reading/numbers";
 import ScrollingReading from "./reading/scrollingReading";
-
+import { letterNumbers, letterWords } from "@/utils/constants";
+import NotFound from "@/app/(home)/not-found";
+import EyeMuscle from "./eye/eyeMuscle";
+import EyeMuscleDevelopment from "./eye/EyeMuscleDevelopment";
+import EyeNumberGrid from "./eye/EyeNumberGrid";
+import VisualFieldTrainer from "./eye/VisualFieldTrainer";
+import BoxZoomExercise from "./eye/BoxZoomExercise";
+import PerspectiveFrameExercise from "./eye/PerspectiveFrameExercise";
+import MetronomeEyeTrainerWithSound from "./eye/MetronomeEyeTrainerWithSound";
+import SplitWordMirrorExercise from "./eye/SplitWordExercise";
 export default function RenderExercise(props: any) {
-  const queryParams = useParams();
-  const pathname = queryParams.slug;
-
+  const pathname: string = props.pathname;
   if (!pathname) return null;
+
+  const fourWordsPerFrame =
+    pathname === "sayilar-3" ||
+    pathname === "sayilar-4" ||
+    pathname === "sayilar-5";
 
   switch (pathname) {
     case "ritmini-renklendirme":
@@ -48,16 +59,40 @@ export default function RenderExercise(props: any) {
     case "kelimeler-3":
     case "kelimeler-4":
     case "kelimeler-5":
-      return <Words pathname={pathname} {...props} />;
+      return (
+        <Words pathname={pathname} words={letterWords[pathname]} {...props} />
+      );
     case "sayilar-1":
     case "sayilar-2":
     case "sayilar-3":
     case "sayilar-4":
     case "sayilar-5":
-      return <Numbers pathname={pathname} {...props} />;
+      return (
+        <Numbers
+          {...props}
+          pathname={pathname}
+          words={letterNumbers[pathname]}
+          {...(fourWordsPerFrame ? { wordsPerFrame: 4 } : {})}
+        />
+      );
+    case "goz-kaslari":
+      return <EyeMuscle {...props} />;
+    case "goz-kaslarini-gelistirme":
+      return <EyeMuscleDevelopment {...props} />;
+    case "aktif-gorme-alanini-genisletme":
+      return <VisualFieldTrainer {...props} />;
+    case "aktif-gorme-alanini-genisletme-2":
+      return <BoxZoomExercise {...props} />;
+    //return <EyeNumberGrid {...props} />;
     case "kayan-okuma":
       return <ScrollingReading {...props} />;
+    case "aktif-gorme-alanini-genisletme-3":
+      return <PerspectiveFrameExercise {...props} />;
+    case "satir-boyu-gorme-uygulamasi":
+          return <SplitWordMirrorExercise {...props} />;
+    case "metronom":
+       return <MetronomeEyeTrainerWithSound {...props} />;
     default:
-      return <div>Oops! Sayfa bulunamadı</div>;
+      return <NotFound />;
   }
 }

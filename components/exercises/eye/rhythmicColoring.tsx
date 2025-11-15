@@ -1,15 +1,19 @@
 "use client";
 
+import Button from "@/components/button/button";
 import React, { useEffect, useState } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 type RhythmicColoringProps = {
   controls?: { level?: 1 | 2 | 3 | 4 | 5; text?: string; articleId?: string };
   objectSize?: number;
+  onFinishTest?: (v: any) => void;
 };
 
 export default function RhythmicColoring({
-  objectSize = 60,
+  objectSize = 40,
   controls,
+  onFinishTest,
 }: RhythmicColoringProps) {
   const [visible, setVisible] = useState(true);
   const [side, setSide] = useState<"left" | "right">("left");
@@ -24,7 +28,13 @@ export default function RhythmicColoring({
   const jump = step * 2; // move 2 rows per step
 
   // Level → speed map
-  const speedMap = { 1: 1200, 2: 900, 3: 600, 4: 400, 5: 250 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const duration = speedMap[level];
 
   useEffect(() => {
@@ -86,6 +96,12 @@ export default function RhythmicColoring({
     return () => clearInterval(interval);
   }, [y, side, phase, duration, objectSize]);
 
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
+
   return (
     <div
       id="rhythmic-container"
@@ -103,7 +119,14 @@ export default function RhythmicColoring({
           top: y,
           left: side === "left" ? "15%" : "75%",
           transform: "translate(-50%, 0)",
+          border: "4px solid #000",
         }}
+      />
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
       />
     </div>
   );

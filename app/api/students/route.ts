@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
@@ -35,6 +34,8 @@ export async function POST(req: Request) {
   const {
     id,
     name,
+    username,
+    tcId,
     email,
     password,
     role,
@@ -43,7 +44,15 @@ export async function POST(req: Request) {
     endDate,
     level,
   }: User | any = await req.json();
-  if (!name || !password || !role || !startDate || !endDate || !level) {
+  if (
+    !username ||
+    !tcId ||
+    !password ||
+    !role ||
+    !startDate ||
+    !endDate ||
+    !level
+  ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -65,6 +74,8 @@ export async function POST(req: Request) {
           data: {
             name,
             email,
+            username,
+            tcId,
             password: pwd,
             role: role,
             active,
@@ -85,6 +96,8 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name,
+        username,
+        tcId,
         email,
         password: hashedPassword,
         role: role,

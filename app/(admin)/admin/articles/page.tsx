@@ -55,7 +55,7 @@ export default function page() {
     setSelectedArticle(currentArticle);
 
     if (actionType === "add") {
-      setData({ ...data });
+      setData({});
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
@@ -65,21 +65,23 @@ export default function page() {
       setIsShowPopUp(true);
     }
     if (actionType === "delete") {
-      try {
-        setIsloading(true);
-        await fetchData({
-          apiPath: "/api/articles",
-          method: "DELETE",
-          payload: { id: currentArticle.id },
-        });
-        setArticles(
-          [...articles].filter((val: any) => val.id !== currentArticle.id)
-        );
-        setIsloading(false);
-      } catch (error) {
-        setIsloading(false);
-        console.error(error);
-        return;
+      if (confirm("Silmek istediğini emin misin ?")) {
+        try {
+          setIsloading(true);
+          await fetchData({
+            apiPath: "/api/articles",
+            method: "DELETE",
+            payload: { id: currentArticle.id },
+          });
+          setArticles(
+            [...articles].filter((val: any) => val.id !== currentArticle.id)
+          );
+          setIsloading(false);
+        } catch (error) {
+          setIsloading(false);
+          console.error(error);
+          return;
+        }
       }
     }
     if (actionType === "quiz") {
@@ -185,21 +187,21 @@ export default function page() {
         key="articlepopup"
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
-        title="Makale Ekle"
+        title="Okuma Metin Ekle"
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <FormBuilder
           key={"article"}
           id={"article"}
           data={data}
-          onSubmit={(values) =>
+          onSubmit={(values) => {
             handleFormSubmit({
               values,
               method: "POST",
               apiPath: "/api/articles",
               callback: (res: Response) => handleFormResponse(res),
-            })
-          }
+            });
+          }}
           isSubmitting={isSubmitting}
           resError={resError}
           submitBtnProps={{

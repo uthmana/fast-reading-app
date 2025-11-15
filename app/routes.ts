@@ -2,10 +2,15 @@ export const menuItems = [
   {
     name: "Dersler",
     link: "/dersler",
+    icon: "lesson",
     subMenu: [
-      { name: "Dersler", link: "/dersler" },
-      { name: "Takistoskop", link: "/takistoskop" },
-      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
+      { name: "Dersler", link: "/dersler", type: "info" },
+      { name: "Takistoskop", link: "/takistoskop", type: "info" },
+      {
+        name: "Hızlı Okuma Gelişimi",
+        link: "/goster-kendini",
+        type: "info",
+      },
     ],
     description: "Tüm dersler",
     youtubeId: "",
@@ -13,6 +18,7 @@ export const menuItems = [
   {
     name: "Göz Egzersizleri",
     link: "/goz-egzersiz",
+    icon: "eye",
     subMenu: [
       {
         name: "Göz Egzersizleri",
@@ -32,6 +38,32 @@ export const menuItems = [
         link: "/goz-egzersiz/satir-basi-satir-sonu",
       },
       { name: "Zigzag", link: "/goz-egzersiz/zigzag" },
+      { name: "Göz Kasları", link: "/goz-egzersiz/goz-kaslari" },
+      {
+        name: "Göz Kaslarını Geliştirme",
+        link: "/goz-egzersiz/goz-kaslarini-gelistirme",
+      },
+      {
+        name: "Aktif Görme Alanını Genişletme",
+        link: "/goz-egzersiz/aktif-gorme-alanini-genisletme",
+      },
+      {
+        name: "Aktif Görme Alanını Genişletme 2",
+        link: "/goz-egzersiz/aktif-gorme-alanini-genisletme-2",
+      },
+      {
+        name: "Aktif Görme Alanını Genişletme 3",
+        link: "/goz-egzersiz/aktif-gorme-alanini-genisletme-3",
+       },
+       {
+            name: "Satır Boyu Görme Uygulaması",
+           link: "/goz-egzersiz/satir-boyu-gorme-uygulamasi",
+        },
+        {
+            name: "Metronom",
+            link: "/goz-egzersiz/metronom",
+        }
+
     ],
     description:
       "Göz egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün görme çevikliğini artırmak. Bu uygulamadan yeterince yararlanmak için her egzersizi 1. sevi- den 5. seviyeye kadar kademe kademe uygulayınız.",
@@ -40,6 +72,7 @@ export const menuItems = [
   {
     name: "Okuma Egzersizleri",
     link: "/okuma-egzersiz",
+    icon: "book",
     subMenu: [
       { name: "Okuma Egzersizleri", link: "/okuma-egzersiz" },
       { name: "Kelimeler-1", link: "/okuma-egzersiz/kelimeler-1" },
@@ -61,6 +94,7 @@ export const menuItems = [
   {
     name: "Takistoskop",
     link: "/takistoskop",
+    icon: "text",
     subMenu: [
       { name: "Takistoskop", link: "/takistoskop" },
       { name: "Hızlı Görme", link: "/takistoskop/hizli-gorme" },
@@ -72,6 +106,7 @@ export const menuItems = [
   {
     name: "Hızlı Oku",
     link: "/hizli-oku",
+    icon: "fast-reading",
     subMenu: [
       {
         name: "Hızlı Oku",
@@ -89,10 +124,16 @@ export const menuItems = [
   {
     name: "Göster Kendini",
     link: "/goster-kendini",
+    icon: "test",
     subMenu: [
       { name: "Göster Kendini", link: "/goster-kendini" },
-      { name: "Hızlı Okuma Gelişimi", link: "/goster-kendini/gelisim" },
-      { name: "Anlama Gelişimi", link: "/goster-kendini/gelisim" },
+      { name: "Hızlı Okuma Testi", link: "/goster-kendini/hizli-okuma-testi" },
+      {
+        name: "Hızlı Okuma Gelişimi",
+        link: "/goster-kendini/hizli-okuma-testi-gelisim",
+      },
+      { name: "Anlama Testi", link: "/goster-kendini/anlama-testi" },
+      { name: "Anlama Gelişimi", link: "/goster-kendini/anlama-testi-gelisim" },
     ],
     description: "Göster Kendini",
     youtubeId: "xiTK523Ot5U",

@@ -5,20 +5,29 @@ import Popup from "../../components/popup/popup";
 import { useEffect, useState } from "react";
 import Button from "../../components/button/button";
 import { fetchData } from "@/utils/fetchData";
-import { MdGroups, MdPlayCircle, MdSchedule, MdTimeline } from "react-icons/md";
+import {
+  MdGroups,
+  MdHourglassBottom,
+  MdHourglassTop,
+  MdPlayCircle,
+} from "react-icons/md";
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
 import { formatDateTime } from "@/utils/helpers";
+import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [user, setUser] = useState({} as any);
 
-  const [categories, setCategories] = useState([]);
-  const [speed, setSpeed] = useState([]);
-  const [comprehension, setComprehension] = useState([]);
+  const [understandingData, setUnderstandingData] = useState(
+    {} as { data: []; categories: [] }
+  );
+  const [fastReadingData, setFastReadingData] = useState(
+    {} as { data: []; categories: [] }
+  );
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -31,29 +40,46 @@ export default function Home() {
       if (!session) return;
       try {
         const resData = await fetchData({
-          apiPath: `/api/users?name=${encodeURIComponent(session.user.name)}`,
+          apiPath: `/api/users?username=${encodeURIComponent(
+            session.user.username
+          )}`,
         });
         setUser(resData);
-        if (resData?.Student?.attempts?.length) {
-          const mappedData = resData.Student.attempts.map(
-            ({ wpm, createdAt, correct }: any) => ({
-              wpm,
-              category: formatDateTime(createdAt),
-              correct,
-            })
-          );
 
-          setCategories(mappedData.map(({ category }: any) => category));
-          setSpeed(mappedData.map(({ wpm }: any) => wpm));
-          setComprehension(mappedData.map(({ correct }: any) => correct));
-        }
+        const attempts = resData?.Student?.attempts || [];
+        if (!attempts.length) return;
+
+        const formatted = attempts.map(
+          ({ wpm, createdAt, correct, variant }: any) => ({
+            wpm,
+            correct,
+            variant,
+            category: formatDateTime(createdAt),
+          })
+        );
+
+        const buildData = (key: "wpm" | "correct", variant: string) => {
+          const filtered = formatted.filter((i: any) => i.variant === variant);
+          return {
+            data: filtered.map((i: any) => i[key]),
+            categories: filtered.map((i: any) => i.category),
+          };
+        };
+
+        setFastReadingData(buildData("wpm", "FASTREADING"));
+        setUnderstandingData(buildData("correct", "UNDERSTANDING"));
       } catch (error) {}
     };
     requestData();
   }, [session]);
 
-  if (status === "loading") return <p className="text-center">Loading...</p>;
-  if (!session) return <p>Please log in</p>;
+  if (status === "loading") return <DashboardSkeleton />;
+  if (!session)
+    return (
+      <Link href="/login">
+        <Button text="Giriş Yap" />
+      </Link>
+    );
 
   const handleUserPolicy = () => {
     if (typeof window !== "undefined") {
@@ -71,7 +97,9 @@ export default function Home() {
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
       <div className="flex flex-wrap gap-4 w-full mb-10">
         <Widget
-          icon={<MdGroups className="w-10 h-10 text-blue-500" />}
+          icon={
+            <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
           description="Eğitim Grubunuz"
           title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
@@ -79,22 +107,31 @@ export default function Home() {
           className="flex-1"
         />
         <Widget
-          icon={<MdTimeline className="w-10 h-10 text-blue-500" />}
-          description="Eğitim Başlangç"
+          icon={
+            <MdHourglassTop className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
+          description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
           className="flex-1"
         />
         <Widget
-          icon={<MdSchedule className="w-10 h-10 text-blue-500" />}
+          icon={
+            <MdHourglassBottom className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+          }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
           className="flex-1"
         />
-        <Link className="flex" href={"/dersler"}>
+        <Link
+          className="inline-block flex-1 lg:max-w-[32.3%]"
+          href={"/dersler"}
+        >
           <Widget
-            icon={<MdPlayCircle className="w-10 h-10 text-white" />}
+            icon={
+              <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />
+            }
             title="Eğitime Başla"
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+            className="flex-1 bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] hover:!bg-blue-700 text-white"
           />
         </Link>
       </div>
@@ -106,7 +143,7 @@ export default function Home() {
             chartData={[
               {
                 name: "Okuma Hızı",
-                data: speed,
+                data: fastReadingData.data || [],
               },
             ]}
             chartOptions={{
@@ -114,7 +151,7 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: categories,
+                categories: fastReadingData.categories || [],
               },
             }}
           />
@@ -125,7 +162,7 @@ export default function Home() {
             chartData={[
               {
                 name: "Anlama",
-                data: comprehension,
+                data: understandingData.data || [],
               },
             ]}
             chartOptions={{
@@ -133,11 +170,11 @@ export default function Home() {
                 id: "basic-bar",
               },
               xaxis: {
-                categories: categories,
+                categories: understandingData.categories || [],
               },
               dataLabels: {
                 enabled: true,
-                formatter: (val: number) => `${val}%`, // 👈 adds percentage symbol
+                formatter: (val: number) => `${val}%`,
                 style: {
                   fontSize: "12px",
                   colors: ["#333"],
@@ -156,26 +193,21 @@ export default function Home() {
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <div className="text-justify text-sm mt-2 space-y-3 mb-4">
-          <h1 className="text-2xl font-bold"> Kullanım Şartları </h1>
+          <h1 className="text-2xl font-bold"> KULLANIM SÖZLEŞMESİ </h1>
           <p>
-            "Lorem ipsum" is a nonsensical pseudo-Latin placeholder text used in
-            graphic design, publishing, and web development to demonstrate the
-            visual form of a document or typeface without distracting with
-            meaningful content. It is derived from a 1st-century B.C. Latin text
-            by the philosopher Cicero, but its words and letters have been
-            altered, making it essentially meaningless while still resembling
-            classical Latin
+            Mahmut YILMAZ Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
+            hakkı ve bu yazılımda yer alan bilgilerin ve yazılımların telif
+            hakları Mahmut YILMAZ'a aittir. Tüm hakları saklıdır. Bu yazılımda
+            yer alan bilgi ve yazılım yeniden üretilemez, çoğaltılamaz,
+            kopyalanamaz, aktarılamaz, dağıtılamaz, depolanamaz, değiştirilemez,
+            indirilemez veya Mahmut YILMAZ önceden yazılı bir onay vermeden
+            herhangi bir ticari amaçla, başka şekillerde kullanılamaz.
           </p>
-
           <p>
-            Placeholder for content: It serves as a temporary replacement for
-            real text when the final copy isn't ready, enabling the client to
-            see a complete-looking document or presentation.
-          </p>
-
-          <p>
-            Versatility: The text is used in various fields, from print media
-            and books to web design and desktop publishing software.
+            Bu bilgi veya yazılım hiçbir koşulda üçüncü şahıslara tedarik
+            edilemez. Aksi takdirde Telif Hakları kanunu gereğince hukuki işlem
+            başlatıcaktır. Bu yazılım eğitim amaçlı hazırlanmış olup,
+            kullanıcılara hediye edilmiştir.
           </p>
         </div>
 

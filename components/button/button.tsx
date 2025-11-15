@@ -3,7 +3,7 @@ import Icon from "../icon/icon";
 
 type ButtonProps = {
   type?: "button" | "submit" | "reset";
-  text: string;
+  text?: string;
   onClick?: (e: React.FormEvent) => void;
   className?: string;
   isSubmiting?: boolean;
@@ -31,11 +31,12 @@ export default function Button({
         disabled ? "opacity-30" : ""
       } ${className}`}
     >
-      {isSubmiting || loading ? (
-        <Icon name="loading" className="w-8 h-8 text-gray-600" />
-      ) : null}
       {icon}
-      {text}
+      {isSubmiting || loading ? (
+        <Icon name="loading" className="w-6 h-6 text-white" />
+      ) : (
+        text
+      )}
     </button>
   );
 }

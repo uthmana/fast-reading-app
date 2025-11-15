@@ -1,103 +1,108 @@
 "use client";
 
-import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
-import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
-import Whiteboard from "@/components/whiteboard/whiteboard";
+import BarChart from "@/components/barChart/barChart";
 import { fetchData } from "@/utils/fetchData";
-import {
-  calculateQuizScore,
-  calculateReadingSpeed,
-  countWords,
-} from "@/utils/helpers";
+import { formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function page() {
-  const [articles, setArticles] = useState([] as any);
-  const [data, setData] = useState([] as any);
   const { data: session } = useSession();
-  const [questions, setQuestions] = useState([] as any);
-  const [correctAnswers, setCorrectAnswers] = useState({} as any);
-  const router = useRouter();
+
+  const [understandingData, setUnderstandingData] = useState(
+    {} as { data: []; categories: [] }
+  );
+  const [fastReadingData, setFastReadingData] = useState(
+    {} as { data: []; categories: [] }
+  );
 
   useEffect(() => {
-    if (!session || !session.user) return;
-    const fetchArticles = async () => {
+    const requestData = async () => {
+      if (!session) return;
       try {
         const resData = await fetchData({
-          apiPath: "/api/articles",
+          apiPath: `/api/users?username=${encodeURIComponent(
+            session.user.username
+          )}`,
         });
-        const userLevel = session.user?.student?.level;
-        const filteredArticles = userLevel
-          ? resData.filter((article: any) => article.level === userLevel)
-          : resData;
 
-        const randomArticle =
-          filteredArticles[Math.floor(Math.random() * filteredArticles.length)];
+        const attempts = resData?.Student?.attempts || [];
+        if (!attempts.length) return;
 
-        setArticles(randomArticle);
-        setQuestions(randomArticle?.tests);
-        setData(
-          [randomArticle]?.map((article: any) => ({
-            name: article.title,
-            value: article.id,
-          }))
+        const formatted = attempts.map(
+          ({ wpm, createdAt, correct, variant }: any) => ({
+            wpm,
+            correct,
+            variant,
+            category: formatDateTime(createdAt),
+          })
         );
 
-        setCorrectAnswers(
-          randomArticle?.tests
-            ?.map((q: any) => ({ [q.id]: q.answer }))
-            .reduce((acc: any, obj: any) => ({ ...acc, ...obj }), {})
-        );
+        const buildData = (key: "wpm" | "correct", variant: string) => {
+          const filtered = formatted.filter((i: any) => i.variant === variant);
+          return {
+            data: filtered.map((i: any) => i[key]),
+            categories: filtered.map((i: any) => i.category),
+          };
+        };
+
+        setFastReadingData(buildData("wpm", "FASTREADING"));
+        setUnderstandingData(buildData("correct", "UNDERSTANDING"));
       } catch (error) {
-        console.error("Error fetching articles:", error);
+        console.error(error);
       }
     };
-
-    fetchArticles();
+    requestData();
   }, [session]);
 
-  const onFinishTest = async (
-    userAnswers: any,
-    counter: number,
-    article: any
-  ) => {
-    const countWord = countWords(article?.description || "");
-    const wpm = calculateReadingSpeed(countWord, counter);
-    const correct = calculateQuizScore(questions, userAnswers, correctAnswers);
-
-    try {
-      await fetchData({
-        apiPath: "/api/attempts",
-        method: "POST",
-        payload: {
-          wpm,
-          correct,
-          durationSec: counter,
-          studentId: session?.user.student.id,
-        },
-      });
-      if (!userAnswers) {
-        router.push("/goster-kendini/gelisim");
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <Whiteboard
-      isTest={true}
-      options={data || []}
-      description={<ControlPanelGuide showOptionSelect={true} />}
-      body={
-        <FastReadingTest
-          questions={questions}
-          onFinishTest={onFinishTest}
-          article={articles}
+    <div className="flex w-full flex-wrap px-6 gap-4">
+      <div className="w-full max-h-[400px] border py-10 px-4 rounded shadow">
+        <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
+        <BarChart
+          chartData={[
+            {
+              name: "Okuma Hızı",
+              data: fastReadingData.data || [],
+            },
+          ]}
+          chartOptions={{
+            chart: {
+              id: "basic-bar",
+            },
+            xaxis: {
+              categories: fastReadingData.categories || [],
+            },
+          }}
         />
-      }
-    />
+      </div>
+      <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
+        <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
+        <BarChart
+          chartData={[
+            {
+              name: "Anlama",
+              data: understandingData.data || [],
+            },
+          ]}
+          chartOptions={{
+            chart: {
+              id: "basic-bar",
+            },
+            xaxis: {
+              categories: understandingData.categories || [],
+            },
+            dataLabels: {
+              enabled: true,
+              formatter: (val: number) => `${val}%`,
+              style: {
+                fontSize: "12px",
+                colors: ["#333"],
+              },
+            },
+          }}
+        />
+      </div>
+    </div>
   );
 }

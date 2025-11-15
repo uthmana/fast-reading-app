@@ -3,9 +3,10 @@
 import { signIn } from "next-auth/react";
 import FormBuilder from "../../../components/formBuilder";
 import { useState } from "react";
-import Image from "next/image";
-import reading_icon from "/public/images/reading-icon.png";
 import { fetchData } from "@/utils/fetchData";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { getInputTypeValue } from "@/utils/helpers";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -16,6 +17,11 @@ type ValuesTypes = {
 export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resError, setResError] = useState("" as any);
+  const { data: session } = useSession();
+  const router = useRouter();
+  if (session) {
+    router.push("/");
+  }
 
   const handleFormSubmit = async (values: ValuesTypes) => {
     const { isValid, formData, event } = values;
@@ -32,8 +38,14 @@ export default function LoginPage() {
       });
 
       if (res?.ok) {
+        const where = getInputTypeValue(formData.name);
+        if (!where) {
+          throw new Error("Invalid user identifier");
+        }
+        const query = encodeURIComponent(JSON.stringify(where));
+
         const resData = await fetchData({
-          apiPath: `/api/users?name=${encodeURIComponent(formData.name)}`,
+          apiPath: `/api/users?where=${query}`,
         });
 
         if (!resData || !resData.role) {
@@ -49,7 +61,7 @@ export default function LoginPage() {
           }
         }
       } else {
-        setResError(res?.error || "Login failed");
+        setResError("Kullanıcı Adı, E-posta, TC Kimlik No veya Parola Hatalı");
       }
     } catch (error: any) {
       console.error("Login error:", error);
@@ -60,34 +72,30 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="flex w-full  flex-col items-center gap-2 h-screen justify-center  bg-blue-500">
-      <Image
-        src={reading_icon}
-        alt={"reading icon"}
-        width="84"
-        height="84"
-        unoptimized
-        priority
-        className="mx-auto"
-      />
-
-      <div className="w-[80%] bg-white max-w-[430px] shadow-2xl border rounded-lg py-8 px-8">
-        <h1 className="text-xl font-bold mb-2 mt-0 text-center">Hızlı Okuma</h1>
-        <p className="mb-10 text-sm text-center">
-          Öğrenci Çalışma Platformu Girişi
-        </p>
-        <FormBuilder
-          id={"login"}
-          isSubmitting={isSubmitting}
-          resError={resError}
-          onSubmit={handleFormSubmit}
-          submitBtnProps={{
-            text: "Giriş Yap",
-            type: "submit",
-          }}
-        />
+    <section className="flex w-full relative z-10 bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] items-center gap-2 h-screen justify-center">
+      <div className="flex-1 h-full flex items-center bg-no-repeat bg-[url('/images/book.jpg')] bg-center bg-cover">
+        <div className="w-[90%] bg-white/20 backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
+          <h1 className="text-xl font-bold mb-1 mt-0 text-center">
+            Etkin Hızlı Okuma
+          </h1>
+          <p className="mb-7 text-sm text-center">
+            Öğrenci Çalışma Platformu Girişi
+          </p>
+          <FormBuilder
+            id={"login"}
+            isSubmitting={isSubmitting}
+            resError={resError}
+            onSubmit={handleFormSubmit}
+            submitBtnProps={{
+              text: "Giriş Yap",
+              type: "submit",
+            }}
+          />
+          <p className="text-xs my-2  text-center">
+            © {new Date().getFullYear()} Tüm Hakları saklıdır.
+          </p>
+        </div>
       </div>
-      <p className="text-xs my-2 text-white">2025 @copyright reserved</p>
     </section>
   );
 }

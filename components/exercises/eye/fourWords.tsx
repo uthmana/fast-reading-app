@@ -1,11 +1,14 @@
 "use client";
 
+import Button from "@/components/button/button";
 import React, { useEffect, useState, useRef } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 type FourWordsProps = {
-  controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  controls?: { level?: 1 | 2 | 3 | 4 | 5; font: "12" };
   wordPool?: string[];
   objectSize?: number;
+  onFinishTest?: (v: any) => void;
 };
 
 export default function FourWords({
@@ -23,15 +26,22 @@ export default function FourWords({
     "Kanun",
   ],
   objectSize = 60,
+  onFinishTest,
 }: FourWordsProps) {
   const [words, setWords] = useState(["", "", "", ""]);
   const [visible, setVisible] = useState(true);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const level = controls?.level || 3;
-  const speedMap = { 1: 4000, 2: 1500, 3: 1000, 4: 700, 5: 400 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const duration = speedMap[level];
-
+  const font = controls?.font || "12";
   // Helper to generate random words
   const getNewWords = () =>
     Array.from(
@@ -58,6 +68,12 @@ export default function FourWords({
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [duration, level]); // duration changes when level changes
+
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
 
   return (
     <div
@@ -87,6 +103,8 @@ export default function FourWords({
             top: `-${objectSize + 40}px`,
             left: "50%",
             transform: "translateX(-50%)",
+            fontSize: `${font}px`,
+            margin: "2px",
           }}
         >
           {words[0]}
@@ -97,6 +115,8 @@ export default function FourWords({
             left: `-${objectSize + 80}px`,
             top: "50%",
             transform: "translateY(-50%)",
+            fontSize: `${font}px`,
+            margin: "2px",
           }}
         >
           {words[1]}
@@ -107,6 +127,8 @@ export default function FourWords({
             right: `-${objectSize + 80}px`,
             top: "50%",
             transform: "translateY(-50%)",
+            fontSize: `${font}px`,
+            margin: "2px",
           }}
         >
           {words[2]}
@@ -117,11 +139,19 @@ export default function FourWords({
             bottom: `-${objectSize + 40}px`,
             left: "50%",
             transform: "translateX(-50%)",
+            fontSize: `${font}px`,
+            margin: "2px",
           }}
         >
           {words[3]}
         </div>
       </div>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

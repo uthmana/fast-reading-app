@@ -1,5 +1,3 @@
-"use client";
-
 import { lessons } from "../../../utils/constants";
 import Lesson from "../../../components/lesson/lesson";
 

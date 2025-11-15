@@ -2,16 +2,29 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider  = "postgresql"
+//   url       = env("POSTGRES_PRISMA_URL")
+//   directUrl = env("POSTGRES_URL_NON_POOLING")
+// }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+// datasource db {
+//   provider = "mysql"
+//   url      = env("DATABASE_URL")
+// }
+
 model User {
   id        String     @id @default(cuid())
-  email     String?    @unique
+  name      String
+  username  String     @unique
+  email     String     @unique
+  tcId      String     @unique
   password  String
-  name      String     @unique
   role      Role       @default(STUDENT)
   active    Boolean    @default(true)
   createdAt DateTime   @default(now())
@@ -57,6 +70,7 @@ model Attempt {
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
   wpm         Float? // words per minute measured
+  variant     TestType @default(FASTREADING)
   durationSec Int?
   createdAt   DateTime @default(now())
 }
@@ -65,6 +79,11 @@ enum Role {
   ADMIN
   STUDENT
   TEACHER
+}
+
+enum TestType {
+  FASTREADING
+  UNDERSTANDING
 }
 
 enum ExerciseType {
@@ -96,11 +115,12 @@ model Progress {
 model Article {
   id          String    @id @default(cuid())
   title       String
-  description String
-  level       Level     @default(ILKOKUL)
+  description String    @db.Text
+  category    Category  @relation(fields: [categoryId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime? @updatedAt
   tests       Json?
+  categoryId  String
 }
 
 model ArticleTest {
@@ -110,4 +130,13 @@ model ArticleTest {
   options   Json
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+  Article     Article[]
 }

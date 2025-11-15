@@ -1,19 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const name = searchParams.get("name");
+    const whereParam = searchParams.get("where");
+    const username = searchParams.get("username");
 
-    if (name) {
-      // Fetch a single user by name
+    let where: any | undefined;
+
+    if (username) {
       const user = await prisma.user.findUnique({
-        where: { name },
+        where: { username },
         include: {
           Student: {
             include: {
@@ -24,7 +25,43 @@ export async function GET(req: NextRequest) {
       });
 
       if (!user) {
-        return NextResponse.json({ error: "User not found" }, { status: 404 });
+        return NextResponse.json(
+          { error: "Kullanıcı bulunamadı" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(user, { status: 200 });
+    }
+
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (where) {
+      const user = await prisma.user.findUnique({
+        where,
+        include: {
+          Student: {
+            include: {
+              attempts: true,
+            },
+          },
+        },
+      });
+
+      if (!user) {
+        return NextResponse.json(
+          { error: "Kullanıcı bulunamadı" },
+          { status: 404 }
+        );
       }
 
       return NextResponse.json(user, { status: 200 });
@@ -33,6 +70,7 @@ export async function GET(req: NextRequest) {
     const users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
     });
+
     return NextResponse.json(users, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -51,6 +89,8 @@ export async function POST(req: Request) {
   const {
     id,
     name,
+    username,
+    tcId,
     email,
     password,
     role,
@@ -59,7 +99,10 @@ export async function POST(req: Request) {
     endDate,
   }: User | any = await req.json();
   if (!name || !password || !role) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Girdiğiniz bilgi hatalıdır" },
+      { status: 400 }
+    );
   }
 
   try {
@@ -76,6 +119,8 @@ export async function POST(req: Request) {
           where: { id },
           data: {
             name,
+            username,
+            tcId,
             email,
             password: pwd,
             role: role,
@@ -100,6 +145,8 @@ export async function POST(req: Request) {
     const user = await prisma.user.create({
       data: {
         name,
+        username,
+        tcId,
         email,
         password: hashedPassword,
         role: role,
@@ -118,7 +165,10 @@ export async function POST(req: Request) {
     return NextResponse.json(user, { status: 201 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Kullanıcı zaten mevcut." },
+      { status: 400 }
+    );
   }
 }
 
@@ -137,6 +187,9 @@ export async function DELETE(req: Request) {
     }
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "User already exists" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Kullanıcı zaten mevcut değildir" },
+      { status: 400 }
+    );
   }
 }

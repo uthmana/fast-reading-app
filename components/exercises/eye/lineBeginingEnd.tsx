@@ -1,9 +1,12 @@
 "use client";
+import Button from "@/components/button/button";
 import React, { useEffect, useRef, useState } from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 interface HighlightLinesProps {
-  controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  controls?: { level?: 1 | 2 | 3 | 4 | 5; font: "16" };
   text: string;
+  onFinishTest?: (v: any) => void;
 }
 
 const zigzagText: string = `
@@ -15,6 +18,7 @@ Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden oluşmaz. Kökleri
 export default function LineBeginingEnd({
   controls,
   text = zigzagText,
+  onFinishTest,
 }: HighlightLinesProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [lines, setLines] = useState<HTMLElement[][]>([]);
@@ -22,14 +26,15 @@ export default function LineBeginingEnd({
   const [highlightState, setHighlightState] = useState<"first" | "last">(
     "first"
   );
+  const font = controls?.font || "16";
 
   // Speed map in ms
-  const speedMap: { [key: number]: number } = {
-    1: 1500,
-    2: 1000,
-    3: 700,
-    4: 500,
-    5: 300,
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
   };
   const speed = controls?.level ? speedMap[controls.level] : speedMap[3];
 
@@ -88,11 +93,29 @@ export default function LineBeginingEnd({
     return () => clearInterval(interval);
   }, [lines, currentLineIndex, highlightState, speed]);
 
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
+
   return (
-    <div
-      ref={containerRef}
-      className="p-4 text-lg"
-      style={{ lineHeight: "1.8em", whiteSpace: "normal" }}
-    ></div>
+    <div className=" w-full h-full">
+      <div
+        ref={containerRef}
+        className="p-4 text-lg w-full h-full"
+        style={{
+          lineHeight: "1.8em",
+          whiteSpace: "normal",
+          fontSize: `${font}px`,
+        }}
+      ></div>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
+    </div>
   );
 }

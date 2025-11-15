@@ -1,0 +1,88 @@
+﻿
+"use client";
+
+import { useEffect, useState } from "react";
+import { getTurkishWordsByLength } from "@/utils/turkishWords";
+
+<SplitWordMirrorExercise
+    controls={{ distance: 3, letterCount: 4, speed: 1200, scroll: false }}
+    wordList={getTurkishWordsByLength(4)}
+/>
+type SplitWordMirrorExerciseProps = {
+  controls?: {
+    distance?: number; // distance from center (1–10)
+    letterCount?: number; // word length filter
+    speed?: number; // ms delay
+    scroll?: boolean; // up/down movement toggle
+  };
+  wordList?: string[];
+};
+
+export default function SplitWordMirrorExercise({
+  controls,
+  wordList = [],
+}: SplitWordMirrorExerciseProps) {
+  const distance = (controls?.distance ?? 3) * 45; // pixel offset
+  const letterCount = controls?.letterCount ?? 4;
+  const speed = controls?.speed ?? 1200;
+  const scroll = controls?.scroll ?? false;
+
+  const [word, setWord] = useState("...");
+  const [yOffset, setYOffset] = useState(0);
+  const [direction, setDirection] = useState(1);
+
+  /** Pick a word matching letter limit */
+  function pickWord() {
+    let pool = wordList.filter((w) => w.length === letterCount);
+    if (pool.length === 0) pool = wordList;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
+  useEffect(() => {
+    setWord(pickWord());
+  }, []);
+
+  /** Update word + optional vertical motion */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWord(pickWord());
+
+      if (scroll) {
+        setYOffset((y) => {
+          if (y > 80) setDirection(-1);
+          if (y < -80) setDirection(1);
+          return y + 10 * direction;
+        });
+      }
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [speed, scroll, direction, letterCount]);
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none">
+      {/* Vertical line splitting the frame */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-500 opacity-70"></div>
+
+      {/* LEFT SIDE WORD */}
+      <div
+        style={{
+          transform: `translateX(-${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+
+      {/* RIGHT SIDE WORD (MIRRORED) */}
+      <div
+        style={{
+          transform: `translateX(${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+    </div>
+  );
+}

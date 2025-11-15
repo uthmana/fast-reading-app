@@ -1,0 +1,156 @@
+﻿"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { getTurkishWordsByLength, graphemeLength } from "../../../utils/turkishWords";
+
+type SplitWordMirrorExerciseProps = {
+  controls?: {
+    distance?: number; // distance from center (1–10)
+    letterCount?: number; // word length filter
+    speed?: number; // can be seconds (1–10) or milliseconds
+    scroll?: boolean; // up/down movement toggle
+  };
+  wordList?: string[];
+};
+
+export default function SplitWordMirrorExercise({
+  controls,
+  wordList = [],
+}: SplitWordMirrorExerciseProps) {
+  const distance = (controls?.distance ?? 3) * 45; // pixel offset
+  const letterCount = controls?.letterCount ?? 4;
+  const rawSpeed = controls?.speed ?? 1200;
+  const scroll = controls?.scroll ?? false;
+
+  // Normalize speed: if small (<=50) treat as seconds; clamp between 300ms and 10s
+  const intervalMs = useMemo(() => {
+    let ms = typeof rawSpeed === "number" ? rawSpeed : parseInt(String(rawSpeed || 1200), 10);
+    if (isNaN(ms)) ms = 1200;
+    if (ms <= 50) ms = ms * 1000; // likely seconds provided from controls
+    ms = Math.max(300, Math.min(10_000, ms));
+    return ms;
+  }, [rawSpeed]);
+
+  const directionRef = useRef(1);
+  const [direction, setDirection] = useState(1);
+  const [word, setWord] = useState("...");
+  const [yOffset, setYOffset] = useState(0);
+  const [flipping, setFlipping] = useState(false);
+
+  // Build a filtered pool that matches the requested grapheme length.
+  const filteredPool = useMemo(() => {
+    const source =
+      wordList && wordList.length > 0
+        ? wordList
+        : getTurkishWordsByLength(letterCount);
+    const pool = source
+      .map((w) => (typeof w === "string" ? w.trim() : String(w)))
+      .filter(Boolean)
+      .filter((w) => graphemeLength(w) === letterCount);
+
+    return pool.length > 0 ? pool : source; // fallback to source if no exact matches
+  }, [wordList, letterCount]);
+
+  function pickWord() {
+    if (!filteredPool || filteredPool.length === 0) return "...";
+    return filteredPool[Math.floor(Math.random() * filteredPool.length)];
+  }
+
+  // set initial word when pool or letterCount changes
+  useEffect(() => {
+    setWord(pickWord());
+  }, [filteredPool]);
+
+  // Trigger flip animation when letterCount changes
+  useEffect(() => {
+    setFlipping(true);
+    const t = setTimeout(() => setFlipping(false), 900);
+    return () => clearTimeout(t);
+  }, [letterCount]);
+
+  /** Update word + optional vertical motion */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWord(pickWord());
+
+      if (scroll) {
+        setYOffset((prevY) => {
+          // use directionRef to avoid stale closures
+          let newY = prevY + 10 * directionRef.current;
+          if (newY > 80) {
+            directionRef.current = -1;
+            setDirection(-1);
+            newY = 80; // clamp
+          }
+          if (newY < -80) {
+            directionRef.current = 1;
+            setDirection(1);
+            newY = -80; // clamp
+          }
+          return newY;
+        });
+      }
+    }, intervalMs);
+
+    return () => clearInterval(interval);
+  }, [intervalMs, scroll, filteredPool]);
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none">
+      {/* Vertical line splitting the frame */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-500 opacity-70"></div>
+
+      {/* Flip animation in the middle when letterCount changes */}
+      {flipping && (
+        <motion.div
+          initial={{ scaleX: 0, rotateY: 0, opacity: 0 }}
+          animate={{ scaleX: [0, 1, 0.95, 1], rotateY: [0, -12, 0], opacity: [0, 1, 1, 0] }}
+          transition={{ duration: 0.9, ease: "easeInOut" }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 220,
+            height: 260,
+            background: "linear-gradient(90deg,#fff,#f7f7f7)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.25)",
+            borderRadius: 6,
+            zIndex: 30,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            pointerEvents: "none",
+          }}
+        >
+          {/* simple book spine visual */}
+          <div style={{ width: "85%", height: "90%", position: "relative" }}>
+            <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 6, background: "#e2e2e2", borderRadius: 3 }} />
+            <div style={{ position: "absolute", right: 8, top: 12, bottom: 12, left: 12, borderRadius: 2, background: "linear-gradient(180deg,#fff,#fcfcfc)", boxShadow: "inset 0 1px 0 rgba(0,0,0,0.02)" }} />
+          </div>
+        </motion.div>
+      )}
+
+      {/* LEFT SIDE WORD */}
+      <div
+        style={{
+          transform: `translateX(-${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+
+      {/* RIGHT SIDE WORD (MIRRORED) */}
+      <div
+        style={{
+          transform: `translateX(${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+    </div>
+  );
+}

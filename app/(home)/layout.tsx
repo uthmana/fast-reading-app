@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../lib/authOptions";
 import SessionProvider from "../../components/providers";
 import ClientLayout from "../../components/clientLayout";
-
 import "../globals.css";
 
 export const metadata = {
@@ -24,7 +23,7 @@ export default async function RootLayout({
       <body className="bg-gray-100 w-full h-full">
         <SessionProvider>
           {!session ? (
-            <main className="bg-white w-full h-full">{children}</main>
+            <main className="w-full h-full">{children}</main>
           ) : (
             <ClientLayout>{children}</ClientLayout>
           )}

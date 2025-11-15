@@ -1,0 +1,108 @@
+﻿"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { getTurkishWordsByLength, graphemeLength } from "@/utils/turkishWords";
+
+type SplitWordMirrorExerciseProps = {
+  controls?: {
+    distance?: number; // distance from center (1–10)
+    letterCount?: number; // word length filter
+    speed?: number; // ms delay
+    scroll?: boolean; // up/down movement toggle
+  };
+  wordList?: string[];
+};
+
+export default function SplitWordMirrorExercise({
+  controls,
+  wordList = [],
+}: SplitWordMirrorExerciseProps) {
+  const distance = (controls?.distance ?? 3) * 45; // pixel offset
+  const letterCount = controls?.letterCount ?? 4;
+  const speed = controls?.speed ?? 1200;
+  const scroll = controls?.scroll ?? false;
+
+  const directionRef = useRef(1);
+  const [direction, setDirection] = useState(1);
+  const [word, setWord] = useState("...");
+  const [yOffset, setYOffset] = useState(0);
+
+  // Build a filtered pool that matches the requested grapheme length.
+  const filteredPool = useMemo(() => {
+    const source =
+      wordList && wordList.length > 0
+        ? wordList
+        : getTurkishWordsByLength(letterCount);
+    const pool = source
+      .map((w) => (typeof w === "string" ? w.trim() : String(w)))
+      .filter(Boolean)
+      .map((w) => w)
+      .filter((w) => graphemeLength(w) === letterCount);
+
+    return pool.length > 0 ? pool : source; // fallback to source if no exact matches
+  }, [wordList, letterCount]);
+
+  function pickWord() {
+    if (!filteredPool || filteredPool.length === 0) return "...";
+    return filteredPool[Math.floor(Math.random() * filteredPool.length)];
+  }
+
+  // set initial word when pool or letterCount changes
+  useEffect(() => {
+    setWord(pickWord());
+  }, [filteredPool]);
+
+  /** Update word + optional vertical motion */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWord(pickWord());
+
+      if (scroll) {
+        setYOffset((prevY) => {
+          // use directionRef to avoid stale closures
+          let newY = prevY + 10 * directionRef.current;
+          if (newY > 80) {
+            directionRef.current = -1;
+            setDirection(-1);
+            newY = 80; // clamp
+          }
+          if (newY < -80) {
+            directionRef.current = 1;
+            setDirection(1);
+            newY = -80; // clamp
+          }
+          return newY;
+        });
+      }
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [speed, scroll, filteredPool]);
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center select-none">
+      {/* Vertical line splitting the frame */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-500 opacity-70"></div>
+
+      {/* LEFT SIDE WORD */}
+      <div
+        style={{
+          transform: `translateX(-${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+
+      {/* RIGHT SIDE WORD (MIRRORED) */}
+      <div
+        style={{
+          transform: `translateX(${distance}px) translateY(${yOffset}px)`,
+        }}
+        className="absolute text-4xl font-light text-black"
+      >
+        {word}
+      </div>
+    </div>
+  );
+}

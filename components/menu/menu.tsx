@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-
 import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
 import { useSession } from "next-auth/react";
-import { MdAccountCircle } from "react-icons/md";
 import { menuItems } from "@/app/routes";
 
 interface MenuProps {
@@ -30,23 +28,19 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   };
 
   return (
-    <header className="w-full sticky top-0 z-10 container bg-blue-500 lg:border-b-0 text-white border-b ">
+    <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
-          <h1 className="text-gray-800">
+          <h1>
             <Link
-              className="flex gap-3 items-center text-white"
+              className="flex gap-3 items-center capitalize text-white text-base"
               href="/"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 font-semibold h-10 border tex capitalize text-lg bg-blue-800  flex items-center justify-center rounded-full">
-                {!session ? (
-                  <MdAccountCircle className="w-8 h-8 text-blue-400" />
-                ) : (
-                  session?.user?.name[0]?.toUpperCase()
-                )}
+              <span className="w-10 h-10 border-2  font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
+                {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="-tracking-tighter"> {session?.user?.name} </span>
+              <span className="hover:underline">{session?.user?.name}</span>
             </Link>
           </h1>
 
@@ -57,17 +51,27 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative items-center text-sm font-bold text-white  hover:bg-blue-400 rounded-md px-2 py-2 ${
-                      pathname?.includes(item.link) ? "!bg-blue-700" : ""
+                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
+                      pathname?.includes(item.link)
+                        ? "!bg-blue-700 shadow !border-blue-800"
+                        : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
                   >
+                    {item.icon ? (
+                      <Icon
+                        name={`${item.icon as "menu"}`}
+                        className="w-6 h-6 transition group-hover:scale-110"
+                        fill="white"
+                      />
+                    ) : null}
+
                     {item.name}
                   </Link>
                 ) : (
                   <button
                     onClick={() => toggleSubMenu(item.name)}
-                    className={`flex relative items-center text-gray-800 hover:text-blue-600 font-medium ${
+                    className={`flex relative items-center text-gray-800  hover:text-blue-600 font-medium ${
                       activeMenu === item.name ? "text-blue-600 " : ""
                     }`}
                   >
@@ -84,7 +88,11 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 )}
               </div>
             ))}
-            <LogOutInput className="!ml-3 border-0 font-semibold" />
+
+            <LogOutInput
+              text="Çıkış"
+              className="border-0 py-0 font-semibold flex-col !gap-0 group"
+            />
           </nav>
         </div>
 
@@ -103,20 +111,29 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
 
       {/* Mobile Menu */}
       <nav
-        className={`lg:hidden transition-all duration-300 bg-white border-t overflow-hidden ${
+        className={`lg:hidden transition-all duration-300 bg-white border-t  overflow-hidden  ${
           menuOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <ul className="flex flex-col p-4 space-y-2">
+        <ul className={`flex flex-col p-4 space-y-2  w-full bg-slate-50 `}>
           {menuItems?.map((item) => (
             <li key={item.name}>
               <button
                 onClick={() => toggleSubMenu(item.name)}
                 className={`flex justify-between items-center w-full text-gray-800 font-medium ${
-                  pathname?.includes(item.link) ? "!text-blue-400" : ""
+                  pathname?.includes(item.link) ? "!text-blue-600" : ""
                 }`}
               >
-                {item.name}
+                <span className="flex gap-3">
+                  {item.icon ? (
+                    <Icon
+                      name={`${item.icon as "menu"}`}
+                      className="w-6 h-6"
+                      fill="white"
+                    />
+                  ) : null}
+                  {item.name}{" "}
+                </span>
                 {item.subMenu && (
                   <Icon
                     name="chevron-down"
@@ -140,9 +157,9 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                     <li key={sub.name}>
                       <Link
                         href={sub.link}
-                        className={`block py-2 px-2 text-sm text-gray-700 hover:text-blue-600 ${
+                        className={`block py-2 px-2 text-sm text-gray-700  hover:text-blue-600 ${
                           pathname === sub.link
-                            ? "!bg-blue-300 text-white rounded"
+                            ? "!bg-blue-600 !text-white rounded bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
                             : ""
                         }`}
                         onClick={() => setMenuOpen(false)}
@@ -156,7 +173,10 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
             </li>
           ))}
           <li>
-            <LogOutInput className="text-black" />
+            <LogOutInput
+              text="Çıkış"
+              className="text-black border-none !px-0 flex-row gap-3"
+            />
           </li>
         </ul>
       </nav>

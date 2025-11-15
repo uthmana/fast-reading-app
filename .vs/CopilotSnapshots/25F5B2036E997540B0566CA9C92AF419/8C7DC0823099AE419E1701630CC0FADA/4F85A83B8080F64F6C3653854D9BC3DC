@@ -1,0 +1,62 @@
+﻿// utils/turkishWords.ts
+
+// A compact Turkish word pool. Add more words as needed.
+export const TURKISH_WORDS = [
+  "a", "o", "ev", "su", "at", "ış", "göz", "el", "kar", "gün", "yol", "den",
+  "kitap", "okul", "masa", "saat", "kalem", "pencere", "kapı", "bahçe", "şehir",
+  "arkadaş", "çocuk", "istanbul", "ankara", "izmir", "güzellik", "mutluluk",
+  "çalışmak", "öğrenci", "öğretmen", "bilgisayar", "televizyon", "programlama",
+  "deneyim", "hayat", "düşünce", "görüş", "uzmanlık", "müzik", "resim", "sanat",
+  "doğa", "manzara", "alışveriş", "yazılım", "donanım", "veritabanı", "ağaçlar",
+  "güneş", "yağmur", "karanlık", "aydınlık", "mutfağımız", "sevgilim", "arkadaşlar"
+];
+
+// Count grapheme clusters (safe for Turkish letters)
+export function graphemeLength(s: string): number {
+  if (typeof (Intl as any).Segmenter === "function") {
+    const seg = new (Intl as any).Segmenter("tr", { granularity: "grapheme" });
+    return Array.from(seg.segment(s)).length;
+  }
+  // fallback
+  return [...s].length;
+}
+
+// Normalize and remove non-letter characters; lower-case using Turkish locale
+export function normalizeTurkishWord(w: string): string {
+  return w
+    .trim()
+    .replace(/[^\p{L}\p{N}ğüşöçıİĞÜŞÖÇ]+/gu, "") // keep letters & numbers (including Turkish)
+    .toLocaleLowerCase("tr");
+}
+
+// Return array of words that exactly match the requested letter count (1-12)
+export function getTurkishWordsByLength(
+  length: number,
+  pool: string[] = TURKISH_WORDS
+): string[] {
+  if (!Number.isInteger(length) || length < 1 || length > 12) return [];
+
+  const seen = new Set<string>();
+  return pool
+    .map(normalizeTurkishWord)
+    .filter(Boolean)
+    .filter((w) => {
+      const ok = graphemeLength(w) === length;
+      if (ok && !seen.has(w)) {
+        seen.add(w);
+        return true;
+      }
+      return false;
+    });
+}
+
+// Optionally produce a grouped map for quick lookups
+export function groupByLength(pool: string[] = TURKISH_WORDS) {
+  const map: Record<number, string[]> = {};
+  for (let i = 1; i <= 12; i++) map[i] = [];
+  for (const w of pool) {
+    const n = graphemeLength(normalizeTurkishWord(w));
+    if (n >= 1 && n <= 12) map[n].push(normalizeTurkishWord(w));
+  }
+  return map;
+}

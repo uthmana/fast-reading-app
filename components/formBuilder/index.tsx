@@ -89,7 +89,7 @@ export default function FormBuilder({
           val = convertToISO8601(val);
           break;
         default:
-          val = val?.toString();
+          val = val?.toString()?.trim();
       }
 
       acc[newVal.key] = val;
@@ -123,7 +123,7 @@ export default function FormBuilder({
         <h2 className="text-xl font-bold mb-5"> {formTitle} </h2>
       ) : null}
 
-      <div className="w-full flex flex-col gap-3">
+      <div className="w-full flex flex-wrap gap-3">
         {formData.map(
           (
             v: {
@@ -136,6 +136,9 @@ export default function FormBuilder({
               required: boolean;
               disabled: boolean;
               rows: number;
+              maxlength: number;
+              styleClass: string;
+              asyncOption: () => any;
             },
             idx: number
           ) => {
@@ -143,6 +146,7 @@ export default function FormBuilder({
               return (
                 <Select
                   key={idx + v.type}
+                  asyncOption={v.asyncOption}
                   placeholder={v.placeholder}
                   options={v.options}
                   value={v.value}
@@ -151,6 +155,7 @@ export default function FormBuilder({
                   name={v.name}
                   required={v.required}
                   disabled={v.disabled}
+                  styleClass={v.styleClass}
                 />
               );
             }
@@ -168,6 +173,8 @@ export default function FormBuilder({
                   required={v.required}
                   disabled={v.disabled}
                   rows={v.rows}
+                  maxlength={v?.maxlength}
+                  styleClass={v?.styleClass}
                 />
               );
             }
@@ -183,6 +190,8 @@ export default function FormBuilder({
                 onChange={handleChange}
                 required={v.required}
                 disabled={v.disabled}
+                maxlength={v.maxlength}
+                styleClass={v.styleClass}
               />
             );
           }
@@ -195,7 +204,7 @@ export default function FormBuilder({
       ) : null}
 
       {resError ? (
-        <div className="text-xs text-left text-red-500 font-semibold mt-2">
+        <div className="text-xs text-left text-red-500 drop-shadow font-semibold mt-2">
           {resError}
         </div>
       ) : null}
@@ -203,7 +212,7 @@ export default function FormBuilder({
       <Button
         text={submitBtnProps?.text || "Submit"}
         type={submitBtnProps?.type || "button"}
-        className="mt-5"
+        className="mt-5 hover:bg-blue-600 transition"
         isSubmiting={isSubmitting}
       />
     </form>

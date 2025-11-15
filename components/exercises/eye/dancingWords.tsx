@@ -2,12 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Button from "@/components/button/button";
+import { MdPauseCircle } from "react-icons/md";
 
 type DancingWordsProps = {
   controls?: { level?: 1 | 2 | 3 | 4 | 5 };
+  onFinishTest?: (v: any) => void;
 };
 
-export default function DancingWords({ controls }: DancingWordsProps) {
+export default function DancingWords({
+  controls,
+  onFinishTest,
+}: DancingWordsProps) {
   const colors = [
     "#FF4D4D",
     "#4D79FF",
@@ -33,7 +39,13 @@ export default function DancingWords({ controls }: DancingWordsProps) {
     "Güzel Bir Gün.",
   ];
 
-  const speedMap = { 1: 2500, 2: 2000, 3: 1500, 4: 1000, 5: 600 };
+  const speedMap: Record<number, number> = {
+    1: 900, // slowest
+    2: 750,
+    3: 450,
+    4: 250,
+    5: 100, // fastest
+  };
   const speed = speedMap[controls?.level || 3];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -51,12 +63,18 @@ export default function DancingWords({ controls }: DancingWordsProps) {
     return () => clearInterval(timer);
   }, [speed, words.length]);
 
+  const handlePause = () => {
+    if (onFinishTest) {
+      onFinishTest(null);
+    }
+  };
+
   return (
-    <div className="relative w-full h-full flex justify-center items-center overflow-hidden rounded-2xl ">
+    <div className="relative w-full h-full flex justify-center items-center overflow-hidden rounded-2xl">
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
-          className={`absolute text-4xl md:text-5xl font-bold whitespace-nowrap m-2 ${randomPos}`}
+          className={`absolute text-2xl md:text-xl font-bold whitespace-nowrap m-2 ${randomPos}`}
           style={{
             color: randomColor,
             rotate: rotation,
@@ -69,6 +87,12 @@ export default function DancingWords({ controls }: DancingWordsProps) {
           {words[currentIndex]}
         </motion.div>
       </AnimatePresence>
+
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        onClick={handlePause}
+      />
     </div>
   );
 }

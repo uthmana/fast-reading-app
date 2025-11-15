@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Article, PrismaClient } from "@prisma/client";
+import { Article } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
+    const categoryId = searchParams.get("categoryId");
 
     if (id) {
       // Fetch a single user by name
@@ -25,8 +25,29 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(article, { status: 200 });
     }
 
+    if (categoryId) {
+      // Fetch a single user by name
+      const article = await prisma.article.findMany({
+        where: { categoryId },
+      });
+
+      if (!article) {
+        return NextResponse.json(
+          { error: "Article not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json(article, { status: 200 });
+    }
+
     const articles = await prisma.article.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        category: {
+          select: { id: true, title: true },
+        },
+      },
     });
     return NextResponse.json(articles, { status: 200 });
   } catch (e) {
@@ -43,9 +64,10 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, title, description, level, tests }: Article | any =
+  const { id, title, description, tests, categoryId }: Article | any =
     await req.json();
-  if (!title || !description || !level) {
+
+  if (!title || !description || !categoryId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -60,8 +82,10 @@ export async function POST(req: Request) {
           data: {
             title,
             description,
-            level,
             tests: tests,
+            category: {
+              connect: { id: categoryId },
+            },
           },
         });
         return NextResponse.json(article, { status: 200 });
@@ -72,8 +96,10 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        level,
         tests: tests,
+        category: {
+          connect: { id: categoryId },
+        },
       },
     });
     return NextResponse.json(article, { status: 201 });

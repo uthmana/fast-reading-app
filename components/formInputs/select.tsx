@@ -1,8 +1,10 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 
 type SelectPropTypes = {
   placeholder?: string;
-  options: Array<{ name: string; value: string }>;
+  options?: Array<{ name: string; value: string }>;
   value: any;
   name?: string;
   required?: boolean;
@@ -14,11 +16,13 @@ type SelectPropTypes = {
     inputKey: string;
   }) => void;
   inputKey: string;
+  styleClass?: string;
+  asyncOption?: () => any;
 };
 
 function Select({
   placeholder,
-  options,
+  options = [],
   name,
   required = false,
   value,
@@ -26,12 +30,27 @@ function Select({
   inputKey,
   showLabel = true,
   disabled = false,
+  styleClass = "",
+  asyncOption,
+  ...rest
 }: SelectPropTypes) {
+  const [localOptions, setLocalOptions] = useState(options as any);
+
+  useEffect(() => {
+    if (!options.length && asyncOption) {
+      const getOptions = async () => {
+        const res = await asyncOption();
+        setLocalOptions(res);
+      };
+      getOptions();
+    }
+  }, [asyncOption]);
+
   return (
-    <div className="w-full flex-col text-sm">
+    <div className={`w-full mb-2 text-sm ${styleClass}`}>
       {showLabel ? (
         <label
-          className="text-sm font-semibold flex gap-1 items-center"
+          className="text-sm font-medium flex gap-1 items-center"
           htmlFor={inputKey}
         >
           {name}
@@ -53,15 +72,25 @@ function Select({
         onChange={(e) =>
           onChange({ targetValue: e.target.value, value, inputKey })
         }
+        {...rest}
       >
         <option value=""> {placeholder}</option>
-        {options?.map((v: { name: string; value: string }, idx) => {
+        {localOptions?.map(
+          (item: { name: string; value: string }, idx: number) => {
+            return (
+              <option value={item.value} key={idx}>
+                {item.name}
+              </option>
+            );
+          }
+        )}
+        {/* {options?.map((v: { name: string; value: string }, idx) => {
           return (
             <option value={v.value} key={idx}>
               {v.name}
             </option>
           );
-        })}
+        })} */}
       </select>
     </div>
   );

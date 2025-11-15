@@ -1,12 +1,36 @@
+import { getCategoryOptions } from "./request";
+
 export default {
   user: [
     {
       key: "name",
-      name: "Kullanıcı Adı",
-      placeholder: "Kullanıcı Adı",
+      name: "Adı Soyadı",
+      placeholder: "Adı Soyadı",
       type: "text",
       value: { key: "name", type: "string", value: "" },
       required: true,
+      maxlength: 40,
+      styleClass: "md:!w-[calc(50%-6px)]",
+    },
+    {
+      key: "username",
+      name: "Kullanıcı Adı",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "username", type: "string", value: "" },
+      required: true,
+      maxlength: 40,
+      styleClass: "md:!w-[calc(50%-6px)]",
+    },
+    {
+      key: "tcId",
+      name: "TC Kimlik No",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "tcId", type: "string", value: "" },
+      required: true,
+      maxlength: 11,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "email",
@@ -15,6 +39,8 @@ export default {
       type: "email",
       value: { key: "email", type: "string", value: "" },
       required: false,
+      maxlength: 50,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "password",
@@ -23,6 +49,7 @@ export default {
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "role",
@@ -46,6 +73,7 @@ export default {
       value: { key: "role", type: "string", value: "ADMIN" },
       required: true,
       disabled: true,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "active",
@@ -64,24 +92,39 @@ export default {
       ],
       value: { key: "role", type: "boolean", value: "true" },
       required: true,
+      styleClass: "",
     },
-    // {
-    //   key: "description",
-    //   name: "Description",
-    //   placeholder: "some desc text here !",
-    //   type: "textarea",
-    //   value: { key: "description", type: "string", value: "" },
-    //   required: true,
-    // },
   ],
   student: [
     {
       key: "name",
-      name: "Kullanıcı Adı",
-      placeholder: "Kullanıcı Adı",
+      name: "Adı Soyadı",
+      placeholder: "Adı Soyadı",
       type: "text",
       value: { key: "name", type: "string", value: "" },
       required: true,
+      maxlength: 40,
+      styleClass: "md:!w-[calc(50%-6px)]",
+    },
+    {
+      key: "username",
+      name: "Kullanıcı Adı",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "username", type: "string", value: "" },
+      required: true,
+      maxlength: 40,
+      styleClass: "md:!w-[calc(50%-6px)]",
+    },
+    {
+      key: "tcId",
+      name: "TC Kimlik No",
+      placeholder: "Kullanıcı Adı",
+      type: "text",
+      value: { key: "tcId", type: "string", value: "" },
+      required: true,
+      maxlength: 11,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "email",
@@ -90,6 +133,8 @@ export default {
       type: "email",
       value: { key: "email", type: "string", value: "" },
       required: false,
+      maxlength: 50,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "password",
@@ -98,6 +143,7 @@ export default {
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "role",
@@ -121,6 +167,7 @@ export default {
       value: { key: "role", type: "string", value: "STUDENT" },
       required: true,
       disabled: true,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
       key: "level",
@@ -147,6 +194,7 @@ export default {
       ],
       value: { key: "role", type: "string", value: "ILKOKUL" },
       required: true,
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "active",
@@ -165,15 +213,8 @@ export default {
       ],
       value: { key: "role", type: "boolean", value: "true" },
       required: true,
+      styleClass: "!w-[calc(50%-6px)]",
     },
-    // {
-    //   key: "description",
-    //   name: "Description",
-    //   placeholder: "some desc text here !",
-    //   type: "textarea",
-    //   value: { key: "description", type: "string", value: "" },
-    //   required: true,
-    // },
     {
       key: "startDate",
       name: "Başlama Tarihi",
@@ -181,6 +222,7 @@ export default {
       type: "date",
       value: { key: "startDate", type: "date", value: "" },
       required: true,
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "endDate",
@@ -189,6 +231,7 @@ export default {
       type: "date",
       value: { key: "endDate", type: "date", value: "" },
       required: true,
+      styleClass: "!w-[calc(50%-6px)]",
     },
   ],
   article: [
@@ -201,34 +244,18 @@ export default {
       required: true,
     },
     {
-      key: "level",
-      name: "Seviye",
-      placeholder: "Seviye seç",
+      key: "categoryId",
+      name: "Kategori",
+      placeholder: "Kategori seç",
       type: "select",
-      options: [
-        {
-          name: "İLKOKUL",
-          value: "ILKOKUL",
-        },
-        {
-          name: "ORTAOKUL",
-          value: "ORTAOKUL",
-        },
-        {
-          name: "LİSE",
-          value: "LISE",
-        },
-        {
-          name: "YETİŞKİN",
-          value: "YETISKIN",
-        },
-      ],
-      value: { key: "role", type: "string", value: "ILKOKUL" },
+      options: [],
+      asyncOption: getCategoryOptions,
+      value: { key: "categoryId", type: "string", value: "" },
       required: true,
     },
     {
       key: "description",
-      name: "Makale",
+      name: "Metin",
       placeholder: "Metin Ekle",
       type: "textarea",
       value: { key: "description", type: "string", value: "" },
@@ -239,19 +266,20 @@ export default {
   login: [
     {
       key: "name",
-      name: "Kullanıcı Adı",
-      placeholder: "Kullanıcı Adı",
+      name: "Kullanıcı Adı / E-posta / TC Kimlik No",
+      placeholder: "",
       type: "text",
       value: { key: "name", type: "string", value: "" },
       required: true,
     },
     {
       key: "password",
-      name: "Şifre",
-      placeholder: "Şifre",
+      name: "Parola",
+      placeholder: "",
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
+      maxlength: 40,
     },
   ],
   quiz: [
@@ -320,6 +348,25 @@ export default {
       ],
       value: { key: "answer", type: "string", value: "" },
       required: true,
+    },
+  ],
+  category: [
+    {
+      key: "title",
+      name: "Başlık",
+      placeholder: "Başlık",
+      type: "text",
+      value: { key: "title", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "description",
+      name: "Açıklama",
+      placeholder: "Açıklama Ekle",
+      type: "textarea",
+      value: { key: "description", type: "string", value: "" },
+      required: true,
+      rows: 8,
     },
   ],
 };
