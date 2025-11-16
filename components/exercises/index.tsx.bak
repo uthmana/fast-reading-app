@@ -24,7 +24,7 @@ import BoxZoomExercise from "./eye/BoxZoomExercise";
 import PerspectiveFrameExercise from "./eye/PerspectiveFrameExercise";
 import MetronomeEyeTrainerWithSound from "./eye/MetronomeEyeTrainerWithSound";
 import SplitWordMirrorExercise from "./eye/SplitWordExercise";
-import RightWordGrid from "./eye/RightWordGrid";
+import RightWordGrid from "./eye/RightWo";
 export default function RenderExercise(props: any) {
   const pathname: string = props.pathname;
   if (!pathname) return null;

@@ -62,7 +62,24 @@ export const menuItems = [
         {
             name: "Metronom",
             link: "/goz-egzersiz/metronom",
+        },
+        {
+
+            name: "Doğru Rengi Bul",
+            link: "/goz-egzersiz/dogru-rengi-bul",
+
+        },
+        {
+            name: "Doğru Kelimeyi Bil",
+            link: "/goz-egzersiz/dogru-kelimeyi-bil",
+        },
+        {
+            name: "Doğru Sayıyı Bul", 
+            link: "/goz-egzersiz/dogru-sayiyi-bul",
         }
+
+
+
 
     ],
     description:

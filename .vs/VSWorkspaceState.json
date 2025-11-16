@@ -1,14 +1,15 @@
 {
   "ExpandedNodes": [
     "",
+    "\\app",
     "\\app\\(home)",
     "\\app\\(home)\\goz-egzersiz",
     "\\app\\(home)\\goz-egzersiz\\[slug]",
     "\\components",
-    "\\components\\controlPanel",
+    "\\components\\exercises",
     "\\components\\exercises\\eye",
-    "\\public\\sounds",
-    "\\utils"
+    "\\components\\formInputs"
   ],
+  "SelectedNode": "\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
   "PreviewInSolutionExplorer": false
 }

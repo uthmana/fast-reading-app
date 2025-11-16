@@ -13,6 +13,7 @@ import { IconType } from "react-icons";
 import { GrAchievement, GrAd, GrApple, GrBug } from "react-icons/gr";
 import SliderBlock from "../formInputs/SliderBlock";
 import SliderBlockWithColor from "../formInputs/SliderBlockWithColor";
+import RightWordControlPanel from "../formInputs/RightWordControlPanel";
 import { color } from "framer-motion";
 
 interface ControlPanelProps {
@@ -60,7 +61,8 @@ export const controlItems: any = {
   "aktif-gorme-alanini-genisletme-3": ["speed", "perspectivecolor"],
   "metronom": ["speed", "size"],
   "satir-boyu-gorme-uygulamasi": ["distance", "letterCount", "speed", "scroll"],
-  "goz-kaslari": ["level"],
+   "goz-kaslari": ["level"],
+  "dogru-kelimeyi-bil": ["rightword"],
 };
 
 export default function ControlPanel({
@@ -494,7 +496,12 @@ export default function ControlPanel({
                  inputKey="size"
                  onChange={handleChange}
                />
-             )}
+                      )}
+
+            {/* SIZE for RightWordControlPanel */}
+            {controlItem.includes("rightword") && (
+                 <RightWordControlPanel/>
+            )}
           </div>
         </div>
       </div>

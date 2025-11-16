@@ -70,7 +70,8 @@ export default function Whiteboard({
         distance: { value: 1 },
         letterCount: { value: 2 }, 
         size: { value: 1 },
-        scroll: {value: 1},
+        scroll: { value: 1 },
+        rightrightword: { value: 1 },
     
   } as any);
 

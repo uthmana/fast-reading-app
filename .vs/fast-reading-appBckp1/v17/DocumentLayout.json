@@ -3,96 +3,28 @@
   "WorkspaceRootPath": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\eyeMuscle.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\eyeMuscle.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeMuscleDevelopment.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\EyeMuscleDevelopment.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\BoxZoomExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\BoxZoomExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\dancingWords.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\dancingWords.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\PerspectiveFrameExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\PerspectiveFrameExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\poppingWindows.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\poppingWindows.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\SplitWordExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\SplitWordExercise.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\VisualFieldTrainer.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\VisualFieldTrainer.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\zigzag.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\zigzag.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\wideview.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\wideview.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\(home)\\goz-egzersiz\\[slug]\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\rhythmicColoring.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\rhythmicColoring.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\fourWords.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\fourWords.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\formInputs\\RightWordControlPanel.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\formInputs\\RightWordControlPanel.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeNumberGrid.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\EyeNumberGrid.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\poppingWindows.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\poppingWindows.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\betweenLine.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\betweenLine.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\blackWhite.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\blackWhite.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\lineBeginingEnd.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\eye\\lineBeginingEnd.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\controlPanel\\controlPanel.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\controlPanel\\controlPanel.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\routes.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\routes.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\utils\\turkishWords.ts||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:utils\\turkishWords.ts||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\whiteboard\\whiteboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\whiteboard\\whiteboard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:app\\(home)\\goz-egzersiz\\[slug]\\page.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\index.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:components\\exercises\\index.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -107,58 +39,41 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "eyeMuscle.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\eyeMuscle.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\eyeMuscle.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\eyeMuscle.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\eyeMuscle.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Title": "page.tsx",
+              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
+              "RelativeDocumentMoniker": "app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
+              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
+              "RelativeToolTip": "app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
+              "ViewState": "AgIAAFEAAAAAAAAAAAAAAFgAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:27.193Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "dancingWords.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\dancingWords.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\dancingWords.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\dancingWords.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\dancingWords.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:30.826Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "BoxZoomExercise.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\BoxZoomExercise.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\BoxZoomExercise.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\BoxZoomExercise.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\BoxZoomExercise.tsx",
-              "ViewState": "AgIAAEgAAAAAAAAAAAAAAE8AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:04:24.478Z",
+              "WhenOpened": "2025-11-16T11:33:21.103Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "EyeMuscleDevelopment.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeMuscleDevelopment.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\EyeMuscleDevelopment.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeMuscleDevelopment.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\EyeMuscleDevelopment.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAAFAAAAAAAAAA==",
+              "Title": "rhythmicColoring.tsx",
+              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\rhythmicColoring.tsx",
+              "RelativeDocumentMoniker": "components\\exercises\\eye\\rhythmicColoring.tsx",
+              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\rhythmicColoring.tsx",
+              "RelativeToolTip": "components\\exercises\\eye\\rhythmicColoring.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:26.507Z",
+              "WhenOpened": "2025-11-15T15:57:24.182Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "lineBeginingEnd.tsx",
+              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\lineBeginingEnd.tsx",
+              "RelativeDocumentMoniker": "components\\exercises\\eye\\lineBeginingEnd.tsx",
+              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\lineBeginingEnd.tsx",
+              "RelativeToolTip": "components\\exercises\\eye\\lineBeginingEnd.tsx",
+              "ViewState": "AgIAAFcAAAAAAAAAAAAAAAgAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-15T15:21:28.412Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -168,27 +83,14 @@
               "RelativeDocumentMoniker": "components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx",
               "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx",
               "RelativeToolTip": "components\\exercises\\eye\\MetronomeEyeTrainerWithSound.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:04:50.098Z",
+              "WhenOpened": "2025-11-15T15:20:06.33Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "PerspectiveFrameExercise.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\PerspectiveFrameExercise.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\PerspectiveFrameExercise.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\PerspectiveFrameExercise.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\PerspectiveFrameExercise.tsx",
-              "ViewState": "AgIAABgAAAAAAAAAAAAnwCoAAAATAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:14:40.719Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 3,
               "Title": "poppingWindows.tsx",
               "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\poppingWindows.tsx",
               "RelativeDocumentMoniker": "components\\exercises\\eye\\poppingWindows.tsx",
@@ -196,176 +98,20 @@
               "RelativeToolTip": "components\\exercises\\eye\\poppingWindows.tsx",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:14:39.776Z",
+              "WhenOpened": "2025-11-15T15:20:01.661Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "SplitWordExercise.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\SplitWordExercise.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\SplitWordExercise.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\SplitWordExercise.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\SplitWordExercise.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADMAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "RightWordControlPanel.tsx",
+              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\formInputs\\RightWordControlPanel.tsx",
+              "RelativeDocumentMoniker": "components\\formInputs\\RightWordControlPanel.tsx",
+              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\formInputs\\RightWordControlPanel.tsx",
+              "RelativeToolTip": "components\\formInputs\\RightWordControlPanel.tsx",
+              "ViewState": "AgIAADAAAAAAAAAAAAAAACUAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:32:43.547Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "VisualFieldTrainer.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\VisualFieldTrainer.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\VisualFieldTrainer.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\VisualFieldTrainer.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\VisualFieldTrainer.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHYAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:09.602Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "zigzag.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\zigzag.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\zigzag.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\zigzag.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\zigzag.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T12:13:01.946Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "wideview.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\wideview.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\wideview.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\wideview.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\wideview.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:03.495Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "rhythmicColoring.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\rhythmicColoring.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\rhythmicColoring.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\rhythmicColoring.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\rhythmicColoring.tsx",
-              "ViewState": "AgIAAGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:11.648Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "fourWords.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\fourWords.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\fourWords.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\fourWords.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\fourWords.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:19.934Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "EyeNumberGrid.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeNumberGrid.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\EyeNumberGrid.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\EyeNumberGrid.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\EyeNumberGrid.tsx",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAAAHkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:24.799Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "betweenLine.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\betweenLine.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\betweenLine.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\betweenLine.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\betweenLine.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:36.149Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "blackWhite.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\blackWhite.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\blackWhite.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\blackWhite.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\blackWhite.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:35.253Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "lineBeginingEnd.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\lineBeginingEnd.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\eye\\lineBeginingEnd.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\eye\\lineBeginingEnd.tsx",
-              "RelativeToolTip": "components\\exercises\\eye\\lineBeginingEnd.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:03:15.78Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "controlPanel.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\controlPanel\\controlPanel.tsx",
-              "RelativeDocumentMoniker": "components\\controlPanel\\controlPanel.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\controlPanel\\controlPanel.tsx",
-              "RelativeToolTip": "components\\controlPanel\\controlPanel.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN8BAAApAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:18:44.483Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "routes.ts",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\routes.ts",
-              "RelativeDocumentMoniker": "app\\routes.ts",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\routes.ts",
-              "RelativeToolTip": "app\\routes.ts",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:03:11.937Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "turkishWords.ts",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\utils\\turkishWords.ts",
-              "RelativeDocumentMoniker": "utils\\turkishWords.ts",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\utils\\turkishWords.ts",
-              "RelativeToolTip": "utils\\turkishWords.ts",
-              "ViewState": "AgIAACgAAAAAAAAAAAAYwEsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T11:11:49.995Z",
+              "WhenOpened": "2025-11-15T13:22:31.878Z",
               "EditorCaption": ""
             },
             {
@@ -407,49 +153,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "page.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
-              "RelativeDocumentMoniker": "app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
-              "RelativeToolTip": "app\\(home)\\goz-egzersiz\\[slug]\\page.tsx",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAAAF8AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:09:48.276Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "index.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\index.tsx",
-              "RelativeDocumentMoniker": "components\\exercises\\index.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\exercises\\index.tsx",
-              "RelativeToolTip": "components\\exercises\\index.tsx",
-              "ViewState": "AgIAAFAAAAAAAAAAAAAnwFsAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:13:48.671Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "whiteboard.tsx",
-              "DocumentMoniker": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\whiteboard\\whiteboard.tsx",
-              "RelativeDocumentMoniker": "components\\whiteboard\\whiteboard.tsx",
-              "ToolTip": "C:\\SHIRAZ\\NextJsProject\\fast-reading-appBckp1\\components\\whiteboard\\whiteboard.tsx",
-              "RelativeToolTip": "components\\whiteboard\\whiteboard.tsx",
-              "ViewState": "AgIAAJ8AAAAAAAAAAAAAALMAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-15T10:20:10.393Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
             },
             {
               "$type": "Bookmark",
