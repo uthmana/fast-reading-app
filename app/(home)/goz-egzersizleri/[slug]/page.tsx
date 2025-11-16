@@ -4,11 +4,21 @@ import { menuItems } from "@/app/routes";
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import NotFound from "../../not-found";
+import { fetchData } from "@/utils/fetchData";
+import { useSession } from "next-auth/react";
 
 export default function page() {
+  const queryParams = useParams();
+  const { data: session } = useSession();
+  const pathname: any = queryParams.slug;
+  const searchParams = useSearchParams();
+  const lessonParams = searchParams.get("lessonId");
+  const durationParams = searchParams.get("duration");
+  const exerciseParams = searchParams.get("exerciseId");
+
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
     categorySelect: "",
@@ -18,9 +28,6 @@ export default function page() {
     wordsPerFrame: 2,
     objectIcon: "1",
   });
-
-  const queryParams = useParams();
-  const pathname: any = queryParams.slug;
 
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname))
@@ -48,6 +55,22 @@ export default function page() {
     }
   };
 
+  const saveProgress = async () => {
+    try {
+      await fetchData({
+        apiPath: "/api/progress",
+        method: "POST",
+        payload: {
+          studentId: session?.user?.student?.id,
+          lessonId: lessonParams,
+          exerciseId: exerciseParams,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <Whiteboard
       pause={pause}
@@ -66,6 +89,9 @@ export default function page() {
       }
       control={control}
       onControlChange={handleControl}
+      lessonData={{ id: lessonParams, duration: durationParams } as any}
+      contentClassName="!w-full"
+      saveProgress={saveProgress}
     />
   );
 }

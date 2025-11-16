@@ -30,17 +30,17 @@ model User {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   Student   Student?
-  //Progress  Progress[]
 }
 
 model Student {
-  id        String    @id @default(cuid())
-  userId    String    @unique
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   startDate DateTime?
   endDate   DateTime?
-  level     Level     @default(ILKOKUL)
+  level     Level      @default(ILKOKUL)
   attempts  Attempt[]
+  Progress  Progress[]
 }
 
 model Lesson {
@@ -51,31 +51,21 @@ model Lesson {
   Exercise    Exercise[]
   createdAt   DateTime   @default(now())
   updatedAt   DateTime?  @updatedAt
+  Progress    Progress[]
 }
 
 model Exercise {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   title       String?
   pathName    String
-  minDuration Int      @default(180) // minimum Duration in seconds
+  minDuration Int        @default(180) // minimum Duration in seconds
   lessonId    String?
-  lesson      Lesson?  @relation(fields: [lessonId], references: [id])
+  lesson      Lesson?    @relation(fields: [lessonId], references: [id])
   config      Json?
-  createdAt   DateTime @default(now())
-  taken       Boolean  @default(false)
-  //Progress    Progress[]
+  createdAt   DateTime   @default(now())
+  taken       Boolean    @default(false)
+  Progress    Progress[]
 }
-
-// model Progress {
-//   id            String   @id @default(cuid())
-//   wpm           Int
-//   comprehension Int
-//   createdAt     DateTime @default(now())
-//   userId        String
-//   exerciseId    String
-//   user          User     @relation(fields: [userId], references: [id])
-//   exercise      Exercise @relation(fields: [exerciseId], references: [id])
-// }
 
 model Attempt {
   id          String   @id @default(cuid())
@@ -87,6 +77,23 @@ model Attempt {
   variant     TestType @default(FASTREADING)
   durationSec Int?
   createdAt   DateTime @default(now())
+}
+
+model Progress {
+  id         String @id @default(cuid())
+  studentId  String
+  lessonId   String
+  exerciseId String
+
+  done      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  student  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson   Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  exercise Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, exerciseId]) // 1 student can only have 1 progress entry per exercise
 }
 
 enum Role {

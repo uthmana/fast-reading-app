@@ -7,27 +7,33 @@ import Button from "../button/button";
 import LessonBoard from "../lessonBoard/lessonBoard";
 import { useEffect, useState } from "react";
 import { fetchData } from "@/utils/fetchData";
+import { IoMdLock } from "react-icons/io";
+import { useSession } from "next-auth/react";
 
 export default function Lesson({ id }: { id?: string }) {
+  const router = useRouter();
+  const { data: session } = useSession();
   const [data, setData] = useState({} as any);
   const [currentLesson, setCurrentLesson] = useState({} as any);
-  const router = useRouter();
-
-  if (!currentLesson) {
-    return null;
-  }
+  const [progress, setProgress] = useState([]);
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
         const resData = await fetchData({ apiPath: "/api/lessons" });
         setData(resData);
-        if (id) {
-          const filteredData = resData?.find((item: any) => item.id === id);
-          setCurrentLesson(filteredData);
-          return;
+        let lesson = id
+          ? resData?.find((item: any) => item.id === id)
+          : resData?.[0];
+        setCurrentLesson(lesson);
+
+        // fetch progress for this lesson
+        if (lesson) {
+          const progressRes = await fetchData({
+            apiPath: `/api/progress?lessonId=${lesson.id}&studentId=${session?.user?.student?.id}`,
+          });
+          setProgress(progressRes || []);
         }
-        setCurrentLesson(resData?.[0]);
       } catch (error) {
         console.error("Error fetching lessons:", error);
       }
@@ -56,6 +62,11 @@ export default function Lesson({ id }: { id?: string }) {
       if (nextData) router.push(`/dersler/${nextData.id}`);
       return;
     }
+  };
+
+  const handleDoneExercise = (isDone: boolean) => {
+    if (!isDone) return;
+    alert("Bu Egzersizi Yaptınız.");
   };
 
   return (
@@ -92,11 +103,15 @@ export default function Lesson({ id }: { id?: string }) {
             </div>
 
             <ul className="space-y-0">
-              {currentLesson?.Exercise?.map((lesson: any, idx: number) => (
-                <li
-                  key={lesson.pathName + idx}
-                  className="
-                    group relative overflow-hidden rounded-lg border-current
+              {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
+                const isDone = progress?.some(
+                  (p: any) => p.exerciseId === lesson.id && p.done
+                );
+                const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
+                return (
+                  <li
+                    key={lesson.pathName + idx}
+                    className={` group relative overflow-hidden rounded-lg border-current
                     bg-gradient-to-r from-[#fdfdfd] to-[#f4f4f4]
                     border-gray-400 shadow-[0_6px_12px_rgba(0,0,0,0.3)]
                     before:content-[''] before:absolute before:inset-0 
@@ -105,60 +120,59 @@ export default function Lesson({ id }: { id?: string }) {
                     hover:before:opacity-30
                     hover:-translate-y-[3px] hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]
                     active:translate-y-[1px]
-                    transition-all duration-300 ease-in-out
-                  "
-                  style={{
-                    perspective: "1000px",
-                    backgroundImage: `url(/images/wood.jpg)`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundSize: "cover",
-                  }}
-                >
-                  <Link
-                    href={`${lesson.pathName}?lesson=${lesson.id}&duration=${lesson.minDuration}`}
-                    className="
-                      flex justify-between items-center
+                    transition-all duration-300 ease-in-out ${
+                      isDone ? "!line-through" : ""
+                    }`}
+                    style={{
+                      perspective: "1000px",
+                      backgroundImage: `url(/images/wood.jpg)`,
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundSize: "cover",
+                    }}
+                  >
+                    <Link
+                      href={isDone ? "" : linkPath}
+                      className={`flex justify-between items-center
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
-                      
-                      transition-all duration-300
-                
-                    "
-                  >
-                    <span
-                      className=""
-                      style={{
-                        textShadow:
-                          "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                      }}
+                      transition-all duration-300`}
+                      onClick={() => handleDoneExercise(isDone)}
                     >
-                      {idx + 1}. {lesson.title}
-                    </span>
-                    <span className="text-sm  italic">
-                      (En Az {lesson.minDuration / 60} Dakika)
-                    </span>
-                  </Link>
+                      <span
+                        className={`flex`}
+                        style={{
+                          textShadow:
+                            "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                        }}
+                      >
+                        {idx + 1}. {lesson.title}
+                      </span>
+                      <span className="text-sm  italic">
+                        (En Az {lesson.minDuration / 60} Dakika)
+                      </span>
+                    </Link>
 
-                  {/* Darker side shadow */}
-                  <div
-                    className="
+                    {/* Darker side shadow */}
+                    <div
+                      className="
                       absolute right-0 top-0 w-3 h-full
                       bg-gradient-to-l from-black/50 via-black/25 to-transparent
                       pointer-events-none
                     "
-                  ></div>
+                    ></div>
 
-                  {/* Darker bottom edge */}
-                  <div
-                    className="
+                    {/* Darker bottom edge */}
+                    <div
+                      className="
                       absolute bottom-0 left-0 w-full h-2
                       bg-gradient-to-t from-black/40 via-black/20 to-transparent
                       pointer-events-none
                     "
-                  ></div>
-                </li>
-              ))}
+                    ></div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         }

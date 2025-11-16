@@ -1,11 +1,14 @@
 "use client";
 
 import { useState, ReactElement, useEffect, useRef } from "react";
-import { MdPlayCircle } from "react-icons/md";
+import { MdArrowBack, MdPlayCircle, MdSyncLock } from "react-icons/md";
 import Button from "@/components/button/button";
 import wood_img from "/public/images/wood.jpg";
 import book_loader from "/public/images/book-loader.gif";
 import ControlPanel from "../controlPanel/controlPanel";
+import Link from "next/link";
+import { IoMdClock } from "react-icons/io";
+import CountDown from "../countDown/countDown";
 
 interface WhiteboardProps {
   body?: ReactElement;
@@ -16,6 +19,9 @@ interface WhiteboardProps {
   control?: any;
   isfastTest?: boolean;
   readingStatus?: any;
+  lessonData?: { id: string; duration: string };
+  contentClassName?: string;
+  saveProgress?: () => void;
 }
 
 export default function Whiteboard({
@@ -26,6 +32,9 @@ export default function Whiteboard({
   pause,
   isfastTest = false,
   readingStatus,
+  lessonData,
+  contentClassName = "",
+  saveProgress,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -98,9 +107,26 @@ export default function Whiteboard({
             lineHeight: `${parseInt(control.font) * 1.5}px`,
           }}
         >
+          {lessonData?.duration ? (
+            <CountDown
+              className="absolute right-3 top-3"
+              initial={parseInt(lessonData?.duration)}
+              start={isPlaying}
+            />
+          ) : null}
+
           {description}
+
+          {lessonData?.id ? (
+            <Link
+              className="absolute flex gap-2 bottom-5 transition hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
+              href={`/dersler/${lessonData?.id}`}
+            >
+              <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+            </Link>
+          ) : null}
           <Button
-            className={`!w-fit !h-10 my-4  bg-blue-600 hover:bg-blue-700 shadow-lg  ml-auto`}
+            className={`!w-fit !h-10 my-4  absolute right-3 bottom-1 bg-blue-600 hover:bg-blue-700 shadow-lg  ml-auto`}
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
             onClick={handlePlay}
           />
@@ -134,14 +160,34 @@ export default function Whiteboard({
       {/* Fullscreen reading overlay */}
       {isPlaying && (
         <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[60]">
-          <div className="relative  w-full lg:w-[80%]  mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
+          <div
+            className={`relative  w-full lg:w-[80%]  mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] ${contentClassName}`}
+          >
             <img
               src={wood_img.src}
               alt="Wood background"
               className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
-            <div className="absolute top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+            <div className="absolute group top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+              {lessonData?.duration ? (
+                <CountDown
+                  className="absolute right-3 top-3"
+                  initial={parseInt(lessonData?.duration)}
+                  start={isPlaying}
+                  onFinish={saveProgress}
+                />
+              ) : null}
+
               {body}
+
+              {lessonData?.id ? (
+                <Link
+                  className="absolute transition-opacity lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-4  hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
+                  href={`/dersler/${lessonData?.id}`}
+                >
+                  <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+                </Link>
+              ) : null}
             </div>
 
             {isLoading ? (
@@ -155,7 +201,7 @@ export default function Whiteboard({
             ) : null}
           </div>
 
-          <div className="w-full lg:w-[80%]">
+          <div className={`w-full lg:w-[80%] ${contentClassName}`}>
             <ControlPanel
               key={controlVal}
               controlVal={controlVal}
