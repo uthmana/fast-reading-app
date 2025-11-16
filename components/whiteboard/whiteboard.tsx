@@ -65,6 +65,19 @@ export default function Whiteboard({
     wordsPerFrame: {
       value: (wordsPerFrame ? wordsPerFrame : 1)?.toString(),
     },
+    frame: { value: (control.frame ? control.frame : 8)?.toString() },
+    grid: { value: (control.grid ? control.grid : 6)?.toString() },
+    color: { value: (control.color ? control.color : 1)?.toString() },
+    perspectivecolor: {
+      value: (control.perspectivecolor
+        ? control.perspectivecolor
+        : 1
+      )?.toString(),
+    },
+    distance: { value: 1 },
+    letterCount: { value: 2 },
+    size: { value: 1 },
+    scroll: { value: 1 },
   } as any);
 
   useEffect(() => {

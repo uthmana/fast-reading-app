@@ -11,6 +11,7 @@ import {
 } from "../formBuilder/request";
 import { MdSpeed, MdTitle } from "react-icons/md";
 import { IoMdClock } from "react-icons/io";
+import SliderBlockWithColor from "../formInputs/SliderBlockWithColor";
 
 interface ControlPanelProps {
   onControlChange?: (v: any) => void;
@@ -63,7 +64,10 @@ interface ControlPanelProps {
 
 export const controlItems: any = {
   "goz-kaslarini-gelistirme": ["level", "type", "objectIcon"],
-
+  "aktif-gorme-alanini-genisletme-1": ["level", "frame", "grid"],
+  "aktif-gorme-alanini-genisletme-2": ["level", "color"],
+  "aktif-gorme-alanini-genisletme-3": ["level", "perspectivecolor"],
+  "satir-boyu-gorme-uygulamasi": ["distance", "letterCount", "level", "scroll"],
   "hizli-gorme": ["level", "font", "wordsPerFrame"],
   "goz-cevikligi-artirma": ["level", "font", "wordsPerFrame"],
   "seviye-yukselt": ["level", "font", "wordsPerFrame"],
@@ -174,6 +178,14 @@ export default function ControlPanel({
             (item: { id: string }) => item.id === crtVal.articleSelect.value
           ),
         wordsPerFrame: parseInt(crtVal.wordsPerFrame.value),
+        frame: parseInt(crtVal.frame.value),
+        grid: parseInt(crtVal.grid.value),
+        color: parseInt(crtVal.color?.value),
+        perspectivecolor: parseInt(crtVal.perspectivecolor?.value),
+        distance: parseInt(crtVal.distance?.value),
+        letterCount: parseInt(crtVal.letterCount?.value),
+        size: parseInt(crtVal.size?.value),
+        scroll: crtVal.scroll?.value === "1" || crtVal.scroll?.value === true,
       });
     }
   };
@@ -349,7 +361,96 @@ export default function ControlPanel({
                 description="Nesne ne yönde nasıl kayacak"
               />
             </div>
+            {/* AKTIF GÖRME ALANINI GENİSLİTME 1*/}
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("frame") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.frame}
+                placeholder="Çerçeve Genişliği"
+                type="range"
+                value={controlVal.frame}
+                inputKey="frame"
+                name="Çerçeve Genişliği"
+                onChange={handleChange}
+                description="Köşe noktalarının genişliği"
+                min="2"
+                max="10"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("grid") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.grid}
+                placeholder="Sütun Sayısı"
+                type="range"
+                value={controlVal.grid}
+                inputKey="grid"
+                name="Sütun Sayısı"
+                onChange={handleChange}
+                description="Rakamlar kaç satır ve sütun gelsin"
+                min="2"
+                max="10"
+              />
+            </div>
+            {/* AKTIF GÖRME ALANINI GENİSLİTME 2*/}
 
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("color") ? "hidden" : ""
+              }`}
+            >
+              <SliderBlockWithColor
+                label="Kutu Rengi"
+                value={controlVal.color.value}
+                description="Sürükleyeen kutunun rengini değiştirin"
+                min="1"
+                max="9"
+                inputKey="color"
+                onChange={handleChange}
+                colors={[
+                  "#2ecc71",
+                  "#f1c40f",
+                  "#e74c3c",
+                  "#3498db",
+                  "#8B4513",
+                  "#000000",
+                  "#e67e22",
+                  "#8e44ad",
+                  "#ff69b4",
+                ]}
+              />
+            </div>
+
+            {/* AKTIF GÖRME ALANINI GENİSLİTME 3 */}
+            {controlItem.includes("perspectivecolor") && (
+              <SliderBlockWithColor
+                label="Kutu Rengi"
+                value={controlVal.perspectivecolor.value}
+                min="1"
+                max="9"
+                inputKey="perspectivecolor"
+                onChange={handleChange}
+                colors={[
+                  "#2ecc71", // 1 green
+                  "#f1c40f", // 2 yellow
+                  "#e74c3c", // 3 red
+                  "#3498db", // 4 blue
+                  "#8B4513", // 5 coffee
+                  "#000000", // 6 black
+                  "#e67e22", // 7 orange
+                  "#8e44ad", // 8 purple
+                  "#ff69b4", // 9 pink
+                ]}
+                description="Sürükleyen kutunun rengini değiştirin"
+              />
+            )}
+            {/* GÖZ KASLARINI GELİŞTİRME */}
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("objectIcon") ? "hidden" : ""
@@ -371,6 +472,58 @@ export default function ControlPanel({
                 description="Kendinize özel simge seçebilirsiniz"
               />
             </div>
+            {/* SATIR BOYU GÖRME UYGULAMASI */}
+            {controlItem.includes("distance") && (
+              <TextInput
+                key={controlVal.distance}
+                placeholder="Merkeze Uzaklık"
+                type="range"
+                value={controlVal.distance}
+                inputKey="distance"
+                name="Merkeze Uzaklık"
+                onChange={handleChange}
+                description="İki kelimenin merkeze uzaklığı"
+                min="1"
+                max="10"
+              />
+            )}
+
+            {/* Metindeki harf sayısıLETTER COUNT for split word mirror */}
+            {controlItem.includes("letterCount") && (
+              <TextInput
+                key={controlVal.letterCount}
+                placeholder="Harf Sayısı"
+                type="range"
+                value={controlVal.letterCount}
+                inputKey="letterCount"
+                name="Harf Sayısı"
+                onChange={handleChange}
+                description="Metindeki harf sayısı"
+                min="1"
+                max="10"
+              />
+            )}
+
+            {/* SCROLL toggle */}
+            {controlItem.includes("scroll") && (
+              <div className="flex items-center gap-3 px-1">
+                <label className="text-white font-medium">Kaydırma</label>
+                <input
+                  type="checkbox"
+                  checked={
+                    controlVal?.scroll?.value === "1" ||
+                    controlVal?.scroll?.value === true
+                  }
+                  onChange={(e) =>
+                    handleChange({
+                      targetValue: e.target.checked ? "1" : "0",
+                      value: controlVal.scroll,
+                      inputKey: "scroll",
+                    })
+                  }
+                />
+              </div>
+            )}
           </div>
         </div>
       </div>
