@@ -42,12 +42,12 @@ export default function DashboardPage() {
           description="Toplam Öğrenci"
           className="flex-1 !py-6 bg-white"
         />
-        {/* <Widget
+        <Widget
           icon={<MdQuiz className="w-10 h-10 text-blue-500" />}
-          title="60"
+          title={data?.widget?.lessons}
           description="Toplam Ders"
           className="flex-1 bg-white"
-        /> */}
+        />
         <Widget
           icon={<MdArticle className="w-10 h-10 text-blue-500" />}
           title={data?.widget?.articles}

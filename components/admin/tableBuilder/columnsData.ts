@@ -34,6 +34,13 @@ export const columnsData = {
     { id: "description", name: "Açıklama", type: "string" },
     { id: "updatedAt", name: "Düzenleme", type: "date" },
   ],
+  lessonColumn: [
+    { id: "id", name: "Id", type: "string" },
+    { id: "title", name: "Başlık", type: "string" },
+    // { id: "description", name: "Açıklama", type: "string" },
+    { id: "lessons", name: "Dersler", type: "exercisesJson" },
+    { id: "updatedAt", name: "Düzenleme", type: "date" },
+  ],
 } as const;
 
 export type ColumnsKey = keyof typeof columnsData;

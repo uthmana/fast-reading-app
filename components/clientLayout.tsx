@@ -8,6 +8,8 @@ import AudioPlayer from "./audioPlayer/audioPlayer";
 import { playlists } from "../utils/constants";
 import { menuItems } from "@/app/routes";
 import Breadcrumb from "./breadcrumb/breadcrumb";
+import LogOutInput from "./formInputs/logoutInput";
+import { fetchData } from "@/utils/fetchData";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -16,6 +18,7 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [activeMenu, setActiveMenu] = useState("" as string | null);
   const [currentMenu, setCurrentMenu] = useState([] as any);
+
   const pathname = usePathname();
 
   useEffect(() => {
@@ -48,6 +51,13 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           <div className="w-full flex ">
             <Sidebar pathname={pathname} activeMenu={activeMenu} />
             <div className="flex-1 min-h-[500px]">{children}</div>
+          </div>
+          <div className="w-fit hidden -mb-5 lg:block opacity-50 hover:opacity-100">
+            <LogOutInput
+              text="Çıkış Yap"
+              className="text-sm px-0 border-0 !py-0 font-semibold !gap-1 group"
+              iconClassName="!w-4 !h-4"
+            />
           </div>
         </div>
       </main>

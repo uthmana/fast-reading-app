@@ -31,16 +31,18 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
     <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
-          <h1>
+          <h1 className="capitalize text-white text-base">
             <Link
-              className="flex gap-3 items-center capitalize text-white text-base"
               href="/"
+              className="flex gap-3 items-center"
               onClick={() => setMenuOpen(false)}
             >
               <span className="w-10 h-10 border-2  font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
                 {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="hover:underline">{session?.user?.name}</span>
+              <span className="flex flex-col whitespace-nowrap hover:underline">
+                <span>{session?.user?.name}</span>
+              </span>
             </Link>
           </h1>
 
@@ -51,7 +53,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
+                    className={`flex relative whitespace-nowrap  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link)
                         ? "!bg-blue-700 shadow !border-blue-800"
                         : ""
@@ -88,11 +90,6 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                 )}
               </div>
             ))}
-
-            <LogOutInput
-              text="Çıkış"
-              className="border-0 py-0 font-semibold flex-col !gap-0 group"
-            />
           </nav>
         </div>
 

@@ -16,6 +16,7 @@ import Link from "next/link";
 import BarChart from "../../components/barChart/barChart";
 import { formatDateTime } from "@/utils/helpers";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
+import SpeedGauge from "@/components/speedGauge/speedGauge";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -135,6 +136,7 @@ export default function Home() {
           />
         </Link>
       </div>
+
 
       <div className="flex w-full flex-wrap gap-4">
         <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">

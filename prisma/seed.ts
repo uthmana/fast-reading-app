@@ -4,6 +4,117 @@ import bcrypt from "bcryptjs";
 async function main() {
   const hashedPassword = await bcrypt.hash("1234", 10);
 
+  const exerciseData = [
+    {
+      title: "Göz Kaslarını Geliştirme",
+      pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 1",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 2",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Aktif Görme Alanını Genişletme 3",
+      pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Satır Boyu Görme",
+      pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Metronom",
+      pathName: "/goz-egzersizleri/metronom",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Rengi Bul",
+      pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Kelmeyi Bil",
+      pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Doğru Sayıyı Bul",
+      pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Hızlı Görme",
+      pathName: "/kelime-egzersizleri/hizli-gorme",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Göz Çevikliğini Arttırma",
+      pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Silinmeden Blok Okuma",
+      pathName: "/metin-egzersizleri/silinmeden-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Silinerek Blok Okuma",
+      pathName: "/metin-egzersizleri/silinerek-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Odaklı Blok Okuma",
+      pathName: "/metin-egzersizleri/odakli-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Grup Okuma",
+      pathName: "/metin-egzersizleri/grup-okuma",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Seviyenizi Yükseltin",
+      pathName: "/kelime-egzersizleri/seviye-yukselt",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Hızlı Okuma Testi",
+      pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Anlama Testi",
+      pathName: "/okuma-anlama-testleri/anlama-testi",
+      minDuration: 180,
+      taken: false,
+    },
+  ];
+
   const user = await prisma.user.upsert({
     where: { username: "deneme" },
     update: {},
@@ -161,7 +272,46 @@ async function main() {
     },
   });
 
-  console.log({ user, student, article });
+  const createdExercises = await prisma.$transaction(
+    exerciseData.map((item) => prisma.exercise.create({ data: item }))
+  );
+
+  // create a lesson and link exercises via the LessonExercise join model
+  const lesson = await prisma.lesson.create({
+    data: {
+      title: "1. Ders aşağıdaki egzersizleri yapınız.",
+      order: 1,
+    },
+  });
+
+  if (createdExercises && createdExercises.length > 0) {
+    const lessonExerciseData = createdExercises.map((item, idx) => ({
+      lessonId: lesson.id,
+      exerciseId: item.id,
+      order: idx + 1,
+    }));
+
+    // create the join rows
+    await prisma.lessonExercise.createMany({ data: lessonExerciseData });
+  }
+
+  const lessonWithExercises = await prisma.lesson.findUnique({
+    where: { id: lesson.id },
+    include: { LessonExercise: { include: { exercise: true } } },
+  });
+
+  // expose the mapped shape used by the API (Exercise array)
+  const mappedLesson = lessonWithExercises
+    ? {
+        ...lessonWithExercises,
+        Exercise: (lessonWithExercises.LessonExercise || []).map((le) => ({
+          ...le.exercise,
+          lessonExerciseId: le.id,
+          order: le.order,
+        })),
+      }
+    : lesson;
+  console.log({ user, student, article, createdExercises, lesson });
 }
 
 main()
