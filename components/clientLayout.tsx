@@ -9,6 +9,7 @@ import { playlists } from "../utils/constants";
 import { menuItems } from "@/app/routes";
 import Breadcrumb from "./breadcrumb/breadcrumb";
 import LogOutInput from "./formInputs/logoutInput";
+import { fetchData } from "@/utils/fetchData";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ interface ClientLayoutProps {
 export default function ClientLayout({ children }: ClientLayoutProps) {
   const [activeMenu, setActiveMenu] = useState("" as string | null);
   const [currentMenu, setCurrentMenu] = useState([] as any);
+
   const pathname = usePathname();
 
   useEffect(() => {

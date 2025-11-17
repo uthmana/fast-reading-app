@@ -63,6 +63,10 @@ interface ControlPanelProps {
 
 export const controlItems: any = {
   "goz-kaslarini-gelistirme": ["level", "type", "objectIcon"],
+  "aktif-gorme-alanini-genisletme-1": ["frame", "grid", "level"],
+  "aktif-gorme-alanini-genisletme-2": ["level", "color"],
+  "aktif-gorme-alanini-genisletme-3": ["level"],
+  "satir-boyu-gorme-uygulamasi": ["distance", "letterCount", "level", "scroll"],
 
   "hizli-gorme": ["level", "font", "wordsPerFrame"],
   "goz-cevikligi-artirma": ["level", "font", "wordsPerFrame"],
@@ -174,6 +178,14 @@ export default function ControlPanel({
             (item: { id: string }) => item.id === crtVal.articleSelect.value
           ),
         wordsPerFrame: parseInt(crtVal.wordsPerFrame.value),
+        frame: parseInt(crtVal.frame.value),
+        grid: parseInt(crtVal.grid.value),
+        color: parseInt(crtVal.color?.value),
+        perspectivecolor: parseInt(crtVal.perspectivecolor?.value),
+        distance: parseInt(crtVal.distance?.value),
+        letterCount: parseInt(crtVal.letterCount?.value),
+        size: parseInt(crtVal.size?.value),
+        scroll: crtVal.scroll?.value === "1" || crtVal.scroll?.value === true,
       });
     }
   };
@@ -285,7 +297,6 @@ export default function ControlPanel({
                 description="Yükselttikçe aynı anda görebileceğiniz kelime sayısı artar."
               />
             </div>
-
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("level") ? "hidden" : ""
@@ -306,7 +317,6 @@ export default function ControlPanel({
                 description="Nesnenin hareket hızı"
               />
             </div>
-
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("font") ? "hidden" : ""
@@ -328,7 +338,6 @@ export default function ControlPanel({
                 description="Yazı karekterinin büyüklüğü, okuma zorluğu çekiyorsanız büyütün"
               />
             </div>
-
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("type") ? "hidden" : ""
@@ -349,7 +358,6 @@ export default function ControlPanel({
                 description="Nesne ne yönde nasıl kayacak"
               />
             </div>
-
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("objectIcon") ? "hidden" : ""
@@ -370,6 +378,160 @@ export default function ControlPanel({
                 styleClass="mb-0"
                 description="Kendinize özel simge seçebilirsiniz"
               />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("frame") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.frame}
+                placeholder="Çerçeve Genişliği"
+                type="range"
+                value={controlVal.frame}
+                inputKey="frame"
+                name="Çerçeve Genişliği"
+                onChange={handleChange}
+                description="Köşe noktalarının genişliği"
+                min="2"
+                max="10"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("grid") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.grid}
+                placeholder="Sütun Sayısı"
+                type="range"
+                value={controlVal.grid}
+                inputKey="grid"
+                name="Sütun Sayısı"
+                onChange={handleChange}
+                description="Rakamlar kaç satır ve sütun gelsin"
+                min="2"
+                max="10"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("color") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.color}
+                placeholder="Kutu Rengi"
+                type="range"
+                name="Kutu Rengi"
+                value={controlVal.color}
+                inputKey="color"
+                description="Sürükleyeen kutunun rengini değiştirin"
+                min="1"
+                max="9"
+                onChange={handleChange}
+                showRangeColor={true}
+                colorList={{
+                  "1": "#2ecc71",
+                  "2": "#f1c40f",
+                  "3": "#e74c3c",
+                  "4": "#3498db",
+                  "5": "#8B4513",
+                  "6": "#000000",
+                  "7": "#e67e22",
+                  "8": "#8e44ad",
+                  "9": "#ff69b4",
+                }}
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("perspectivecolor") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.perspectivecolor}
+                name="Kutu Rengi"
+                value={controlVal.perspectivecolor}
+                min="1"
+                max="9"
+                type="range"
+                inputKey="perspectivecolor"
+                onChange={handleChange}
+                showRangeColor={true}
+                colorList={{
+                  "1": "#2ecc71", // 1 green
+                  "2": "#f1c40f", // 2 yellow
+                  "3": "#e74c3c", // 3 red
+                  "4": "#3498db", // 4 blue
+                  "5": "#8B4513", // 5 coffee
+                  "6": "#000000", // 6 black
+                  "7": "#e67e22", // 7 orange
+                  "8": "#8e44ad", // 8 purple
+                  "9": "#ff69b4", // 9 pink
+                }}
+                description="Sürükleyen kutunun rengini değiştirin"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("distance") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.distance}
+                placeholder="Merkeze Uzaklık"
+                type="range"
+                value={controlVal.distance}
+                inputKey="distance"
+                name="Merkeze Uzaklık"
+                onChange={handleChange}
+                description="İki kelimenin merkeze uzaklığı"
+                min="1"
+                max="10"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("letterCount") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.letterCount}
+                placeholder="Harf Sayısı"
+                type="range"
+                value={controlVal.letterCount}
+                inputKey="letterCount"
+                name="Harf Sayısı"
+                onChange={handleChange}
+                description="Metindeki harf sayısı"
+                min="1"
+                max="10"
+              />
+            </div>
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("scroll") ? "hidden" : ""
+              }`}
+            >
+              <div className="flex w-full items-center gap-3 px-1">
+                <label className="text-white font-medium">Kaydırma</label>
+                <input
+                  type="checkbox"
+                  checked={
+                    controlVal?.scroll?.value === "1" ||
+                    controlVal?.scroll?.value === true
+                  }
+                  onChange={(e) =>
+                    handleChange({
+                      targetValue: e.target.checked ? "1" : "0",
+                      value: controlVal.scroll,
+                      inputKey: "scroll",
+                    })
+                  }
+                />
+              </div>
             </div>
           </div>
         </div>

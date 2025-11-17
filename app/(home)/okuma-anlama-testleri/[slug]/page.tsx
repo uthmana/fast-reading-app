@@ -7,12 +7,17 @@ import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
 import { countWords, formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 
 export default function page() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const lessonParams = searchParams.get("lessonId");
+  const durationParams = searchParams.get("duration");
+  const exerciseParams = searchParams.get("exerciseId");
+
   const [questions, setQuestions] = useState([] as any);
   const [pause, setPause] = useState(false);
   const [readingStatus, setReadingStatus] = useState({
@@ -124,6 +129,22 @@ export default function page() {
     setControl(val);
   };
 
+  const saveProgress = async () => {
+    try {
+      await fetchData({
+        apiPath: "/api/progress",
+        method: "POST",
+        payload: {
+          studentId: session?.user?.student?.id,
+          lessonId: lessonParams,
+          exerciseId: exerciseParams,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   if (pathname === "hizli-okuma-testi") {
     return (
       <Whiteboard
@@ -148,6 +169,8 @@ export default function page() {
           />
         }
         onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        saveProgress={saveProgress}
       />
     );
   }
@@ -228,6 +251,8 @@ export default function page() {
           />
         }
         onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        saveProgress={saveProgress}
       />
     );
   }

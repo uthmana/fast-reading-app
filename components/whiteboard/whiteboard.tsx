@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, ReactElement, useEffect, useRef } from "react";
-import { MdArrowBack, MdPlayCircle, MdSyncLock } from "react-icons/md";
+import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import wood_img from "/public/images/wood.jpg";
 import book_loader from "/public/images/book-loader.gif";
 import ControlPanel from "../controlPanel/controlPanel";
 import Link from "next/link";
-import { IoMdClock } from "react-icons/io";
 import CountDown from "../countDown/countDown";
 
 interface WhiteboardProps {
@@ -74,6 +73,19 @@ export default function Whiteboard({
     wordsPerFrame: {
       value: (wordsPerFrame ? wordsPerFrame : 1)?.toString(),
     },
+    frame: { value: (control.frame ? control.frame : 8)?.toString() },
+    grid: { value: (control.grid ? control.grid : 2)?.toString() },
+    color: { value: (control.color ? control.color : 1)?.toString() },
+    perspectivecolor: {
+      value: (control.perspectivecolor
+        ? control.perspectivecolor
+        : 1
+      )?.toString(),
+    },
+    distance: { value: 1 },
+    letterCount: { value: 2 },
+    size: { value: 1 },
+    scroll: { value: 1 },
   } as any);
 
   useEffect(() => {

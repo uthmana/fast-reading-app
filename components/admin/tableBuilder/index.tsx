@@ -69,7 +69,7 @@ function TableBuilder({
     if (type === "json") {
       return (
         <Button
-          className="!p-1 !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
+          className="!p-1 !max-w-fit !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
           text=""
           onClick={() => onAction("quiz", info)}
           icon={<MdChecklist className="w-6 h-6" />}
@@ -79,7 +79,7 @@ function TableBuilder({
     if (type === "exercisesJson") {
       return (
         <Button
-          className="!p-1 !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
+          className="!p-1 !max-w-fit !bg-black/0 !text-black border hover:!bg-blue-500 hover:!text-white"
           text=""
           onClick={() => onAction("exercises", info)}
           icon={<MdChecklist className="w-6 h-6" />}
@@ -242,7 +242,7 @@ function TableBuilder({
                     >
                       {row.getVisibleCells().map((cell, indx) => {
                         return (
-                          <td key={cell.id + indx} className="py-2 pr-2">
+                          <td key={cell.id + indx} className="py-1 pr-2">
                             {flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()

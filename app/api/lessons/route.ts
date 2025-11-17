@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
       const lesson = await prisma.lesson.findUnique({
         where: { id },
         include: {
-          Exercise: true,
+          LessonExercise: { include: { exercise: true } },
         },
       });
 
@@ -23,16 +23,43 @@ export async function GET(req: NextRequest) {
         );
       }
 
-      return NextResponse.json(lesson, { status: 200 });
+      // Map LessonExercise -> Exercise[] to keep previous API shape
+      const mapped = {
+        ...lesson,
+        Exercise: (lesson.LessonExercise || []).map((le) => ({
+          ...le.exercise,
+          lessonExerciseId: le.id,
+          order: le.order,
+        })),
+      };
+
+      return NextResponse.json(mapped, { status: 200 });
     }
 
     const lessons = await prisma.lesson.findMany({
       include: {
-        Exercise: true,
+        LessonExercise: { include: { exercise: true } },
       },
       orderBy: { createdAt: "asc" },
     });
-    return NextResponse.json(lessons, { status: 200 });
+
+    // Map each lesson's LessonExercise to Exercise[] for backward compatibility
+    const mappedLessons = lessons.map((lesson) => ({
+      ...lesson,
+      Exercise: (lesson.LessonExercise || [])
+        .sort((a: any, b: any) => {
+          const ao = a.order ?? 0;
+          const bo = b.order ?? 0;
+          return ao - bo;
+        })
+        .map((le: any) => ({
+          ...le.exercise,
+          lessonExerciseId: le.id,
+          order: le.order,
+        })),
+    }));
+
+    return NextResponse.json(mappedLessons, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
@@ -54,42 +81,76 @@ export async function POST(req: Request) {
 
   try {
     if (id) {
-      const lessonExit = await prisma.lesson.findUnique({
-        where: { id },
-      });
+      const lessonExit = await prisma.lesson.findUnique({ where: { id } });
       if (lessonExit) {
-        const lesson = await prisma.lesson.update({
+        // Replace existing LessonExercise links with the provided Exercise list
+        // We'll delete existing join rows and create new ones in order
+        await prisma.lessonExercise.deleteMany({ where: { lessonId: id } });
+
+        const lessonExerciseData = Exercise.map(
+          (exerciseId: string, idx: number) => ({
+            lessonId: id,
+            exerciseId,
+            order: idx + 1,
+          })
+        );
+
+        if (lessonExerciseData.length > 0) {
+          await prisma.lessonExercise.createMany({
+            data: lessonExerciseData,
+          } as any);
+        }
+
+        const updated = await prisma.lesson.findUnique({
           where: { id },
-          data: {
-            title,
-            order,
-            Exercise: {
-              set: Exercise.map((exerciseId: string) => ({
-                id: exerciseId,
-              })),
-            },
-          },
-          include: { Exercise: true },
+          include: { LessonExercise: { include: { exercise: true } } },
         });
 
-        return NextResponse.json(lesson, { status: 200 });
+        const mapped = {
+          ...updated,
+          Exercise: (updated?.LessonExercise || []).map((le) => ({
+            ...le.exercise,
+            lessonExerciseId: le.id,
+            order: le.order,
+          })),
+        };
+
+        return NextResponse.json(mapped, { status: 200 });
       }
     }
 
-    const lesson = await prisma.lesson.create({
-      data: {
-        title,
-        order,
-        Exercise: {
-          connect: Exercise.map((exerciseId: string) => ({
-            id: exerciseId,
-          })),
-        },
-      },
-      include: { Exercise: true },
+    // Create new lesson and link exercises via LessonExercise
+    const created = await prisma.lesson.create({ data: { title, order } });
+
+    if (Exercise && Exercise.length > 0) {
+      const lessonExerciseData = Exercise.map(
+        (exerciseId: string, idx: number) => ({
+          lessonId: created.id,
+          exerciseId,
+          order: idx + 1,
+        })
+      );
+
+      await prisma.lessonExercise.createMany({
+        data: lessonExerciseData,
+      } as any);
+    }
+
+    const createdWithExercises = await prisma.lesson.findUnique({
+      where: { id: created.id },
+      include: { LessonExercise: { include: { exercise: true } } },
     });
 
-    return NextResponse.json(lesson, { status: 201 });
+    const mappedCreated = {
+      ...createdWithExercises,
+      Exercise: (createdWithExercises?.LessonExercise || []).map((le) => ({
+        ...le.exercise,
+        lessonExerciseId: le.id,
+        order: le.order,
+      })),
+    };
+
+    return NextResponse.json(mappedCreated, { status: 201 });
   } catch (err) {
     console.log(err);
     return NextResponse.json(

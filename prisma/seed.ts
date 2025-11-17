@@ -95,6 +95,24 @@ async function main() {
       minDuration: 180,
       taken: false,
     },
+    {
+      title: "Seviyenizi Yükseltin",
+      pathName: "/kelime-egzersizleri/seviye-yukselt",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Hızlı Okuma Testi",
+      pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+      minDuration: 180,
+      taken: false,
+    },
+    {
+      title: "Anlama Testi",
+      pathName: "/okuma-anlama-testleri/anlama-testi",
+      minDuration: 180,
+      taken: false,
+    },
   ];
 
   const user = await prisma.user.upsert({
@@ -258,18 +276,41 @@ async function main() {
     exerciseData.map((item) => prisma.exercise.create({ data: item }))
   );
 
+  // create a lesson and link exercises via the LessonExercise join model
   const lesson = await prisma.lesson.create({
     data: {
       title: "1. Ders aşağıdaki egzersizleri yapınız.",
       order: 1,
-      Exercise: {
-        connect: createdExercises?.slice(0, 10)?.map((item) => ({
-          id: item.id,
-        })),
-      },
     },
-    include: { Exercise: true },
   });
+
+  if (createdExercises && createdExercises.length > 0) {
+    const lessonExerciseData = createdExercises.map((item, idx) => ({
+      lessonId: lesson.id,
+      exerciseId: item.id,
+      order: idx + 1,
+    }));
+
+    // create the join rows
+    await prisma.lessonExercise.createMany({ data: lessonExerciseData });
+  }
+
+  const lessonWithExercises = await prisma.lesson.findUnique({
+    where: { id: lesson.id },
+    include: { LessonExercise: { include: { exercise: true } } },
+  });
+
+  // expose the mapped shape used by the API (Exercise array)
+  const mappedLesson = lessonWithExercises
+    ? {
+        ...lessonWithExercises,
+        Exercise: (lessonWithExercises.LessonExercise || []).map((le) => ({
+          ...le.exercise,
+          lessonExerciseId: le.id,
+          order: le.order,
+        })),
+      }
+    : lesson;
   console.log({ user, student, article, createdExercises, lesson });
 }
 

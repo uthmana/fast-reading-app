@@ -44,27 +44,45 @@ model Student {
 }
 
 model Lesson {
-  id          String     @id @default(cuid())
-  title       String
-  description String?
-  order       Int        @default(1)
-  Exercise    Exercise[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
-  Progress    Progress[]
+  id             String           @id @default(cuid())
+  title          String
+  description    String?
+  order          Int              @default(1)
+  // Use an explicit join model so a Lesson can contain the same Exercise multiple times
+  LessonExercise LessonExercise[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime?        @updatedAt
+  Progress       Progress[]
 }
 
 model Exercise {
-  id          String     @id @default(cuid())
-  title       String?
-  pathName    String
-  minDuration Int        @default(180) // minimum Duration in seconds
-  lessonId    String?
-  lesson      Lesson?    @relation(fields: [lessonId], references: [id])
-  config      Json?
-  createdAt   DateTime   @default(now())
-  taken       Boolean    @default(false)
-  Progress    Progress[]
+  id             String           @id @default(cuid())
+  title          String?
+  pathName       String
+  minDuration    Int              @default(180) // minimum Duration in seconds
+  // Exercise is now independent from Lesson; relation entries live in LessonExercise
+  config         Json?
+  createdAt      DateTime         @default(now())
+  taken          Boolean          @default(false)
+  Progress       Progress[]
+  // relation entries to place this Exercise inside Lessons (may appear multiple times)
+  LessonExercise LessonExercise[]
+}
+
+// Join table to associate Exercises with Lessons. Because there's no @@unique on
+// (lessonId, exerciseId), the same exercise can be added multiple times to a lesson
+// (for example to repeat an exercise in a lesson). An optional `order` field
+// can be used to control ordering inside a lesson.
+model LessonExercise {
+  id         String   @id @default(cuid())
+  lessonId   String
+  exerciseId String
+  order      Int?
+  createdAt  DateTime @default(now())
+
+  lesson   Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  exercise Exercise   @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  Progress Progress[]
 }
 
 model Attempt {
@@ -80,20 +98,22 @@ model Attempt {
 }
 
 model Progress {
-  id         String @id @default(cuid())
-  studentId  String
-  lessonId   String
-  exerciseId String
+  id               String @id @default(cuid())
+  studentId        String
+  lessonId         String
+  lessonExerciseId String
+  exerciseId       String
 
   done      Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  student  Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  lesson   Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  exercise Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  student        Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  lesson         Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  exercise       Exercise       @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  lessonExercise LessonExercise @relation(fields: [lessonExerciseId], references: [id], onDelete: Cascade)
 
-  @@unique([studentId, exerciseId]) // 1 student can only have 1 progress entry per exercise
+  @@unique([studentId, lessonExerciseId]) // progress is tracked per student per lessonExercise occurrence
 }
 
 enum Role {

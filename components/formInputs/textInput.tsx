@@ -19,7 +19,9 @@ type InputProps = {
   max?: string;
   step?: string;
   showRangeIcon?: boolean;
+  showRangeColor?: boolean;
   description?: string;
+  colorList?: any;
 };
 
 function TextInput(props: InputProps) {
@@ -36,9 +38,11 @@ function TextInput(props: InputProps) {
     styleClass = "",
     step,
     showRangeIcon = false,
+    showRangeColor = false,
     description,
     min,
     max,
+    colorList,
     ...rest
   } = props;
 
@@ -59,6 +63,14 @@ function TextInput(props: InputProps) {
                   src={`/images/objects/icon${value?.value}.png`}
                 />
               </span>
+            ) : null}
+            {type === "range" && showRangeColor ? (
+              <span
+                className="absolute border border-white right-1 -top-[5px] w-8 h-8 rounded-full"
+                style={{
+                  backgroundColor: colorList[value?.value ?? "1"],
+                }}
+              ></span>
             ) : null}
           </div>
         ) : (

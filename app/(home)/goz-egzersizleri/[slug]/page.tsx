@@ -9,6 +9,7 @@ import { useState } from "react";
 import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
+import { eyeExerciseDescription } from "@/utils/constants";
 
 export default function page() {
   const queryParams = useParams();
@@ -76,8 +77,14 @@ export default function page() {
       pause={pause}
       description={
         <ControlPanelGuide
-          description="Gözlerimizde toplam 6 adet kas var. Göz kaslarını geliştirmek için koordineli olarak hareket ettirmek gerekmektedir. Bu uygulamayı günde en az 5 dakika yaparak göz kaslarınızı geliştirebilirsiniz."
-          howToPlay="<p> Alttaki araçlardan hız, egzersiz tipi ve simgeyi seçip  <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Bilgisayarı tam karşınıza alarak, başınızı hareket ettirmeden sadece gözleriniz ile ekrandaki simgeyi süre bitene kadar takip edin.</p>"
+          description={
+            eyeExerciseDescription[pathname]?.description ??
+            "Gözlerimizde toplam 6 adet kas var. Göz kaslarını geliştirmek için koordineli olarak hareket ettirmek gerekmektedir. Bu uygulamayı günde en az 5 dakika yaparak göz kaslarınızı geliştirebilirsiniz."
+          }
+          howToPlay={
+            eyeExerciseDescription[pathname]?.howToPlay ??
+            "<p> Alttaki araçlardan hız, egzersiz tipi ve simgeyi seçip  <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Bilgisayarı tam karşınıza alarak, başınızı hareket ettirmeden sadece gözleriniz ile ekrandaki simgeyi süre bitene kadar takip edin.</p>"
+          }
         />
       }
       body={

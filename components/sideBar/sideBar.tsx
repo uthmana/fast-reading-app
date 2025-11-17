@@ -1,7 +1,9 @@
 "use client";
 
 import { menuItems } from "@/app/routes";
+import { fetchData } from "@/utils/fetchData";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 type MenuItem = {
   name: string;
@@ -18,6 +20,29 @@ export default function Sidebar({
 }) {
   if (pathname === "/") return null;
 
+  const [progressSummary, setProgressSummary] = useState(
+    {} as {
+      lessons: {};
+      levelUp: {};
+      fastReadingProgress: {};
+      fastUnderstandingProgress: {};
+    } | null
+  );
+
+  useEffect(() => {
+    if (pathname.includes("/dersler")) {
+      const fetchProgressSummary = async () => {
+        try {
+          const resData = await fetchData({ apiPath: "/api/progressSummary" });
+          setProgressSummary(resData);
+        } catch (error) {
+          console.error("Error fetching progress summary:", error);
+        }
+      };
+      fetchProgressSummary();
+    }
+  }, [pathname]);
+
   let selected = menuItems.find((m) => m.name === activeMenu);
 
   if (!activeMenu) {
@@ -31,6 +56,29 @@ export default function Sidebar({
 
   if (!selected) return null;
 
+  const renderSummary = (pathLink: string, progressSummary: any) => {
+    if (!progressSummary) return "";
+    if (pathLink === "/dersler") {
+      return `% ${progressSummary.lessons?.correct || "0"}`.trim();
+    }
+    if (pathLink === "/kelime-egzersizleri/seviye-gelisim") {
+      return `${progressSummary.levelUp?.wpf || "0"} / ${
+        progressSummary.levelUp?.durationSec || "0"
+      } ms`.trim();
+    }
+    if (pathLink === "/okuma-anlama-testleri/hizli-okuma-testi-gelisim") {
+      return `1 dk. ${
+        progressSummary.fastReadingProgress?.wpm || "0"
+      } kelime`.trim();
+    }
+    if (pathLink === "/okuma-anlama-testleri/anlama-testi-gelisim") {
+      return `% ${
+        progressSummary.fastUnderstandingProgress?.correct || "0"
+      }`.trim();
+    }
+    return "";
+  };
+
   return (
     <aside className="hidden min-h-96 lg:block w-64 bg-white  pl-4">
       <ul className="space-y-[1px]">
@@ -43,7 +91,10 @@ export default function Sidebar({
                   className={`block px-3 py-5 border-2 border-blue-600 group text-lg  hover:shadow-md  rounded-lg text-black transition `}
                 >
                   <span className="block transition-transform group-hover:text-blue-600 group-hover:translate-x-2">
-                    {item.name}
+                    {item.name}{" "}
+                    <span className="font-bold text-xs text-white whitespace-nowrap px-1 py-[2px] bg-blue-600">
+                      {renderSummary(item.link, progressSummary)}
+                    </span>
                   </span>
                 </Link>
                 <div className="space-y-[3px] mt-1">

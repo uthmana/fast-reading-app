@@ -16,6 +16,7 @@ export default function Lesson({ id }: { id?: string }) {
   const [data, setData] = useState({} as any);
   const [currentLesson, setCurrentLesson] = useState({} as any);
   const [progress, setProgress] = useState([]);
+  const [lessonAssigned, setLessonAssigned] = useState(false);
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -27,12 +28,43 @@ export default function Lesson({ id }: { id?: string }) {
           : resData?.[0];
         setCurrentLesson(lesson);
 
-        // fetch progress for this lesson
+        // fetch progress for this lesson (if session/student available)
         if (lesson) {
-          const progressRes = await fetchData({
-            apiPath: `/api/progress?lessonId=${lesson.id}&studentId=${session?.user?.student?.id}`,
-          });
-          setProgress(progressRes || []);
+          // First try: ask the server to infer the student from the server session.
+          let progressRes = await fetchData({
+            apiPath: `/api/progress?lessonId=${lesson.id}`,
+          }).catch(() => []);
+
+          // If that returned nothing and we have a client session student id,
+          // retry with explicit studentId parameter (covers session-hydration edge cases).
+          const clientStudentId = session?.user?.student?.id;
+          if (
+            (!progressRes ||
+              (Array.isArray(progressRes) && progressRes.length === 0)) &&
+            clientStudentId
+          ) {
+            progressRes = await fetchData({
+              apiPath: `/api/progress?lessonId=${lesson.id}&studentId=${clientStudentId}`,
+            }).catch(() => []);
+          }
+
+          // normalize progress response to an array when possible
+          const normalizedProgress = Array.isArray(progressRes)
+            ? progressRes
+            : progressRes &&
+              typeof progressRes === "object" &&
+              !progressRes.error
+            ? // sometimes the API may return an object; try to extract array-like values
+              Array.isArray((progressRes as any).data)
+              ? (progressRes as any).data
+              : (progressRes as any).progress || (progressRes as any).rows || []
+            : [];
+
+          setProgress(normalizedProgress);
+
+          // lesson is considered assigned if there are any progress rows for it
+          const assigned = normalizedProgress.length > 0;
+          setLessonAssigned(assigned);
         }
       } catch (error) {
         console.error("Error fetching lessons:", error);
@@ -40,7 +72,7 @@ export default function Lesson({ id }: { id?: string }) {
     };
 
     fetchLessons();
-  }, []);
+  }, [id, session?.user?.student?.id]);
 
   const handleNav = (direction: string, order: number) => {
     const maxOrder = data.length;
@@ -62,11 +94,6 @@ export default function Lesson({ id }: { id?: string }) {
       if (nextData) router.push(`/dersler/${nextData.id}`);
       return;
     }
-  };
-
-  const handleDoneExercise = (isDone: boolean) => {
-    if (!isDone) return;
-    alert("Bu Egzersizi Yaptınız.");
   };
 
   return (
@@ -104,10 +131,24 @@ export default function Lesson({ id }: { id?: string }) {
 
             <ul className="space-y-0">
               {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
+                // determine if this particular lesson-exercise occurrence is done
                 const isDone = progress?.some(
-                  (p: any) => p.exerciseId === lesson.id && p.done
+                  (p: any) =>
+                    // prefer lessonExerciseId when available
+                    (lesson.lessonExerciseId &&
+                      p.lessonExerciseId === lesson.lessonExerciseId &&
+                      p.done) ||
+                    // fallback: match by exerciseId + lessonId
+                    (p.exerciseId === lesson.id &&
+                      p.lessonId === currentLesson.id &&
+                      p.done)
                 );
                 const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
+                // only lock exercises for students; assigned lessons are unlocked
+                const isStudent = session?.user?.role === "STUDENT";
+                const unlocked = isStudent ? lessonAssigned : true;
+                const linkAllowed = unlocked && !isDone;
+
                 return (
                   <li
                     key={lesson.pathName + idx}
@@ -131,27 +172,61 @@ export default function Lesson({ id }: { id?: string }) {
                       backgroundSize: "cover",
                     }}
                   >
-                    <Link
-                      href={isDone ? "" : linkPath}
-                      className={`flex justify-between items-center
+                    {linkAllowed ? (
+                      <Link
+                        href={linkPath}
+                        className={`flex justify-between items-center
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
                       transition-all duration-300`}
-                      onClick={() => handleDoneExercise(isDone)}
-                    >
-                      <span
-                        className={`flex`}
-                        style={{
-                          textShadow:
-                            "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                        }}
                       >
-                        {idx + 1}. {lesson.title}
-                      </span>
-                      <span className="text-sm  italic">
-                        (En Az {lesson.minDuration / 60} Dakika)
-                      </span>
-                    </Link>
+                        <span
+                          className={`flex`}
+                          style={{
+                            textShadow:
+                              "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                          }}
+                        >
+                          {idx + 1}. {lesson.title}
+                        </span>
+                        <span className="text-sm  italic">
+                          (En Az {lesson.minDuration / 60} Dakika)
+                        </span>
+                      </Link>
+                    ) : (
+                      <div
+                        role="button"
+                        onClick={() => {
+                          if (!unlocked) {
+                            alert(
+                              "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
+                            );
+                          } else if (isDone) {
+                            alert("Bu egzersizi zaten tamamladınız.");
+                          }
+                        }}
+                        className={`flex justify-between items-center
+                      px-6 py-3 text-gray-800 font-medium
+                      relative z-10
+                      transition-all duration-300 cursor-default`}
+                      >
+                        <span
+                          className={`flex items-center gap-2`}
+                          style={{
+                            textShadow:
+                              "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                          }}
+                        >
+                          {!unlocked && (
+                            <IoMdLock className="ml-2 text-black" />
+                          )}{" "}
+                          {idx + 1}. {lesson.title}
+                        </span>
+                        <span className="text-sm  italic">
+                          (En Az {lesson.minDuration / 60} Dakika)
+                        </span>
+                      </div>
+                    )}
 
                     {/* Darker side shadow */}
                     <div
