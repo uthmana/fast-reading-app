@@ -45,11 +45,17 @@ export default function FormBuilder({
   }
 
   if (fieldsData && data) {
-    fieldsData = [...formFields[id]].map((fd) => {
+    fieldsData = [...formFields[id]].map((fd: any) => {
       const value = data[fd.key];
 
       if (value !== undefined) {
-        return { ...fd, value: { ...fd.value, value: value.toString() } };
+        return {
+          ...fd,
+          value: {
+            ...fd.value,
+            value: fd?.multipleSelect ? value : value.toString(),
+          },
+        };
       }
       return fd;
     });
@@ -88,8 +94,12 @@ export default function FormBuilder({
         case "date":
           val = convertToISO8601(val);
           break;
+        case "multipleSelect":
+          val = Array.isArray(val) ? val : [];
+          break;
+
         default:
-          val = val?.toString()?.trim();
+          val = Array.isArray(val) ? val : val?.toString()?.trim();
       }
 
       acc[newVal.key] = val;
@@ -101,10 +111,15 @@ export default function FormBuilder({
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
-    const isValid = formData.every(
-      (fd: { required: Boolean; value: { value: any } }) =>
-        !fd.required || Boolean(fd.value?.value)
-    );
+    const isValid = formData.every((fd: any) => {
+      if (!fd.required) return true;
+
+      if (fd.multipleSelect) {
+        return Array.isArray(fd.value?.value) && fd.value.value.length > 0;
+      }
+
+      return Boolean(fd.value?.value);
+    });
     onSubmit({
       isValid,
       formData: { ...(data ? data : {}), ...newData },
@@ -139,6 +154,9 @@ export default function FormBuilder({
               maxlength: number;
               styleClass: string;
               asyncOption: () => any;
+              multipleSelect: boolean;
+              min: string;
+              max: string;
             },
             idx: number
           ) => {
@@ -156,6 +174,7 @@ export default function FormBuilder({
                   required={v.required}
                   disabled={v.disabled}
                   styleClass={v.styleClass}
+                  multipleSelect={v.multipleSelect}
                 />
               );
             }
@@ -192,6 +211,8 @@ export default function FormBuilder({
                 disabled={v.disabled}
                 maxlength={v.maxlength}
                 styleClass={v.styleClass}
+                min={v.min}
+                max={v.max}
               />
             );
           }

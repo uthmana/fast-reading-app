@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, ReactElement, useEffect, useRef } from "react";
-import { MdPlayCircle } from "react-icons/md";
+import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import wood_img from "/public/images/wood.jpg";
 import book_loader from "/public/images/book-loader.gif";
 import ControlPanel from "../controlPanel/controlPanel";
+import Link from "next/link";
+import CountDown from "../countDown/countDown";
 
 interface WhiteboardProps {
   body?: ReactElement;
@@ -14,6 +16,11 @@ interface WhiteboardProps {
   pause?: boolean;
   onControlChange?: (v: any) => void;
   control?: any;
+  isfastTest?: boolean;
+  readingStatus?: any;
+  lessonData?: { id: string; duration: string };
+  contentClassName?: string;
+  saveProgress?: () => void;
 }
 
 export default function Whiteboard({
@@ -22,6 +29,11 @@ export default function Whiteboard({
   onControlChange,
   control = {},
   pause,
+  isfastTest = false,
+  readingStatus,
+  lessonData,
+  contentClassName = "",
+  saveProgress,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +41,15 @@ export default function Whiteboard({
   const [categoryOptions, setCategoryOptions] = useState([] as any);
   const [articleOptions, setArticleOptions] = useState([] as any);
 
-  const { categorySelect, articleSelect, font, level, wordsPerFrame } = control;
+  const {
+    categorySelect,
+    articleSelect,
+    font,
+    level,
+    objectIcon,
+    wordsPerFrame,
+    type,
+  } = control;
 
   const [controlVal, setControlVal] = useState({
     categorySelect: {
@@ -44,9 +64,28 @@ export default function Whiteboard({
     level: {
       value: (level ? level : 1)?.toString(),
     },
+    objectIcon: {
+      value: objectIcon ? objectIcon : "1",
+    },
+    type: {
+      value: type ? type : "1",
+    },
     wordsPerFrame: {
       value: (wordsPerFrame ? wordsPerFrame : 1)?.toString(),
     },
+    frame: { value: (control.frame ? control.frame : 8)?.toString() },
+    grid: { value: (control.grid ? control.grid : 2)?.toString() },
+    color: { value: (control.color ? control.color : 1)?.toString() },
+    perspectivecolor: {
+      value: (control.perspectivecolor
+        ? control.perspectivecolor
+        : 1
+      )?.toString(),
+    },
+    distance: { value: 1 },
+    letterCount: { value: 2 },
+    size: { value: 1 },
+    scroll: { value: 1 },
   } as any);
 
   useEffect(() => {
@@ -74,15 +113,32 @@ export default function Whiteboard({
         />
 
         <div
-          className="absolute top-[3%] flex flex-col items-center justify-center left-[2%] w-[96%] h-[94%] bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
+          className="absolute  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] flex flex-col items-center justify-center  bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
           style={{
             fontSize: `${parseInt(control.font)}px`,
             lineHeight: `${parseInt(control.font) * 1.5}px`,
           }}
         >
+          {lessonData?.duration ? (
+            <CountDown
+              className="absolute right-3 top-3"
+              initial={parseInt(lessonData?.duration)}
+              start={isPlaying}
+            />
+          ) : null}
+
           {description}
+
+          {lessonData?.id ? (
+            <Link
+              className="absolute flex gap-2 bottom-5 transition hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
+              href={`/dersler/${lessonData?.id}`}
+            >
+              <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+            </Link>
+          ) : null}
           <Button
-            className={`!w-fit !h-10 my-4  bg-blue-600 hover:bg-blue-700 shadow-lg  ml-auto`}
+            className={`!w-fit !h-10 my-4  absolute right-3 bottom-1 bg-blue-600 hover:bg-blue-700 shadow-lg  ml-auto`}
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
             onClick={handlePlay}
           />
@@ -108,20 +164,42 @@ export default function Whiteboard({
           setCategoryOptions={setCategoryOptions}
           articleOptions={articleOptions}
           setArticleOptions={setArticleOptions}
+          isfastTest={isfastTest}
+          readingStatus={readingStatus}
         />
       </div>
 
       {/* Fullscreen reading overlay */}
       {isPlaying && (
         <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[60]">
-          <div className="relative lg:max-w-[900px] w-full md:h-[600px] mb-1  h-[calc(100%-30px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
+          <div
+            className={`relative  w-full lg:w-[80%]  mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] ${contentClassName}`}
+          >
             <img
               src={wood_img.src}
               alt="Wood background"
               className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
-            <div className="absolute top-[3%] left-[2%] w-[96%] h-[94%] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+            <div className="absolute group top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+              {lessonData?.duration ? (
+                <CountDown
+                  className="absolute right-3 top-3"
+                  initial={parseInt(lessonData?.duration)}
+                  start={isPlaying}
+                  onFinish={saveProgress}
+                />
+              ) : null}
+
               {body}
+
+              {lessonData?.id ? (
+                <Link
+                  className="absolute transition-opacity lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-4  hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
+                  href={`/dersler/${lessonData?.id}`}
+                >
+                  <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+                </Link>
+              ) : null}
             </div>
 
             {isLoading ? (
@@ -135,7 +213,7 @@ export default function Whiteboard({
             ) : null}
           </div>
 
-          <div className="lg:max-w-[900px] w-full">
+          <div className={`w-full lg:w-[80%] ${contentClassName}`}>
             <ControlPanel
               key={controlVal}
               controlVal={controlVal}
@@ -148,6 +226,8 @@ export default function Whiteboard({
               setCategoryOptions={setCategoryOptions}
               articleOptions={articleOptions}
               setArticleOptions={setArticleOptions}
+              isfastTest={isfastTest}
+              readingStatus={readingStatus}
             />
           </div>
         </div>

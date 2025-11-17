@@ -17,10 +17,8 @@ export default function LessonBoard({ lessons, className }: LessonBoardProps) {
           className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
         />
 
-        <div className="absolute top-[3%] flex flex-col items-center justify-center left-[2%] w-[96%] h-[94%] bg-white bg-[url('/images/slate.jpg')] px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)] ">
-          <div className="flex justify-between gap-4 flex-wrap items-center w-full">
-            {lessons}
-          </div>
+        <div className="absolute top-[3%] flex flex-col  left-[2%] w-[96%] h-[94%] bg-white bg-[url('/images/slate.jpg')] px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)] ">
+          <div className="flex gap-4 flex-wrap  w-full">{lessons}</div>
         </div>
       </div>
     </div>

@@ -29,6 +29,7 @@ export default function Profile({ user }: any) {
           <ul className="w-full space-y-2 text-sm text-black">
             <li className="">
               <Link
+                target="_blank"
                 href="/"
                 title="Çalışma platformu"
                 className="hover:text-blue-600 tracking-tight"

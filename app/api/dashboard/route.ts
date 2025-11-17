@@ -5,33 +5,40 @@ import prisma from "@/lib/prisma";
 export async function GET(req: NextRequest) {
   try {
     // Run all queries in parallel (no transaction needed for reads)
-    const [users, students, articles, successStudentsRaw, newStudentsRaw] =
-      await Promise.all([
-        prisma.user.count({
-          where: { role: "ADMIN" },
-        }),
-        prisma.user.count({
-          where: { role: "STUDENT" },
-        }),
-        prisma.article.count(),
-        prisma.attempt.findMany({
-          orderBy: { wpm: "desc" },
-          take: 10,
-          include: {
-            student: {
-              include: {
-                user: { select: { name: true } },
-              },
+    const [
+      users,
+      students,
+      articles,
+      lessons,
+      successStudentsRaw,
+      newStudentsRaw,
+    ] = await Promise.all([
+      prisma.user.count({
+        where: { role: "ADMIN" },
+      }),
+      prisma.user.count({
+        where: { role: "STUDENT" },
+      }),
+      prisma.article.count(),
+      prisma.lesson.count(),
+      prisma.attempt.findMany({
+        orderBy: { wpm: "desc" },
+        take: 10,
+        include: {
+          student: {
+            include: {
+              user: { select: { name: true } },
             },
           },
-        }),
-        prisma.user.findMany({
-          where: { role: "STUDENT" },
-          include: { Student: true },
-          orderBy: { createdAt: "desc" },
-          take: 10,
-        }),
-      ]);
+        },
+      }),
+      prisma.user.findMany({
+        where: { role: "STUDENT" },
+        include: { Student: true },
+        orderBy: { createdAt: "desc" },
+        take: 10,
+      }),
+    ]);
 
     const successStudents = successStudentsRaw.map((item) => ({
       createdAt: item.createdAt,
@@ -47,7 +54,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(
       {
-        widget: { users, students, articles },
+        widget: { users, students, articles, lessons },
         successStudents,
         newStudents,
       },

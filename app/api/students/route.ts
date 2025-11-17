@@ -113,7 +113,51 @@ export async function POST(req: Request) {
             }
           : {}),
       },
+      include: {
+        Student: true,
+      },
     });
+
+    // If a student was created, automatically assign the first lesson's
+    // exercises to them (create Progress rows with done: false). Other
+    // lessons remain locked until unlocked by completing the current lesson.
+    if (role === "STUDENT" && user.Student) {
+      try {
+        const studentId = user.Student.id;
+
+        // Find the first lesson by order
+        const firstLesson = await prisma.lesson.findFirst({
+          orderBy: { order: "asc" },
+        });
+        if (firstLesson) {
+          const lesExercises = await prisma.lessonExercise.findMany({
+            where: { lessonId: firstLesson.id },
+            orderBy: { order: "asc" },
+          });
+
+          if (lesExercises.length > 0) {
+            const progressData = lesExercises.map((le) => ({
+              studentId,
+              lessonId: firstLesson.id,
+              lessonExerciseId: le.id,
+              exerciseId: le.exerciseId,
+              done: false,
+            }));
+
+            // createMany with skipDuplicates to be idempotent
+            await prisma.progress.createMany({
+              // cast to any because generated Prisma types need regenerate
+              data: progressData as any,
+              skipDuplicates: true,
+            } as any);
+          }
+        }
+      } catch (e) {
+        console.error("Error assigning first lesson to student:", e);
+        // Non-fatal: we still return the created user even if assignment fails
+      }
+    }
+
     return NextResponse.json(user, { status: 201 });
   } catch (err) {
     console.log(err);
