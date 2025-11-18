@@ -82,7 +82,7 @@ export default function Lesson({ id }: { id?: string }) {
     // Prevent going before the first item
     if (direction === "prev") {
       if (prev < 1) return;
-      const prevData = data.find((item: any) => item.order === prev);
+      const prevData = data?.find((item: any) => item.order === prev);
       if (prevData) router.push(`/dersler/${prevData.id}`);
       return;
     }
@@ -90,7 +90,7 @@ export default function Lesson({ id }: { id?: string }) {
     // Prevent going past the last item
     if (direction === "next") {
       if (next > maxOrder) return;
-      const nextData = data.find((item: any) => item.order === next);
+      const nextData = data?.find((item: any) => item.order === next);
       if (nextData) router.push(`/dersler/${nextData.id}`);
       return;
     }
@@ -146,7 +146,7 @@ export default function Lesson({ id }: { id?: string }) {
                 const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
                 // only lock exercises for students; assigned lessons are unlocked
                 const isStudent = session?.user?.role === "STUDENT";
-                const unlocked = isStudent ? lessonAssigned : true;
+                const unlocked = true; //isStudent ? lessonAssigned : true;
                 const linkAllowed = unlocked && !isDone;
 
                 return (
