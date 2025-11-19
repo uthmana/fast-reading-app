@@ -1,7 +1,7 @@
 "use client";
 import MiniCalendar from "@/components/admin/miniCalendar/miniCalendar";
 import TableBuilder from "@/components/admin/tableBuilder";
-import BarChart from "@/components/barChart/barChart";
+import BarChart from "@/components/Charts/barChart";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 import Widget from "@/components/widget/widget";
 import { fetchData } from "@/utils/fetchData";
