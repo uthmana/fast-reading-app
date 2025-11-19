@@ -32,9 +32,6 @@ export default function Home() {
     } | null
   );
 
-  // const [understandingData, setUnderstandingData] = useState(
-  //   {} as { data: []; categories: [] }
-  // );
   const [fastReadingData, setFastReadingData] = useState(
     {} as { data: []; categories: [] }
   );
@@ -80,7 +77,6 @@ export default function Home() {
         };
 
         setFastReadingData(buildData("wpm", "FASTREADING"));
-        // setUnderstandingData(buildData("correct", "UNDERSTANDING"));
         setFastVisionData(buildData("correct", "FASTVISION"));
       } catch (error) {}
     };
@@ -265,6 +261,9 @@ export default function Home() {
               },
               labels: ["Yapılan Ders", "Yapılmayan Ders"],
               colors: ["#28a0fc", "#dc3912"],
+              legend: {
+                position: "bottom",
+              },
             }}
             chartData={[
               progressSummary?.lessons?.correct || 0,
@@ -282,6 +281,9 @@ export default function Home() {
               },
               labels: ["Anlama Oranı", "Anlama Oranı Dışında"],
               colors: ["#28a0fc", "#dc3912"],
+              legend: {
+                position: "bottom",
+              },
             }}
             chartData={[
               progressSummary?.fastUnderstandingProgress?.correct || 0,
