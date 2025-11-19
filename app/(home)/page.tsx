@@ -13,20 +13,32 @@ import {
 } from "react-icons/md";
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
-import BarChart from "../../components/barChart/barChart";
+import BarChart from "../../components/Charts/barChart";
 import { formatDateTime } from "@/utils/helpers";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 import SpeedGauge from "@/components/speedGauge/speedGauge";
+import PieChart from "@/components/Charts/pieChart";
 
 export default function Home() {
   const { data: session, status } = useSession();
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [user, setUser] = useState({} as any);
+  const [progressSummary, setProgressSummary] = useState(
+    {} as {
+      lessons: { correct: number };
+      levelUp: { correct: number; durationSec: number; wpf: number };
+      fastReadingProgress: { wpm: number; correct: number };
+      fastUnderstandingProgress: { correct: number; wpm: number };
+    } | null
+  );
 
-  const [understandingData, setUnderstandingData] = useState(
+  // const [understandingData, setUnderstandingData] = useState(
+  //   {} as { data: []; categories: [] }
+  // );
+  const [fastReadingData, setFastReadingData] = useState(
     {} as { data: []; categories: [] }
   );
-  const [fastReadingData, setFastReadingData] = useState(
+  const [fastVisionData, setFastVisionData] = useState(
     {} as { data: []; categories: [] }
   );
 
@@ -59,7 +71,7 @@ export default function Home() {
           })
         );
 
-        const buildData = (key: "wpm" | "correct", variant: string) => {
+        const buildData = (key: "wpm" | "correct" | "wpc", variant: string) => {
           const filtered = formatted.filter((i: any) => i.variant === variant);
           return {
             data: filtered.map((i: any) => i[key]),
@@ -68,18 +80,34 @@ export default function Home() {
         };
 
         setFastReadingData(buildData("wpm", "FASTREADING"));
-        setUnderstandingData(buildData("correct", "UNDERSTANDING"));
+        // setUnderstandingData(buildData("correct", "UNDERSTANDING"));
+        setFastVisionData(buildData("correct", "FASTVISION"));
       } catch (error) {}
     };
+    const fetchProgressSummary = async () => {
+      try {
+        const resData = await fetchData({ apiPath: "/api/progressSummary" });
+        setProgressSummary(resData);
+      } catch (error) {
+        console.error("Error fetching progress summary:", error);
+      }
+    };
+    fetchProgressSummary();
     requestData();
   }, [session]);
 
   if (status === "loading") return <DashboardSkeleton />;
   if (!session)
     return (
-      <Link href="/login">
-        <Button text="Giriş Yap" />
-      </Link>
+      <div className="flex flex-col items-center justify-center w-full h-full">
+        <h1 className="text-lgl font-semibold mb-0">
+          Oturumuz Sonlandırılmış.
+        </h1>
+        <p className="mb-4">Lütfen tekrar giriş yap.</p>
+        <Link className="w-fit" href="/login">
+          <Button className="w-fit" text="Giriş Yap" />
+        </Link>
+      </div>
     );
 
   const handleUserPolicy = () => {
@@ -96,7 +124,7 @@ export default function Home() {
 
   return (
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
-      <div className="flex flex-wrap gap-4 w-full mb-10">
+      <div className="flex flex-wrap gap-4 w-full mb-16">
         <Widget
           icon={
             <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
@@ -137,10 +165,76 @@ export default function Home() {
         </Link>
       </div>
 
+      <div className="flex flex-col w-full mb-8">
+        <div className="flex flex-wrap gap-4">
+          <SpeedGauge
+            className="flex-1"
+            title="DERSLER %${value}"
+            max={100}
+            value={progressSummary?.lessons?.correct || 0}
+          />
+          <SpeedGauge
+            className="flex-1"
+            title={`OKUMA HIZINIZ ${
+              progressSummary?.fastReadingProgress?.wpm || 0
+            } kl/dk`}
+            max={1500}
+            value={
+              (progressSummary?.fastReadingProgress &&
+              progressSummary?.fastReadingProgress?.wpm > 1500
+                ? 1500
+                : progressSummary?.fastReadingProgress?.wpm) ?? 0
+            }
+            ranges={{ red: [0, 200], blue: [100, 500], green: [500, 1500] }}
+            segmentsList={[
+              { start: 0, end: 100, color: "#ff1d00" },
+              { start: 100, end: 200, color: "#1c7ff3" },
+              { start: 200, end: 500, color: "#0cc042" },
+              { start: 500, end: 750, color: "#0cc042" },
+              { start: 750, end: 1000, color: "#0cc042" },
+              { start: 1000, end: 1500, color: "#0cc042" },
+            ]}
+          />
+          <SpeedGauge
+            className="flex-1"
+            title="ANLAMA HIZINIZ %${value}"
+            max={100}
+            value={progressSummary?.fastUnderstandingProgress?.correct || 0}
+          />
+        </div>
+        <div className="flex flex-wrap gap-1 w-full mb-10 justify-center items-center text-sm">
+          <span className="text-[#ff1d00]">- Çok zayıf, geliştirin</span>
+          <span className="text-[#1c7ff3]">
+            - Başarmak için biraz daha gayret
+          </span>
+          <span className="text-[#0cc042]">- Çok güzel, devam et</span>
+        </div>
+      </div>
 
-      <div className="flex w-full flex-wrap gap-4">
-        <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
-          <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
+      <div className="flex w-full flex-wrap mb-5 gap-4">
+        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Seviye Gelişim Durumunuz</h2>
+          <BarChart
+            chartData={[
+              {
+                name: "Anlama",
+                data: fastVisionData.data || [],
+              },
+            ]}
+            chartOptions={{
+              chart: {
+                id: "basic-bar",
+              },
+              xaxis: {
+                categories: fastVisionData.categories || [],
+              },
+            }}
+          />
+        </div>
+        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">
+            Hızlı Okuma Gelişim Durumunuz
+          </h2>
           <BarChart
             chartData={[
               {
@@ -158,31 +252,41 @@ export default function Home() {
             }}
           />
         </div>
-        <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
-          <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
-          <BarChart
-            chartData={[
-              {
-                name: "Anlama",
-                data: understandingData.data || [],
-              },
-            ]}
+      </div>
+
+      <div className="flex w-full mb-5 flex-wrap gap-4">
+        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Yapılan Ödev Grafiği</h2>
+          <PieChart
             chartOptions={{
               chart: {
-                id: "basic-bar",
+                id: "basic-pie",
+                type: "pie",
               },
-              xaxis: {
-                categories: understandingData.categories || [],
-              },
-              dataLabels: {
-                enabled: true,
-                formatter: (val: number) => `${val}%`,
-                style: {
-                  fontSize: "12px",
-                  colors: ["#333"],
-                },
-              },
+              labels: ["Yapılan Ders", "Yapılmayan Ders"],
+              colors: ["#28a0fc", "#dc3912"],
             }}
+            chartData={[
+              progressSummary?.lessons?.correct || 0,
+              100 - (progressSummary?.lessons?.correct || 0),
+            ]}
+          />
+        </div>
+        <div className="flex-1 h-[400px] border pb-16 py-5 px-4  rounded shadow">
+          <h2 className="text-md mb-4 font-medium"> Anlama Oranı</h2>
+          <PieChart
+            chartOptions={{
+              chart: {
+                id: "basic-pie",
+                type: "pie",
+              },
+              labels: ["Anlama Oranı", "Anlama Oranı Dışında"],
+              colors: ["#28a0fc", "#dc3912"],
+            }}
+            chartData={[
+              progressSummary?.fastUnderstandingProgress?.correct || 0,
+              100 - (progressSummary?.fastUnderstandingProgress?.correct || 0),
+            ]}
           />
         </div>
       </div>

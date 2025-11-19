@@ -1,44 +1,101 @@
 "use client";
+
 import React from "react";
+import ReactSpeedometer from "react-d3-speedometer";
+
+type Range = {
+  red: [number, number];
+  blue: [number, number];
+  green: [number, number];
+};
 
 type GaugeProps = {
   value: number;
   max: number;
   title: string;
-  subtitle?: string;
+  ranges?: Range;
+  className?: string;
+  segmentsList?: Array<{ start: number; end: number; color: string }>;
 };
 
-export default function SpeedMeter({
+export default function SpeedGauge({
   value,
   max,
-  title,
-  subtitle,
+  title = "Value: ${value}",
+  className = "",
+  ranges = {
+    red: [0, 40],
+    blue: [40, 60],
+    green: [60, 100],
+  },
+  segmentsList,
 }: GaugeProps) {
-  const r = 100; // radius
-  const cx = 150; // center x
-  const cy = 150; // center y
-  const clamped = Math.min(Math.max(value, 0), max);
+  const segments = segmentsList || [
+    { start: ranges.red[0], end: ranges.red[1], color: "#ff1d00" },
+    { start: 10, end: 20, color: "#ff1d00" },
+    { start: 20, end: 40, color: "#ff1d00" },
+    { start: 40, end: 50, color: "#1c7ff3" },
+    { start: ranges.blue[0], end: ranges.blue[1], color: "#1c7ff3" },
+    { start: 60, end: 80, color: "#0cc042" },
+    { start: ranges.green[0], end: ranges.green[1], color: "#0cc042" },
+  ];
 
-  // convert value → angle
-  // 0 → -90°, max → +90°
-  const angle = (clamped / max) * 180 - 90;
-  const rad = (angle * Math.PI) / 180;
+  const segmentStops = segments.map((s) => s.end);
+  const segmentColors = segments.map((s) => s.color);
 
-  const needleX = cx + r * Math.cos(rad);
-  const needleY = cy + r * Math.sin(rad);
+  return (
+    <div className={`relative w-full flex flex-col items-center ${className}`}>
+      {/* MAIN SPEEDOMETER */}
+      <ReactSpeedometer
+        minValue={0}
+        maxValue={max}
+        value={value}
+        needleColor="red"
+        currentValueText={title}
+        needleTransitionDuration={1500}
+        segments={segments.length}
+        segmentColors={segmentColors}
+        customSegmentStops={[0, ...segmentStops]}
+        height={180}
+        width={260}
+        ringWidth={4}
+        textColor="#333"
+        valueTextFontSize="12px"
+        labelFontSize="12px"
+      />
 
-  // Generate tick marks
+      {/* TICKS OVERLAY */}
+      <svg
+        width="260"
+        height="154"
+        viewBox="0 0 260 180"
+        className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
+      >
+        {renderTicks(130, 150, 105)}
+      </svg>
+    </div>
+  );
+}
+
+/* ──────────── CUSTOM TICKS DRAWER ──────────── */
+
+function renderTicks(cx: number, cy: number, radius: number) {
   const ticks = [];
-  for (let i = 0; i <= 100; i += 5) {
-    const a = (i / 100) * Math.PI - Math.PI; // -180° to 0°
-    const isMajor = i % 10 === 0;
-    const len = isMajor ? 14 : 7;
 
-    const x1 = cx + (r - len) * Math.cos(a);
-    const y1 = cy + (r - len) * Math.sin(a);
+  for (let i = 0; i <= 10; i++) {
+    const percent = i / 10;
+    const angle = Math.PI * (1 + percent); // 180° → 360°
 
-    const x2 = cx + (r + 2) * Math.cos(a);
-    const y2 = cy + (r + 2) * Math.sin(a);
+    const isMajor = i % 2 === 0;
+
+    // smaller tick lengths
+    const r1 = radius - (isMajor ? 12 : 6);
+    const r2 = radius;
+
+    const x1 = cx + r1 * Math.cos(angle);
+    const y1 = cy + r1 * Math.sin(angle);
+    const x2 = cx + r2 * Math.cos(angle);
+    const y2 = cy + r2 * Math.sin(angle);
 
     ticks.push(
       <line
@@ -47,66 +104,12 @@ export default function SpeedMeter({
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke="#444"
-        strokeWidth={isMajor ? 3 : 1.5}
+        stroke="#555"
+        strokeWidth={isMajor ? 2 : 1}
         strokeLinecap="round"
       />
     );
   }
 
-  return (
-    <div className="w-[300px] flex flex-col items-center select-none">
-      <svg width="300" height="180">
-        {/* colored bands */}
-        <path
-          d="M 50 150 A 100 100 0 0 1 250 150"
-          fill="none"
-          stroke="#c0392b"
-          strokeWidth="20"
-        />
-
-        <path
-          d="M 90 60 A 100 100 0 0 1 210 60"
-          fill="none"
-          stroke="#f39c12"
-          strokeWidth="20"
-        />
-
-        <path
-          d="M 110 40 A 100 100 0 0 1 190 40"
-          fill="none"
-          stroke="#2980b9"
-          strokeWidth="20"
-        />
-
-        <path
-          d="M 130 20 A 100 100 0 0 1 170 20"
-          fill="none"
-          stroke="#27ae60"
-          strokeWidth="20"
-        />
-
-        {/* ticks */}
-        {ticks}
-
-        {/* needle */}
-        <line
-          x1={cx}
-          y1={cy}
-          x2={needleX}
-          y2={needleY}
-          stroke="#e02424"
-          strokeWidth="6"
-          strokeLinecap="round"
-          style={{ transition: "0.4s ease-in-out" }}
-        />
-
-        {/* needle center */}
-        <circle cx={cx} cy={cy} r={8} fill="#e02424" />
-      </svg>
-
-      <div className="mt-1 text-gray-800 font-semibold text-sm">{title}</div>
-      <div className="text-gray-600 text-xs">{subtitle}</div>
-    </div>
-  );
+  return ticks;
 }

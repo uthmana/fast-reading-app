@@ -1,6 +1,6 @@
 "use client";
 
-import BarChart from "@/components/barChart/barChart";
+import BarChart from "@/components/Charts/barChart";
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
