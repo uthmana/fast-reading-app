@@ -18,8 +18,6 @@ export default function Sidebar({
   activeMenu: string | null;
   pathname: string;
 }) {
-  if (pathname === "/") return null;
-
   const [progressSummary, setProgressSummary] = useState(
     {} as {
       lessons: {};
@@ -43,8 +41,8 @@ export default function Sidebar({
     }
   }, [pathname]);
 
+  if (pathname === "/") return null;
   let selected = menuItems.find((m) => m.name === activeMenu);
-
   if (!activeMenu) {
     selected = menuItems.find((menu) => menu.link === pathname);
     if (!selected) {
@@ -62,7 +60,7 @@ export default function Sidebar({
       return `% ${progressSummary.lessons?.correct || "0"}`.trim();
     }
     if (pathLink === "/kelime-egzersizleri/seviye-gelisim") {
-      return `${progressSummary.levelUp?.wpf || "0"} / ${
+      return `${progressSummary.levelUp?.correct || "0"} / ${
         progressSummary.levelUp?.durationSec || "0"
       } ms`.trim();
     }

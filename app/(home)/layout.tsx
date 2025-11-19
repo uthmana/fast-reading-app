@@ -4,6 +4,7 @@ import { authOptions } from "../../lib/authOptions";
 import SessionProvider from "../../components/providers";
 import ClientLayout from "../../components/clientLayout";
 import "../globals.css";
+import { LessonProvider } from "../contexts/LessonContext";
 
 export const metadata = {
   title: "Etkin Hızlı Okuma",
@@ -22,12 +23,14 @@ export default async function RootLayout({
     <html lang="en">
       <body className="bg-gray-100 w-full h-full">
         <SessionProvider>
-          {!session ? (
+          {!session || session?.user?.id === undefined ? (
             <main className="w-full h-full bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
               {children}
             </main>
           ) : (
-            <ClientLayout>{children}</ClientLayout>
+            <ClientLayout>
+              <LessonProvider>{children}</LessonProvider>
+            </ClientLayout>
           )}
         </SessionProvider>
       </body>

@@ -26,17 +26,18 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) return null;
-
           const isValid = await bcrypt.compare(password, user.password);
           if (!isValid) return null;
 
-          if (user?.active === false) return null;
+          if (user?.active === false) {
+            throw new Error("User subscription has expired");
+          }
 
           if (user?.Student?.endDate) {
             const now = new Date();
             const endDate = new Date(user.Student.endDate);
             if (endDate < now) {
-              return null;
+              throw new Error("Student subscription has expired");
             }
           }
 
@@ -50,6 +51,7 @@ export const authOptions: NextAuthOptions = {
           };
         } catch (error) {
           console.error(error);
+          return error;
         }
       },
     }),

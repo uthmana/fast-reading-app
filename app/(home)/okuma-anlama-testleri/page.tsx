@@ -8,7 +8,9 @@ import { useEffect, useState } from "react";
 
 export default function page() {
   const { data: session } = useSession();
-
+  const [formattedAttempts, setFormattedAttempts] = useState(
+    [] as Record<string, any>
+  );
   const [understandingData, setUnderstandingData] = useState(
     {} as { data: []; categories: [] }
   );
@@ -37,7 +39,7 @@ export default function page() {
             category: formatDateTime(createdAt),
           })
         );
-
+        setFormattedAttempts(formatted);
         const buildData = (key: "wpm" | "correct", variant: string) => {
           const filtered = formatted.filter((i: any) => i.variant === variant);
           return {
@@ -56,52 +58,114 @@ export default function page() {
   }, [session]);
 
   return (
-    <div className="flex w-full flex-wrap px-6 gap-4">
-      <div className="w-full max-h-[400px] border py-10 px-4 rounded shadow">
-        <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
-        <BarChart
-          chartData={[
-            {
-              name: "1 dakikada okuyabildiğiniz kelime sayısı:",
-              data: fastReadingData.data || [],
-            },
-          ]}
-          chartOptions={{
-            chart: {
-              id: "basic-bar",
-            },
-            xaxis: {
-              categories: fastReadingData.categories || [],
-            },
-          }}
-        />
-      </div>
-      <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
-        <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
-        <BarChart
-          chartData={[
-            {
-              name: "Anlama",
-              data: understandingData.data || [],
-            },
-          ]}
-          chartOptions={{
-            chart: {
-              id: "basic-bar",
-            },
-            xaxis: {
-              categories: understandingData.categories || [],
-            },
-            dataLabels: {
-              enabled: true,
-              formatter: (val: number) => `${val}%`,
-              style: {
-                fontSize: "12px",
-                colors: ["#333"],
+    <div className="flex flex-col w-full px-6 gap-4">
+      <div className="w-full flex gap-3 flex-col rounded shadow">
+        <div className="w-full max-h-[400px] border py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
+          <BarChart
+            chartData={[
+              {
+                name: "1 dakikada okuyabildiğiniz kelime sayısı:",
+                data: fastReadingData.data || [],
               },
-            },
-          }}
-        />
+            ]}
+            chartOptions={{
+              chart: {
+                id: "basic-bar",
+              },
+              xaxis: {
+                categories: fastReadingData.categories || [],
+              },
+            }}
+          />
+        </div>
+        <div className="w-full max-h-[400px] overflow-y-auto border py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
+          <div className="w-full">
+            <div className="grid grid-cols-2 py-1  group text-blue-500 font-bold border-b">
+              <div className="">Tarih</div>
+              <div className="">Hız(ms)</div>
+            </div>
+
+            {formattedAttempts
+              ?.filter((item: any) => item.variant === "FASTREADING")
+              .map((attempt: any, index: number) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-2 text-sm group border-b"
+                >
+                  <div className="group-hover:bg-gray-200 p-1">
+                    {attempt.category}
+                  </div>
+                  <div className="group-hover:bg-gray-200 p-1">
+                    {attempt.wpm}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+      <div className="flex w-full gap-3 flex-col">
+        <div className="w-full max-h-[400px] border py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Anlama Gelişimi</h2>
+          <BarChart
+            chartData={[
+              {
+                name: "Anlama",
+                data: understandingData.data || [],
+              },
+            ]}
+            chartOptions={{
+              chart: {
+                id: "basic-bar",
+              },
+              xaxis: {
+                categories: understandingData.categories || [],
+              },
+              dataLabels: {
+                enabled: true,
+                formatter: (val: number) => `${val}%`,
+                style: {
+                  fontSize: "12px",
+                  colors: ["#333"],
+                },
+              },
+            }}
+          />
+        </div>
+        <div className="w-full max-h-[400px] overflow-y-auto border py-5 px-4 rounded shadow">
+          <h2 className="text-md mb-4 font-medium">Anlama Gelişimi</h2>
+          <div className="w-full">
+            <div className="grid grid-cols-4 py-1 group text-blue-500 font-bold border-b">
+              <div className="">Tarih</div>
+              <div className="">Doğru Cevap</div>
+              <div className="">Yanlış Cevap</div>
+              <div className="">Anlama Yüzdesi</div>
+            </div>
+
+            {formattedAttempts
+              ?.filter((item: any) => item.variant === "UNDERSTANDING")
+              .map((attempt: any, index: number) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-4 text-sm group border-b"
+                >
+                  <div className="group-hover:bg-gray-200 p-1">
+                    {attempt.category}
+                  </div>
+                  <div className="group-hover:bg-gray-200 p-1">
+                    {attempt.correct / 10}
+                  </div>
+                  <div className="group-hover:bg-gray-200 p-1">
+                    {10 - attempt.correct / 10}
+                  </div>
+                  <div className="group-hover:bg-gray-200 p-1">
+                    %{attempt.correct}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
     </div>
   );
