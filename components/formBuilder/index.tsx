@@ -225,7 +225,7 @@ export default function FormBuilder({
       ) : null}
 
       {resError ? (
-        <div className="text-xs text-left text-red-500 drop-shadow font-semibold mt-2">
+        <div className="text-xs text-left bg-[#eaeaea] py-1 px-2 text-red-500 drop-shadow font-semibold mt-2">
           {resError}
         </div>
       ) : null}

@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import FormBuilder from "../../../components/formBuilder";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -19,9 +19,10 @@ export default function LoginPage() {
   const [resError, setResError] = useState("" as any);
   const { data: session } = useSession();
   const router = useRouter();
-  if (session) {
-    router.push("/");
-  }
+
+  useEffect(() => {
+    if (session) router.push("/");
+  }, [session, router]);
 
   const handleFormSubmit = async (values: ValuesTypes) => {
     const { isValid, formData, event } = values;
@@ -48,11 +49,31 @@ export default function LoginPage() {
           apiPath: `/api/users?where=${query}`,
         });
 
-        if (!resData || !resData.role) {
-          throw new Error("User role not found");
+        if (
+          resData === null ||
+          resData?.role === undefined ||
+          resData?.active === false
+        ) {
+          setResError(
+            "Kullanım yetkiniz yoktur. Lütfen sistem yöneticisi ile görüşünüz."
+          );
+          setIsSubmitting(false);
+          return;
         }
 
-        // ✅ Redirect based on role
+        if (resData?.Student?.endDate) {
+          const now = new Date();
+          const endDate = new Date(resData.Student.endDate);
+          if (endDate < now) {
+            setResError(
+              "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz..."
+            );
+            setIsSubmitting(false);
+            return;
+          }
+        }
+
+        //  Redirect based on role
         if (typeof window !== "undefined") {
           if (resData.role === "ADMIN") {
             window.location.replace("/admin");
@@ -62,12 +83,12 @@ export default function LoginPage() {
         }
       } else {
         setResError("Kullanıcı Adı, E-posta, TC Kimlik No veya Parola Hatalı");
+        setIsSubmitting(false);
       }
     } catch (error: any) {
-      console.error("Login error:", error);
       setResError(error.message || "Unexpected error");
-    } finally {
       setIsSubmitting(false);
+      console.error("Login error:", error);
     }
   };
 
