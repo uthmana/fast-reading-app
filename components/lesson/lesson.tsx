@@ -17,10 +17,12 @@ export default function Lesson({ id }: { id?: string }) {
   const [currentLesson, setCurrentLesson] = useState({} as any);
   const [progress, setProgress] = useState([]);
   const [lessonAssigned, setLessonAssigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
+        setIsLoading(true);
         const resData = await fetchData({ apiPath: "/api/lessons" });
         setData(resData);
         let lesson = id
@@ -65,9 +67,11 @@ export default function Lesson({ id }: { id?: string }) {
           // lesson is considered assigned if there are any progress rows for it
           const assigned = normalizedProgress.length > 0;
           setLessonAssigned(assigned);
+          setIsLoading(false);
         }
       } catch (error) {
         console.error("Error fetching lessons:", error);
+        setIsLoading(false);
       }
     };
 
@@ -129,30 +133,35 @@ export default function Lesson({ id }: { id?: string }) {
               </div>
             </div>
 
-            <ul className="space-y-0">
-              {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
-                // determine if this particular lesson-exercise occurrence is done
-                const isDone = progress?.some(
-                  (p: any) =>
-                    // prefer lessonExerciseId when available
-                    (lesson.lessonExerciseId &&
-                      p.lessonExerciseId === lesson.lessonExerciseId &&
-                      p.done) ||
-                    // fallback: match by exerciseId + lessonId
-                    (p.exerciseId === lesson.id &&
-                      p.lessonId === currentLesson.id &&
-                      p.done)
-                );
-                const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
-                // only lock exercises for students; assigned lessons are unlocked
-                const isStudent = session?.user?.role === "STUDENT";
-                const unlocked = true; //isStudent ? lessonAssigned : true;
-                const linkAllowed = unlocked && !isDone;
+            {isLoading ? (
+              <div className="w-full py-10 flex justify-center items-center">
+                <span className="text-gray-500 italic">Ders yükleniyor...</span>
+              </div>
+            ) : (
+              <ul className="space-y-0">
+                {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
+                  // determine if this particular lesson-exercise occurrence is done
+                  const isDone = progress?.some(
+                    (p: any) =>
+                      // prefer lessonExerciseId when available
+                      (lesson.lessonExerciseId &&
+                        p.lessonExerciseId === lesson.lessonExerciseId &&
+                        p.done) ||
+                      // fallback: match by exerciseId + lessonId
+                      (p.exerciseId === lesson.id &&
+                        p.lessonId === currentLesson.id &&
+                        p.done)
+                  );
+                  const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
+                  // only lock exercises for students; assigned lessons are unlocked
+                  const isStudent = session?.user?.role === "STUDENT";
+                  const unlocked = true; //isStudent ? lessonAssigned : true;
+                  const linkAllowed = unlocked && !isDone;
 
-                return (
-                  <li
-                    key={lesson.pathName + idx}
-                    className={` group relative overflow-hidden rounded-lg border-current
+                  return (
+                    <li
+                      key={lesson.pathName + idx}
+                      className={` group relative overflow-hidden rounded-lg border-current
                     bg-gradient-to-r from-[#fdfdfd] to-[#f4f4f4]
                     border-gray-400 shadow-[0_6px_12px_rgba(0,0,0,0.3)]
                     before:content-[''] before:absolute before:inset-0 
@@ -162,93 +171,94 @@ export default function Lesson({ id }: { id?: string }) {
                     hover:-translate-y-[3px] hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]
                     active:translate-y-[1px]
                     transition-all duration-300 ease-in-out ${
-                      isDone ? "!line-through" : ""
+                      isDone ? "!line-through decoration-2" : ""
                     }`}
-                    style={{
-                      perspective: "1000px",
-                      backgroundImage: `url(/images/wood.jpg)`,
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                      backgroundSize: "cover",
-                    }}
-                  >
-                    {linkAllowed ? (
-                      <Link
-                        href={linkPath}
-                        className={`flex justify-between items-center
+                      style={{
+                        perspective: "1000px",
+                        backgroundImage: `url(/images/wood.jpg)`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                      }}
+                    >
+                      {linkAllowed ? (
+                        <Link
+                          href={linkPath}
+                          className={`flex justify-between items-center
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
                       transition-all duration-300`}
-                      >
-                        <span
-                          className={`flex`}
-                          style={{
-                            textShadow:
-                              "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                          }}
                         >
-                          {idx + 1}. {lesson.title}
-                        </span>
-                        <span className="text-sm  italic">
-                          (En Az {lesson.minDuration / 60} Dakika)
-                        </span>
-                      </Link>
-                    ) : (
-                      <div
-                        role="button"
-                        onClick={() => {
-                          if (!unlocked) {
-                            alert(
-                              "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
-                            );
-                          } else if (isDone) {
-                            alert("Bu egzersizi zaten tamamladınız.");
-                          }
-                        }}
-                        className={`flex justify-between items-center
+                          <span
+                            className={`flex`}
+                            style={{
+                              textShadow:
+                                "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                            }}
+                          >
+                            {idx + 1}. {lesson.title}
+                          </span>
+                          <span className="text-sm  italic">
+                            (En Az {lesson.minDuration / 60} Dakika)
+                          </span>
+                        </Link>
+                      ) : (
+                        <div
+                          role="button"
+                          onClick={() => {
+                            if (!unlocked) {
+                              alert(
+                                "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
+                              );
+                            } else if (isDone) {
+                              alert("Bu egzersizi zaten tamamladınız.");
+                            }
+                          }}
+                          className={`flex justify-between items-center
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
                       transition-all duration-300 cursor-default`}
-                      >
-                        <span
-                          className={`flex items-center gap-2`}
-                          style={{
-                            textShadow:
-                              "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                          }}
                         >
-                          {!unlocked && (
-                            <IoMdLock className="ml-2 text-black" />
-                          )}{" "}
-                          {idx + 1}. {lesson.title}
-                        </span>
-                        <span className="text-sm  italic">
-                          (En Az {lesson.minDuration / 60} Dakika)
-                        </span>
-                      </div>
-                    )}
+                          <span
+                            className={`flex items-center gap-2`}
+                            style={{
+                              textShadow:
+                                "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                            }}
+                          >
+                            {!unlocked && (
+                              <IoMdLock className="ml-2 text-black" />
+                            )}{" "}
+                            {idx + 1}. {lesson.title}
+                          </span>
+                          <span className="text-sm  italic">
+                            (En Az {lesson.minDuration / 60} Dakika)
+                          </span>
+                        </div>
+                      )}
 
-                    {/* Darker side shadow */}
-                    <div
-                      className="
+                      {/* Darker side shadow */}
+                      <div
+                        className="
                       absolute right-0 top-0 w-3 h-full
                       bg-gradient-to-l from-black/50 via-black/25 to-transparent
                       pointer-events-none
                     "
-                    ></div>
+                      ></div>
 
-                    {/* Darker bottom edge */}
-                    <div
-                      className="
+                      {/* Darker bottom edge */}
+                      <div
+                        className="
                       absolute bottom-0 left-0 w-full h-2
                       bg-gradient-to-t from-black/40 via-black/20 to-transparent
                       pointer-events-none
                     "
-                    ></div>
-                  </li>
-                );
-              })}
-            </ul>
+                      ></div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
           </div>
         }
       />
