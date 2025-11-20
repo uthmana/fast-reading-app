@@ -173,14 +173,14 @@ export default function Whiteboard({
       {isPlaying && (
         <div className="fixed inset-0 bg-black/90 flex flex-col items-center justify-center z-[60]">
           <div
-            className={`relative  w-full lg:w-[80%]  mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] ${contentClassName}`}
+            className={`relative group w-full lg:w-[80%]  mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] ${contentClassName}`}
           >
             <img
               src={wood_img.src}
               alt="Wood background"
               className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
-            <div className="absolute group top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto z-[2] shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+            <div className="absolute z-10 top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto  shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {lessonData?.duration ? (
                 <CountDown
                   className="absolute right-3 top-3"
@@ -191,15 +191,6 @@ export default function Whiteboard({
               ) : null}
 
               {body}
-
-              {lessonData?.id ? (
-                <Link
-                  className="absolute transition-opacity lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-4  hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
-                  href={`/dersler/${lessonData?.id}`}
-                >
-                  <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
-                </Link>
-              ) : null}
             </div>
 
             {isLoading ? (
@@ -210,6 +201,15 @@ export default function Whiteboard({
                   className="max-w-20"
                 />
               </div>
+            ) : null}
+
+            {lessonData?.id ? (
+              <Link
+                className="absolute transition-opacity z-20 lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
+                href={`/dersler/${lessonData?.id}`}
+              >
+                <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+              </Link>
             ) : null}
           </div>
 

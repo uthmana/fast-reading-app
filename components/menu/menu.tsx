@@ -40,8 +40,13 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
               <span className="w-10 h-10 border-2  font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
                 {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="flex flex-col whitespace-nowrap hover:underline">
-                <span>{session?.user?.name}</span>
+              <span className="flex whitespace-nowrap hover:underline">
+                <span
+                  title={session?.user?.name}
+                  className="lg:max-w-[200px] max-w-[300px] overflow-hidden text-ellipsis"
+                >
+                  Hoşgeldin, {session?.user?.name}
+                </span>
               </span>
             </Link>
           </h1>
