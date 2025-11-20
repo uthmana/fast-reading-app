@@ -107,7 +107,7 @@ export default function LineLengthView({
   }, [intervalMs, scroll]);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center bg-white select-none overflow-hidden">
+    <div className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden">
       {/* CENTER SPLIT LINE */}
       <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
 

@@ -113,7 +113,7 @@ export default function Whiteboard({
         />
 
         <div
-          className="absolute  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] flex flex-col items-center justify-center  bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
+          className="absolute bg-[url('/images/slate.jpg')]  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] flex flex-col items-center justify-center  bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
           style={{
             fontSize: `${parseInt(control.font)}px`,
             lineHeight: `${parseInt(control.font) * 1.5}px`,
@@ -180,7 +180,7 @@ export default function Whiteboard({
               alt="Wood background"
               className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
             />
-            <div className="absolute z-10 top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto  shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+            <div className="absolute z-10 bg-[url('/images/slate.jpg')] top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto  shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
               {lessonData?.duration ? (
                 <CountDown
                   className="absolute right-3 top-3"
@@ -208,7 +208,8 @@ export default function Whiteboard({
                 className="absolute transition-opacity z-20 lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
                 href={`/dersler/${lessonData?.id}`}
               >
-                <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+                <MdArrowBack className="text-white w-6 h-6" />
+                <span className="hidden md:inline-block"> Derslere Dön</span>
               </Link>
             ) : null}
           </div>
