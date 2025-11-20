@@ -184,7 +184,7 @@ export default function Lesson({ id }: { id?: string }) {
                       {linkAllowed ? (
                         <Link
                           href={linkPath}
-                          className={`flex justify-between items-center
+                          className={`flex justify-between items-center flex-wrap
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
                       transition-all duration-300`}
@@ -198,8 +198,13 @@ export default function Lesson({ id }: { id?: string }) {
                           >
                             {idx + 1}. {lesson.title}
                           </span>
-                          <span className="text-sm  italic">
-                            (En Az {lesson.minDuration / 60} Dakika)
+                          <span className="text-sm italic flex">
+                            ( En Az {lesson.minDuration / 60}{" "}
+                            <span className="flex gap-1 whitespace-nowrap pl-1">
+                              <span className="block lg:hidden"> dk.</span>
+                              <span className="lg:block hidden">Dakika</span>
+                            </span>
+                            )
                           </span>
                         </Link>
                       ) : (
@@ -214,7 +219,7 @@ export default function Lesson({ id }: { id?: string }) {
                               alert("Bu egzersizi zaten tamamladınız.");
                             }
                           }}
-                          className={`flex justify-between items-center
+                          className={`flex justify-between items-center flex-wrap
                       px-6 py-3 text-gray-800 font-medium
                       relative z-10
                       transition-all duration-300 cursor-default`}
@@ -231,8 +236,13 @@ export default function Lesson({ id }: { id?: string }) {
                             )}{" "}
                             {idx + 1}. {lesson.title}
                           </span>
-                          <span className="text-sm  italic">
-                            (En Az {lesson.minDuration / 60} Dakika)
+                          <span className="text-sm italic flex">
+                            ( En Az {lesson.minDuration / 60}{" "}
+                            <span className="flex gap-1 whitespace-nowrap pl-1">
+                              <span className="block lg:hidden"> dk.</span>
+                              <span className="lg:block hidden">Dakika</span>
+                            </span>
+                            )
                           </span>
                         </div>
                       )}
