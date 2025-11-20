@@ -124,6 +124,19 @@ export default function ControlPanel({
   const pathname = queryParams.slug;
   const controlItem = controlItems[pathname as any] || ["level"];
 
+  const speedMap: Record<number, number> = {
+    1: 600,
+    2: 500,
+    3: 450,
+    4: 425,
+    5: 400,
+    6: 380,
+    7: 370,
+    8: 360,
+    9: 350,
+    10: 340,
+  };
+
   const handleChange: any = async ({
     targetValue,
     value,
@@ -226,7 +239,7 @@ export default function ControlPanel({
             className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
           />
 
-          <div className="absolute top-2 left-2 w-[calc(100%-16px)] h-[calc(100%-16px)] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] px-5 py-1 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+          <div className="absolute top-2 left-2 w-[calc(100%-16px)] h-[calc(100%-16px)]  bg-[#1AD7FD] px-5 py-1 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
             <div className="flex py-2 justify-between lg:gap-4 flex-wrap lg:flex-nowrap items-center w-full">
               <div
                 className={`lg:flex-1 w-full drop-shadow ${
@@ -274,8 +287,7 @@ export default function ControlPanel({
           alt="Wood background"
           className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
         />
-
-        <div className="absolute  left-2 w-[calc(100%-16px)]  h-[calc(100%-16px)] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] px-5 py-2 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+        <div className="absolute  left-2 w-[calc(100%-16px)]  h-[calc(100%-16px)]  bg-[#1AD7FD] px-5 py-2 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
           <div className="flex justify-between gap-4 flex-wrap items-start w-full">
             <div
               className={`flex-1 drop-shadow ${
@@ -313,6 +325,7 @@ export default function ControlPanel({
                 min="1"
                 max="10"
                 required={false}
+                valueMap={speedMap}
                 styleClass="mb-0"
                 description="Nesnenin hareket hızı"
               />
@@ -545,7 +558,7 @@ export default function ControlPanel({
             className="absolute inset-0 w-full h-full object-cover z-0 bg-[#a87349]"
           />
 
-          <div className="absolute  left-2 w-[calc(100%-16px)]  h-[calc(100%-16px)] bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] px-5 py-2 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
+          <div className="absolute  left-2 w-[calc(100%-16px)]  h-[calc(100%-16px)] bg-[#1AD7FD] px-5 py-2 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]">
             <div className="flex justify-between gap-2 items-center w-full h-full">
               <div className="flex text-sm flex-col justify-center items-center gap-1">
                 <IoMdClock className="text-white mx-auto w-7 h-7" />

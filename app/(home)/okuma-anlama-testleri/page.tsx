@@ -1,6 +1,6 @@
 "use client";
 
-import BarChart from "@/components/Charts/barChart";
+import BarChart from "@/components/charts/barChart";
 import { fetchData } from "@/utils/fetchData";
 import { formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";

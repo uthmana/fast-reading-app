@@ -22,6 +22,7 @@ type InputProps = {
   showRangeColor?: boolean;
   description?: string;
   colorList?: any;
+  valueMap?: any;
 };
 
 function TextInput(props: InputProps) {
@@ -43,6 +44,7 @@ function TextInput(props: InputProps) {
     min,
     max,
     colorList,
+    valueMap,
     ...rest
   } = props;
 
@@ -55,7 +57,10 @@ function TextInput(props: InputProps) {
         {name}
         {type === "range" ? (
           <div className="w-full relative flex justify-between items-center">
-            <span className="inline-block">: {value?.value}</span>
+            <span className="inline-block">
+              :
+              {valueMap && value?.value ? valueMap[value?.value] : value?.value}
+            </span>
             {type === "range" && showRangeIcon ? (
               <span className="absolute right-1 -top-[5px]">
                 <img

@@ -13,11 +13,11 @@ import {
 } from "react-icons/md";
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
-import BarChart from "../../components/Charts/barChart";
+import BarChart from "../../components/charts/barChart";
 import { formatDateTime } from "@/utils/helpers";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 import SpeedGauge from "@/components/speedGauge/speedGauge";
-import PieChart from "@/components/Charts/pieChart";
+import PieChart from "@/components/charts/pieChart";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -88,8 +88,8 @@ export default function Home() {
         console.error("Error fetching progress summary:", error);
       }
     };
-    fetchProgressSummary();
     requestData();
+    fetchProgressSummary();
   }, [session]);
 
   if (status === "loading") return <DashboardSkeleton />;
