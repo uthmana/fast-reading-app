@@ -39,7 +39,11 @@ function TextArea(props: TextAreaProps) {
       <label className="font-medium flex gap-1 items-center" htmlFor={inputKey}>
         {name}
         {
-          <span className={!value?.value ? "text-red-400" : "text-green-400"}>
+          <span
+            className={
+              required && !value?.value ? "text-red-400" : "text-green-400"
+            }
+          >
             *
           </span>
         }

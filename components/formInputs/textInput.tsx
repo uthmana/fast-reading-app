@@ -79,7 +79,11 @@ function TextInput(props: InputProps) {
             ) : null}
           </div>
         ) : (
-          <span className={!value?.value ? "text-red-400" : "text-green-400"}>
+          <span
+            className={
+              required && !value?.value ? "text-red-400" : "text-green-400"
+            }
+          >
             *
           </span>
         )}

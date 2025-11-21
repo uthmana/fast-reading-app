@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const { id, title, description }: Category | any = await req.json();
-  if (!title || !description) {
+  if (!title) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 

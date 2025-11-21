@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { User } from "@prisma/client";
+import { Student, User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
@@ -26,6 +26,57 @@ export async function GET(req: NextRequest) {
         details: technicalMessage,
       },
       { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: Request) {
+  const {
+    id,
+    startDate,
+    endDate,
+    level,
+    termsAgreed,
+    introTestTaken,
+  }: Student = await req.json();
+  if (!id || !startDate || !endDate || !level) {
+    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+  }
+
+  try {
+    const studentExit = await prisma.student.findUnique({
+      where: { id },
+    });
+
+    if (!studentExit) {
+      return NextResponse.json(
+        { error: "Student does not exist" },
+        { status: 400 }
+      );
+    }
+
+    const student = await prisma.student.update({
+      where: { id },
+      data: {
+        startDate,
+        endDate,
+        level,
+        ...(termsAgreed !== undefined ? { termsAgreed } : {}),
+        ...(introTestTaken !== undefined || introTestTaken <= 3
+          ? { introTestTaken }
+          : {}),
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    return NextResponse.json(student, { status: 200 });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json(
+      { error: "Student already exists" },
+      { status: 400 }
     );
   }
 }

@@ -18,10 +18,14 @@ import { formatDateTime } from "@/utils/helpers";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 import SpeedGauge from "@/components/speedGauge/speedGauge";
 import PieChart from "@/components/Charts/pieChart";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [isShowIntroTestPopUp, setIsShowIntroTestPopUp] = useState(false);
+
   const [user, setUser] = useState({} as any);
   const [progressSummary, setProgressSummary] = useState(
     {} as {
@@ -40,12 +44,6 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (!localStorage.getItem("acceptPolicy")) {
-        setIsShowPopUp(true);
-      }
-    }
-
     const requestData = async () => {
       if (!session) return;
       try {
@@ -55,6 +53,19 @@ export default function Home() {
           )}`,
         });
         setUser(resData);
+        // check termsAgreed and introTestTaken
+        if (resData?.Student) {
+          if (!resData?.Student?.termsAgreed) {
+            setIsShowPopUp(true);
+          }
+
+          if (
+            resData?.Student?.termsAgreed &&
+            resData?.Student?.introTestTaken < 3
+          ) {
+            setIsShowIntroTestPopUp(true);
+          }
+        }
 
         const attempts = resData?.Student?.attempts || [];
         if (!attempts.length) return;
@@ -106,11 +117,33 @@ export default function Home() {
       </div>
     );
 
-  const handleUserPolicy = () => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("acceptPolicy", "true");
+  const handleUserPolicy = async () => {
+    const { Student } = user;
+    const studentData = { ...Student, termsAgreed: true };
+    try {
+      const res = await fetchData({
+        apiPath: "/api/students",
+        method: "PUT",
+        payload: studentData,
+      });
+      if (res && res.introTestTaken < 3) {
+        setIsShowPopUp(false);
+        setIsShowIntroTestPopUp(true);
+        return;
+      }
       setIsShowPopUp(false);
+      setIsShowIntroTestPopUp(false);
+    } catch (error) {
+      console.error("Error updating termsAgreed status:", error);
     }
+  };
+
+  const handleIntroTest = () => {
+    router.push(
+      `/okuma-anlama-testleri/anlama-testi?intro-test=${(
+        user?.Student.introTestTaken + 1
+      ).toString()}`
+    );
   };
 
   const roleMap: any = {
@@ -120,7 +153,7 @@ export default function Home() {
 
   return (
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
-      <div className="flex flex-wrap gap-4 w-full mb-16">
+      <div className="flex flex-wrap gap-4 w-full mb-8 mt-3">
         <Widget
           icon={
             <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
@@ -161,7 +194,7 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="flex flex-col w-full mb-8">
+      <div className="flex flex-col w-full mb-8 rounded shadow py-10 border">
         <div className="flex flex-wrap gap-4">
           <SpeedGauge
             className="flex-1"
@@ -198,7 +231,7 @@ export default function Home() {
             value={progressSummary?.fastUnderstandingProgress?.correct || 0}
           />
         </div>
-        <div className="flex flex-wrap gap-1 w-full mb-10 justify-center items-center text-sm">
+        <div className="flex flex-wrap gap-1 w-full justify-center font-medium items-center text-xs">
           <span className="text-[#ff1d00]">- Çok zayıf, geliştirin</span>
           <span className="text-[#1c7ff3]">
             - Başarmak için biraz daha gayret
@@ -320,6 +353,42 @@ export default function Home() {
         </div>
 
         <Button text="Okudum Onayladım" onClick={handleUserPolicy} />
+      </Popup>
+
+      <Popup
+        overlayClass="z-[51]"
+        showCloseIcon={false}
+        show={isShowIntroTestPopUp}
+        onClose={() => setIsShowIntroTestPopUp(false)}
+        bodyClass="flex flex-col gap-3 py-6 px-8"
+      >
+        <div className="text-justify text-sm mt-2 space-y-3 mb-4">
+          <h1 className="text-2xl font-bold text-center">
+            🎉 Seviye Belirleme Testi 🎉
+          </h1>
+          <p>
+            Hızlı Okuma uygulamasına hoş geldiniz! Eğitim programımıza
+            başlamadan önce, okuma hızınızı ve anlama becerilerinizi
+            değerlendirmek için kısa bir seviye belirleme testi yapmanızı
+            öneriyoruz. Bu test, mevcut okuma seviyenizi anlamamıza ve size en
+            uygun eğitim materyallerini sunmamıza yardımcı olacaktır.
+          </p>
+          <p>
+            Üç farklı test (test1, test2, test3), okuma hızınızı ve anlama
+            becerilerinizi ölçmek için tasarlanmıştır. Testi tamamladıktan sonra
+            sonuçlarınızı analiz edecek ve eğitim programınızı
+            kişiselleştireceğiz. Bu sayede öğrenme deneyiminizi optimize ederek
+            hedeflerinize daha hızlı ulaşmanıza yardımcı olacağız.
+          </p>
+          <p>Hazırsanız, BAŞLA butonuna basarak hemen başlayabilirsiniz.</p>
+        </div>
+
+        <Button
+          icon={<MdPlayCircle className="w-6 h-6 text-white" />}
+          text="TEST BAŞLA"
+          onClick={handleIntroTest}
+          className="!bg-gradient-to-r  from-[#1D63F0] to-[#1AD7FD]"
+        />
       </Popup>
     </section>
   );
