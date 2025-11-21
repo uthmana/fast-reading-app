@@ -70,11 +70,11 @@ export default function YouTubeEmbed({
   }, [videoId, autoplay, start, controls, loop, mute, rel, modestBranding]);
 
   // inline style to maintain aspect ratio: padding-top trick
-  const paddingTop = `${100 / aspectRatio}%`; // e.g. for 16/9 => 100/(16/9) = 56.25%
+  const paddingTop = `${100 / aspectRatio}%`;
 
   return (
     <div
-      className={`youtube-embed rounded-md overflow-hidden ${className || ""}`}
+      className={`youtube-embed  rounded-md overflow-hidden ${className || ""}`}
       style={{ position: "relative", width: "100%", paddingTop }}
     >
       <iframe
@@ -93,7 +93,6 @@ export default function YouTubeEmbed({
           border: 0,
         }}
         allow={`accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture`}
-        // allowFullScreen attribute
         {...(allowFullScreen ? { allowFullScreen: true } : {})}
       />
     </div>

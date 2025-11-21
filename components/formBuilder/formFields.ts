@@ -365,7 +365,7 @@ export default {
       placeholder: "Açıklama Ekle",
       type: "textarea",
       value: { key: "description", type: "string", value: "" },
-      required: true,
+      required: false,
       rows: 8,
     },
   ],

@@ -16,9 +16,9 @@ const routes = [
     icon: <MdHome className="w-6 h-6" />,
   },
   {
-    name: "Okuma Metinler",
-    path: "/admin/articles",
-    icon: <MdOutlineArticle className="w-6 h-6" />,
+    name: "Dersler",
+    path: "/admin/lessons",
+    icon: <MdBookmark className="w-6 h-6" />,
   },
   {
     name: "Kategori",
@@ -26,9 +26,9 @@ const routes = [
     icon: <MdCategory className="w-6 h-6" />,
   },
   {
-    name: "Dersler",
-    path: "/admin/lessons",
-    icon: <MdBookmark className="w-6 h-6" />,
+    name: "Okuma Metinler",
+    path: "/admin/articles",
+    icon: <MdOutlineArticle className="w-6 h-6" />,
   },
   {
     name: "Öğrenciler",

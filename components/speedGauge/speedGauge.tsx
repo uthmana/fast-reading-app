@@ -50,7 +50,7 @@ export default function SpeedGauge({
         minValue={0}
         maxValue={max}
         value={value}
-        needleColor="red"
+        needleColor="#1e69f1"
         currentValueText={title}
         needleTransitionDuration={1500}
         segments={segments.length}
