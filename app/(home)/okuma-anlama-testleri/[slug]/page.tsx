@@ -7,16 +7,18 @@ import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
 import { countWords, formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 
 export default function page() {
   const { data: session } = useSession();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const lessonParams = searchParams.get("lessonId");
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
+  const introTest = searchParams.get("intro-test");
 
   const [questions, setQuestions] = useState([] as any);
   const [pause, setPause] = useState(false);
@@ -101,6 +103,67 @@ export default function page() {
 
     const { wpm, correct, counter, variant } = val;
     try {
+      // Todo: chech if introTest is anumber
+      if (introTest && isNaN(parseInt(introTest))) {
+        throw new Error("Invalid introTest parameter");
+      }
+
+      if (introTest && parseInt(introTest) + 1 >= 4) {
+        alert(
+          "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz."
+        );
+        router.push(`/dersler`);
+        return;
+      }
+
+      if (introTest && parseInt(introTest) <= 3) {
+        await fetchData({
+          apiPath: "/api/attempts",
+          method: "POST",
+          payload: {
+            wpm,
+            correct,
+            durationSec: counter,
+            variant,
+            studentId: session?.user?.student?.id,
+          },
+        });
+        await fetchData({
+          apiPath: "/api/attempts",
+          method: "POST",
+          payload: {
+            wpm,
+            correct,
+            durationSec: counter,
+            variant: "FASTREADING",
+            studentId: session?.user?.student?.id,
+          },
+        });
+        if (session && parseInt(introTest) < 3) {
+          const { student } = session.user;
+          const { termsAgreed, ...stud } = student;
+          const studentData = {
+            ...stud,
+            introTestTaken: parseInt(introTest) + 1,
+          };
+          const res = await fetchData({
+            apiPath: "/api/students",
+            method: "PUT",
+            payload: studentData,
+          });
+          if (res) {
+            router.replace(
+              `/okuma-anlama-testleri/anlama-testi?intro-test=${
+                parseInt(introTest) + 1
+              }`
+            );
+            return;
+          }
+        }
+
+        return;
+      }
+
       await fetchData({
         apiPath: "/api/attempts",
         method: "POST",
@@ -237,7 +300,17 @@ export default function page() {
         description={
           <ControlPanelGuide
             howToPlay="<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
-            description="Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir. "
+            description={`Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir.`}
+            intoTest={
+              introTest
+                ? {
+                    id: introTest,
+                    title: "Seviye Belirleme Testi",
+                    description:
+                      "Bu test ile mevcut okuma anlama seviyeniz belirlenecektir. Test sonucunuza göre size uygun okuma anlama egzersizleri sunulacaktır. Üç farklı okuma anlama testi yapmanızı gerekiyor. Her testte 10'ar soru sorulacaktır. Test sonunda doğru cevap sayınıza göre seviyeniz belirlenecektir.",
+                  }
+                : {}
+            }
           />
         }
         body={
