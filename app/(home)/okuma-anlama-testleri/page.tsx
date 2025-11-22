@@ -58,9 +58,9 @@ export default function page() {
   }, [session]);
 
   return (
-    <div className="flex flex-col w-full px-6 gap-4">
+    <div className="flex flex-col mb-5 w-full px-6 gap-4">
       <div className="w-full flex gap-3 flex-col rounded shadow">
-        <div className="w-full max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
           <BarChart
             chartData={[
@@ -79,12 +79,14 @@ export default function page() {
             }}
           />
         </div>
-        <div className="w-full max-h-[400px] overflow-y-auto border py-5 px-4 rounded shadow">
-          <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
-          <div className="w-full">
-            <div className="grid grid-cols-2 py-1  group text-blue-500 font-bold border-b">
-              <div className="">Tarih</div>
-              <div className="">Hız(ms)</div>
+        <div className="w-full bg-white max-h-[300px] overflow-y-auto border  px-4 rounded shadow">
+          <div className="w-full pt-5">
+            <div className="sticky top-0 bg-white">
+              <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
+              <div className="grid grid-cols-2 py-1  group text-blue-500 font-bold border-b">
+                <div className="">Tarih</div>
+                <div className="">Hız(ms)</div>
+              </div>
             </div>
 
             {formattedAttempts
@@ -106,7 +108,7 @@ export default function page() {
         </div>
       </div>
       <div className="flex w-full gap-3 flex-col">
-        <div className="w-full max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">Anlama Gelişimi</h2>
           <BarChart
             chartData={[
@@ -133,14 +135,16 @@ export default function page() {
             }}
           />
         </div>
-        <div className="w-full max-h-[400px] overflow-y-auto border py-5 px-4 rounded shadow">
-          <h2 className="text-md mb-4 font-medium">Anlama Gelişimi</h2>
-          <div className="w-full">
-            <div className="grid grid-cols-4 py-1 group text-blue-500 font-bold border-b">
-              <div className="">Tarih</div>
-              <div className="">Doğru Cevap</div>
-              <div className="">Yanlış Cevap</div>
-              <div className="">Anlama Yüzdesi</div>
+        <div className="w-full bg-white max-h-[300px] overflow-y-auto border px-4 rounded shadow">
+          <div className="w-full pt-5">
+            <div className="sticky top-0 bg-white">
+              <h2 className=" text-md mb-4 font-medium">Anlama Gelişimi</h2>
+              <div className="grid grid-cols-4 py-1 group text-blue-500 font-bold border-b">
+                <div className="">Tarih</div>
+                <div className="">Doğru Cevap</div>
+                <div className="">Yanlış Cevap</div>
+                <div className="">Anlama Yüzdesi</div>
+              </div>
             </div>
 
             {formattedAttempts

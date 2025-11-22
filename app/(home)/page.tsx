@@ -153,7 +153,7 @@ export default function Home() {
 
   return (
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
-      <div className="flex flex-wrap gap-4 w-full mb-8 mt-3">
+      <div className="flex flex-wrap gap-4 w-full mb-5 mt-3">
         <Widget
           icon={
             <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
@@ -162,7 +162,7 @@ export default function Home() {
           title={
             (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
           }
-          className="flex-1"
+          className="flex-1 bg-white"
         />
         <Widget
           icon={
@@ -170,7 +170,7 @@ export default function Home() {
           }
           description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
-          className="flex-1"
+          className="flex-1 bg-white"
         />
         <Widget
           icon={
@@ -178,7 +178,7 @@ export default function Home() {
           }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
-          className="flex-1"
+          className="flex-1 bg-white"
         />
         <Link
           className="inline-block flex-1 lg:max-w-[32.3%]"
@@ -194,8 +194,8 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="flex flex-col w-full mb-8 rounded shadow py-10 border">
-        <div className="flex flex-wrap gap-4">
+      <div className="flex bg-white flex-col w-full mb-5 rounded shadow py-10 border">
+        <div className="flex  flex-wrap gap-4">
           <SpeedGauge
             className="flex-1"
             title="DERSLER %${value}"
@@ -241,7 +241,7 @@ export default function Home() {
       </div>
 
       <div className="flex w-full flex-wrap mb-5 gap-4">
-        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">Seviye Gelişim Durumunuz</h2>
           <BarChart
             chartData={[
@@ -260,7 +260,7 @@ export default function Home() {
             }}
           />
         </div>
-        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">
             Hızlı Okuma Gelişim Durumunuz
           </h2>
@@ -284,7 +284,7 @@ export default function Home() {
       </div>
 
       <div className="flex w-full mb-5 flex-wrap gap-4">
-        <div className="flex-1 h-[400px] border pb-16 py-5 px-4 rounded shadow">
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">Yapılan Ödev Grafiği</h2>
           <PieChart
             chartOptions={{
@@ -304,7 +304,7 @@ export default function Home() {
             ]}
           />
         </div>
-        <div className="flex-1 h-[400px] border pb-16 py-5 px-4  rounded shadow">
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4  rounded shadow">
           <h2 className="text-md mb-4 font-medium"> Anlama Oranı</h2>
           <PieChart
             chartOptions={{

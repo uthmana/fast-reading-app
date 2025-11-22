@@ -74,11 +74,16 @@ export default function Sidebar({
         progressSummary.fastUnderstandingProgress?.correct || "0"
       }`.trim();
     }
+
+    if (pathLink === "/dersler/videolar") {
+      return "4";
+    }
+
     return "";
   };
 
   return (
-    <aside className="hidden min-h-96 lg:block w-64 bg-white  pl-4">
+    <aside className="hidden min-h-96 lg:block w-64 pl-4">
       <ul className="space-y-[1px]">
         {selected?.subMenu?.map((item: MenuItem) => {
           if (item?.type === "info") {
@@ -86,11 +91,17 @@ export default function Sidebar({
               <li key={item.name}>
                 <Link
                   href={item.link || "#"}
-                  className={`block px-3 py-5 border-2 border-blue-600 group text-lg  hover:shadow-md  rounded-lg text-black transition `}
+                  className={`block px-3 py-5 bg-white border-2 border-blue-600 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition ${
+                    pathname === item.link
+                      ? "text-white hover:text-white bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
+                      : ""
+                  }`}
                 >
-                  <span className="block transition-transform group-hover:text-blue-600 group-hover:translate-x-2">
+                  <span
+                    className={`block gap-2 transition-transform   group-hover:translate-x-2 `}
+                  >
                     {item.name}{" "}
-                    <span className="font-bold text-xs text-white whitespace-nowrap px-1 py-[2px] bg-blue-600">
+                    <span className="font-bold  text-xs text-white whitespace-nowrap px-1 py-[2px] bg-blue-600">
                       {renderSummary(item.link, progressSummary)}
                     </span>
                   </span>

@@ -8,6 +8,7 @@ import {
 } from "../../../utils/turkishWords";
 import { MdPauseCircle } from "react-icons/md";
 import Button from "../../button/button";
+import { speedMap } from "@/utils/constants";
 
 type LineLengthViewProps = {
   controls?: {
@@ -31,18 +32,6 @@ export default function LineLengthView({
   const scroll = controls?.scroll ?? false;
 
   const level = controls?.level || 3;
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
   const rawSpeed = speedMap[level];
 
   const intervalMs = useMemo(() => {
