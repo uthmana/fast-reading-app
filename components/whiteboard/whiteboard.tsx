@@ -21,6 +21,7 @@ interface WhiteboardProps {
   lessonData?: { id: string; duration: string };
   contentClassName?: string;
   saveProgress?: () => void;
+  customControls?: ReactElement;
 }
 
 export default function Whiteboard({
@@ -34,6 +35,7 @@ export default function Whiteboard({
   lessonData,
   contentClassName = "",
   saveProgress,
+  customControls,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -152,21 +154,23 @@ export default function Whiteboard({
       {/* Control panel */}
 
       <div className="flex justify-between gap-4 flex-wrap items-center w-full">
-        <ControlPanel
-          key={controlVal}
-          controlVal={controlVal}
-          setControlVal={setControlVal}
-          onControlChange={handleControlChange}
-          setIsLoading={setIsLoading}
-          articles={articles}
-          setArticles={setArticles}
-          categoryOptions={categoryOptions}
-          setCategoryOptions={setCategoryOptions}
-          articleOptions={articleOptions}
-          setArticleOptions={setArticleOptions}
-          isfastTest={isfastTest}
-          readingStatus={readingStatus}
-        />
+        {customControls ?? (
+          <ControlPanel
+            key={controlVal}
+            controlVal={controlVal}
+            setControlVal={setControlVal}
+            onControlChange={handleControlChange}
+            setIsLoading={setIsLoading}
+            articles={articles}
+            setArticles={setArticles}
+            categoryOptions={categoryOptions}
+            setCategoryOptions={setCategoryOptions}
+            articleOptions={articleOptions}
+            setArticleOptions={setArticleOptions}
+            isfastTest={isfastTest}
+            readingStatus={readingStatus}
+          />
+        )}
       </div>
 
       {/* Fullscreen reading overlay */}
@@ -215,21 +219,23 @@ export default function Whiteboard({
           </div>
 
           <div className={`w-full lg:w-[80%] ${contentClassName}`}>
-            <ControlPanel
-              key={controlVal}
-              controlVal={controlVal}
-              setControlVal={setControlVal}
-              onControlChange={handleControlChange}
-              setIsLoading={setIsLoading}
-              articles={articles}
-              setArticles={setArticles}
-              categoryOptions={categoryOptions}
-              setCategoryOptions={setCategoryOptions}
-              articleOptions={articleOptions}
-              setArticleOptions={setArticleOptions}
-              isfastTest={isfastTest}
-              readingStatus={readingStatus}
-            />
+            {customControls ?? (
+              <ControlPanel
+                key={controlVal}
+                controlVal={controlVal}
+                setControlVal={setControlVal}
+                onControlChange={handleControlChange}
+                setIsLoading={setIsLoading}
+                articles={articles}
+                setArticles={setArticles}
+                categoryOptions={categoryOptions}
+                setCategoryOptions={setCategoryOptions}
+                articleOptions={articleOptions}
+                setArticleOptions={setArticleOptions}
+                isfastTest={isfastTest}
+                readingStatus={readingStatus}
+              />
+            )}
           </div>
         </div>
       )}

@@ -5,9 +5,11 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
+import ColorFinderControls from "@/components/formInputs/colorFinderControls";
+import FindTheColor from "@/components/exercises/brain/findTheColor";
 import { useSession } from "next-auth/react";
 
 export default function page() {
@@ -19,6 +21,25 @@ export default function page() {
   const exerciseParams = searchParams.get("exerciseId");
   const durationParams = searchParams.get("duration");
 
+  //dogru Rengi Bul
+  const [level, setLevel] = useState(2);
+  const [running, setRunning] = useState(true);
+
+  const [correct, setCorrect] = useState(0);
+  const [wrong, setWrong] = useState(0);
+
+  const [readingStatus, setReadingStatus] = useState<any>(null);
+
+  // Get checkAnswer function from ColorFinder (exposed via ref)
+  const finderRef = useRef<any>(null);
+
+  const triggerCheck = (answer: boolean) => {
+    if (finderRef.current?.check) {
+      finderRef.current.check(answer);
+    }
+  };
+
+  //
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
     categorySelect: "",
@@ -70,29 +91,70 @@ export default function page() {
       console.error(error);
     }
   };
-
-  return (
-    <Whiteboard
-      pause={pause}
-      description={
-        <ControlPanelGuide
-          description="Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
-          howToPlay="<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
-        />
-      }
-      body={
-        <RenderExercise
-          onFinishTest={onFinishTest}
-          controls={control}
-          pathname={pathname}
-          article={control.articleSelect as any}
-        />
-      }
-      control={control}
-      onControlChange={handleControl}
-      lessonData={{ id: lessonParams, duration: durationParams } as any}
-      contentClassName="!w-full"
-      saveProgress={saveProgress}
-    />
-  );
+  if (pathname === "dogru-rengi-bul") {
+    return (
+      <Whiteboard
+        pause={pause}
+        control={control}
+        description={
+          <ControlPanelGuide
+            howToPlay="<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            description="Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+          />
+        }
+        body={
+          <div className="w-full">
+            <div className="w-full">
+              <FindTheColor
+                ref={finderRef}
+                level={level}
+                running={running}
+                onCorrect={() => setCorrect((c) => c + 1)}
+                onWrong={() => setWrong((w) => w + 1)}
+                onNewWord={() => {}}
+              />
+            </div>
+          </div>
+        }
+        customControls={
+          <ColorFinderControls
+            onLevelChange={(lvl) => setLevel(lvl)}
+            onPauseToggle={(r) => setRunning(r)}
+            onCheck={(ans) => triggerCheck(ans)}
+            correct={correct}
+            wrong={wrong}
+            running={running}
+          />
+        }
+        onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        saveProgress={saveProgress}
+      />
+    );
+  } else {
+    return (
+      <Whiteboard
+        pause={pause}
+        description={
+          <ControlPanelGuide
+            description="Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
+            howToPlay="<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
+          />
+        }
+        body={
+          <RenderExercise
+            onFinishTest={onFinishTest}
+            controls={control}
+            pathname={pathname}
+            article={control.articleSelect as any}
+          />
+        }
+        control={control}
+        onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        contentClassName="!w-full"
+        saveProgress={saveProgress}
+      />
+    );
+  }
 }
