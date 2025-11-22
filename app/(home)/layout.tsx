@@ -4,7 +4,6 @@ import { authOptions } from "../../lib/authOptions";
 import SessionProvider from "../../components/providers";
 import ClientLayout from "../../components/clientLayout";
 import "../globals.css";
-import { LessonProvider } from "../contexts/LessonContext";
 
 export const metadata = {
   title: "Etkin Hızlı Okuma",
@@ -28,9 +27,7 @@ export default async function RootLayout({
               {children}
             </main>
           ) : (
-            <ClientLayout>
-              <LessonProvider>{children}</LessonProvider>
-            </ClientLayout>
+            <ClientLayout>{children}</ClientLayout>
           )}
         </SessionProvider>
       </body>

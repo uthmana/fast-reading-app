@@ -93,7 +93,7 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="flex w-full relative z-10  items-center gap-2 h-screen justify-center bg-no-repeat bg-[url('/images/kutuphane-millet.jpg')] bg-center bg-cover">
+    <section className="flex w-full relative z-10  items-center gap-2 h-screen justify-center bg-no-repeat bg-[url('/images/kutuphane-millet.png')] bg-center bg-cover">
       <div className="flex-1 h-full flex items-center bg-black/20">
         <div className="w-[90%] bg-white/50 backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">

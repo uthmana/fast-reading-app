@@ -11,6 +11,7 @@ import {
 } from "../formBuilder/request";
 import { MdSpeed, MdTitle } from "react-icons/md";
 import { IoMdClock } from "react-icons/io";
+import { speedMap } from "@/utils/constants";
 
 interface ControlPanelProps {
   onControlChange?: (v: any) => void;
@@ -123,19 +124,6 @@ export default function ControlPanel({
   const queryParams = useParams();
   const pathname = queryParams.slug;
   const controlItem = controlItems[pathname as any] || ["level"];
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
 
   const handleChange: any = async ({
     targetValue,

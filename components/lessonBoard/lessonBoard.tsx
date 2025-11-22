@@ -10,7 +10,7 @@ interface LessonBoardProps {
 export default function LessonBoard({ lessons, className }: LessonBoardProps) {
   return (
     <div className={`flex w-full flex-col ${className}`}>
-      <div className="relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[520px] mx-auto mb-7 flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
+      <div className="relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[640px] mx-auto mb-7 flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img
           src={wood_img.src}
           alt="Wood background"

@@ -34,6 +34,7 @@
 import { useEffect, useState } from "react";
 import Button from "@/components/button/button";
 import { MdPauseCircle } from "react-icons/md";
+import { speedMap } from "@/utils/constants";
 
 export const COLOR_MAP = [
   "#2ecc71",
@@ -60,25 +61,11 @@ export default function ActivevisionAreaThree({
   onFinishTest,
 }: ActivevisionAreaThreeProps) {
   const borderWidth = 4;
-  const [colorIndex, setColorIndex] = useState<number>(1);
-
   const level = controls?.level || 3;
   const step = 60;
   const jump = step * 2;
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
   const speedMs = speedMap[level];
+  const [colorIndex, setColorIndex] = useState<number>(1);
 
   useEffect(() => {
     if (controls?.perspectivecolor !== undefined) {

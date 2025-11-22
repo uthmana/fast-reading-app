@@ -35,6 +35,7 @@ import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Button from "@/components/button/button";
 import { MdPauseCircle } from "react-icons/md";
+import { speedMap } from "@/utils/constants";
 
 type VisualFieldTrainerProps = {
   controls?: {
@@ -54,22 +55,6 @@ export default function VisualFieldTrainer({
   // Range-controlled values
   const frame = controls?.frame ?? 8; // default frame 8
   const grid = controls?.grid ?? 6; // default grid 6
-
-  // Speed map (seconds → milliseconds)
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
-
-  // Default speed = 2 seconds
   const speedMs = speedMap[controls?.level || 2];
 
   const [numbers, setNumbers] = useState<number[][]>([]);

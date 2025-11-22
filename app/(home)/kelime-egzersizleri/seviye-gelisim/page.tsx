@@ -54,9 +54,9 @@ export default function page() {
   }, [session]);
 
   return (
-    <div className="flex flex-col px-5">
+    <div className="flex flex-col px-5 pb-5">
       <div className="flex w-full flex-col px-6 gap-4">
-        <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
+        <div className="flex-1 bg-white min-h-[270px] max-h-[400px] border py-10 px-4 rounded shadow">
           <BarChart
             chartData={[
               {
@@ -75,9 +75,9 @@ export default function page() {
           />
         </div>
 
-        <div className="flex-1 max-h-[600px] overflow-y-auto border py-10 rounded shadow">
+        <div className="flex-1 bg-white min-h-[270px] max-h-[400px] overflow-y-auto border  rounded shadow">
           <div className="w-full px-3">
-            <div className="grid grid-cols-12 text-blue-500 text-sm whitespace-nowrap font-semibold border-b">
+            <div className="grid grid-cols-12 sticky pt-8 top-0 bg-white text-blue-500 text-sm whitespace-nowrap font-semibold border-b">
               <div className="col-span-3">Tarih</div>
               <div className="col-span-3">Kelime Adet</div>
               <div className="col-span-2">Hız (ms)</div>

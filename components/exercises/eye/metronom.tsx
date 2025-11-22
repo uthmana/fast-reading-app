@@ -35,6 +35,7 @@ import { useEffect, useRef, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import Button from "@/components/button/button";
+import { speedMap } from "@/utils/constants";
 
 type MetronomeEyeProps = {
   controls?: {
@@ -54,20 +55,6 @@ export default function Metronom({
   onFinishTest,
 }: MetronomeEyeProps) {
   const level = controls?.level || 3;
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
-
   const speedMs = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
 
