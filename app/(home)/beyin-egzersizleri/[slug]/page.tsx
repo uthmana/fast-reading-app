@@ -10,7 +10,10 @@ import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
 import ColorFinderControls from "@/components/formInputs/colorFinderControls";
 import FindTheColor from "@/components/exercises/brain/findTheColor";
+import NumberFinderControls from "@/components/formInputs/numberFinderControls";
+import FindTheNumber from "@/components/exercises/brain/findTheNumber";
 import { useSession } from "next-auth/react";
+import { eyeExerciseDescription } from "@/utils/constants";
 
 export default function page() {
   const { data: session } = useSession();
@@ -21,14 +24,12 @@ export default function page() {
   const exerciseParams = searchParams.get("exerciseId");
   const durationParams = searchParams.get("duration");
 
-  //dogru Rengi Bul
+  //dogru Rengi Bul States Custom Controls
   const [level, setLevel] = useState(2);
   const [running, setRunning] = useState(true);
 
   const [correct, setCorrect] = useState(0);
   const [wrong, setWrong] = useState(0);
-
-  const [readingStatus, setReadingStatus] = useState<any>(null);
 
   // Get checkAnswer function from ColorFinder (exposed via ref)
   const finderRef = useRef<any>(null);
@@ -39,6 +40,20 @@ export default function page() {
     }
   };
 
+  //DOGRU SAYIIYI BUL STATES CUSTOM CONTROLS
+  const [speed, setSpeed] = useState(1500); // 1.5 seconds
+  const [difficulty, setDifficulty] = useState(5);
+  const [targetLetter, setTargetLetter] = useState("V");
+  const [duration, setDuration] = useState(20); // 20 seconds
+
+  const numberFinderRef = useRef<any>(null);
+  const [numberRunning, setNumberRunning] = useState(false);
+  const [numCorrect, setNumCorrect] = useState(0);
+  const [numWrong, setNumWrong] = useState(0);
+
+  const handleFinish = (stats: any) => {
+    console.log("Exercise finished:", stats);
+  };
   //
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
@@ -98,8 +113,14 @@ export default function page() {
         control={control}
         description={
           <ControlPanelGuide
-            howToPlay="<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
-            description="Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+            howToPlay={
+              eyeExerciseDescription[pathname]?.howToPlay ??
+              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            }
+            description={
+              eyeExerciseDescription[pathname]?.description ??
+              "Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+            }
           />
         }
         body={
@@ -109,6 +130,7 @@ export default function page() {
                 ref={finderRef}
                 level={level}
                 running={running}
+                onFinishTest={onFinishTest}
                 onCorrect={() => setCorrect((c) => c + 1)}
                 onWrong={() => setWrong((w) => w + 1)}
                 onNewWord={() => {}}
@@ -124,6 +146,61 @@ export default function page() {
             correct={correct}
             wrong={wrong}
             running={running}
+          />
+        }
+        onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        saveProgress={saveProgress}
+      />
+    );
+  } else if (pathname === "dogru-sayiyi-bul") {
+    return (
+      <Whiteboard
+        pause={pause}
+        control={control}
+        description={
+          <ControlPanelGuide
+            howToPlay={
+              eyeExerciseDescription[pathname]?.howToPlay ??
+              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            }
+            description={
+              eyeExerciseDescription[pathname]?.description ??
+              "Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+            }
+          />
+        }
+        body={
+          <div className="w-full">
+            <div className="w-full">
+              <FindTheNumber
+                ref={numberFinderRef}
+                speed={speed}
+                difficulty={difficulty}
+                targetLetter={targetLetter}
+                duration={duration}
+                onFinish={handleFinish}
+                onCorrect={() => setNumCorrect((c) => c + 1)}
+                onWrong={() => setNumWrong((w) => w + 1)}
+              />
+            </div>
+          </div>
+        }
+        customControls={
+          <NumberFinderControls
+            onSpeedChange={(ms) => setSpeed(ms)}
+            onDifficultyChange={(d) => setDifficulty(d)}
+            onTargetLetterChange={(s) => setTargetLetter(s)}
+            onDurationChange={(n) => setDuration(n)}
+            onPauseToggle={(r) => {
+              setNumberRunning(r);
+              if (r) numberFinderRef.current?.start();
+              else numberFinderRef.current?.pause();
+            }}
+            onCheck={() => numberFinderRef.current?.check()}
+            correct={numCorrect}
+            wrong={numWrong}
+            running={numberRunning}
           />
         }
         onControlChange={handleControl}
