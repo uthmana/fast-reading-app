@@ -52,7 +52,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
             <Sidebar pathname={pathname} activeMenu={activeMenu} />
             <div className="flex-1 min-h-[500px]">{children}</div>
           </div>
-          <div className="w-full  pt-5 items-center border-t border-dotted border-black hidden -mb-5 lg:flex opacity-50 hover:opacity-100">
+          <div className="w-full  pt-3 items-center border-t border-dotted border-black hidden -mb-5 lg:flex opacity-50 hover:opacity-100">
             <LogOutInput
               text="Çıkış Yap"
               className="text-sm px-0 border-0 !py-0 font-semibold !gap-1 group"
