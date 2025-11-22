@@ -25,7 +25,7 @@ export default function ExerciseDetail({
   const startLink = menu?.subMenu?.[1]?.link || "";
 
   return (
-    <div className="px-4 w-full flex flex-col">
+    <div className="px-4 pb-4 rounded-md w-full lg:px-0 lg:w-[calc(100%-32px)] mx-auto bg-white flex flex-col">
       {menu?.youtubeId ? (
         <YouTubeEmbed
           videoId={menu?.youtubeId}
@@ -39,16 +39,17 @@ export default function ExerciseDetail({
           onLoad={() => console.log("iframe loaded")}
         />
       ) : null}
-
-      <h1 className="my-5 text-2xl font-bold capitalize"> {menu?.name} </h1>
-      <p className="mb-8">{menu?.description}</p>
-      <Link className="block max-w-[170px]" href={startLink}>
-        <Button
-          text="Hemen Başla"
-          className="bg-blue-600 hover:bg-blue-700"
-          icon={<MdPlayCircle className="w-6 h-6 text-white" />}
-        />
-      </Link>
+      <div className="px-4">
+        <h1 className="my-5 text-2xl font-bold capitalize"> {menu?.name} </h1>
+        <p className="mb-8">{menu?.description}</p>
+        <Link className="block max-w-[170px]" href={startLink}>
+          <Button
+            text="Hemen Başla"
+            className="bg-blue-600 hover:bg-blue-700"
+            icon={<MdPlayCircle className="w-6 h-6 text-white" />}
+          />
+        </Link>
+      </div>
     </div>
   );
 }

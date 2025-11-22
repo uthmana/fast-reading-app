@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
-import { WordsPerSentence } from "@/utils/constants";
+import { speedMap, WordsPerSentence } from "@/utils/constants";
 import Button from "@/components/button/button";
 
 type TachistoProps = {
@@ -41,19 +41,6 @@ export default function EyeAgilityIncrease({
     WordsPerSentence[
       wordsPerFrame.toString() as keyof typeof WordsPerSentence
     ] ?? [];
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
 
   useEffect(() => {
     onCompleteRef.current = onComplete;

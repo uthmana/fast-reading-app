@@ -3,6 +3,7 @@
 import { MdPauseCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import { useEffect, useState } from "react";
+import { speedMap } from "@/utils/constants";
 
 type ActivevisionAreaTwoProps = {
   controls?: {
@@ -35,20 +36,6 @@ export default function ActivevisionAreaTwo({
   const colorIndex = controls?.color ?? 1;
   const boxColor = colors[colorIndex - 1] || colors[0];
   const level = controls?.level || 3;
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
-
   const speed = speedMap[level];
 
   // size scale steps

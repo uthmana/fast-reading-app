@@ -60,7 +60,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                     href={item.link}
                     className={`flex relative whitespace-nowrap  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link)
-                        ? "!bg-blue-700 shadow !border-blue-800"
+                        ? "!bg-blue-700 shadow !border-white"
                         : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}

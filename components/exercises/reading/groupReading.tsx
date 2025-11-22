@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/button/button";
+import { speedMap } from "@/utils/constants";
 import React, { useEffect, useRef, useState } from "react";
 
 import { MdPauseCircle } from "react-icons/md";
@@ -33,20 +34,6 @@ export default function GroupReading({
   const currentLevelRef = useRef<number>(controls.level);
 
   const { font, level, wordsPerFrame } = controls;
-
-  // Level → speed map (milliseconds per frame)
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
 
   const words = article?.description
     ? article.description.trim().split(/\s+/)

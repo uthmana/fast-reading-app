@@ -241,7 +241,7 @@ export default function page() {
   if (pathname === "hizli-okuma-testi-gelisim") {
     return (
       <div className="flex w-full flex-col px-6 gap-4">
-        <div className="w-full max-h-[400px] border py-10 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
           <BarChart
             chartData={[
@@ -261,7 +261,7 @@ export default function page() {
           />
         </div>
 
-        <div className="flex-1 max-h-[400px] overflow-y-auto border py-10 px-4 rounded shadow">
+        <div className="flex-1 max-h-[400px] bg-white overflow-y-auto border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
           <div className="w-full">
             <div className="grid grid-cols-2 py-1  group text-blue-500 font-bold border-b">
@@ -333,7 +333,7 @@ export default function page() {
   if (pathname === "anlama-testi-gelisim") {
     return (
       <div className="flex w-full flex-col px-6 gap-4">
-        <div className="flex-1 max-h-[400px] border py-10 px-4 rounded shadow">
+        <div className="flex-1 bg-white max-h-[400px] border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
           <BarChart
             chartData={[
@@ -361,7 +361,7 @@ export default function page() {
           />
         </div>
 
-        <div className="flex-1 max-h-[400px] overflow-y-auto border py-10 px-4 rounded shadow">
+        <div className="flex-1 bg-white max-h-[400px] overflow-y-auto border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
           <div className="w-full">
             <div className="grid grid-cols-4 py-1 group text-blue-500 font-bold border-b">

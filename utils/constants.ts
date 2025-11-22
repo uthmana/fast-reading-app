@@ -4282,11 +4282,11 @@ export const WordsPerSentence = {
     "Eğitim Bitti...",
   ],
 };
+
 type ExerciseDescription = {
   description: string;
   howToPlay: string;
 };
-
 type EyeExerciseDescriptionMap = Record<string, ExerciseDescription>;
 export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
   "goz-kaslarini-gelistirme": {
@@ -4327,4 +4327,17 @@ export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
     howToPlay:
       "<p>Alttaki araçlardan merkeze uzaklık, harf Sayısı ve hız ayarlarınızı yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Ekranın ortasında ki çizgiye odaklanarak kenarlardaki kelime ve kelime gruplarını gözlerinizi hareket etmeden okuyun. Süre bitene kadar egzersize devam edin.</p>",
   },
+};
+
+export const speedMap: Record<number, number> = {
+  1: 600,
+  2: 500,
+  3: 450,
+  4: 425,
+  5: 400,
+  6: 380,
+  7: 370,
+  8: 320,
+  9: 260,
+  10: 220,
 };

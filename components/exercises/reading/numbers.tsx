@@ -1,5 +1,6 @@
 "use client";
 import Button from "@/components/button/button";
+import { speedMap } from "@/utils/constants";
 import React, { useEffect, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
 
@@ -25,20 +26,6 @@ export default function Numbers({
 
   const itemsPerFrame = wordsPerFrame || controls?.wordsPerFrame || 2;
   const level = controls?.level || 1;
-  // Faster at higher level
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
-
   const frameDuration = speedMap[level] || 2000;
   const frameWords = words.slice(index, index + itemsPerFrame) || [];
   const isThreeLetterAndBellow = words[0]?.length <= 4;

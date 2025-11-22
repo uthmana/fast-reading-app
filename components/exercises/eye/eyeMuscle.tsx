@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/button/button";
+import { speedMap } from "@/utils/constants";
 import React, { useEffect, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
 
@@ -31,20 +32,6 @@ export default function EyeMuscle({
   const level = controls?.level || 3;
   const step = 60;
   const jump = step * 2;
-
-  const speedMap: Record<number, number> = {
-    1: 600,
-    2: 500,
-    3: 450,
-    4: 425,
-    5: 400,
-    6: 380,
-    7: 370,
-    8: 360,
-    9: 350,
-    10: 340,
-  };
-
   const duration = speedMap[level];
 
   useEffect(() => {

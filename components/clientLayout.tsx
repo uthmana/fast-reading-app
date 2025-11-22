@@ -36,23 +36,23 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   }, [pathname]);
 
   return (
-    <div className="w-full pb-16 relative flex flex-col min-h-screen">
-      <div className="lg:bg-black/0 w-full lg:before:absolute lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-[170px] lg:before:bg-blue-500 lg:before:z-0 lg:before:bg-[url('/images/blue-gradient.jpeg')] lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top">
+    <div className="w-full pb-16 relative flex flex-col min-h-screen bg-[url('/images/kutuphane-millet.png')] bg-fixed bg-cover bg-no-repeat bg-center">
+      <div className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#1D63F0] to-transparent lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top">
         <Menu
           pathname={pathname}
           onActiveMenu={(menuName) => setActiveMenu(menuName)}
         />
       </div>
-      <main className="w-full h-full relative">
+      <main className="w-full h-full relative ">
         <div
-          className={`flex flex-col items-start  lg:bg-white lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
+          className={`flex flex-col items-start bg-white lg:bg-white/85 lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
         >
           <Breadcrumb menuItem={currentMenu} />
           <div className="w-full flex ">
             <Sidebar pathname={pathname} activeMenu={activeMenu} />
             <div className="flex-1 min-h-[500px]">{children}</div>
           </div>
-          <div className="w-fit hidden -mb-5 lg:block opacity-50 hover:opacity-100">
+          <div className="w-full  pt-5 items-center border-t border-dotted border-black hidden -mb-5 lg:flex opacity-50 hover:opacity-100">
             <LogOutInput
               text="Çıkış Yap"
               className="text-sm px-0 border-0 !py-0 font-semibold !gap-1 group"

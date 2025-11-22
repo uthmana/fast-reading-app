@@ -6,6 +6,11 @@ export const menuItems = [
     subMenu: [
       { name: "Dersler", link: "/dersler", type: "info" },
       {
+        name: "Ders Videoları",
+        link: "/dersler/videolar",
+        type: "info",
+      },
+      {
         name: "Takistoskop Gelişimi",
         link: "/kelime-egzersizleri/seviye-gelisim",
         type: "info",
@@ -154,6 +159,6 @@ export const menuItems = [
       },
     ],
     description: "Okuma ve Anlama Testleri",
-    youtubeId: "xiTK523Ot5U",
+    youtubeId: "",
   },
 ];

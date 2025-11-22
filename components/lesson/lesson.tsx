@@ -138,7 +138,7 @@ export default function Lesson({ id }: { id?: string }) {
                 <span className="text-gray-500 italic">Ders yükleniyor...</span>
               </div>
             ) : (
-              <ul className="space-y-0">
+              <ul className="space-y-[2px]">
                 {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
                   // determine if this particular lesson-exercise occurrence is done
                   const isDone = progress?.some(
@@ -161,7 +161,7 @@ export default function Lesson({ id }: { id?: string }) {
                   return (
                     <li
                       key={lesson.pathName + idx}
-                      className={` group relative overflow-hidden rounded-lg border-current
+                      className={`group relative overflow-hidden rounded-lg border-current
                     bg-gradient-to-r from-[#fdfdfd] to-[#f4f4f4]
                     border-gray-400 shadow-[0_6px_12px_rgba(0,0,0,0.3)]
                     before:content-[''] before:absolute before:inset-0 
@@ -175,7 +175,8 @@ export default function Lesson({ id }: { id?: string }) {
                     }`}
                       style={{
                         perspective: "1000px",
-                        backgroundImage: `url(/images/wood.jpg)`,
+                        backgroundImage: `url(/images/linen-texture.jpg)`,
+                        backgroundColor: "#ffffff",
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center",
                         backgroundSize: "cover",
