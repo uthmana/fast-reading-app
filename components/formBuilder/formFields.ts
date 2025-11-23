@@ -62,17 +62,12 @@ export default {
           value: "ADMIN",
         },
         {
-          name: "STUDENT",
-          value: "STUDENT",
-        },
-        {
           name: "TEACHER",
           value: "TEACHER",
         },
       ],
-      value: { key: "role", type: "string", value: "ADMIN" },
+      value: { key: "role", type: "string", value: "" },
       required: true,
-      disabled: true,
       styleClass: "md:!w-[calc(50%-6px)]",
     },
     {

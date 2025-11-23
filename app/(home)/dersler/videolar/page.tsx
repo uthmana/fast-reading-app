@@ -6,7 +6,7 @@ export default function page() {
   const videoItems = menuItems.filter((m) => m.youtubeId !== "");
 
   return (
-    <div className="w-full h-full flex flex-wrap justify-start gap-4 px-5">
+    <div className="w-full h-full pb-5 flex flex-wrap justify-start gap-4 px-5">
       {videoItems.map((item, idx) => (
         <div
           key={idx}

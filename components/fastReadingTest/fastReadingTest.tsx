@@ -33,6 +33,7 @@ type FastReadingTestProps = {
     totalWords: number;
     wpm: number;
   }) => void;
+  introTest?: string | undefined | null;
 };
 
 export default function FastReadingTest({
@@ -42,6 +43,7 @@ export default function FastReadingTest({
   control,
   variant = "FASTREADING",
   readingStatus,
+  introTest = "",
 }: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -110,6 +112,12 @@ export default function FastReadingTest({
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
     const correct = calculateQuizScore(questions, value, correctAnswers);
+
+    if (introTest) {
+      onFinishTest({ wpm, correct, counter, variant });
+      setIsTesting(true);
+      return;
+    }
 
     if (confirm(`Anlama oranınız ${correct}% olarak kaydedilsin mi ?`)) {
       setResult({ countWord, wpm, correct });

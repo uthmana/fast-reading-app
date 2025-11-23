@@ -75,10 +75,10 @@ export default function LoginPage() {
 
         //  Redirect based on role
         if (typeof window !== "undefined") {
-          if (resData.role === "ADMIN") {
-            window.location.replace("/admin");
-          } else {
+          if (resData.role === "STUDENT") {
             window.location.replace("/");
+          } else {
+            window.location.replace("/admin");
           }
         }
       } else {
@@ -93,9 +93,9 @@ export default function LoginPage() {
   };
 
   return (
-    <section className="flex w-full relative z-10  items-center gap-2 h-screen justify-center bg-no-repeat bg-[url('/images/kutuphane-millet.png')] bg-center bg-cover">
-      <div className="flex-1 h-full flex items-center bg-black/20">
-        <div className="w-[90%] bg-white/50 backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
+    <section className="flex w-full relative z-10  items-center gap-2 h-screen before:absolute before:top-0 before:h-full  before:left-0 before:w-full before:bg-gradient-to-b from-[#1D63F0] to-transparent justify-center bg-no-repeat bg-[url('/images/kutuphane-millet.png')] bg-center bg-cover">
+      <div className="flex-1 h-full flex items-center ">
+        <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">
             Etkin Hızlı Okuma
           </h1>
