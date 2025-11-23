@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useMemo } from "react";
@@ -21,7 +22,7 @@ export default function SideBar({
   routes: Route[];
 }) {
   const pathname = usePathname() || "/";
-
+  const { data: session, status } = useSession();
   // Normalize paths by removing trailing slashes (but keep root '/')
   const normalize = (p: string) => (p === "/" ? "/" : p.replace(/\/+$/, ""));
 
@@ -70,6 +71,7 @@ export default function SideBar({
 
       <nav className="p-4">
         {routes.map((route: any, idx) => {
+          if (!route.roles?.includes(session?.user.role)) return null;
           const rp = normalize(route.path);
           const active = rp === activePath;
           return (

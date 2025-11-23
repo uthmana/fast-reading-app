@@ -27,7 +27,7 @@ export default function page() {
 
         if (res.ok) {
           const resData = await res.json();
-          setStudents(resData.filter((val: any) => val.role === "ADMIN"));
+          setStudents(resData.filter((val: any) => val.role !== "STUDENT"));
           setIsloading(false);
         }
       } catch (error) {

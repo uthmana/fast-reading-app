@@ -7,6 +7,30 @@ import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+  DragStartEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import SortableItem from "@/components/admin/sortableItem/sortableItem";
+import Button from "@/components/button/button";
+import dynamic from "next/dynamic";
+
+const DndContextWithNoSSR = dynamic(
+  () => import("@dnd-kit/core").then((mod) => mod.DndContext),
+  { ssr: false }
+);
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
@@ -14,9 +38,10 @@ export default function page() {
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
-
   const [isShowLessonPopUp, setIsShowExercisePopUp] = useState(false);
   const [selectedlesson, setSelectedLesson] = useState({} as any);
+  const [items, setItems] = useState([] as any);
+  const [activeItem, setActiveItem] = useState<any | undefined>(undefined);
 
   const requestData = async () => {
     try {
@@ -73,6 +98,7 @@ export default function page() {
       }
     }
     if (actionType === "exercises") {
+      setItems(currentLesson?.Exercise);
       setIsShowExercisePopUp(true);
     }
   };
@@ -113,6 +139,55 @@ export default function page() {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const handleDragCancel = () => {
+    setActiveItem(undefined);
+  };
+
+  //TODO: make the list items dragable and reorder
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const { active } = event;
+    setActiveItem(items?.find((item: any) => item.sequence === active.id));
+  };
+
+  function handleDragEnd(event: any) {
+    const { active, over } = event;
+
+    if (!over) return;
+
+    const activeItem = items.find((ex: any) => ex.id === active.id);
+    const overItem = items.find((ex: any) => ex.id === over.id);
+
+    if (!activeItem || !overItem) {
+      return;
+    }
+
+    const activeIndex = items.findIndex((ex: any) => ex.id === active.id);
+    const overIndex = items.findIndex((ex: any) => ex.id === over.id);
+
+    if (activeIndex !== overIndex) {
+      setItems((prev: any) => {
+        const updated = arrayMove(prev, activeIndex, overIndex).map(
+          (ex: any, i: number) => ({ ...ex, id: i + 1 })
+        );
+
+        return updated;
+      });
+    }
+    setActiveItem(undefined);
+  }
+
+  const handleSortable = () => {
+    //TODO: Save changes to DB
+    //console.log(items, selectedlesson);
   };
 
   return (
@@ -165,15 +240,39 @@ export default function page() {
         overlayClass="z-[51]"
       >
         <div className="text-left w-[80%] mx-auto">
-          <ol className="list-decimal">
-            {selectedlesson?.Exercise?.map((item: any, idx: number) => (
-              <li key={item.id} className="hover:text-blue-500">
-                <Link target="_blank" href={item.pathName}>
-                  {item.title}
-                </Link>
-              </li>
-            ))}
+          <ol className="list-decimal space-y-1">
+            <DndContextWithNoSSR
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onDragCancel={handleDragCancel}
+            >
+              <SortableContext
+                items={items?.map((item: any) => item.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {items?.map((item: any) => (
+                  <SortableItem
+                    key={item.id}
+                    className="hover:text-blue-500"
+                    item={item}
+                  />
+                ))}
+              </SortableContext>
+              <DragOverlay
+                adjustScale
+                style={{
+                  transformOrigin: "0 0",
+                }}
+              >
+                {activeItem ? (
+                  <SortableItem item={activeItem} forceDragging={true} />
+                ) : null}
+              </DragOverlay>
+            </DndContextWithNoSSR>
           </ol>
+          <Button className="mt-3" text="KAYDET" onClick={handleSortable} />
         </div>
       </Popup>
     </div>

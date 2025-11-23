@@ -36,8 +36,8 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   }, [pathname]);
 
   return (
-    <div className="w-full pb-16 relative flex flex-col min-h-screen bg-[url('/images/kutuphane-millet.png')] bg-fixed bg-cover bg-no-repeat bg-center">
-      <div className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#1D63F0] to-transparent lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top">
+    <div className="w-full pb-16 relative flex flex-col min-h-screen lg:bg-[url('/images/kutuphane-millet.png')]  bg-fixed bg-cover bg-no-repeat bg-center">
+      <div className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#1D63F0] from-[170px]  to-transparent to-[60%] lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top">
         <Menu
           pathname={pathname}
           onActiveMenu={(menuName) => setActiveMenu(menuName)}
