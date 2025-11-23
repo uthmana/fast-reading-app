@@ -108,15 +108,8 @@ export default function page() {
         throw new Error("Invalid introTest parameter");
       }
 
-      if (introTest && parseInt(introTest) + 1 >= 4) {
-        alert(
-          "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz."
-        );
-        router.push(`/dersler`);
-        return;
-      }
-
       if (introTest && parseInt(introTest) <= 3) {
+        // Save attempts
         await fetchData({
           apiPath: "/api/attempts",
           method: "POST",
@@ -139,28 +132,34 @@ export default function page() {
             studentId: session?.user?.student?.id,
           },
         });
-        if (session && parseInt(introTest) < 3) {
+
+        //Update student introTestTaken
+        if (session?.user) {
           const { student } = session.user;
           const { termsAgreed, ...stud } = student;
           const studentData = {
             ...stud,
-            introTestTaken: parseInt(introTest) + 1,
+            introTestTaken: parseInt(introTest) ? parseInt(introTest) : 1,
           };
           const res = await fetchData({
             apiPath: "/api/students",
             method: "PUT",
             payload: studentData,
           });
-          if (res) {
+          if (res && res.introTestTaken < 3) {
             router.replace(
               `/okuma-anlama-testleri/anlama-testi?intro-test=${
-                parseInt(introTest) + 1
+                res.introTestTaken + 1
               }`
             );
-            return;
+            setPause(!pause);
+          } else if (res && res.introTestTaken >= 3) {
+            alert(
+              "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz."
+            );
+            router.push(`/dersler`);
           }
         }
-
         return;
       }
 
@@ -321,6 +320,7 @@ export default function page() {
             onFinishTest={onFinishTest}
             article={control.articleSelect as any}
             readingStatus={(v) => setReadingStatus(v)}
+            introTest={introTest}
           />
         }
         onControlChange={handleControl}
