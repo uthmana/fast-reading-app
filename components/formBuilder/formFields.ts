@@ -1,4 +1,10 @@
-import { getCategoryOptions, getExerciseOptions } from "./request";
+import { studyGroupOptions } from "@/utils/constants";
+import {
+  getCategoryOptions,
+  getClassOptions,
+  getExerciseOptions,
+  getTeacherOptions,
+} from "./request";
 
 export default {
   user: [
@@ -44,8 +50,8 @@ export default {
     },
     {
       key: "password",
-      name: "Password",
-      placeholder: "Password",
+      name: "Parola",
+      placeholder: "Parola",
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
@@ -133,12 +139,25 @@ export default {
     },
     {
       key: "password",
-      name: "Password",
-      placeholder: "Password",
+      name: "Parola",
+      placeholder: "Parola",
       type: "password",
       value: { key: "password", type: "string", value: "" },
       required: true,
       styleClass: "md:!w-[calc(50%-6px)]",
+    },
+    {
+      key: "gender",
+      name: "Cinsiyet",
+      placeholder: "Seçiniz",
+      type: "select",
+      options: [
+        { value: "MALE", name: "Bay" },
+        { value: "FEMALE", name: "Bayan" },
+      ],
+      value: { key: "gender", type: "string", value: "" },
+      required: true,
+      styleClass: "!w-[calc(50%-6px)]",
     },
     {
       key: "role",
@@ -147,15 +166,15 @@ export default {
       type: "select",
       options: [
         {
-          name: "ADMIN",
+          name: "Yönetici",
           value: "ADMIN",
         },
         {
-          name: "STUDENT",
+          name: "Öğrenci",
           value: "STUDENT",
         },
         {
-          name: "TEACHER",
+          name: "Öğretmen",
           value: "TEACHER",
         },
       ],
@@ -165,29 +184,24 @@ export default {
       styleClass: "md:!w-[calc(50%-6px)]",
     },
     {
-      key: "level",
-      name: "Seviye",
-      placeholder: "Seviye seç",
+      key: "classId",
+      name: "Sınıf",
+      placeholder: "seçiniz",
       type: "select",
-      options: [
-        {
-          name: "İLKOKUL",
-          value: "ILKOKUL",
-        },
-        {
-          name: "ORTAOKUL",
-          value: "ORTAOKUL",
-        },
-        {
-          name: "LİSE",
-          value: "LISE",
-        },
-        {
-          name: "YETİŞKİN",
-          value: "YETISKIN",
-        },
-      ],
-      value: { key: "role", type: "string", value: "ILKOKUL" },
+      options: [],
+      asyncOption: getClassOptions,
+      multipleSelect: false,
+      value: { key: "classId", type: "select", value: [] },
+      required: true,
+      styleClass: "!w-[calc(50%-6px)]",
+    },
+    {
+      key: "studyGroup",
+      name: "Eğitim Grubu",
+      placeholder: "Seçiniz",
+      type: "select",
+      options: studyGroupOptions,
+      value: { key: "studyGroup", type: "string", value: "" },
       required: true,
       styleClass: "!w-[calc(50%-6px)]",
     },
@@ -202,7 +216,7 @@ export default {
           value: "true",
         },
         {
-          name: "PASSIF",
+          name: "PASIF",
           value: "false",
         },
       ],
@@ -227,6 +241,16 @@ export default {
       value: { key: "endDate", type: "date", value: "" },
       required: true,
       styleClass: "!w-[calc(50%-6px)]",
+    },
+    {
+      key: "fee",
+      name: "Ücret (TL)",
+      placeholder: " ",
+      type: "text",
+      value: { key: "name", type: "string", value: "" },
+      required: true,
+      maxlength: 40,
+      styleClass: "md:!w-[calc(50%-6px)]",
     },
   ],
   article: [
@@ -391,6 +415,54 @@ export default {
       asyncOption: getExerciseOptions,
       multipleSelect: true,
       value: { key: "Exercise", type: "multipleSelect", value: [] },
+      required: true,
+    },
+  ],
+  classes: [
+    {
+      key: "name",
+      name: "Sınıf Adı",
+      placeholder: "Sınıf Adı",
+      type: "text",
+      value: { key: "name", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "studyGroup",
+      name: "Seviye",
+      placeholder: "Seviye seç",
+      type: "select",
+      options: studyGroupOptions,
+      value: { key: "studyGroup", type: "string", value: "" },
+      required: true,
+    },
+    {
+      key: "teacherId",
+      name: "Öğretmen",
+      placeholder: "seçiniz",
+      type: "select",
+      options: [],
+      asyncOption: getTeacherOptions,
+      multipleSelect: false,
+      value: { key: "teacherId", type: "select", value: [] },
+      required: true,
+    },
+    {
+      key: "active",
+      name: "Durum",
+      placeholder: "Seçiniz",
+      type: "select",
+      options: [
+        {
+          name: "AKTIF",
+          value: "true",
+        },
+        {
+          name: "PASSIF",
+          value: "false",
+        },
+      ],
+      value: { key: "active", type: "boolean", value: "true" },
       required: true,
     },
   ],

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
     if (id) {
       const lesson = await prisma.lesson.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
         include: {
           LessonExercise: { include: { exercise: true } },
         },

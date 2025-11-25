@@ -78,7 +78,7 @@ export default function LoginPage() {
           if (resData.role === "STUDENT") {
             window.location.replace("/");
           } else {
-            window.location.replace("/admin");
+            window.location.replace("/admin/classes");
           }
         }
       } else {

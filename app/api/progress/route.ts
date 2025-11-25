@@ -27,7 +27,7 @@ export async function GET(req: Request) {
     }
 
     const progress = await prisma.progress.findMany({
-      where: { lessonId, studentId },
+      where: { lessonId: parseInt(lessonId), studentId: parseInt(studentId) },
     });
 
     return NextResponse.json(progress);

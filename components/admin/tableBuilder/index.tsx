@@ -6,6 +6,7 @@ import {
   MdAdd,
   MdFileDownload,
   MdChecklist,
+  MdSettings,
 } from "react-icons/md";
 
 import {
@@ -27,6 +28,9 @@ import TableEmpty from "./tableEmpty";
 import { exportToExcel, formatDateTime } from "@/utils/helpers";
 import { columnsData, ColumnsKey } from "./columnsData";
 import { TableSkeleton } from "../../skeleton/skeleton";
+import Link from "next/link";
+import Dropdown from "../dropdown/dropdown";
+import Icon from "@/components/icon/icon";
 
 function TableBuilder({
   tableData,
@@ -40,6 +44,7 @@ function TableBuilder({
   columnKey,
   isLoading = false,
   className = "",
+  additionalActions = [],
 }: any) {
   if (isLoading) {
     return <TableSkeleton />;
@@ -55,13 +60,26 @@ function TableBuilder({
 
   const columnHelper = createColumnHelper<any>();
 
-  const renderValue = (type: string, info: any) => {
+  const renderValue = (
+    item: { type: string; lengthName: string; link: string },
+    info: any
+  ) => {
+    const { type, lengthName, link } = item;
     const value = info.getValue();
+    const id = info.row.original.id;
     if (type === "date") {
       return formatDateTime(value);
     }
     if (type === "boolean") {
-      return value ? "Active" : "Passive";
+      return value ? "Aktif" : "Pasif";
+    }
+    if (type === "length") {
+      return (
+        <Link
+          className="text-blue-600 hover:underline"
+          href={`${link}${id}`}
+        >{`${lengthName} (${value.length})`}</Link>
+      );
     }
     if (type === "category") {
       return value.title;
@@ -86,31 +104,19 @@ function TableBuilder({
         />
       );
     }
-
+    if (type === "html") {
+      return (
+        <span
+          className="w-full block text-md space-y-1"
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
+      );
+    }
     return value;
   };
 
   const columns = useMemo(() => {
     const col: any = [];
-    if (showEditColumn) {
-      col.push(
-        columnHelper.display({
-          header: () => <p className="font-bold text-black">#</p>,
-          id: "edit",
-          cell: (info) => (
-            <div className="flex gap-2 ">
-              <button onClick={() => onAction("edit", info)}>
-                <MdModeEdit className="w-5 h-5 hover:text-red-500" />
-              </button>
-              <button onClick={() => onAction("delete", info)}>
-                <MdOutlineDelete className="w-5 h-5 hover:text-red-500" />
-              </button>
-            </div>
-          ),
-        })
-      );
-    }
-
     columnData.map((item: any) => {
       let temp: any = columnHelper.accessor(item.id, {
         header: () => (
@@ -119,13 +125,78 @@ function TableBuilder({
           </p>
         ),
         cell: (info) => (
-          <p className="line-clamp-1 px-1" title={renderValue(item.type, info)}>
-            {renderValue(item.type, info)}
+          <p
+            className="line-clamp-4 px-1"
+            title={renderValue(item.type, info)?.toString()}
+          >
+            {renderValue(item, info)}
           </p>
         ),
       });
       col.push(temp);
     });
+
+    if (showEditColumn) {
+      col.push(
+        columnHelper.display({
+          header: () => (
+            <p className="font-bold text-black">
+              {"("}
+              {tableData?.length}
+              {")"}
+            </p>
+          ),
+          id: "edit",
+          cell: (info) => (
+            <Dropdown
+              key={info?.row.id}
+              button={
+                <MdSettings className="w-7 h-7 cursor-pointer text-gray-600" />
+              }
+              classNames={"absolute py-2 z-[1] top-8 w-max border bg-white"}
+            >
+              <div className="flex border min-w-14 shadow rounded-lg gap-2 absolute top-0 right-[-20px] px-3  bg-white">
+                <ul className="w-full pt-1">
+                  {additionalActions?.map((item: any) => {
+                    return (
+                      <li
+                        key={item.actionName}
+                        className="py-1 w-full border-b"
+                      >
+                        <button
+                          className="flex whitespace-nowrap w-full gap-2 hover:text-blue-500"
+                          onClick={() => onAction(item.action, info)}
+                        >
+                          <Icon name={item.icon} className="w-5 h-5" />
+                          {item.actionName}
+                        </button>
+                      </li>
+                    );
+                  })}
+                  <li className="py-1 border-b w-full">
+                    <button
+                      className="flex h-full gap-2 hover:text-blue-500"
+                      onClick={() => onAction("edit", info)}
+                    >
+                      <MdModeEdit className="w-5 h-5 " /> Düzenle
+                    </button>
+                  </li>
+                  <li className="py-1 w-full">
+                    <button
+                      className="flex w-full gap-2 hover:text-red-500"
+                      onClick={() => onAction("delete", info)}
+                    >
+                      <MdOutlineDelete className="w-5 h-5 " />
+                      Sil
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </Dropdown>
+          ),
+        })
+      );
+    }
 
     return col;
   }, []);
@@ -193,13 +264,13 @@ function TableBuilder({
         </div>
 
         <div
-          className="w-full overflow-x-auto"
+          className="w-full overflow-x-auto min-h-[220px]"
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
         >
-          <table className="w-full mb-10 ">
+          <table className="w-full mb-10 h-full">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr

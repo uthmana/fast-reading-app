@@ -112,6 +112,7 @@ export const articleData = {
   title: "KÜÇÜK BAHÇİVANIN MACERASI",
   description:
     "Bir zamanlar, küçük bir köyde Elif adında sevimli bir kız yaşardı. Elif, doğayı çok sever ve her gün bahçede vakit geçirmekten büyük keyif alırdı. En büyük hayali, kendi bahçesinde rengarenk çiçekler açtırmaktı. Bir sabah, Elif erken kalktı. Hava güneşli ve kuşlar cıvıldıyordu. “Bugün bahçem için yeni tohumlar ekeceğim!” dedi heyecanla. Annesi ona bir torba tohum verdi. “Bunlar papatya, ayçiçeği ve lavanta tohumları,” dedi. Elif, tohumları dikkatlice inceledi ve bahçeye doğru koştu. Bahçeye vardığında, toprak yumuşaktı ve hafif nemliydi. Elif, ellerini yıkadıktan sonra küçük bir kürekle toprağı kazmaya başladı. Tohumları sırasıyla toprağa ekti ve üzerlerini örttü. Ardından, sulama kabını aldı ve bitkilerin üzerine nazikçe su serpti. Elif, her gün sabah erken kalkıp bahçesine gidiyor, bitkilerine sevgiyle bakıyordu. Güneşin sıcak ışıkları altında toprak iyice ısınırken, küçük tohumlar yavaş yavaş filizlenmeye başladı. Elif’in yüzünde büyük bir mutluluk vardı. Günler geçtikçe, papatyalar beyaz yapraklarını açtı, ayçiçekleri güneşe doğru uzandı ve lavantalar hoş kokularıyla bahçeyi doldurdu. Komşular bile Elif’in bahçesinin güzelliğine hayran kaldı. Bir gün, Elif bahçede oyun oynarken küçük bir kuşun yaralandığını gördü. Kuşun kanadı hafifçe kırılmıştı. Elif hemen kuşu nazikçe aldı ve evine götürdü. Annesiyle birlikte kuşun yarasını sardılar ve ona iyi bakmaya başladılar. Haftalar sonra, kuş iyileşti ve özgürlüğüne kavuştu. Elif onu son kez sevgiyle okşadı ve kuş da hafifçe ötüp uçtu gitti. Elif, doğaya yardım etmenin ve onunla ilgilenmenin ne kadar önemli olduğunu bir kez daha anlamıştı. O günden sonra, Elif sadece bahçesine değil, etrafındaki tüm canlılara da daha çok sevgi ve ilgi göstermeye başladı. Arkadaşlarına da bunu anlattı ve birlikte doğayı korumanın yollarını öğrendiler. Elif’in küçük bahçesi, sadece bitkilerin değil, dostluğun ve sevginin de büyüdüğü bir yer olmuştu. O, her gün bahçesinde yeni bir şeyler keşfederek mutlu yaşamaya devam etti.",
+  studyGroup: "ILKOKUL_2_3",
   tests: [
     {
       id: "1",
@@ -224,20 +225,23 @@ export const articleData = {
       ],
     },
   ],
-  category: {
-    create: {
-      title: "İlkokul Hikayeler",
-      description: "İlkokul Hikayeler",
-    },
-  },
+  hasQuestion: true,
+  active: true,
 };
 export const articleCategory = [
   {
+    title: "İlkokul Hikayeler",
+    description: "İlkokul Hikayeler",
+    studyGroup: "ILKOKUL_2_3",
+  },
+  {
     title: "Ortaokul Hikayeler",
     description: "Ortaokul Hikayeler",
+    studyGroup: "ORTAOKUL",
   },
   {
     title: "Lise Hikayeler",
     description: "Lise Hikayeler",
+    studyGroup: "LISE",
   },
 ];

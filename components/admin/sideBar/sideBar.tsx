@@ -1,13 +1,17 @@
 "use client";
 
+import Icon from "@/components/icon/icon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 
 interface Route {
-  path: string;
+  path?: string;
   name: string;
+  icon?: React.ReactNode;
+  children?: Route[];
+  roles?: string[];
 }
 
 export default function SideBar({
@@ -22,36 +26,39 @@ export default function SideBar({
   routes: Route[];
 }) {
   const pathname = usePathname() || "/";
-  const { data: session, status } = useSession();
-  // Normalize paths by removing trailing slashes (but keep root '/')
-  const normalize = (p: string) => (p === "/" ? "/" : p.replace(/\/+$/, ""));
+  const { data: session } = useSession();
 
+  const normalize = (p: string) => (p === "/" ? "/" : p.replace(/\/+$/, ""));
   const cur = normalize(pathname);
 
-  // Find the best (longest) matching route path for the current pathname
+  // Track manual toggle actions by the user
+  const [manualOpen, setManualOpen] = useState<Record<string, boolean>>({});
+
+  const toggleMenu = (name: string) =>
+    setManualOpen((prev) => ({ ...prev, [name]: !prev[name] }));
+
+  // Determine active route for auto-open
   const activePath = useMemo(() => {
     let best: string | null = null;
 
-    for (const r of routes) {
-      const rp = normalize(r.path);
+    const search = (routesList: Route[]) => {
+      for (const r of routesList) {
+        const rp = r.path ? normalize(r.path) : "";
 
-      // Exact match or prefix match (prefix only valid if not root)
-      const matches = cur === rp || (rp !== "/" && cur.startsWith(rp + "/"));
-
-      if (matches) {
-        // pick the longest matched route (most specific)
-        if (!best || rp.length > best.length) {
-          best = rp;
+        if (rp && (cur === rp || cur.startsWith(rp + "/"))) {
+          if (!best || rp.length > best.length) best = rp;
         }
-      }
-    }
 
-    return best; // could be null
+        if (r.children) search(r.children);
+      }
+    };
+
+    search(routes);
+    return best;
   }, [cur, routes]);
 
   return (
     <aside
-      // fixed so it can slide over content on mobile; translate-x-full/-translate-x-full handles sliding
       className={`fixed top-0 left-0 h-full bg-white shadow-lg z-40 transform transition-transform duration-300 ease-in-out
         ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}
       style={{ width: `${sidebarWidth}px` }}
@@ -59,31 +66,94 @@ export default function SideBar({
       <div className="flex items-center justify-between p-4 border-b">
         <h2 className="text-xl font-semibold">Admin Panel</h2>
 
-        {/* Close button visible on mobile; on large screens user can use navbar toggle */}
         <button
           className="lg:hidden text-gray-600 hover:text-black"
           onClick={() => setIsSidebarOpen(false)}
-          aria-label="Close sidebar"
         >
           ✕
         </button>
       </div>
 
-      <nav className="p-4">
-        {routes.map((route: any, idx) => {
-          if (!route.roles?.includes(session?.user.role)) return null;
-          const rp = normalize(route.path);
-          const active = rp === activePath;
+      <nav className="p-4 space-y-1">
+        {routes.map((route, idx) => {
+          if (session && !route.roles?.includes(session?.user.role))
+            return null;
+
+          const rp = route.path ? normalize(route.path) : "";
+          const active = rp && (rp === activePath || cur.startsWith(rp + "/"));
+
+          // submenu logic
+          const hasChildren = route.children && route.children.length > 0;
+
+          const isOpen =
+            manualOpen[route.name] !== undefined
+              ? manualOpen[route.name]
+              : active;
+
           return (
-            <Link
-              key={route.name + idx}
-              href={route.path}
-              className={`px-3 py-2 flex gap-5 rounded border-b transition-colors duration-200 text-black hover:text-white  hover:bg-blue-600 ${
-                active ? "bg-blue-600 text-white font-semibold" : ""
-              }`}
-            >
-              {route.icon} {route.name}
-            </Link>
+            <div key={route.name + idx}>
+              {/* Parent row */}
+              <div
+                className={`flex items-center justify-between px-3 py-2 rounded border-b cursor-pointer transition-colors duration-200 
+                ${
+                  active
+                    ? "bg-blue-600 text-white font-semibold"
+                    : "text-black hover:text-white hover:bg-blue-600"
+                }`}
+              >
+                {route.path && !hasChildren ? (
+                  <Link href={route.path} className="flex gap-3 w-full">
+                    {route.icon} {route.name}
+                  </Link>
+                ) : (
+                  <div
+                    onClick={() => toggleMenu(route.name)}
+                    className="flex gap-3 w-full"
+                  >
+                    {route.icon} {route.name}
+                  </div>
+                )}
+
+                {hasChildren && (
+                  <button
+                    onClick={() => toggleMenu(route.name)}
+                    className="ml-2 text-lg"
+                  >
+                    <Icon
+                      name="chevron-down"
+                      className={`w-3 h-3 transition-transform  ${
+                        isOpen ? "!rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                )}
+              </div>
+
+              {/* Submenu */}
+              {hasChildren && isOpen && (
+                <div className="ml-6 mt-1 space-y-1">
+                  {route?.children?.map((sub, sIdx) => {
+                    const sp = normalize(sub.path || "");
+                    const subActive = sp === cur;
+
+                    return (
+                      <Link
+                        key={sub.name + sIdx}
+                        href={sub.path!}
+                        className={`block px-3 py-2 border-b border-l-4 border-blue-500/0 rounded text-sm transition-colors 
+                          ${
+                            subActive
+                              ? "!border-blue-500 bg-blue-100 text-black font-semibold"
+                              : "text-gray-700 border-b hover:border-blue-500 hover:bg-blue-100"
+                          }`}
+                      >
+                        {sub.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           );
         })}
       </nav>

@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     if (id) {
       // Fetch a single user by name
       const attempt = await prisma.attempt.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
       });
 
       if (!attempt) {

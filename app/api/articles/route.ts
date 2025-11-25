@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     if (id) {
       // Fetch a single user by name
       const article = await prisma.article.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
       });
 
       if (!article) {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     if (categoryId) {
       // Fetch a single user by name
       const article = await prisma.article.findMany({
-        where: { categoryId },
+        where: { categoryId: parseInt(categoryId) },
       });
 
       if (!article) {

@@ -15,7 +15,7 @@ export const formatDateTime = (data: any) => {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const year = date.getFullYear();
 
-  return `${day}/${month}/${year}`;
+  return `${day}.${month}.${year}`;
 };
 
 export function extractPrismaErrorMessage(error: any) {

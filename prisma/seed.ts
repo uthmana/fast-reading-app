@@ -1,47 +1,108 @@
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs";
+//import bcrypt from "bcryptjs";
 import { articleCategory, articleData, exerciseData } from "./mockData";
+import { Category, StudyGroup } from "@prisma/client";
 
 async function main() {
-  const hashedPassword = await bcrypt.hash("1234", 10);
+  // Default admin user
+  //const hashedPassword = await bcrypt.hash("1234", 10);
 
   const user = await prisma.user.upsert({
     where: { username: "deneme" },
     update: {},
     create: {
       email: "deneme@example.com",
-      password: hashedPassword,
+      password: "1234",
       role: "ADMIN",
-      name: "Deneme kallanıcı",
+      name: "Deneme kullanıcı",
       username: "deneme",
       tcId: "99999999999",
     },
   });
 
+  // Default teacher + class
+  const teacher = await prisma.user.create({
+    data: {
+      email: "denemeogretmeni@example.com",
+      password: "1234",
+      role: "TEACHER",
+      name: "Deneme Öğretmen",
+      username: "denemeogretmeni",
+      Teacher: {
+        create: {
+          active: true,
+          class: {
+            create: {
+              name: "Demo",
+              studyGroup: "ILKOKUL_2_3",
+            },
+          },
+        },
+      },
+    },
+    include: {
+      Teacher: {
+        include: {
+          class: true,
+        },
+      },
+    },
+  });
+
+  // Extract created classId
+  const classId = teacher.Teacher!.class[0].id;
+  console.log({ classId });
+
+  // Create student connected to the class
   const student = await prisma.user.create({
     data: {
       email: "deneme1@example.com",
-      password: hashedPassword,
+      password: "1234",
       role: "STUDENT",
-      name: "deneme öğrenci",
+      name: "Deneme Öğrenci",
       username: "denemeogrenci",
       tcId: "99999999998",
       Student: {
         create: {
           startDate: new Date(),
           endDate: new Date("2030-12-12"),
-          level: "ILKOKUL",
+          studyGroup: "ILKOKUL_2_3",
+          active: true,
+          gender: "MALE",
+          class: {
+            connect: {
+              id: classId,
+            },
+          },
         },
       },
     },
   });
 
-  const category = await prisma.category.createMany({
-    data: articleCategory.map((item) => ({ ...item })),
+  const category: Category[] | any = await prisma.category.createMany({
+    data: articleCategory.map((item) => ({
+      ...item,
+      studyGroup: item.studyGroup as StudyGroup, // Cast th
+    })),
   });
 
+  const firstCategory = await prisma.category.findFirst({
+    orderBy: { createdAt: "asc" },
+  });
+
+  console.log({ firstCategory });
+
+  const categoryId = firstCategory?.id;
   const article = await prisma.article.create({
-    data: articleData,
+    data: {
+      ...articleData,
+      studyGroup: articleData.studyGroup as StudyGroup,
+      category: {
+        connect: {
+          id: categoryId,
+        },
+      },
+    },
   });
 
   const createdExercises = await prisma.$transaction(

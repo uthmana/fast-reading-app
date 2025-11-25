@@ -2,51 +2,46 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// datasource db {
-//   provider  = "postgresql"
-//   url       = env("POSTGRES_PRISMA_URL")
-//   directUrl = env("POSTGRES_URL_NON_POOLING")
-// }
-
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id        String    @id @default(cuid())
+  id        Int       @id @default(autoincrement())
   name      String
   username  String    @unique
-  email     String    @unique
-  tcId      String    @unique
+  email     String?   @unique
+  tcId      String?   @unique
   password  String
-  role      Role      @default(STUDENT)
+  address   String?
   active    Boolean   @default(true)
+  role      Role      @default(STUDENT)
+  Student   Student?
+  Teacher   Teacher?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
-  Student   Student?
 }
 
 model Student {
-  id             String     @id @default(cuid())
-  userId         String     @unique
+  id             Int        @id @default(autoincrement())
+  userId         Int        @unique
   user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   startDate      DateTime?
   endDate        DateTime?
-  level          Level      @default(ILKOKUL)
+  class          Class?     @relation(fields: [classId], references: [id])
+  studyGroup     StudyGroup @default(ILKOKUL_2_3)
   attempts       Attempt[]
   Progress       Progress[]
+  active         Boolean    @default(true)
+  gender         Gender     @default(OTHER)
   termsAgreed    Boolean    @default(false)
   introTestTaken Int        @default(0)
+  classId        Int
 }
 
 model Lesson {
-  id             String           @id @default(cuid())
+  id             Int              @id @default(autoincrement())
   title          String
   description    String?
   order          Int              @default(1)
@@ -57,7 +52,7 @@ model Lesson {
 }
 
 model Exercise {
-  id             String           @id @default(cuid())
+  id             Int              @id @default(autoincrement())
   title          String?
   pathName       String
   minDuration    Int              @default(180) // minimum Duration in seconds
@@ -69,20 +64,19 @@ model Exercise {
 }
 
 model LessonExercise {
-  id         String   @id @default(cuid())
-  lessonId   String
-  exerciseId String
+  id         Int        @id @default(autoincrement())
+  lessonId   Int
+  exerciseId Int
   order      Int?
-  createdAt  DateTime @default(now())
-
-  lesson   Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  exercise Exercise   @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  Progress Progress[]
+  createdAt  DateTime   @default(now())
+  lesson     Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  exercise   Exercise   @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  Progress   Progress[]
 }
 
 model Attempt {
-  id          String   @id @default(cuid())
-  studentId   String
+  id          Int      @id @default(autoincrement())
+  studentId   Int
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
   wpm         Float? // words per minute measured
@@ -93,11 +87,11 @@ model Attempt {
 }
 
 model Progress {
-  id               String         @id @default(cuid())
-  studentId        String
-  lessonId         String
-  lessonExerciseId String
-  exerciseId       String
+  id               Int            @id @default(autoincrement())
+  studentId        Int
+  lessonId         Int
+  lessonExerciseId Int
+  exerciseId       Int
   done             Boolean        @default(false)
   createdAt        DateTime       @default(now())
   updatedAt        DateTime?      @updatedAt
@@ -107,6 +101,79 @@ model Progress {
   lessonExercise   LessonExercise @relation(fields: [lessonExerciseId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, lessonExerciseId]) // progress is tracked per student per lessonExercise occurrence
+}
+
+model Article {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String     @db.Text
+  studyGroup  StudyGroup @default(ILKOKUL_2_3)
+  category    Category   @relation(fields: [categoryId], references: [id])
+  hasQuestion Boolean    @default(false)
+  active      Boolean    @default(true)
+  tests       Json?
+  categoryId  Int
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+}
+
+model ArticleTest {
+  id        Int       @id @default(autoincrement())
+  question  String
+  answer    String
+  options   Json
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  studyGroup  StudyGroup @default(ILKOKUL_2_3)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime?  @updatedAt
+  Article     Article[]
+}
+
+model Words {
+  id          Int               @id @default(autoincrement())
+  word        String            @unique
+  similarWord String            @unique
+  studyGroups WordsStudyGroup[]
+  wpc         Int // words per count
+  lpw         Int // letters per word
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime?         @updatedAt
+}
+
+model WordsStudyGroup {
+  id      Int        @id @default(autoincrement())
+  group   StudyGroup
+  wordsId Int
+  words   Words      @relation(fields: [wordsId], references: [id])
+}
+
+model Class {
+  id         Int        @id @default(autoincrement())
+  name       String
+  teacher    Teacher?   @relation(fields: [teacherId], references: [id])
+  studyGroup StudyGroup @default(ILKOKUL_2_3)
+  teacherId  Int?
+  students   Student[]
+  active     Boolean    @default(true)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime?  @updatedAt
+}
+
+model Teacher {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class     Class[]
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 enum Role {
@@ -121,55 +188,24 @@ enum TestType {
   FASTVISION
 }
 
-enum ExerciseType {
-  MOVING_BALLS
-  FLASHING_WORDS
-  TAKISTOSCOPE
-  CENTRAL_BALL
-  TEXT
-}
-
-enum Level {
-  ILKOKUL
+enum StudyGroup {
+  ILKOKUL_2_3
+  ILKOKUL_4
   ORTAOKUL
   LISE
-  YETISKIN
+  UNIVERSITE
+  DOKTORA
+  GENEL
+  DISLEKSI
+  TIP
+  IELTS
+  LGS_HAZIRLIK
+  TYT_AYT_HAZIRLIK
+  DEMO
 }
 
-model Article {
-  id          String    @id @default(cuid())
-  title       String
-  description String    @db.Text
-  category    Category  @relation(fields: [categoryId], references: [id])
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
-  tests       Json?
-  categoryId  String
-}
-
-model ArticleTest {
-  id        String    @id @default(cuid())
-  question  String
-  answer    String
-  options   Json
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
-}
-
-model Category {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime? @updatedAt
-  Article     Article[]
-}
-
-model Words {
-  id        String    @id @default(cuid())
-  title     String?
-  wpc       Int       @default(1) // words per count
-  list      Json
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
 }

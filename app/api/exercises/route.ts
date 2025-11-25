@@ -17,9 +17,10 @@ export async function GET(req: NextRequest) {
           { status: 404 }
         );
       }
+
       const exercises = await prisma.exercise.findMany({
         where: {
-          id: { in: ids },
+          id: { in: ids?.map((item) => parseInt(item)) },
         },
       });
       return NextResponse.json(exercises, { status: 200 });

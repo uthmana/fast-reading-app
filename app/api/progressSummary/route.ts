@@ -38,19 +38,21 @@ export async function GET(req: NextRequest) {
       fastUnderstandingProgress,
     ] = await Promise.all([
       prisma.lessonExercise.count(),
-      prisma.progress.count({ where: { studentId, done: true } }),
+      prisma.progress.count({
+        where: { studentId: parseInt(studentId), done: true },
+      }),
       prisma.attempt.findFirst({
-        where: { variant: "FASTVISION", studentId },
+        where: { variant: "FASTVISION", studentId: parseInt(studentId) },
         orderBy: { createdAt: "desc" },
         select: { wpf: true, durationSec: true, createdAt: true },
       }),
       prisma.attempt.findFirst({
-        where: { variant: "FASTREADING", studentId },
+        where: { variant: "FASTREADING", studentId: parseInt(studentId) },
         orderBy: { createdAt: "desc" },
         select: { wpm: true, createdAt: true },
       }),
       prisma.attempt.findFirst({
-        where: { variant: "UNDERSTANDING", studentId },
+        where: { variant: "UNDERSTANDING", studentId: parseInt(studentId) },
         orderBy: { createdAt: "desc" },
         select: { correct: true, createdAt: true },
       }),
