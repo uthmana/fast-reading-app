@@ -99,6 +99,7 @@ export async function POST(req: Request) {
     studyGroup,
     classId,
     gender,
+    fee,
   }: User | any = await req.json();
   if (
     !username ||
@@ -148,6 +149,7 @@ export async function POST(req: Request) {
                 endDate,
                 studyGroup: studyGroup,
                 gender: gender,
+                fee,
                 class: {
                   connect: { id: parseInt(classId) },
                 },
@@ -174,6 +176,7 @@ export async function POST(req: Request) {
                 create: {
                   startDate,
                   endDate,
+                  fee,
                   gender: gender,
                   studyGroup: studyGroup,
                   class: {

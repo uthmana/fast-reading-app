@@ -129,10 +129,7 @@ export async function POST(req: Request) {
     return NextResponse.json(classData, { status: 200 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
-      { error: "Kullanıcı zaten mevcut." },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Sınıf zaten mevcut." }, { status: 400 });
   }
 }
 
@@ -141,12 +138,12 @@ export async function DELETE(req: Request) {
   if (!id) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
-
   try {
     if (id) {
-      const classExit = await prisma.class.delete({
+      const exitClass = await prisma.class.delete({
         where: { id },
       });
+
       return NextResponse.json({}, { status: 201 });
     }
   } catch (err) {

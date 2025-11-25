@@ -53,7 +53,7 @@ export default function FormBuilder({
           ...fd,
           value: {
             ...fd.value,
-            value: fd?.multipleSelect ? value : value.toString(),
+            value: fd?.multipleSelect ? value : value?.toString(),
           },
         };
       }

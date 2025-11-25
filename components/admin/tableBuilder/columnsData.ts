@@ -51,6 +51,11 @@ export const columnsData = {
     },
     { id: "active", name: "Durum", type: "boolean" },
   ],
+  teacherColumn: [
+    { id: "id", name: "#", type: "string" },
+    { id: "name", name: "Öğretmen Ad Soyad", type: "string" },
+    { id: "active", name: "Durum", type: "boolean" },
+  ],
 } as const;
 
 export type ColumnsKey = keyof typeof columnsData;

@@ -3,37 +3,34 @@
 import TableBuilder from "@/components/admin/tableBuilder";
 import FormBuilder from "@/components/formBuilder";
 import Popup from "@/components/popup/popup";
-import { studyGroupOptions } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
-import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 export default function page() {
-  const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
-  const [classes, setClasses] = useState([] as any);
+  const [teachers, setTeachers] = useState([] as any);
+  const [teachersRaw, setTeachersRaw] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
-  const [data, setData] = useState({
-    role: "ADMIN",
-    active: true,
-  } as any);
+  const [data, setData] = useState({} as any);
 
   useEffect(() => {
     const requestData = async () => {
       try {
         setIsloading(true);
-        const resData = await fetchData({ apiPath: "/api/classes" });
-        const allData = resData.map((dVal: any) => {
+        const res = await fetchData({
+          apiPath: "/api/teachers",
+        });
+        setTeachersRaw(res);
+        const formattedData = res?.map((item: any) => {
+          const { user, ...rest } = item;
           return {
-            ...dVal,
-            studyGroup: studyGroupOptions.find(
-              (item) => item.value === dVal.studyGroup
-            )?.name,
+            ...rest,
+            name: user.name,
           };
         });
-        setClasses(allData);
+        setTeachers(formattedData);
         setIsloading(false);
       } catch (error) {
         setIsloading(false);
@@ -53,9 +50,13 @@ export default function page() {
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
+      const tempData = [...teachersRaw].find(
+        (item: any) => item.id === currentUser.id
+      );
+      const { id, active, ...rest } = tempData?.user;
       setData({
+        ...rest,
         ...currentUser,
-        createdAt: new Date(currentUser.createdAt).toISOString().split("T")[0],
       });
       setIsShowPopUp(true);
     }
@@ -63,13 +64,14 @@ export default function page() {
       if (confirm("Silmek istediğini emin misin ?")) {
         try {
           setIsloading(true);
-          const resData = await fetchData({
-            apiPath: "/api/classes",
+
+          const res = await fetchData({
+            apiPath: "/api/teachers",
             method: "DELETE",
             payload: { id: currentUser.id },
           });
-          setClasses(
-            [...classes].filter((val: any) => val.id !== currentUser.id)
+          setTeachers(
+            [...teachers].filter((val: any) => val.id !== currentUser.id)
           );
           setIsloading(false);
         } catch (error) {
@@ -79,52 +81,42 @@ export default function page() {
         }
       }
     }
-    if (actionType === "addStudentToClass") {
-      router.push(`/admin/students?classId=${currentUser.id}&editmodel=true`);
-    }
   };
 
   const handleFormResponse = (response: Response) => {
     if (response.ok) {
       if (typeof window !== "undefined") {
-        window.location.href = "/admin/classes";
+        window.location.href = "/admin/teachers";
       }
     }
   };
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Sınıflar</h1>
+      <h1 className="text-2xl mb-4 p-2 font-bold">Kullanıcılar</h1>
 
       <TableBuilder
         key={isLoading}
-        tableData={classes}
-        columnKey="classColumn"
+        tableData={teachers}
+        columnKey="teacherColumn"
         onAction={handleAction}
         onAdd={handleAction}
-        additionalActions={[
-          {
-            action: "addStudentToClass",
-            actionName: "Sınıfa Öğrenci Ekle",
-            icon: "addUser",
-          },
-        ]}
       />
 
       <Popup
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
-        title="Sınıf Ekle"
+        title="Öğretmen Ekle"
         bodyClass="flex flex-col gap-3 py-6 px-8"
       >
         <FormBuilder
-          id={"classes"}
+          id={"teacher"}
           data={data}
           onSubmit={(values) =>
             handleFormSubmit({
               values,
               method: "POST",
-              apiPath: "/api/classes",
+              apiPath: "/api/teachers",
               callback: (res: Response) => handleFormResponse(res),
             })
           }

@@ -7,6 +7,7 @@ import {
   MdFileDownload,
   MdChecklist,
   MdSettings,
+  MdSettingsApplications,
 } from "react-icons/md";
 
 import {
@@ -151,7 +152,7 @@ function TableBuilder({
             <Dropdown
               key={info?.row.id}
               button={
-                <MdSettings className="w-7 h-7 cursor-pointer text-gray-600" />
+                <MdSettings className="w-6 h-6 cursor-pointer text-gray-600" />
               }
               classNames={"absolute py-2 z-[1] top-8 w-max border bg-white"}
             >

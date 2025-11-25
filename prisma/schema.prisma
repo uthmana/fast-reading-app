@@ -38,6 +38,7 @@ model Student {
   termsAgreed    Boolean    @default(false)
   introTestTaken Int        @default(0)
   classId        Int
+  fee            Int        @default(0)
 }
 
 model Lesson {
