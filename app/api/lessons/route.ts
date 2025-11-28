@@ -88,9 +88,9 @@ export async function POST(req: Request) {
         await prisma.lessonExercise.deleteMany({ where: { lessonId: id } });
 
         const lessonExerciseData = Exercise.map(
-          (exerciseId: string, idx: number) => ({
+          (exerciseId: number, idx: number) => ({
             lessonId: id,
-            exerciseId,
+            exerciseId: exerciseId,
             order: idx + 1,
           })
         );
@@ -124,9 +124,9 @@ export async function POST(req: Request) {
 
     if (Exercise && Exercise.length > 0) {
       const lessonExerciseData = Exercise.map(
-        (exerciseId: string, idx: number) => ({
+        (exerciseId: number, idx: number) => ({
           lessonId: created.id,
-          exerciseId,
+          exerciseId: exerciseId,
           order: idx + 1,
         })
       );

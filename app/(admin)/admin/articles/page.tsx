@@ -173,14 +173,13 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Okuma Metinler</h1>
-
       <TableBuilder
         key={isLoading}
         tableData={articles}
         columnKey="articlesColumn"
         onAction={handleAction}
         onAdd={handleAction}
+        isLoading={isLoading}
       />
 
       <Popup
@@ -188,10 +187,13 @@ export default function page() {
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
         title="Okuma Metin Ekle"
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         <FormBuilder
           key={"article"}
+          className="px-8"
           id={"article"}
           data={data}
           onSubmit={(values) => {
@@ -216,10 +218,11 @@ export default function page() {
         show={isShowQuizPopUp}
         onClose={() => setIsShowQuizPopUp(false)}
         title={`${selectedArticle?.title} - TEST`}
-        bodyClass="flex flex-col gap-3 py-6 px-8 max-w-[700px]"
-        overlayClass="z-[51]"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
-        <div className="flex gap-2">
+        <div className="flex px-8 gap-2">
           <div className="w-full flex flex-col justify-between">
             <div className="w-full pb-5 space-y-4 max-h-[480px] overflow-y-auto">
               {quiz?.map((q: any, idx: number) => (

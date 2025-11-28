@@ -28,10 +28,11 @@ import { useDrage } from "@/utils/hooks";
 import TableEmpty from "./tableEmpty";
 import { exportToExcel, formatDateTime } from "@/utils/helpers";
 import { columnsData, ColumnsKey } from "./columnsData";
-import { TableSkeleton } from "../../skeleton/skeleton";
+import { TableCellSkeleton } from "../../skeleton/skeleton";
 import Link from "next/link";
 import Dropdown from "../dropdown/dropdown";
 import Icon from "@/components/icon/icon";
+import { studyGroupOptions } from "@/utils/constants";
 
 function TableBuilder({
   tableData,
@@ -47,10 +48,6 @@ function TableBuilder({
   className = "",
   additionalActions = [],
 }: any) {
-  if (isLoading) {
-    return <TableSkeleton />;
-  }
-
   const columnData = columnsData[columnKey as ColumnsKey];
   if (!columnData || !columnData.length) return null;
   let defaultData = tableData;
@@ -113,6 +110,17 @@ function TableBuilder({
         />
       );
     }
+    if (type === "list") {
+      return value
+        ?.map(
+          (list: any) =>
+            studyGroupOptions.find((item) => item.value === list.group)?.name
+        )
+        ?.join(", ");
+    }
+    if (type === "studyGroup") {
+      return studyGroupOptions.find((item) => item.value === value)?.name;
+    }
     return value;
   };
 
@@ -127,7 +135,7 @@ function TableBuilder({
         ),
         cell: (info) => (
           <p
-            className="line-clamp-4 px-1"
+            className="line-clamp-4 px-1 flex items-center min-h-8"
             title={renderValue(item.type, info)?.toString()}
           >
             {renderValue(item, info)}
@@ -303,6 +311,9 @@ function TableBuilder({
               ))}
             </thead>
             <tbody>
+              {isLoading ? (
+                <TableCellSkeleton columnLength={columnData.length} />
+              ) : null}
               {table
                 .getRowModel()
                 .rows.slice()
@@ -327,7 +338,7 @@ function TableBuilder({
                 })}
             </tbody>
           </table>
-          {data.length === 0 && columnData.length > 0 ? <TableEmpty /> : null}
+          {!isLoading && data.length === 0 ? <TableEmpty /> : null}
           {showPagination ? <TablePagination table={table} /> : null}
         </div>
       </div>

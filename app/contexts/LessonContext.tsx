@@ -1,12 +1,12 @@
 "use client";
 import React, { createContext, useContext, useState } from "react";
 
-type LessonContextType = {
+type SidebarContextType = {
   selectedLesson: any | null;
   setSelectedLesson: (l: any | null) => void;
 };
 
-const LessonContext = createContext<LessonContextType | undefined>(undefined);
+const LessonContext = createContext<SidebarContextType | undefined>(undefined);
 
 export function LessonProvider({ children }: { children: React.ReactNode }) {
   const [selectedLesson, setSelectedLesson] = useState<any | null>(null);

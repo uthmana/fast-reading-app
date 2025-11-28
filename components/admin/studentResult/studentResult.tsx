@@ -13,7 +13,7 @@ export default function StudentResult({
   };
 }) {
   return (
-    <div className="w-full h-full overflow-y-auto">
+    <div className="w-full h-full px-8 overflow-y-auto">
       <div className="flex w-full flex-wrap mb-5 gap-4">
         <div className="flex-1 bg-white h-[260px] border pb-16 py-5 px-4 rounded shadow">
           <h2 className="text-md mb-4 font-medium">Seviye Gelişim Durumunuz</h2>

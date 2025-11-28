@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import Icon from "../icon/icon";
+import { usePopup } from "@/app/contexts/popupContext";
 
 type Popup = {
   overlayClass?: string;
@@ -9,6 +10,7 @@ type Popup = {
   show?: boolean;
   title?: string;
   showCloseIcon?: boolean;
+  titleClass?: string;
 };
 
 export default function Popup({
@@ -19,20 +21,27 @@ export default function Popup({
   onClose,
   showCloseIcon = true,
   overlayClass,
+  titleClass,
 }: Popup) {
   const handleClose = (e: any) => {
     onClose && onClose();
   };
+  const { setIsShow } = usePopup();
+  useEffect(() => {
+    if (setIsShow) {
+      setIsShow(show);
+    }
+  }, [show]);
 
   if (!show) {
     return null;
   }
   return (
     <div
-      className={`fixed inset-0 flex w-full h-full bg-black bg-opacity-50 overflow-y-auto ${overlayClass}`}
+      className={`fixed inset-0 flex w-full h-full bg-black bg-opacity-50 overflow-y-auto z-10 ${overlayClass}`}
     >
       <div
-        className={`w-[90%] relative max-w-[600px] py-12 m-auto text-center rounded-[15px] border border-black bg-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] ${bodyClass}`}
+        className={`w-[90%]  relative max-w-[600px] py-12 m-auto text-center rounded border border-black bg-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] ${bodyClass}`}
       >
         {showCloseIcon ? (
           <button
@@ -48,7 +57,11 @@ export default function Popup({
 
         <div className="flex w-full justify-between items-center">
           {title ? (
-            <h2 className="text-xl flex-1 mb-4 font-semibold ">{title}</h2>
+            <h2
+              className={`text-xl flex-1 mb-4  rounded-tl rounded-tr font-semibold ${titleClass}`}
+            >
+              {title}
+            </h2>
           ) : null}
         </div>
         {children}

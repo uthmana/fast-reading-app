@@ -90,24 +90,26 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Kullanıcılar</h1>
-
       <TableBuilder
         key={isLoading}
         tableData={students}
         columnKey="usersColumn"
         onAction={handleAction}
         onAdd={handleAction}
+        isLoading={isLoading}
       />
 
       <Popup
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
         title="Kullanıcı Ekle"
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         <FormBuilder
           id={"user"}
+          className="px-8"
           data={data}
           onSubmit={(values) =>
             handleFormSubmit({

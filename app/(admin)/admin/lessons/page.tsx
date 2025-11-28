@@ -192,14 +192,13 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Dersler</h1>
-
       <TableBuilder
         key={isLoading}
         tableData={lessons}
         columnKey="lessonColumn"
         onAction={handleAction}
         onAdd={handleAction}
+        isLoading={isLoading}
       />
 
       <Popup
@@ -207,10 +206,13 @@ export default function page() {
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
         title="Ders Ekle"
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         <FormBuilder
           key={"lesson" + isShowPopUp}
+          className="px-8 overflow-y-auto"
           id={"lessons"}
           data={data}
           onSubmit={(values) => {
@@ -236,10 +238,11 @@ export default function page() {
         show={isShowLessonPopUp}
         onClose={() => setIsShowExercisePopUp(false)}
         title={`${selectedlesson?.title}`}
-        bodyClass="flex flex-col gap-3 py-6 px-8 max-w-[500px]"
-        overlayClass="z-[51]"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
-        <div className="text-left w-[80%] mx-auto">
+        <div className="text-left w-full px-8 overflow-y-auto mx-auto">
           <ol className="list-decimal space-y-1">
             <DndContextWithNoSSR
               sensors={sensors}

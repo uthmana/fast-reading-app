@@ -5,7 +5,6 @@ import TableBuilder from "@/components/admin/tableBuilder";
 import FormBuilder from "@/components/formBuilder";
 import Icon from "@/components/icon/icon";
 import Popup from "@/components/popup/popup";
-import { studyGroupOptions } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import { formatDateTime } from "@/utils/helpers";
 import { useFormHandler } from "@/utils/hooks";
@@ -48,22 +47,27 @@ export default function page() {
             ...userRest,
             id: rest.id,
             name: `
-             <span style="display:block"> 
-              ${userRest.name} </span>
-             <span style="display:flex; gap:4px">
-             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <span style="display:flex; width:100%; gap:12px; align-items:center">
+               <span style="display:flex; align-items:center;justify-content:center; background:lightGray; padding: 6px;border-radius:100%">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF">
+                <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm6 2H6a6 6 0 00-6 6v1h24v-1a6 6 0 00-6-6z"/>
+              </svg>
+             </span>
+              <span>
+             <span style="display:block; font-size:14px; text-transform:capitalize;margin-bottom: 4px"> ${userRest.name} </span>
+             <span style="display:flex;align-items:center; gap:4px">
+             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="lightGray">
                 <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm6 2H6a6 6 0 00-6 6v1h24v-1a6 6 0 00-6-6z"/>
               </svg>
              ${userRest.username}</span>
-             <span style="display:flex; gap:4px"> 
-              <svg xmlns="http://www.w3.org/2000/svg"  width="14" height="14" viewBox="0 0 24 24"  fill="currentColor">
+             <span style="display:flex;align-items:center; gap:4px"> 
+              <svg xmlns="http://www.w3.org/2000/svg"  width="12" height="12" viewBox="0 0 24 24"  fill="lightGray">
                 <path d="M17 8V7a5 5 0 0 0-10 0v1H5v14h14V8h-2Zm-8-1a3 3 0 0 1 6 0v1H9V7Zm3 6a2 2 0 1 1-2 2 2 2 0 0 1 2-2Z"/>
               </svg>
              ${userRest.password}</span>
-            `,
-            studyGroup: studyGroupOptions.find(
-              (item) => item.value === rest.studyGroup
-            )?.name,
+            </span>
+            </span> `,
+            studyGroup: rest.studyGroup,
             startDate: rest.startDate,
             endDate: rest.endDate,
             studentId: rest.id,
@@ -193,7 +197,6 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <h1 className="text-2xl mb-4 p-2 font-bold">Öğrenciler</h1>
       <TableBuilder
         isLoading={isLoading}
         key={isLoading}
@@ -214,10 +217,13 @@ export default function page() {
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
         title="Öğrenci Ekle"
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+        overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         <FormBuilder
           id={"student"}
+          className="px-8 overflow-y-auto"
           data={data}
           onSubmit={(values) =>
             handleFormSubmit({
@@ -240,8 +246,9 @@ export default function page() {
         show={isShowStudyResultPopUp}
         onClose={() => setIsShowStudyResultPopUp(false)}
         title={studentResult?.name}
-        bodyClass="flex flex-col gap-3 py-6 px-8 !max-w-[90%] !w-[90%] max-h-[80%]"
+        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[90%] !w-[90%] max-h-[80%]"
         overlayClass="z-10"
+        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         {loadingResult ? (
           <div className="w-full min-h-[400px] flex justify-center items-center">

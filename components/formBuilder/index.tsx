@@ -131,7 +131,7 @@ export default function FormBuilder({
   return (
     <form
       autoComplete="off"
-      className={`w-full ${className}`}
+      className={`w-full overflow-y-auto ${className}`}
       onSubmit={handleFormSubmit}
     >
       {formTitle ? (
@@ -233,7 +233,7 @@ export default function FormBuilder({
       <Button
         text={submitBtnProps?.text || "Submit"}
         type={submitBtnProps?.type || "button"}
-        className="mt-5 hover:bg-blue-600 transition"
+        className="mt-5 hover:bg-blue-600 transition uppercase"
         isSubmiting={isSubmitting}
       />
     </form>

@@ -64,8 +64,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, title, description, tests, categoryId }: Article | any =
-    await req.json();
+  const {
+    id,
+    title,
+    description,
+    studyGroup,
+    categoryId,
+    hasQuestion,
+    active,
+    tests,
+  }: Article | any = await req.json();
 
   if (!title || !description || !categoryId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -82,9 +90,12 @@ export async function POST(req: Request) {
           data: {
             title,
             description,
+            studyGroup,
+            hasQuestion,
+            active,
             tests: tests,
             category: {
-              connect: { id: categoryId },
+              connect: { id: parseInt(categoryId) },
             },
           },
         });
@@ -96,9 +107,12 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
+        studyGroup,
+        hasQuestion,
+        active,
         tests: tests,
         category: {
-          connect: { id: categoryId },
+          connect: { id: parseInt(categoryId) },
         },
       },
     });

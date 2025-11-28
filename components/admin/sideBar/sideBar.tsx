@@ -1,10 +1,11 @@
 "use client";
 
+import { usePopup } from "@/app/contexts/popupContext";
 import Icon from "@/components/icon/icon";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 interface Route {
   path?: string;
@@ -27,6 +28,7 @@ export default function SideBar({
 }) {
   const pathname = usePathname() || "/";
   const { data: session } = useSession();
+  const { isShow } = usePopup();
 
   const normalize = (p: string) => (p === "/" ? "/" : p.replace(/\/+$/, ""));
   const cur = normalize(pathname);
@@ -56,6 +58,12 @@ export default function SideBar({
     search(routes);
     return best;
   }, [cur, routes]);
+
+  useEffect(() => {
+    if (isSidebarOpen && isShow) {
+      setIsSidebarOpen(false);
+    }
+  }, [isShow]);
 
   return (
     <aside
@@ -140,11 +148,11 @@ export default function SideBar({
                       <Link
                         key={sub.name + sIdx}
                         href={sub.path!}
-                        className={`block px-3 py-2 border-b border-l-4 border-blue-500/0 rounded text-sm transition-colors 
+                        className={`block px-3 py-2 border-b border-l-4 font-medium rounded text-sm transition-colors 
                           ${
                             subActive
-                              ? "!border-blue-500 bg-blue-100 text-black font-semibold"
-                              : "text-gray-700 border-b hover:border-blue-500 hover:bg-blue-100"
+                              ? " border-l-blue-500 bg-blue-100 text-black font-semibold"
+                              : "text-gray-700  hover:bg-blue-100"
                           }`}
                       >
                         {sub.name}

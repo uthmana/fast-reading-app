@@ -42,7 +42,8 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, title, description }: Category | any = await req.json();
+  const { id, title, description, studyGroup }: Category | any =
+    await req.json();
   if (!title) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -58,6 +59,7 @@ export async function POST(req: Request) {
           data: {
             title,
             description,
+            studyGroup,
           },
         });
         return NextResponse.json(category, { status: 200 });
@@ -68,6 +70,7 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
+        studyGroup,
       },
     });
     return NextResponse.json(category, { status: 201 });
