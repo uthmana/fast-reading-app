@@ -41,7 +41,7 @@ export default function Popup({
       className={`fixed inset-0 flex w-full h-full bg-black bg-opacity-50 overflow-y-auto z-10 ${overlayClass}`}
     >
       <div
-        className={`w-[90%]  relative max-w-[600px] py-12 m-auto text-center rounded border border-black bg-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] ${bodyClass}`}
+        className={`w-[90%] relative max-w-[600px] py-12 m-auto text-center rounded border border-black bg-white shadow-[0_5px_15px_rgba(0,0,0,0.35)] ${bodyClass}`}
       >
         {showCloseIcon ? (
           <button
@@ -58,7 +58,7 @@ export default function Popup({
         <div className="flex w-full justify-between items-center">
           {title ? (
             <h2
-              className={`text-xl flex-1 mb-4  rounded-tl rounded-tr font-semibold ${titleClass}`}
+              className={`text-xl flex-1 mb-4 capitalize rounded-tl rounded-tr font-semibold ${titleClass}`}
             >
               {title}
             </h2>

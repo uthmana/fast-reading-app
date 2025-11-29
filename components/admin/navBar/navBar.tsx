@@ -22,7 +22,10 @@ export default function NavBar({
         <Icon name="menu" className="w-7 h-7 text-gray-600" />
       </button>
 
-      <Profile user={session?.user} />
+      <div className="flex items-center gap-2">
+        <p className="text-sm">{session?.user?.name}</p>
+        <Profile user={session?.user} />
+      </div>
     </header>
   );
 }

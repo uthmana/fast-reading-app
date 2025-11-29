@@ -1,15 +1,19 @@
 import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
+import { studyGroupOptions } from "./constants";
 
 type UserWhereInput =
   | { email: string }
   | { username: string }
   | { tcId: string };
 
-export const formatDateTime = (data: any) => {
+export const formatDateTime = (data: any, fullDate: boolean = false) => {
   if (!data) return null;
-  // return new Date(data).toLocaleString("tr-TR")?.slice(0, -3);
+  if (fullDate) {
+    return new Date(data).toLocaleString("tr-TR");
+  }
+
   const date = new Date(data);
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -215,4 +219,8 @@ export const getInputTypeValue = (value: string): UserWhereInput | null => {
   if (usernameRegex.test(value)) return { username: value };
 
   return null;
+};
+
+export const mapStudyGroup = (key: string) => {
+  return studyGroupOptions?.find((item) => item.value === key)?.name || key;
 };

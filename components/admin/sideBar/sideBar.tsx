@@ -2,10 +2,12 @@
 
 import { usePopup } from "@/app/contexts/popupContext";
 import Icon from "@/components/icon/icon";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
+import { IoMdGlobe } from "react-icons/io";
+import { MdLogout } from "react-icons/md";
 
 interface Route {
   path?: string;
@@ -65,6 +67,10 @@ export default function SideBar({
     }
   }, [isShow]);
 
+  const handleSignOut = () => {
+    signOut({ callbackUrl: "/login" });
+  };
+
   return (
     <aside
       className={`fixed top-0 left-0 h-full bg-white shadow-lg z-40 transform transition-transform duration-300 ease-in-out
@@ -72,7 +78,7 @@ export default function SideBar({
       style={{ width: `${sidebarWidth}px` }}
     >
       <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-xl font-semibold">Admin Panel</h2>
+        <h2 className="text-xl ml-4 font-semibold">Admin Panel</h2>
 
         <button
           className="lg:hidden text-gray-600 hover:text-black"
@@ -164,6 +170,21 @@ export default function SideBar({
             </div>
           );
         })}
+      </nav>
+      <nav className="absolute border-t text-left w-full bottom-0 flex flex-col left-0 px-4">
+        <Link
+          target="_blank"
+          href={"/"}
+          className="border-b py-3 text-gray-500 hover:text-gray-900 flex gap-3 ml-2 items-center text-base"
+        >
+          <IoMdGlobe className="w-6 h-6" /> Siteyi Görüntüle
+        </Link>
+        <button
+          onClick={handleSignOut}
+          className="ml-2 text-left text-gray-500 hover:text-gray-900 py-3 flex items-center gap-3 text-base border-b"
+        >
+          <MdLogout className={`w-6 h-6`} /> Çıkış Yap
+        </button>
       </nav>
     </aside>
   );

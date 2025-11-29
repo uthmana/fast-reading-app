@@ -5,17 +5,15 @@ import FormBuilder from "@/components/formBuilder";
 import Popup from "@/components/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import {
-  DndContext,
   closestCenter,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
-  DragOverlay,
   DragStartEvent,
+  DragOverlay,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -35,6 +33,7 @@ const DndContextWithNoSSR = dynamic(
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
   const [lessons, setLessons] = useState([] as any);
+  const [isSorting, setIsSorting] = useState(false);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
@@ -55,7 +54,6 @@ export default function page() {
       return;
     }
   };
-
   useEffect(() => {
     requestData();
   }, []);
@@ -98,7 +96,12 @@ export default function page() {
       }
     }
     if (actionType === "exercises") {
-      setItems(currentLesson?.Exercise);
+      const formattedLessonExercise = currentLesson?.LessonExercise?.map(
+        ({ exercise, ...rest }: any) => {
+          return { ...rest, title: exercise.title };
+        }
+      );
+      setItems(formattedLessonExercise);
       setIsShowExercisePopUp(true);
     }
   };
@@ -112,40 +115,28 @@ export default function page() {
   };
 
   const handleLesssonData = async (values: any) => {
-    const { event, formData } = values;
-    event.preventDefault();
-    try {
-      const apiPath =
-        formData.Exercise.length > 0
-          ? `/api/exercises?ids=${encodeURIComponent(
-              formData.Exercise.join(",")
-            )}`
-          : "";
-      const resData = await fetchData({ apiPath });
-      const newFormData = {
-        ...formData,
-        Exercise: resData?.map((item: any) => {
-          const { createdAt, lessonId, ...rest } = item;
-          return rest;
-        }),
-      };
-      const newValue = { ...values, formData: newFormData };
-      handleFormSubmit({
-        values: newValue,
-        method: "POST",
-        apiPath: "/api/lessons",
-        callback: (res: Response) => handleFormResponse(res),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    const { isValid, event, formData } = values;
+
+    const formattedExercise = formData?.Exercise.map((item: string) =>
+      parseInt(item)
+    );
+    const nwFormData = {
+      isValid,
+      event,
+      formData: { ...formData, Exercise: formattedExercise },
+    };
+    handleFormSubmit({
+      values: nwFormData,
+      method: "POST",
+      apiPath: "/api/lessons",
+      callback: (res: Response) => handleFormResponse(res),
+    });
   };
 
   const handleDragCancel = () => {
     setActiveItem(undefined);
   };
 
-  //TODO: make the list items dragable and reorder
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -153,9 +144,17 @@ export default function page() {
     })
   );
 
+  const removeItem = (id: number) => {
+    const updated = [...items]
+      .filter((item: any) => item.id !== id)
+      .map((item: any, i: number) => ({ ...item, order: i + 1 }));
+
+    setItems(updated);
+  };
+
   const handleDragStart = (event: DragStartEvent) => {
     const { active } = event;
-    setActiveItem(items?.find((item: any) => item.sequence === active.id));
+    setActiveItem(items?.find((item: any) => item.order === active.id));
   };
 
   function handleDragEnd(event: any) {
@@ -163,20 +162,20 @@ export default function page() {
 
     if (!over) return;
 
-    const activeItem = items.find((ex: any) => ex.id === active.id);
-    const overItem = items.find((ex: any) => ex.id === over.id);
+    const activeItem = items.find((ex: any) => ex.order === active.id);
+    const overItem = items.find((ex: any) => ex.order === over.id);
 
     if (!activeItem || !overItem) {
       return;
     }
 
-    const activeIndex = items.findIndex((ex: any) => ex.id === active.id);
-    const overIndex = items.findIndex((ex: any) => ex.id === over.id);
+    const activeIndex = items.findIndex((ex: any) => ex.order === active.id);
+    const overIndex = items.findIndex((ex: any) => ex.order === over.id);
 
     if (activeIndex !== overIndex) {
       setItems((prev: any) => {
         const updated = arrayMove(prev, activeIndex, overIndex).map(
-          (ex: any, i: number) => ({ ...ex, id: i + 1 })
+          (ex: any, i: number) => ({ ...ex, order: i + 1 })
         );
 
         return updated;
@@ -185,9 +184,30 @@ export default function page() {
     setActiveItem(undefined);
   }
 
-  const handleSortable = () => {
-    //TODO: Save changes to DB
-    //console.log(items, selectedlesson);
+  const handleSortable = async () => {
+    const { id, title, order } = selectedlesson;
+    const payload = {
+      id: id,
+      order: order,
+      title: title,
+      Exercise:
+        items.map((item: { exerciseId: number }) => item.exerciseId) ?? [],
+    };
+    try {
+      setIsSorting(true);
+      const resData = await fetchData({
+        apiPath: "/api/lessons",
+        method: "POST",
+        payload,
+      });
+
+      requestData();
+      setIsSorting(false);
+      //setIsShowExercisePopUp(false);
+    } catch (error) {
+      console.error(error);
+      setIsSorting(false);
+    }
   };
 
   return (
@@ -216,13 +236,7 @@ export default function page() {
           id={"lessons"}
           data={data}
           onSubmit={(values) => {
-            //handleLesssonData(values);
-            handleFormSubmit({
-              values: values,
-              method: "POST",
-              apiPath: "/api/lessons",
-              callback: (res: Response) => handleFormResponse(res),
-            });
+            handleLesssonData(values);
           }}
           isSubmitting={isSubmitting}
           resError={resError}
@@ -234,7 +248,7 @@ export default function page() {
       </Popup>
 
       <Popup
-        key="lessonExercisepopup"
+        key={activeItem}
         show={isShowLessonPopUp}
         onClose={() => setIsShowExercisePopUp(false)}
         title={`${selectedlesson?.title}`}
@@ -243,7 +257,7 @@ export default function page() {
         titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
         <div className="text-left w-full px-8 overflow-y-auto mx-auto">
-          <ol className="list-decimal space-y-1">
+          {items?.length ? (
             <DndContextWithNoSSR
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -255,27 +269,39 @@ export default function page() {
                 items={items?.map((item: any) => item.id)}
                 strategy={verticalListSortingStrategy}
               >
-                {items?.map((item: any) => (
-                  <SortableItem
-                    key={item.id}
-                    className="hover:text-blue-500"
-                    item={item}
-                  />
-                ))}
+                <ul className="list-decimal px-3 lg:px-5 mx-auto space-y-1">
+                  {items?.map((item: any) => (
+                    <SortableItem
+                      key={item.id}
+                      className="hover:text-blue-500"
+                      item={item}
+                      removeItem={removeItem}
+                    />
+                  ))}
+                </ul>
               </SortableContext>
               <DragOverlay
                 adjustScale
-                style={{
-                  transformOrigin: "0 0",
-                }}
+                style={{ transformOrigin: "0 0 ", backgroundColor: "white" }}
               >
                 {activeItem ? (
-                  <SortableItem item={activeItem} forceDragging={true} />
+                  <SortableItem
+                    item={activeItem}
+                    removeItem={removeItem}
+                    forceDragging={true}
+                  />
                 ) : null}
               </DragOverlay>
             </DndContextWithNoSSR>
-          </ol>
-          <Button className="mt-3" text="KAYDET" onClick={handleSortable} />
+          ) : null}
+
+          <Button
+            isSubmiting={isSorting}
+            disabled={isSorting}
+            className="mt-3"
+            text="KAYDET"
+            onClick={handleSortable}
+          />
         </div>
       </Popup>
     </div>

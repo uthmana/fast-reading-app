@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { wpm, correct, durationSec, studentId, variant }: Attempt =
+  const { wpm, correct, wpf, durationSec, studentId, variant }: Attempt =
     await req.json();
   if (!studentId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -50,13 +50,14 @@ export async function POST(req: Request) {
     const attempt = await prisma.attempt.create({
       data: {
         wpm,
+        wpf,
         correct,
         durationSec,
         studentId: studentId,
         variant,
       },
     });
-    return NextResponse.json(attempt, { status: 201 });
+    return NextResponse.json(attempt, { status: 200 });
   } catch (err) {
     console.log(err);
     return NextResponse.json(

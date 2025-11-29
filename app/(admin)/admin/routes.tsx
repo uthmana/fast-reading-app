@@ -6,6 +6,7 @@ import {
   MdOutlineArticle,
   MdGroups,
   MdBusiness,
+  MdPayment,
 } from "react-icons/md";
 
 const routes = [
@@ -46,10 +47,16 @@ const routes = [
     children: [{ name: "Kullanıcılar", path: "/admin/users" }],
   },
   {
-    name: "Firma Bilgileri",
-    path: "/admin/company",
-    icon: <MdBusiness className="w-6 h-6" />,
+    name: "Cari Hareketler",
+    path: "/admin/billing",
+    icon: <MdPayment className="w-6 h-6" />,
     roles: ["ADMIN"],
   },
+  // {
+  //   name: "Firma Bilgileri",
+  //   path: "/admin/company",
+  //   icon: <MdBusiness className="w-6 h-6" />,
+  //   roles: ["ADMIN"],
+  // },
 ];
 export default routes;

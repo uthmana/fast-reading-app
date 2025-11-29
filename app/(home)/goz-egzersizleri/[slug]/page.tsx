@@ -63,8 +63,8 @@ export default function page() {
         method: "POST",
         payload: {
           studentId: session?.user?.student?.id,
-          lessonId: lessonParams,
-          exerciseId: exerciseParams,
+          lessonId: parseInt(lessonParams || ""),
+          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {

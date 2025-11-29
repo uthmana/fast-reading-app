@@ -6,6 +6,9 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const progressParam = searchParams.get("progresspercent");
+
     const students = await prisma.student.findMany({
       include: {
         user: true,
@@ -19,7 +22,38 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json(students, { status: 200 });
+
+    if (!students.length) {
+      return NextResponse.json([], { status: 200 });
+    }
+
+    if (!progressParam) {
+      return NextResponse.json(students, { status: 200 });
+    }
+
+    // Resolve async map correctly
+    const enhanced = await Promise.all(
+      students.map(async (student) => {
+        const [totalLessonExercises, completedCount] = await Promise.all([
+          prisma.lessonExercise.count(),
+          prisma.progress.count({
+            where: { studentId: student.id, done: true },
+          }),
+        ]);
+
+        const progressPercent =
+          totalLessonExercises > 0
+            ? Math.round((completedCount / totalLessonExercises) * 100)
+            : 0;
+
+        return {
+          ...student,
+          progressPercent,
+        };
+      })
+    );
+
+    return NextResponse.json(enhanced, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);

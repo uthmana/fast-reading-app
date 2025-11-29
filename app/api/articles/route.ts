@@ -8,6 +8,8 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const categoryId = searchParams.get("categoryId");
+    const whereParam = searchParams.get("where");
+    let where: any | undefined;
 
     if (id) {
       // Fetch a single user by name
@@ -39,6 +41,32 @@ export async function GET(req: NextRequest) {
       }
 
       return NextResponse.json(article, { status: 200 });
+    }
+
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+        const total = await prisma.article.count({ where });
+        if (total === 0) {
+          return NextResponse.json(null, { status: 200 });
+        }
+        const randomIndex = Math.floor(Math.random() * total);
+        const articles = await prisma.article.findFirst({
+          where,
+          skip: randomIndex,
+          include: {
+            category: {
+              select: { id: true, title: true },
+            },
+          },
+        });
+        return NextResponse.json(articles, { status: 200 });
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
     }
 
     const articles = await prisma.article.findMany({
@@ -91,7 +119,7 @@ export async function POST(req: Request) {
             title,
             description,
             studyGroup,
-            hasQuestion,
+            hasQuestion: tests?.length > 0 ? true : false,
             active,
             tests: tests,
             category: {
@@ -108,7 +136,7 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
-        hasQuestion,
+        hasQuestion: tests?.length > 0 ? true : false,
         active,
         tests: tests,
         category: {

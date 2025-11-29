@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Select from "../formInputs/select";
 import wood_img from "/public/images/wood.jpg";
 import TextInput from "../formInputs/textInput";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   getArticleByCategoryId,
   getCategoryOptions,
@@ -30,52 +30,17 @@ interface ControlPanelProps {
   readingStatus?: any;
 }
 
-// export const controlItems: any = {
-//   "ritmini-renklendirme": ["level", "objectIcon"],
-//   "siyah-beyaz": ["level"],
-//   "genis-bakis": ["level", "font"],
-//   "dortlu-kelimeler": ["level", "font"],
-//   "kelimelerin-dansi": ["level", "font"],
-//   "satir-arasi": ["level", "font"],
-//   "satir-basi-satir-sonu": ["level", "font"],
-//   "hizli-gorme": ["level", "font", "wordsPerFrame"],
-//   "kelimeler-1": ["level", "font"],
-//   "kelimeler-2": ["level", "font"],
-//   "kelimeler-3": ["level", "font"],
-//   "kelimeler-4": ["level", "font"],
-//   "kelimeler-5": ["level", "font"],
-//   "sayilar-1": ["level", "font"],
-//   "sayilar-2": ["level", "font"],
-//   "sayilar-3": ["level", "font"],
-//   "sayilar-4": ["level", "font"],
-//   "sayilar-5": ["level", "font"],
-//   "kayan-okuma": ["level", "font", "categorySelect", "articleSelect"],
-//   "hizli-okuma-testi": ["font", "categorySelect", "articleSelect"],
-//   "anlama-testi": ["font", "categorySelect", "articleSelect"],
-//   "silinmeden-okuma": [
-//     "categorySelect",
-//     "articleSelect",
-//     "wordsPerFrame",
-//     "level",
-//     "font",
-//   ],
-//   zigzag: ["level", "font"],
-// };
-
 export const controlItems: any = {
   "goz-kaslarini-gelistirme": ["level", "type", "objectIcon"],
   "aktif-gorme-alanini-genisletme-1": ["frame", "grid", "level"],
   "aktif-gorme-alanini-genisletme-2": ["level", "color"],
   "aktif-gorme-alanini-genisletme-3": ["level"],
   "satir-boyu-gorme-uygulamasi": ["distance", "letterCount", "level", "scroll"],
-
   "hizli-gorme": ["level", "font", "wordsPerFrame"],
   "goz-cevikligi-artirma": ["level", "font", "wordsPerFrame"],
   "seviye-yukselt": ["level", "font", "wordsPerFrame"],
-
   "hizli-okuma-testi": ["font", "categorySelect", "articleSelect"],
   "anlama-testi": ["font", "categorySelect", "articleSelect"],
-
   "silinmeden-okuma": [
     "categorySelect",
     "articleSelect",
@@ -124,6 +89,8 @@ export default function ControlPanel({
   const queryParams = useParams();
   const pathname = queryParams.slug;
   const controlItem = controlItems[pathname as any] || ["level"];
+  const searchParams = useSearchParams();
+  const introTest = searchParams.get("intro-test");
 
   const handleChange: any = async ({
     targetValue,
@@ -244,6 +211,7 @@ export default function ControlPanel({
                   inputKey="categorySelect"
                   styleClass="!mb-0"
                   showLabel={false}
+                  disabled={introTest ? true : false}
                 />
               </div>
 
@@ -262,6 +230,7 @@ export default function ControlPanel({
                   inputKey="articleSelect"
                   styleClass="!mb-0"
                   showLabel={false}
+                  disabled={introTest ? true : false}
                 />
               </div>
             </div>

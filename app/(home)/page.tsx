@@ -14,7 +14,7 @@ import {
 import Widget from "../../components/widget/widget";
 import Link from "next/link";
 import BarChart from "../../components/Charts/barChart";
-import { formatDateTime } from "@/utils/helpers";
+import { formatDateTime, mapStudyGroup } from "@/utils/helpers";
 import { DashboardSkeleton } from "@/components/skeleton/skeleton";
 import SpeedGauge from "@/components/speedGauge/speedGauge";
 import PieChart from "@/components/Charts/pieChart";
@@ -25,6 +25,7 @@ export default function Home() {
   const router = useRouter();
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [isShowIntroTestPopUp, setIsShowIntroTestPopUp] = useState(false);
+  const [isTermsPolicy, setIsTermsPolicy] = useState(false);
 
   const [user, setUser] = useState({} as any);
   const [progressSummary, setProgressSummary] = useState(
@@ -88,7 +89,7 @@ export default function Home() {
         };
 
         setFastReadingData(buildData("wpm", "FASTREADING"));
-        setFastVisionData(buildData("correct", "FASTVISION"));
+        setFastVisionData(buildData("wpm", "FASTVISION"));
       } catch (error) {}
     };
     const fetchProgressSummary = async () => {
@@ -121,6 +122,7 @@ export default function Home() {
     const { Student } = user;
     const studentData = { ...Student, termsAgreed: true };
     try {
+      setIsTermsPolicy(true);
       const res = await fetchData({
         apiPath: "/api/students",
         method: "PUT",
@@ -133,8 +135,12 @@ export default function Home() {
       }
       setIsShowPopUp(false);
       setIsShowIntroTestPopUp(false);
+      setIsTermsPolicy(false);
     } catch (error) {
       console.error("Error updating termsAgreed status:", error);
+      setIsShowPopUp(false);
+      setIsShowIntroTestPopUp(false);
+      setIsTermsPolicy(false);
     }
   };
 
@@ -146,11 +152,6 @@ export default function Home() {
     );
   };
 
-  const roleMap: any = {
-    ADMIN: "Yönetim",
-    STUDENT: "Öğrenci",
-  };
-
   return (
     <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
       <div className="flex flex-wrap gap-4 w-full mb-5 mt-3">
@@ -159,10 +160,8 @@ export default function Home() {
             <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Grubunuz"
-          title={
-            (user?.Student ? user?.Student.level : roleMap[user?.role]) || ""
-          }
-          className="flex-1 bg-white"
+          title={user?.Student ? mapStudyGroup(user?.Student?.studyGroup) : " "}
+          className="flex-1 !capitalizes bg-white"
         />
         <Widget
           icon={
@@ -331,10 +330,12 @@ export default function Home() {
         showCloseIcon={false}
         show={isShowPopUp}
         onClose={() => setIsShowPopUp(false)}
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="!py-0"
       >
-        <div className="text-justify text-sm mt-2 space-y-3 mb-4">
-          <h1 className="text-2xl font-bold"> KULLANIM SÖZLEŞMESİ </h1>
+        <h1 className="text-xl font-bold mb-5 py-4 border-b-2 border-blue-400 px-8 bg-[#f5f5f5]">
+          KULLANIM SÖZLEŞMESİ
+        </h1>
+        <div className="text-justify text-sm space-y-5 pb-8 px-8">
           <p>
             Mahmut YILMAZ Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
             hakkı ve bu yazılımda yer alan bilgilerin ve yazılımların telif
@@ -350,9 +351,13 @@ export default function Home() {
             başlatıcaktır. Bu yazılım eğitim amaçlı hazırlanmış olup,
             kullanıcılara hediye edilmiştir.
           </p>
+          <Button
+            isSubmiting={isTermsPolicy}
+            loading={isTermsPolicy}
+            text="Okudum Onayladım"
+            onClick={handleUserPolicy}
+          />
         </div>
-
-        <Button text="Okudum Onayladım" onClick={handleUserPolicy} />
       </Popup>
 
       <Popup
@@ -360,12 +365,13 @@ export default function Home() {
         showCloseIcon={false}
         show={isShowIntroTestPopUp}
         onClose={() => setIsShowIntroTestPopUp(false)}
-        bodyClass="flex flex-col gap-3 py-6 px-8"
+        bodyClass="block !py-0"
       >
-        <div className="text-justify text-sm mt-2 space-y-3 mb-4">
-          <h1 className="text-2xl font-bold text-center">
-            🎉 Seviye Belirleme Testi 🎉
-          </h1>
+        <h1 className="text-xl font-bold mb-5 py-5 border-b-2 border-blue-400 px-8 bg-[#f5f5f5]">
+          🎉 Seviye Belirleme Testi 🎉
+        </h1>
+
+        <div className="text-justify text-sm space-y-5 pb-8 px-8">
           <p>
             Hızlı Okuma uygulamasına hoş geldiniz! Eğitim programımıza
             başlamadan önce, okuma hızınızı ve anlama becerilerinizi
@@ -381,14 +387,13 @@ export default function Home() {
             hedeflerinize daha hızlı ulaşmanıza yardımcı olacağız.
           </p>
           <p>Hazırsanız, BAŞLA butonuna basarak hemen başlayabilirsiniz.</p>
+          <Button
+            icon={<MdPlayCircle className="w-6 h-6 text-white" />}
+            text="TEST BAŞLA"
+            onClick={handleIntroTest}
+            className="!bg-gradient-to-r  from-[#1D63F0] to-[#1AD7FD]"
+          />
         </div>
-
-        <Button
-          icon={<MdPlayCircle className="w-6 h-6 text-white" />}
-          text="TEST BAŞLA"
-          onClick={handleIntroTest}
-          className="!bg-gradient-to-r  from-[#1D63F0] to-[#1AD7FD]"
-        />
       </Popup>
     </section>
   );

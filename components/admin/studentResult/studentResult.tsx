@@ -1,6 +1,6 @@
 import BarChart from "@/components/Charts/barChart";
 import PieChart from "@/components/Charts/pieChart";
-import React, { useState } from "react";
+import React from "react";
 
 export default function StudentResult({
   data: { fastVisionData, fastReadingData, fastUnderstanding, lessons },

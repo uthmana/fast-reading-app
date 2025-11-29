@@ -8,28 +8,31 @@ export async function GET(req: NextRequest) {
   try {
     // Try to infer the current student from the server session. If no
     // authenticated student is available, return empty/default summary.
-    let studentId: string | null = null;
-    try {
-      const session = await getServerSession(authOptions as any);
-      studentId = (session as any)?.user?.student?.id ?? null;
-    } catch (e) {
-      // ignore - session may not be available
-    }
-
+    const { searchParams } = new URL(req.url);
+    let studentId: string | null = searchParams.get("studentId");
     if (!studentId) {
-      // return defaults so the client can safely render
-      return NextResponse.json(
-        {
-          lessons: { correct: 0 },
-          levelUp: null,
-          fastReadingProgress: null,
-          fastUnderstandingProgress: null,
-        },
-        { status: 200 }
-      );
+      try {
+        const session = await getServerSession(authOptions as any);
+        studentId = (session as any)?.user?.student?.id ?? null;
+        if (!studentId) {
+          // return defaults so the client can safely render
+          return NextResponse.json(
+            {
+              lessons: { correct: 0 },
+              levelUp: null,
+              fastReadingProgress: null,
+              fastUnderstandingProgress: null,
+            },
+            { status: 200 }
+          );
+        }
+      } catch (e) {
+        // ignore - session may not be available
+      }
     }
 
     // Compute overall lesson completion percentage (student-specific)
+    const id = parseInt(studentId || "0");
     const [
       totalLessonExercises,
       completedCount,
@@ -38,21 +41,22 @@ export async function GET(req: NextRequest) {
       fastUnderstandingProgress,
     ] = await Promise.all([
       prisma.lessonExercise.count(),
+
       prisma.progress.count({
-        where: { studentId: parseInt(studentId), done: true },
+        where: { studentId: id, done: true },
       }),
       prisma.attempt.findFirst({
-        where: { variant: "FASTVISION", studentId: parseInt(studentId) },
+        where: { variant: "FASTVISION", studentId: id },
         orderBy: { createdAt: "desc" },
         select: { wpf: true, durationSec: true, createdAt: true },
       }),
       prisma.attempt.findFirst({
-        where: { variant: "FASTREADING", studentId: parseInt(studentId) },
+        where: { variant: "FASTREADING", studentId: id },
         orderBy: { createdAt: "desc" },
         select: { wpm: true, createdAt: true },
       }),
       prisma.attempt.findFirst({
-        where: { variant: "UNDERSTANDING", studentId: parseInt(studentId) },
+        where: { variant: "UNDERSTANDING", studentId: id },
         orderBy: { createdAt: "desc" },
         select: { correct: true, createdAt: true },
       }),

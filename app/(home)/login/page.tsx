@@ -55,7 +55,7 @@ export default function LoginPage() {
           resData?.active === false
         ) {
           setResError(
-            "Kullanım yetkiniz yoktur. Lütfen sistem yöneticisi ile görüşünüz."
+            "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz..."
           );
           setIsSubmitting(false);
           return;

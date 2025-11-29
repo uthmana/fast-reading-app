@@ -8,6 +8,7 @@ import {
   MdChecklist,
   MdSettings,
   MdSettingsApplications,
+  MdMenu,
 } from "react-icons/md";
 
 import {
@@ -53,8 +54,6 @@ function TableBuilder({
   let defaultData = tableData;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const { handleMouseDown, handleMouseLeave, handleMouseUp, handleMouseMove } =
-    useDrage();
 
   const columnHelper = createColumnHelper<any>();
 
@@ -67,6 +66,9 @@ function TableBuilder({
     const id = info.row.original.id;
     if (type === "date") {
       return formatDateTime(value);
+    }
+    if (type === "fullDate") {
+      return formatDateTime(value, true);
     }
     if (type === "boolean") {
       return value ? "Aktif" : "Pasif";
@@ -131,6 +133,7 @@ function TableBuilder({
         header: () => (
           <p className="font-bold px-1 text-black whitespace-nowrap">
             {item.name}
+            {item.totalCount ? ` ${"("}${tableData?.length}${")"}` : null}
           </p>
         ),
         cell: (info) => (
@@ -259,26 +262,33 @@ function TableBuilder({
         </header>
       ) : null}
 
-      <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-10 border bg-white rounded-lg">
-        <div className="flex justify-between">
+      <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-5 border bg-white rounded-lg">
+        <div className="flex justify-between mb-2">
           {title ? <h2 className="text-lg font-semibold">{title}</h2> : null}
-          <Button
-            text="Excel"
-            className={`hover:!bg-blue-400  hover:!text-white text-sm !bg-black/0 border !py-1 !text-black !max-w-fit mb-3 ${
-              title ? "ml-auto" : ""
-            }`}
-            onClick={() => exportToExcel(data, `ogrenciler.xlsx`)}
-            icon={<MdFileDownload className="w-4 h-4" />}
-          />
+          <Dropdown
+            button={
+              <MdMenu className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
+            }
+            classNames={"absolute py-2 z-[1] top-7 w-max border bg-white"}
+          >
+            <div className="flex border min-w-20 shadow rounded-md gap-2 absolute top-0 left-[0px] bg-white">
+              <ul className="w-full">
+                <li className="py-1 border-b w-full">
+                  <Button
+                    text="Excel"
+                    className={`hover:!bg-blue-400  hover:!text-white text-sm !bg-black/0 border-b h-full !text-black -w-full ${
+                      title ? "ml-auto" : ""
+                    }`}
+                    onClick={() => exportToExcel(data, `liste.xlsx`)}
+                    icon={<MdFileDownload className="w-4 h-4" />}
+                  />
+                </li>
+              </ul>
+            </div>
+          </Dropdown>
         </div>
 
-        <div
-          className="w-full overflow-x-auto min-h-[220px]"
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-        >
+        <div className="w-full overflow-x-auto min-h-[220px]">
           <table className="w-full mb-10 h-full">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (

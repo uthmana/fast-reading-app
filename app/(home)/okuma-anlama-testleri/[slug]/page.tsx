@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
+import { getArticleByStudyGroup } from "@/components/formBuilder/request";
 
 export default function page() {
   const { data: session } = useSession();
@@ -19,9 +20,11 @@ export default function page() {
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
   const introTest = searchParams.get("intro-test");
-
+  const queryParams = useParams();
+  const pathname = queryParams.slug;
   const [questions, setQuestions] = useState([] as any);
   const [pause, setPause] = useState(false);
+
   const [readingStatus, setReadingStatus] = useState({
     counter: 0,
     totalWords: 0,
@@ -46,41 +49,55 @@ export default function page() {
     objectIcon: "1",
   });
 
-  const queryParams = useParams();
-  const pathname = queryParams.slug;
-
   useEffect(() => {
     const requestData = async () => {
       if (!session) return;
       try {
-        const resData = await fetchData({
-          apiPath: `/api/users?username=${encodeURIComponent(
-            session.user.username
-          )}`,
-        });
+        if (introTest) {
+          const testArticle = await getArticleByStudyGroup({
+            studyGroup: session?.user?.student?.studyGroup,
+            hasQuestion: true,
+          });
+          setControl({ ...control, articleSelect: testArticle });
+          setQuestions(testArticle?.tests);
+          return;
+        }
 
-        const attempts = resData?.Student?.attempts || [];
-        if (!attempts.length) return;
+        if (
+          pathname === "hizli-okuma-testi-gelisim" ||
+          pathname === "anlama-testi-gelisim"
+        ) {
+          const resData = await fetchData({
+            apiPath: `/api/users?username=${encodeURIComponent(
+              session.user.username
+            )}`,
+          });
 
-        const formatted = attempts.map(
-          ({ wpm, createdAt, correct, variant }: any) => ({
-            wpm,
-            correct,
-            variant,
-            category: formatDateTime(createdAt),
-          })
-        );
-        setFormattedAttempts(formatted);
-        const buildData = (key: "wpm" | "correct", variant: string) => {
-          const filtered = formatted.filter((i: any) => i.variant === variant);
-          return {
-            data: filtered.map((i: any) => i[key]),
-            categories: filtered.map((i: any) => i.category),
+          const attempts = resData?.Student?.attempts || [];
+          if (!attempts.length) return;
+
+          const formatted = attempts.map(
+            ({ wpm, createdAt, correct, variant }: any) => ({
+              wpm,
+              correct,
+              variant,
+              category: formatDateTime(createdAt),
+            })
+          );
+          setFormattedAttempts(formatted);
+          const buildData = (key: "wpm" | "correct", variant: string) => {
+            const filtered = formatted.filter(
+              (i: any) => i.variant === variant
+            );
+            return {
+              data: filtered.map((i: any) => i[key]),
+              categories: filtered.map((i: any) => i.category),
+            };
           };
-        };
 
-        setFastReadingData(buildData("wpm", "FASTREADING"));
-        setUnderstandingData(buildData("correct", "UNDERSTANDING"));
+          setFastReadingData(buildData("wpm", "FASTREADING"));
+          setUnderstandingData(buildData("correct", "UNDERSTANDING"));
+        }
       } catch (error) {
         console.error(error);
       }
@@ -147,12 +164,10 @@ export default function page() {
             payload: studentData,
           });
           if (res && res.introTestTaken < 3) {
-            router.replace(
-              `/okuma-anlama-testleri/anlama-testi?intro-test=${
-                res.introTestTaken + 1
-              }`
-            );
             setPause(!pause);
+            window.location.href = `/okuma-anlama-testleri/anlama-testi?intro-test=${
+              res.introTestTaken + 1
+            }`;
           } else if (res && res.introTestTaken >= 3) {
             alert(
               "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz."
@@ -198,8 +213,8 @@ export default function page() {
         method: "POST",
         payload: {
           studentId: session?.user?.student?.id,
-          lessonId: lessonParams,
-          exerciseId: exerciseParams,
+          lessonId: parseInt(lessonParams || ""),
+          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {
@@ -239,7 +254,7 @@ export default function page() {
 
   if (pathname === "hizli-okuma-testi-gelisim") {
     return (
-      <div className="flex w-full flex-col px-6 gap-4">
+      <div className="flex w-full mb-5 flex-col px-6 gap-4">
         <div className="w-full bg-white max-h-[400px] border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Okuma Hızı Gelişimi</h2>
           <BarChart
@@ -332,7 +347,7 @@ export default function page() {
 
   if (pathname === "anlama-testi-gelisim") {
     return (
-      <div className="flex w-full flex-col px-6 gap-4">
+      <div className="flex w-full flex-col mb-5 px-6 gap-4">
         <div className="flex-1 bg-white max-h-[400px] border py-10 px-4 rounded shadow">
           <h2 className="text-xl mb-4 font-semibold">Anlama Gelişimi</h2>
           <BarChart

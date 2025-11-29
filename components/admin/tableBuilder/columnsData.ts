@@ -63,6 +63,13 @@ export const columnsData = {
     { id: "wpc", name: "Seviye", type: "string" },
     { id: "lpw", name: "Harf", type: "string" },
   ],
+  billingColumn: [
+    { id: "id", name: "#", type: "string" },
+    { id: "name", name: "Öğrenci Adı", type: "string" },
+    { id: "fee", name: "Tutar", type: "string" },
+    { id: "currency", name: "Para Birim", type: "string" },
+    { id: "startDate", name: "Tarih", type: "fullDate", totalCount: true },
+  ],
 } as const;
 
 export type ColumnsKey = keyof typeof columnsData;

@@ -222,7 +222,7 @@ export default function page() {
         overlayClass="z-10"
         titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
       >
-        <div className="flex px-8 gap-2">
+        <div className="flex h-full px-8 gap-2 overflow-y-auto ">
           <div className="w-full flex flex-col justify-between">
             <div className="w-full pb-5 space-y-4 max-h-[480px] overflow-y-auto">
               {quiz?.map((q: any, idx: number) => (

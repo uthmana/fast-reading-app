@@ -33,7 +33,9 @@ export default function page() {
     const requestData = async () => {
       try {
         setIsloading(true);
-        let resData = await fetchData({ apiPath: "/api/students" });
+        let resData = await fetchData({
+          apiPath: "/api/students?progresspercent=true",
+        });
         setStudentsRaw(resData);
         if (classId && !editmodel) {
           resData = [...resData].filter((item) => {
@@ -72,11 +74,8 @@ export default function page() {
             endDate: rest.endDate,
             studentId: rest.id,
             class: rest.class.name,
-            progress: `% ${
-              (rest.Progress?.find((item: any) => item.done)?.length /
-                rest.Progress?.length) *
-                100 || 0
-            }`,
+            active: userRest.active,
+            progress: `% ${rest.progressPercent}`,
           };
         });
         setStudents(allData);
@@ -113,6 +112,7 @@ export default function page() {
         ...rest,
         startDate: currentUser.startDate?.split("T")[0],
         endDate: currentUser.endDate?.split("T")[0],
+        active: restUser.active,
       });
       setIsShowPopUp(true);
     }
@@ -150,14 +150,18 @@ export default function page() {
 
       const attempts = tempData?.attempts || [];
       const formatted = attempts?.map(
-        ({ wpm, createdAt, correct, variant }: any) => ({
+        ({ wpm, wpf, createdAt, correct, variant }: any) => ({
           wpm,
+          wpf,
           correct,
           variant,
           category: formatDateTime(createdAt),
         })
       );
-      const buildData = (key: "wpm" | "correct" | "wpc", variant: string) => {
+      const buildData = (
+        key: "wpm" | "correct" | "wpc" | "wpf",
+        variant: string
+      ) => {
         const filtered = formatted.filter((i: any) => i.variant === variant);
         return {
           data: filtered.map((i: any) => i[key]),
@@ -167,8 +171,11 @@ export default function page() {
 
       try {
         const fastReadingData = buildData("wpm", "FASTREADING");
-        const fastVisionData = buildData("correct", "FASTVISION");
-        const resData = await fetchData({ apiPath: "/api/progressSummary" });
+        const fastVisionData = buildData("wpf", "FASTVISION");
+        const resData = await fetchData({
+          apiPath: `/api/progressSummary?studentId=${currentUser.id}`,
+        });
+
         const fastUnderstanding = resData?.fastUnderstandingProgress;
         const lessons = resData?.lessons;
 

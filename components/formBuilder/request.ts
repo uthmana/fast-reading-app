@@ -65,3 +65,26 @@ export const getClassOptions = async () => {
     return;
   }
 };
+
+export const getArticleByStudyGroup = async ({
+  studyGroup,
+  hasQuestion,
+}: {
+  studyGroup: string;
+  hasQuestion: boolean;
+}) => {
+  const query = encodeURIComponent(
+    JSON.stringify({
+      studyGroup,
+      hasQuestion,
+    })
+  );
+  try {
+    const resData = await fetchData({
+      apiPath: `/api/articles?where=${query}`,
+    });
+    return resData;
+  } catch (error) {
+    console.error(error);
+  }
+};
