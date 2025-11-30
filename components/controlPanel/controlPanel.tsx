@@ -122,7 +122,7 @@ export default function ControlPanel({
       } catch (error) {}
     } else if (inputKey === "articleSelect") {
       const selectedArticle = [...(articles as any)].find(
-        (item) => item.id === targetValue
+        (item) => item.id === parseInt(targetValue)
       );
       if (selectedArticle) {
         crtVal["articleSelect"].value = selectedArticle.id;

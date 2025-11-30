@@ -4350,6 +4350,7 @@ export const studyGroupOptions = [
   { value: "UNIVERSITE", name: "Üniversite" },
   { value: "DOKTORA", name: "Doktora" },
   { value: "GENEL", name: "Genel" },
+  { value: "YETISKIN", name: "Yetişkin" },
   { value: "DISLEKSI", name: "Disleksi" },
   { value: "TIP", name: "Tıp" },
   { value: "IELTS", name: "IELTS" },

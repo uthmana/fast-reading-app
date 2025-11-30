@@ -13,6 +13,7 @@ type TachistoProps = {
     level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     wordsPerFrame: number;
     font: string;
+    wordList: string[];
   };
   onFinishTest?: (val: any) => void;
 };
@@ -34,20 +35,15 @@ export default function EyeAgilityIncrease({
   const intervalRef = useRef<number | null>(null);
   const onCompleteRef = useRef(onComplete);
 
-  const wordsPerFrame = controls?.wordsPerFrame || 1;
   const level = controls?.level || 1;
-
-  const text =
-    WordsPerSentence[
-      wordsPerFrame.toString() as keyof typeof WordsPerSentence
-    ] ?? [];
+  const text = controls?.wordList;
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
   useEffect(() => {
-    if (!text.length) {
+    if (!text?.length) {
       setFrames([]);
       setIndex(0);
       setRunning(false);

@@ -1,6 +1,12 @@
 import prisma from "@/lib/prisma";
 //import bcrypt from "bcryptjs";
-import { articleCategory, articleData, exerciseData } from "./mockData";
+import {
+  allWords,
+  articleCategory,
+  articleData,
+  exerciseData,
+  studyGroupOptions,
+} from "./mockData";
 import { Category, StudyGroup } from "@prisma/client";
 
 async function main() {
@@ -144,6 +150,25 @@ async function main() {
         })),
       }
     : lesson;
+
+  const studyGroups = studyGroupOptions.map((s) => s.value);
+
+  for (let i = 0; i < allWords.length; i++) {
+    await prisma.words
+      .create({
+        data: {
+          word: allWords[i],
+          studyGroups: {
+            create: studyGroups.map((group: any) => ({
+              group: group,
+            })),
+          },
+          wpc: allWords[i]?.trim()?.split(" ")?.length,
+          lpw: allWords[i]?.trim()?.length,
+        },
+      })
+      .catch(() => null);
+  }
 
   console.log({
     user,

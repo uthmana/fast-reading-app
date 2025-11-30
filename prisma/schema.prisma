@@ -39,6 +39,7 @@ model Student {
   introTestTaken Int        @default(0)
   classId        Int
   fee            Int        @default(0)
+  currency       Currency   @default(TL)
 }
 
 model Lesson {
@@ -139,8 +140,8 @@ model Category {
 
 model Words {
   id          Int               @id @default(autoincrement())
-  word        String            @unique
-  similarWord String            @unique
+  word        String             @unique
+  similarWord String?           
   studyGroups WordsStudyGroup[]
   wpc         Int // words per count
   lpw         Int // letters per word
@@ -197,6 +198,7 @@ enum StudyGroup {
   UNIVERSITE
   DOKTORA
   GENEL
+  YETISKIN
   DISLEKSI
   TIP
   IELTS
@@ -210,3 +212,9 @@ enum Gender {
   FEMALE
   OTHER
 }
+enum Currency {
+  TL
+  USD
+  EURO
+}
+

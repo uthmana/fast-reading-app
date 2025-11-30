@@ -14,6 +14,7 @@ type TachistoProps = {
     level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     wordsPerFrame: number;
     font: string;
+    wordList: string[];
   };
   onFinishTest?: (val: any) => void;
 };
@@ -33,14 +34,8 @@ export default function Tachistoscope({
   const intervalRef = useRef<number | null>(null);
   const onCompleteRef = useRef(onComplete);
 
-  const wordsPerFrame = controls?.wordsPerFrame || 1;
   const level = controls?.level || 1;
-
-  // 🧠 Dynamically get words array based on wordsPerFrame
-  const text =
-    WordsPerSentence[
-      wordsPerFrame.toString() as keyof typeof WordsPerSentence
-    ] ?? [];
+  const text = controls?.wordList;
 
   // Keep the latest onComplete reference
   useEffect(() => {
@@ -49,14 +44,13 @@ export default function Tachistoscope({
 
   // 🧩 Setup frames from WordsPerSentence directly
   useEffect(() => {
-    if (!text.length) {
+    if (!text?.length) {
       setFrames([]);
       setIndex(0);
       setRunning(false);
       return;
     }
 
-    // No need to split; WordsPerSentence already contains grouped words
     setFrames(text);
     setFrameDurationMs(speedMap[level]);
     setIndex(0);
@@ -125,7 +119,7 @@ export default function Tachistoscope({
         {frames.length > 0 ? (
           frames[index]
         ) : (
-          <span className="text-gray-400">Metin yok</span>
+          <span className="text-gray-400">Metin yükleniyor.....</span>
         )}
       </div>
 

@@ -4,10 +4,9 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { menuItems } from "@/app/routes";
-import { WordsPerSentence } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 
@@ -33,25 +32,51 @@ export default function page() {
     level: 1,
     wordsPerFrame: 1,
     objectIcon: "1",
-    wordList: getRandomWords(WordsPerSentence["1"] || [], 20),
+    wordList: [] as string[],
   });
 
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
+  const requestData = async (wordsPerFrame = 0) => {
+    try {
+      const query = encodeURIComponent(
+        JSON.stringify({
+          wpc: wordsPerFrame || control.wordsPerFrame,
+          studyGroups: {
+            some: {
+              group: session?.user?.student?.studyGroup,
+            },
+          },
+        })
+      );
+      const wordData = await fetchData({
+        apiPath: `/api/words?where=${query}`,
+      });
+      const wordList = getRandomWords(wordData || [], 20);
+      setControl({
+        ...control,
+        wordList,
+      });
+      return wordList;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    requestData();
+  }, [control.wordsPerFrame]);
+
   if (!currentMenu.length) {
     return <NotFound />;
   }
 
-  const handleControl = (val: any) => {
+  const handleControl = async (val: any) => {
     if (pathname === "seviye-yukselt") {
-      const wordsPerFrame = val?.wordsPerFrame;
-      const wordList =
-        WordsPerSentence[
-          wordsPerFrame.toString() as keyof typeof WordsPerSentence
-        ] ?? [];
-      setControl({ ...val, wordList: getRandomWords(wordList, 20) });
+      const wordList = await requestData(val?.wordsPerFrame);
+      setControl({ ...val, wordList });
       return;
     }
     setControl(val);

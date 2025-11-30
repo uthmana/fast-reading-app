@@ -5,67 +5,6 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
-    // const { searchParams } = new URL(req.url);
-    // const whereParam = searchParams.get("where");
-    // const studentId = searchParams.get("studentId");
-
-    // let where: any | undefined;
-
-    // if (studentId) {
-    //   const user = await prisma.class.findMany({
-    //     where: {  },
-    //     include: {
-    //       Student: {
-    //         include: {
-    //           attempts: true,
-    //         },
-    //       },
-    //     },
-    //   });
-
-    //   if (!user) {
-    //     return NextResponse.json(
-    //       { error: "Kullanıcı bulunamadı" },
-    //       { status: 404 }
-    //     );
-    //   }
-
-    //   return NextResponse.json(user, { status: 200 });
-    // }
-
-    // if (whereParam) {
-    //   try {
-    //     where = JSON.parse(whereParam);
-    //   } catch (err) {
-    //     return NextResponse.json(
-    //       { error: "Invalid 'where' parameter" },
-    //       { status: 400 }
-    //     );
-    //   }
-    // }
-
-    // if (where) {
-    //   const user = await prisma.user.findUnique({
-    //     where,
-    //     include: {
-    //       Student: {
-    //         include: {
-    //           attempts: true,
-    //         },
-    //       },
-    //     },
-    //   });
-
-    //   if (!user) {
-    //     return NextResponse.json(
-    //       { error: "Kullanıcı bulunamadı" },
-    //       { status: 404 }
-    //     );
-    //   }
-
-    //   return NextResponse.json(user, { status: 200 });
-    // }
-
     const classes = await prisma.class.findMany({
       orderBy: { createdAt: "desc" },
       include: { students: true },
@@ -104,6 +43,7 @@ export async function POST(req: Request) {
         const classItem = await prisma.class.update({
           where: { id },
           data: {
+            name,
             studyGroup,
             teacher: {
               connect: { id: parseInt(teacherId) },

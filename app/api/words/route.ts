@@ -5,24 +5,28 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
-    // const { searchParams } = new URL(req.url);
-    // const id = searchParams.get("id");
+    const { searchParams } = new URL(req.url);
+    const whereParam = searchParams.get("where");
+    let where: any | undefined;
 
-    // if (id) {
-    //   // Fetch a single user by name
-    //   const words = await prisma.words.findUnique({
-    //     where: { id: parseInt(id) },
-    //   });
-
-    //   if (!words) {
-    //     return NextResponse.json(
-    //       { error: "Category not found" },
-    //       { status: 404 }
-    //     );
-    //   }
-
-    //   return NextResponse.json(words, { status: 200 });
-    // }
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+        const words = await prisma.words.findMany({
+          where,
+          include: {
+            studyGroups: true,
+          },
+        });
+        const formattedWords = words.map((item) => item.word);
+        return NextResponse.json(formattedWords, { status: 200 });
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+    }
 
     const words = await prisma.words.findMany({
       include: {
