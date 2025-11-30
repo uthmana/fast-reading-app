@@ -2,10 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  getTurkishWordsByLength,
-  graphemeLength,
-} from "../../../utils/turkishWords";
 import { MdPauseCircle } from "react-icons/md";
 import Button from "../../button/button";
 import { speedMap } from "@/utils/constants";
@@ -16,23 +12,26 @@ type LineLengthViewProps = {
     letterCount?: number;
     level?: number;
     scroll?: boolean;
+    wordList?: string[];
   };
-  wordList?: string[];
   onFinishTest?: (v: any) => void;
 };
 
 export default function LineLengthView({
   controls,
   onFinishTest,
-  wordList = [],
 }: LineLengthViewProps) {
+  const directionRef = useRef(1);
+  const [word, setWord] = useState("...");
+  const [yOffset, setYOffset] = useState(0);
+  const [flipping, setFlipping] = useState(false);
+
   const distance = (controls?.distance ?? 3) * 20;
-  const letterCount = controls?.letterCount ?? 4;
-
+  const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
-
   const level = controls?.level || 3;
   const rawSpeed = speedMap[level];
+  const pool = controls?.wordList;
 
   const intervalMs = useMemo(() => {
     let ms =
@@ -44,24 +43,8 @@ export default function LineLengthView({
     return Math.max(300, Math.min(10000, ms));
   }, [rawSpeed]);
 
-  const directionRef = useRef(1);
-  const [word, setWord] = useState("...");
-  const [yOffset, setYOffset] = useState(0);
-  const [flipping, setFlipping] = useState(false);
-
-  const pool = useMemo(() => {
-    const source =
-      wordList.length > 0 ? wordList : getTurkishWordsByLength(letterCount);
-
-    const filtered = source.filter(
-      (w) => graphemeLength(w.trim()) === letterCount
-    );
-
-    return filtered.length ? filtered : source;
-  }, [wordList, letterCount]);
-
   const pickWord = () => {
-    if (!pool.length) return "...";
+    if (!pool?.length) return "...";
     return pool[Math.floor(Math.random() * pool.length)];
   };
   const handlePause = () => {
@@ -70,7 +53,7 @@ export default function LineLengthView({
 
   useEffect(() => {
     setWord(pickWord());
-  }, [pool]);
+  }, [controls?.wordList]);
 
   useEffect(() => {
     setFlipping(true);
@@ -93,16 +76,12 @@ export default function LineLengthView({
     }, intervalMs);
 
     return () => clearInterval(intv);
-  }, [intervalMs, scroll]);
+  }, [intervalMs, scroll, controls?.wordList]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden">
       {/* CENTER SPLIT LINE */}
       <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
-
-      {/* =============================================================== */}
-      {/*                 FIXED: PERFECTLY CENTERED BOOK SPLIT            */}
-      {/* =============================================================== */}
       {flipping && (
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex pointer-events-none z-40">
           <motion.div
@@ -115,17 +94,7 @@ export default function LineLengthView({
               overflow: "hidden",
               borderRadius: "6px 0 0 6px",
             }}
-          >
-            <div
-              style={{
-                width: 220,
-                height: "100%",
-                background: "linear-gradient(90deg, #e9d7a6, #d8c48e)", // visible warm book color
-                boxShadow: "0 10px 25px rgba(0,0,0,0.35)",
-                border: "1px solid rgba(0,0,0,0.25)",
-              }}
-            />
-          </motion.div>
+          ></motion.div>
 
           {/* RIGHT HALF */}
           <motion.div
@@ -138,24 +107,9 @@ export default function LineLengthView({
               overflow: "hidden",
               borderRadius: "0 6px 6px 0",
             }}
-          >
-            <div
-              style={{
-                width: 220,
-                height: "100%",
-                transform: "translateX(-110px)",
-                background: "linear-gradient(90deg, #e9d7a6, #d8c48e)", // same cover color
-                boxShadow: "0 10px 25px rgba(0,0,0,0.35)",
-                border: "1px solid rgba(0,0,0,0.25)",
-              }}
-            />
-          </motion.div>
+          ></motion.div>
         </div>
       )}
-
-      {/* =============================================================== */}
-      {/*            FIXED: WORDS THAT MOVE FROM CENTER LINE OUTWARD      */}
-      {/* =============================================================== */}
 
       {/* LEFT SIDE WORD */}
       <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-center">

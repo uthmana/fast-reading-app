@@ -26,8 +26,8 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) return null;
-          const isValid = await bcrypt.compare(password, user.password);
-          if (!isValid) return null;
+          //const isValid = await bcrypt.compare(password, user.password);
+          if (password !== user.password) return null;
 
           if (user?.active === false) {
             throw new Error("User subscription has expired");

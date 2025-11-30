@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@prisma/client";
-import bcrypt from "bcryptjs";
+//import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 
@@ -111,10 +111,13 @@ export async function POST(req: Request) {
         where: { id },
       });
       if (userExit) {
+        // const pwd =
+        //   userExit.password !== password
+        //     ? await bcrypt.hash(password, 10)
+        //     : userExit.password;
         const pwd =
-          userExit.password !== password
-            ? await bcrypt.hash(password, 10)
-            : userExit.password;
+          userExit.password !== password ? password : userExit.password;
+
         const user = await prisma.user.update({
           where: { id },
           data: {
@@ -141,14 +144,14 @@ export async function POST(req: Request) {
       }
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         name,
         username,
         tcId,
         email,
-        password: hashedPassword,
+        password: password,
         role: role,
         ...(role === "STUDENT"
           ? {

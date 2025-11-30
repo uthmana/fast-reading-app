@@ -38,6 +38,7 @@ export default function page() {
   }
 
   const handleControl = (val: any) => {
+    console.log(val);
     setControl(val);
   };
 
@@ -60,8 +61,8 @@ export default function page() {
         method: "POST",
         payload: {
           studentId: session?.user?.student?.id,
-          lessonId: lessonParams,
-          exerciseId: exerciseParams,
+          lessonId: parseInt(lessonParams || ""),
+          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {

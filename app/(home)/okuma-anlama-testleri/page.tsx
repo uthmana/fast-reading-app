@@ -80,7 +80,7 @@ export default function page() {
           />
         </div>
         <div className="w-full bg-white max-h-[300px] overflow-y-auto border  px-4 rounded shadow">
-          <div className="w-full pt-5">
+          <div className="w-full py-5">
             <div className="sticky top-0 bg-white">
               <h2 className="text-md mb-4 font-medium">Okuma Hızı Gelişimi</h2>
               <div className="grid grid-cols-2 py-1  group text-blue-500 font-bold border-b">
@@ -136,7 +136,7 @@ export default function page() {
           />
         </div>
         <div className="w-full bg-white max-h-[300px] overflow-y-auto border px-4 rounded shadow">
-          <div className="w-full pt-5">
+          <div className="w-full py-5">
             <div className="sticky top-0 bg-white">
               <h2 className=" text-md mb-4 font-medium">Anlama Gelişimi</h2>
               <div className="grid grid-cols-4 py-1 group text-blue-500 font-bold border-b">

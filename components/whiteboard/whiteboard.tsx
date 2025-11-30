@@ -83,7 +83,7 @@ export default function Whiteboard({
       )?.toString(),
     },
     distance: { value: 1 },
-    letterCount: { value: 2 },
+    letterCount: { value: 3 },
     size: { value: 1 },
     scroll: { value: 1 },
   } as any);

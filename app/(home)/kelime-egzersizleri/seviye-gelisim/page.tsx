@@ -28,24 +28,33 @@ export default function page() {
         if (!attempts.length) return;
 
         const formatted = attempts.map(
-          ({ wpm, wpf, durationSec, createdAt, correct, variant }: any) => ({
-            wpf,
-            durationSec,
+          ({
             wpm,
+            wpf,
+            wpc,
+            durationSec,
+            createdAt,
+            correct,
+            variant,
+          }: any) => ({
+            wpf,
+            wpc,
+            wpm,
+            durationSec,
             correct,
             variant,
             category: formatDateTime(createdAt),
           })
         );
         setFormattedAttempts(formatted);
-        const buildData = (key: "correct", variant: string) => {
+        const buildData = (key: "correct" | "wpf", variant: string) => {
           const filtered = formatted.filter((i: any) => i.variant === variant);
           return {
             data: filtered.map((i: any) => i[key]),
             categories: filtered.map((i: any) => i.category),
           };
         };
-        setFastVisionData(buildData("correct", "FASTVISION"));
+        setFastVisionData(buildData("wpf", "FASTVISION"));
       } catch (error) {
         console.error(error);
       }
