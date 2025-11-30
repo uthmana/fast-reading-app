@@ -22,6 +22,7 @@ interface WhiteboardProps {
   contentClassName?: string;
   saveProgress?: () => void;
   customControls?: ReactElement;
+  showPreviewBody?: boolean;
 }
 
 export default function Whiteboard({
@@ -36,6 +37,7 @@ export default function Whiteboard({
   contentClassName = "",
   saveProgress,
   customControls,
+  showPreviewBody = false,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -130,6 +132,8 @@ export default function Whiteboard({
           ) : null}
 
           {description}
+
+          {showPreviewBody && body}
 
           {lessonData?.id ? (
             <Link
@@ -232,8 +236,8 @@ export default function Whiteboard({
                 setCategoryOptions={setCategoryOptions}
                 articleOptions={articleOptions}
                 setArticleOptions={setArticleOptions}
-                isfastTest={isfastTest}
-                readingStatus={readingStatus}
+                // isfastTest={isfastTest}
+                // readingStatus={readingStatus}
               />
             )}
           </div>

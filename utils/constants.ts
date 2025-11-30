@@ -4327,4 +4327,22 @@ export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
     howToPlay:
       "<p>Alttaki araçlardan merkeze uzaklık, harf Sayısı ve hız ayarlarınızı yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Ekranın ortasında ki çizgiye odaklanarak kenarlardaki kelime ve kelime gruplarını gözlerinizi hareket etmeden okuyun. Süre bitene kadar egzersize devam edin.</p>",
   },
+  "dogru-rengi-bul": {
+    description:
+      "İnsanın beyin yapısına göre sol tarafımız kelimeleri söylemeye çalışırken, sağ tarafımız renkleri söylemeye çalışır. Bu egzersiz ile dikkat, odaklanma ve konsantrasyon sevinizde artış olacaktır.",
+    howToPlay:
+      "<p>Alttaki araçlardan hız seçilip <span style='color:blue'>►</span> butonunu basarak uygulamayı başlatın. Ekrana renk isimleri farklı renklerde gelecektir. Klaveye veya fareyi kullanarak yazan kelime ile renk <span style='color:green'>aynıysa DOĞRU</span>, <span style='color:red'>farklıysa YANLIŞ</span> düğmeye basınız. Ekranda gözüken süre bitene kadar çalışmaya devam ediniz</p>",
+  },
+  "dogru-sayiyi-bul": {
+    description:
+      "Bu çalışma size hızlı görmeyi, anlamayı, hafızayı, dikkat ve konsantrasyonu arttırmayı sağlar.",
+    howToPlay:
+      "<p>Alttaki araçlardan Süre ve zorluk ayarlamalarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza rastgele harfler ve sayılar gelecektir. Size sorulan harfin sayısını kutucuğa yazın ve <span style='color:black; font-weight: bold'>Doğrula</span> butonuna basın. Süre bitene kadar egzersize devam edin</p>",
+  },
+  "dogru-kelimeyi-bil": {
+    description:
+      "Okuma esnasında yapılan en büyük hatalardan biri de benzer kelimeleri ayırt edememektir. Bu egzersiz ile yanlış okumalardan kurtulacaksınız. Bunun yanı sıra dikkat ve konsantrasyonunuz da artacaktır.",
+    howToPlay:
+      "<p>Alttaki araçlardan hız ve zorluk seçilip <span style='color:blue'>►</span> botununu basarak uygulamayı başlatın. Ekranın farklı yerlerinde kelimeler gelecektir. Klaveye veya fareyi kullanarak sözcükler aynıysa <span style='color:green; font-weight: bold'>SOL</span>, farklıysa <span style='color:red; font-weight: bold'>SAĞ</span> düğmeye basınız. Ekranda gözüken süre bitene kadar çalışmaya devam ediniz.</p>",
+  },
 };

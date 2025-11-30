@@ -14,6 +14,10 @@ import NumberFinderControls from "@/components/formInputs/numberFinderControls";
 import FindTheNumber from "@/components/exercises/brain/findTheNumber";
 import { useSession } from "next-auth/react";
 import { eyeExerciseDescription } from "@/utils/constants";
+import WordFinderControl from "@/components/formInputs/wordFinderControl";
+import FindTheWord from "@/components/exercises/brain/findTheWord";
+import FindCountWords from "@/components/exercises/brain/findCountWords";
+import CountWordsControls from "@/components/formInputs/countWordsControls";
 
 export default function page() {
   const { data: session } = useSession();
@@ -54,7 +58,27 @@ export default function page() {
   const handleFinish = (stats: any) => {
     console.log("Exercise finished:", stats);
   };
-  //
+  // DOĞRU KELİME BUL STATES CUSTOM CONTROLS
+  const [levelk, setLevelk] = useState(2);
+  const [speedw, setSpeedw] = useState(2000);
+  const [difficultyw, setDifficultyw] = useState(5);
+
+  const [correctw, setCorrectw] = useState(0);
+  const [wrongw, setWrongw] = useState(0);
+  const netw = correctw - wrongw;
+
+  // For controlling game from control component
+  const gameRefw = useRef<any>(null);
+  // FIND THE Correct Number of WORDS
+  const countRef = useRef<any>(null);
+  const [cwCorrect, setCwCorrect] = useState(0);
+  const [cwWrong, setCwWrong] = useState(0);
+  // sensible defaults: 900ms frame, difficulty 6
+  const [cwSpeed, setCwSpeed] = useState(900);
+  const [cwDifficulty, setCwDifficulty] = useState(6);
+  const [cwTarget, setCwTarget] = useState("R");
+
+  // Other States
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
     categorySelect: "",
@@ -124,8 +148,8 @@ export default function page() {
           />
         }
         body={
-          <div className="w-full">
-            <div className="w-full">
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center">
               <FindTheColor
                 ref={finderRef}
                 level={level}
@@ -153,7 +177,7 @@ export default function page() {
         saveProgress={saveProgress}
       />
     );
-  } else if (pathname === "dogru-sayiyi-bul") {
+  } else if (pathname === "dogru-sayiyi-bul1") {
     return (
       <Whiteboard
         pause={pause}
@@ -171,15 +195,15 @@ export default function page() {
           />
         }
         body={
-          <div className="w-full">
-            <div className="w-full">
+          <div className="w-full h-full flex items-center justify-center">
+            <div className="w-full h-full flex items-center justify-center">
               <FindTheNumber
-                ref={numberFinderRef}
                 speed={speed}
                 difficulty={difficulty}
                 targetLetter={targetLetter}
                 duration={duration}
                 onFinish={handleFinish}
+                onFinishTest={onFinishTest}
                 onCorrect={() => setNumCorrect((c) => c + 1)}
                 onWrong={() => setNumWrong((w) => w + 1)}
               />
@@ -206,6 +230,104 @@ export default function page() {
         onControlChange={handleControl}
         lessonData={{ id: lessonParams, duration: durationParams } as any}
         saveProgress={saveProgress}
+      />
+    );
+  } else if (pathname === "dogru-kelimeyi-bil") {
+    return (
+      <Whiteboard
+        pause={pause}
+        control={control}
+        description={
+          <ControlPanelGuide
+            howToPlay={
+              eyeExerciseDescription[pathname]?.howToPlay ??
+              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            }
+            description={
+              eyeExerciseDescription[pathname]?.description ??
+              "Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+            }
+          />
+        }
+        body={
+          <div className="w-full h-full flex items-center justify-center">
+            {/* <FindTheWord level={levelk} onFinishTest={onFinishTest} /> */}
+            <FindTheWord
+              level={speedw}
+              difficulty={difficultyw}
+              setCorrect={setCorrectw}
+              setWrong={setWrongw}
+              onBindRef={(ref) => (gameRefw.current = ref)}
+              onFinishTest={onFinishTest}
+            />
+          </div>
+        }
+        showPreviewBody={false}
+        customControls={
+          // <WordFinderControl onLevelChange={(ms) => setLevelk(ms)} />
+          <WordFinderControl
+            speed={speedw}
+            difficulty={difficultyw}
+            correct={correctw}
+            wrong={wrongw}
+            net={netw}
+            onLevelChange={(v) => setSpeedw(v)}
+            onDifficultyChange={(v) => setDifficultyw(v)}
+            onCheckSame={() => gameRefw.current?.checkSame()}
+            onCheckDifferent={() => gameRefw.current?.checkDifferent()}
+            onStart={() => gameRefw.current?.start()}
+            onStop={() => gameRefw.current?.stop()}
+          />
+        }
+        onControlChange={handleControl}
+        lessonData={{ id: lessonParams, duration: durationParams } as any}
+        saveProgress={saveProgress}
+      />
+    );
+  } else if (pathname === "dogru-sayiyi-bul") {
+    return (
+      <Whiteboard
+        pause={pause}
+        control={control}
+        description={
+          <ControlPanelGuide
+            howToPlay={
+              eyeExerciseDescription[pathname]?.howToPlay ??
+              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            }
+            description={
+              eyeExerciseDescription[pathname]?.description ??
+              "Doğru Rengi Bulma egzersizi. Ekranda gösterilen renk sözcüğünün rengini değerlendirip doğru/yanlış butonuna basın."
+            }
+          />
+        }
+        body={
+          <FindCountWords
+            level={cwSpeed}
+            difficulty={cwDifficulty}
+            target={cwTarget}
+            setCorrect={setCwCorrect}
+            setWrong={setCwWrong}
+            onBindRef={(r) => (countRef.current = r)}
+            onTargetChange={(t) => setCwTarget(t)}
+            onFinishTest={onFinishTest}
+          />
+        }
+        customControls={
+          <CountWordsControls
+            speed={cwSpeed}
+            difficulty={cwDifficulty}
+            target={cwTarget}
+            correct={cwCorrect}
+            wrong={cwWrong}
+            running={false}
+            onSpeedChange={setCwSpeed}
+            onDifficultyChange={setCwDifficulty}
+            onCheck={(n) => countRef.current?.check(n)}
+            onStart={() => countRef.current?.start()}
+            onStop={() => countRef.current?.stop()}
+          />
+        }
       />
     );
   } else {

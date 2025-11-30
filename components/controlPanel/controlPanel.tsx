@@ -65,7 +65,7 @@ export const controlItems: any = {
   "goz-kaslarini-gelistirme": ["level", "type", "objectIcon"],
   "aktif-gorme-alanini-genisletme-1": ["frame", "grid", "level"],
   "aktif-gorme-alanini-genisletme-2": ["level", "color"],
-  "aktif-gorme-alanini-genisletme-3": ["level"],
+  "aktif-gorme-alanini-genisletme-3": ["level", "perspectivecolor"],
   "satir-boyu-gorme-uygulamasi": ["distance", "letterCount", "level", "scroll"],
 
   "hizli-gorme": ["level", "font", "wordsPerFrame"],
@@ -465,12 +465,14 @@ export default function ControlPanel({
             >
               <TextInput
                 key={controlVal.perspectivecolor}
-                name="Kutu Rengi"
+                placeholder="Kare Rengi"
+                type="range"
+                name="Kare Rengi"
                 value={controlVal.perspectivecolor}
+                inputKey="perspectivecolor"
+                description="Sürüklerken karenin rengini değiştirin"
                 min="1"
                 max="9"
-                type="range"
-                inputKey="perspectivecolor"
                 onChange={handleChange}
                 showRangeColor={true}
                 colorList={{
@@ -484,9 +486,9 @@ export default function ControlPanel({
                   "8": "#8e44ad", // 8 purple
                   "9": "#ff69b4", // 9 pink
                 }}
-                description="Sürükleyen kutunun rengini değiştirin"
               />
             </div>
+
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("distance") ? "hidden" : ""

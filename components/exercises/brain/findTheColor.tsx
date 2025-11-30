@@ -162,7 +162,15 @@
 // }
 "use client";
 
-import React, { useEffect, useState, useRef, useImperativeHandle, forwardRef } from "react";
+import Button from "@/components/button/button";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
+import { MdPauseCircle } from "react-icons/md";
 
 type FindTheColorProps = {
   level: number; // Speed level from controls
@@ -170,6 +178,7 @@ type FindTheColorProps = {
   onNewWord?: (word: string, color: string) => void; // Just for debugging if needed
   onCorrect?: () => void;
   onWrong?: () => void;
+  onFinishTest?: (v: any) => void;
 };
 
 const COLORS = [
@@ -184,6 +193,7 @@ const COLORS = [
 
 const FindTheColor = forwardRef(function FindTheColor(
   {
+    onFinishTest,
     level,
     running,
     onNewWord,
@@ -235,6 +245,7 @@ const FindTheColor = forwardRef(function FindTheColor(
     };
   }, [running, level]);
 
+  const handlePause = () => onFinishTest?.(null);
   // Correct / Wrong logic handled externally through UI buttons
   const checkAnswer = (isUserSayingCorrect: boolean) => {
     const realColor = COLORS.find((x) => x.word === currentWord)?.color;
@@ -253,17 +264,32 @@ const FindTheColor = forwardRef(function FindTheColor(
   }));
 
   return (
+    //relative w-full h-full flex items-center justify-center
     <div className="w-full h-full flex items-center justify-center">
-      <span
-        className="text-6xl font-bold select-none"
-        style={{ color: currentColor }}
-      >
-        {currentWord}
-      </span>
+      <div className="flex items-center justify-center">
+        <span
+          className="text-6xl font-bold select-none "
+          style={{ color: currentColor }}
+        >
+          {currentWord}
+        </span>
+      </div>
+
       {/* invisible placeholder kept for compatibility if needed */}
-      <div style={{ display: "none" }} aria-hidden data-current-word={currentWord} />
+      <div
+        style={{ display: "none" }}
+        aria-hidden
+        data-current-word={currentWord}
+      />
+
+      {/* Pause Button */}
+      <Button
+        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+        className="max-w-fit absolute right-1 -bottom-1 my-4 bg-blue-600 hover:bg-blue-700"
+        onClick={handlePause}
+      />
     </div>
   );
-}
+});
 
 export default FindTheColor;

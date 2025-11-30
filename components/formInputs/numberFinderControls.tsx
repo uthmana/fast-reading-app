@@ -28,8 +28,9 @@ export default function NumberFinderControls({
   const net = correct - wrong;
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4 bg-white shadow-md rounded-lg w-full max-w-xl">
-      <div className="w-full">
+    <div className="flex flex-row flex-wrap items-center justify-between gap-4 p-4 bg-white shadow-md rounded-lg w-full">
+      {/* Speed */}
+      <div className="flex flex-col items-start w-48">
         <label className="font-semibold">Hız (ms)</label>
         <input
           type="range"
@@ -41,7 +42,8 @@ export default function NumberFinderControls({
         />
       </div>
 
-      <div className="w-full">
+      {/* Difficulty */}
+      <div className="flex flex-col items-start w-48">
         <label className="font-semibold">Zorluk (harf sayısı)</label>
         <input
           type="range"
@@ -53,7 +55,8 @@ export default function NumberFinderControls({
         />
       </div>
 
-      <div className="w-full flex gap-2 items-center">
+      {/* Target letter and Duration */}
+      <div className="flex items-center gap-2">
         <label className="font-semibold">Hedef Harf:</label>
         <input
           type="text"
@@ -71,36 +74,37 @@ export default function NumberFinderControls({
         />
       </div>
 
-      <div className="flex gap-6 mt-4">
+      {/* Buttons */}
+      <div className="flex gap-4">
         <button
           onClick={() => onCheck?.()}
-          className="bg-green-600 text-white px-6 py-3 rounded-xl text-lg font-bold"
+          className="bg-green-600 text-white px-4 py-2 rounded-lg font-bold"
         >
           Doğrula
         </button>
-
         <button
           onClick={() => onPauseToggle(!running)}
-          className="bg-blue-700 text-white px-6 py-3 rounded-xl text-lg font-bold"
+          className="bg-blue-700 text-white px-4 py-2 rounded-lg font-bold"
         >
           {running ? "Durdur" : "Başlat"}
         </button>
       </div>
 
-      <div className="grid grid-cols-3 gap-6 text-center text-lg mt-4 w-full">
+      {/* Score display */}
+      <div className="flex gap-4 text-center text-sm">
         <div>
           <div className="font-bold">Doğru</div>
-          <div className="bg-gray-100 p-2 rounded-md border w-20">
+          <div className="bg-gray-100 p-2 rounded-md border w-16">
             {correct}
           </div>
         </div>
         <div>
           <div className="font-bold">Yanlış</div>
-          <div className="bg-gray-100 p-2 rounded-md border w-20">{wrong}</div>
+          <div className="bg-gray-100 p-2 rounded-md border w-16">{wrong}</div>
         </div>
         <div>
           <div className="font-bold">Net</div>
-          <div className="bg-gray-100 p-2 rounded-md border w-20">{net}</div>
+          <div className="bg-gray-100 p-2 rounded-md border w-16">{net}</div>
         </div>
       </div>
     </div>
