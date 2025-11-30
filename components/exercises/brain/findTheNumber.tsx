@@ -31,7 +31,13 @@
 
 "use client";
 
-import React, { useEffect, useState, useRef, useImperativeHandle, forwardRef } from "react";
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  forwardRef,
+} from "react";
 import Button from "@/components/button/button";
 import { MdPauseCircle } from "react-icons/md";
 
@@ -54,6 +60,8 @@ const FindTheNumber = forwardRef(function FindTheNumber(
     targetLetter,
     duration,
     onFinish,
+    onCorrect,
+    onWrong,
   }: findTheNumberProps,
   ref: React.ForwardedRef<{
     start: () => void;
@@ -130,6 +138,10 @@ const FindTheNumber = forwardRef(function FindTheNumber(
 
     if (userCount === actualCount) setCorrect((c) => c + 1);
     else setWrong((w) => w + 1);
+
+    // notify parent if provided
+    if (userCount === actualCount) onCorrect?.();
+    else onWrong?.();
 
     setUserInput("");
     generateLetters();
@@ -239,6 +251,6 @@ const FindTheNumber = forwardRef(function FindTheNumber(
       )}
     </div>
   );
-}
+});
 
 export default FindTheNumber;
