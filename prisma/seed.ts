@@ -152,19 +152,20 @@ async function main() {
     : lesson;
 
   const studyGroups = studyGroupOptions.map((s) => s.value);
+  const uniqueWords = [...new Set(allWords)];
 
-  for (let i = 0; i < allWords.length; i++) {
+  for (let i = 0; i < uniqueWords.length; i++) {
     await prisma.words
       .create({
         data: {
-          word: allWords[i],
+          word: uniqueWords[i],
           studyGroups: {
             create: studyGroups.map((group: any) => ({
               group: group,
             })),
           },
-          wpc: allWords[i]?.trim()?.split(" ")?.length,
-          lpw: allWords[i]?.trim()?.length,
+          wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
+          lpw: uniqueWords[i]?.trim()?.length,
         },
       })
       .catch(() => null);
