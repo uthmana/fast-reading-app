@@ -5,11 +5,13 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { eyeExerciseDescription } from "@/utils/constants";
+
+const debounceDelay = 500; // ms
 
 export default function page() {
   const queryParams = useParams();
@@ -19,8 +21,9 @@ export default function page() {
   const lessonParams = searchParams.get("lessonId");
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
-
   const [pause, setPause] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [control, setControl] = useState({
     categorySelect: "",
     articleSelect: "",
@@ -28,17 +31,63 @@ export default function page() {
     level: 1,
     wordsPerFrame: 2,
     objectIcon: "1",
+    letterCount: 3,
+    wordList: [] as string[],
   });
 
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
+  const requestData = useCallback(
+    async (letterCount = 0) => {
+      try {
+        const query = encodeURIComponent(
+          JSON.stringify({
+            lpw: letterCount || control.letterCount,
+            wpc: 1,
+            studyGroups: {
+              some: {
+                group: session?.user?.student?.studyGroup,
+              },
+            },
+          })
+        );
+
+        const wordData = await fetchData({
+          apiPath: `/api/words?where=${query}`,
+        });
+
+        setControl((prev) => ({ ...prev, wordList: wordData }));
+        return wordData;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [control.letterCount, session?.user?.student?.studyGroup]
+  );
+
+  // Debounce effect
+  useEffect(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    timeoutRef.current = setTimeout(() => {
+      requestData();
+    }, debounceDelay);
+
+    return () => clearTimeout(timeoutRef.current!);
+  }, [requestData]);
+
   if (!currentMenu.length) {
     return <NotFound />;
   }
 
-  const handleControl = (val: any) => {
+  const handleControl = async (val: any) => {
+    if (pathname === "satir-boyu-gorme-uygulamasi") {
+      const wordList = await requestData(val?.letterCount);
+      setControl({ ...val, wordList });
+      return;
+    }
     setControl(val);
   };
 
@@ -63,8 +112,8 @@ export default function page() {
         method: "POST",
         payload: {
           studentId: session?.user?.student?.id,
-          lessonId: lessonParams,
-          exerciseId: exerciseParams,
+          lessonId: parseInt(lessonParams || ""),
+          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {

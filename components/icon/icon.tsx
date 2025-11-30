@@ -19,7 +19,8 @@ type IconProps = {
     | "test"
     | "book"
     | "fast-reading"
-    | "brain";
+    | "brain"
+    | "addUser";
   className?: string;
   fill?: string;
   stroke?: string;
@@ -43,7 +44,6 @@ function Icon({
           <path d="M8 5v14l11-7z" />
         </svg>
       );
-
     case "pause":
       return (
         <svg
@@ -55,7 +55,6 @@ function Icon({
           <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
         </svg>
       );
-
     case "next":
       return (
         <svg
@@ -67,7 +66,6 @@ function Icon({
           <path d="M6 4v16l8.5-8L6 4zm9.5 0v16h2V4h-2z" />
         </svg>
       );
-
     case "prev":
       return (
         <svg
@@ -79,7 +77,6 @@ function Icon({
           <path d="M18 4v16l-8.5-8L18 4zM5.5 4v16h2V4h-2z" />
         </svg>
       );
-
     case "stop":
       return (
         <svg
@@ -91,7 +88,6 @@ function Icon({
           <path d="M6 6h12v12H6z" />
         </svg>
       );
-
     case "chevron-right":
       return (
         <svg
@@ -103,7 +99,6 @@ function Icon({
           <path d="M9.29 6.71a1 1 0 0 1 1.42 0L16 12l-5.29 5.29a1 1 0 0 1-1.42-1.42L13.17 12l-3.88-3.88a1 1 0 0 1 0-1.41z" />
         </svg>
       );
-
     case "chevron-left":
       return (
         <svg
@@ -352,6 +347,17 @@ function Icon({
     c-2.913,1.566-6.497,0.672-8.289-2.24s-0.672-6.496,2.24-8.288c2.912-1.792,6.495-0.673,8.286,2.239
     C46.139,27.553,45.018,31.361,42.332,32.93z"
           />
+        </svg>
+      );
+    case "addUser":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill={fill}
+          className={className}
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 12c2.761 0 5-2.239 5-5s-2.239-5-5-5-5 2.239-5 5 2.239 5 5 5zm-9 9v-1c0-3.309 2.691-6 6-6h2a1 1 0 011 1v1c0 3.309-2.691 6-6 6H3zm16-6v3h3v2h-3v3h-2v-3h-3v-2h3v-3h2z" />
         </svg>
       );
     default:

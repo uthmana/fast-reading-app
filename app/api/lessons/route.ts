@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
 
     if (id) {
       const lesson = await prisma.lesson.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
         include: {
           LessonExercise: { include: { exercise: true } },
         },
@@ -75,6 +75,7 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: Request) {
   const { id, title, order, Exercise }: Lesson | any = await req.json();
+
   if (!title || !Exercise) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -82,15 +83,21 @@ export async function POST(req: Request) {
   try {
     if (id) {
       const lessonExit = await prisma.lesson.findUnique({ where: { id } });
+
       if (lessonExit) {
         // Replace existing LessonExercise links with the provided Exercise list
         // We'll delete existing join rows and create new ones in order
-        await prisma.lessonExercise.deleteMany({ where: { lessonId: id } });
 
+        await prisma.lesson.update({
+          where: { id },
+          data: { title, order },
+        });
+
+        await prisma.lessonExercise.deleteMany({ where: { lessonId: id } });
         const lessonExerciseData = Exercise.map(
-          (exerciseId: string, idx: number) => ({
+          (exerciseId: number, idx: number) => ({
             lessonId: id,
-            exerciseId,
+            exerciseId: exerciseId as number,
             order: idx + 1,
           })
         );
@@ -124,9 +131,9 @@ export async function POST(req: Request) {
 
     if (Exercise && Exercise.length > 0) {
       const lessonExerciseData = Exercise.map(
-        (exerciseId: string, idx: number) => ({
+        (exerciseId: number, idx: number) => ({
           lessonId: created.id,
-          exerciseId,
+          exerciseId: exerciseId,
           order: idx + 1,
         })
       );

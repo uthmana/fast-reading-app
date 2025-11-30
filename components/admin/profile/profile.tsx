@@ -13,7 +13,9 @@ export default function Profile({ user }: any) {
   return (
     <Dropdown
       key={user?.name}
-      button={<MdAccountCircle className="w-8 h-8 text-blue-600" />}
+      button={
+        <MdAccountCircle className="w-8 h-8 text-blue-600 cursor-pointer" />
+      }
       classNames={"py-2 top-8 -left-[180px] w-max border bg-white rounded-lg"}
     >
       <div className="flex w-56 flex-col justify-start  pb-5 shadow-xl shadow-shadow-500">

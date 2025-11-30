@@ -6,9 +6,15 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const progressParam = searchParams.get("progresspercent");
+
     const students = await prisma.student.findMany({
       include: {
         user: true,
+        class: true,
+        Progress: true,
+        attempts: true,
       },
       orderBy: {
         user: {
@@ -16,7 +22,38 @@ export async function GET(req: NextRequest) {
         },
       },
     });
-    return NextResponse.json(students, { status: 200 });
+
+    if (!students.length) {
+      return NextResponse.json([], { status: 200 });
+    }
+
+    if (!progressParam) {
+      return NextResponse.json(students, { status: 200 });
+    }
+
+    // Resolve async map correctly
+    const enhanced = await Promise.all(
+      students.map(async (student) => {
+        const [totalLessonExercises, completedCount] = await Promise.all([
+          prisma.lessonExercise.count(),
+          prisma.progress.count({
+            where: { studentId: student.id, done: true },
+          }),
+        ]);
+
+        const progressPercent =
+          totalLessonExercises > 0
+            ? Math.round((completedCount / totalLessonExercises) * 100)
+            : 0;
+
+        return {
+          ...student,
+          progressPercent,
+        };
+      })
+    );
+
+    return NextResponse.json(enhanced, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
@@ -35,11 +72,11 @@ export async function PUT(req: Request) {
     id,
     startDate,
     endDate,
-    level,
+    studyGroup,
     termsAgreed,
     introTestTaken,
   }: Student = await req.json();
-  if (!id || !startDate || !endDate || !level) {
+  if (!id || !startDate || !endDate || !studyGroup) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -60,7 +97,7 @@ export async function PUT(req: Request) {
       data: {
         startDate,
         endDate,
-        level,
+        studyGroup,
         ...(termsAgreed !== undefined ? { termsAgreed } : {}),
         ...(introTestTaken !== undefined || introTestTaken <= 3
           ? { introTestTaken }
@@ -93,7 +130,10 @@ export async function POST(req: Request) {
     active,
     startDate,
     endDate,
-    level,
+    studyGroup,
+    classId,
+    gender,
+    fee,
   }: User | any = await req.json();
   if (
     !username ||
@@ -102,7 +142,9 @@ export async function POST(req: Request) {
     !role ||
     !startDate ||
     !endDate ||
-    !level
+    !studyGroup ||
+    !classId ||
+    !gender
   ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -116,10 +158,15 @@ export async function POST(req: Request) {
         },
       });
       if (userExit) {
+        // const pwd =
+        //   userExit.user.password !== password
+        //     ? await bcrypt.hash(password, 10)
+        //     : userExit.user.password;
         const pwd =
           userExit.user.password !== password
-            ? await bcrypt.hash(password, 10)
+            ? password
             : userExit.user.password;
+
         const user = await prisma.user.update({
           where: { id: userExit.user.id },
           data: {
@@ -134,7 +181,12 @@ export async function POST(req: Request) {
               update: {
                 startDate,
                 endDate,
-                level: level,
+                studyGroup: studyGroup,
+                gender: gender,
+                fee,
+                class: {
+                  connect: { id: parseInt(classId) },
+                },
               },
             },
           },
@@ -143,14 +195,14 @@ export async function POST(req: Request) {
       }
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    //const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         name,
         username,
         tcId,
         email,
-        password: hashedPassword,
+        password: password,
         role: role,
         ...(role === "STUDENT"
           ? {
@@ -158,7 +210,12 @@ export async function POST(req: Request) {
                 create: {
                   startDate,
                   endDate,
-                  level: level,
+                  fee,
+                  gender: gender,
+                  studyGroup: studyGroup,
+                  class: {
+                    connect: { id: parseInt(classId) },
+                  },
                 },
               },
             }

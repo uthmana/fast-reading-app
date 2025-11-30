@@ -6,6 +6,9 @@ import {
   MdAdd,
   MdFileDownload,
   MdChecklist,
+  MdSettings,
+  MdSettingsApplications,
+  MdMenu,
 } from "react-icons/md";
 
 import {
@@ -26,7 +29,11 @@ import { useDrage } from "@/utils/hooks";
 import TableEmpty from "./tableEmpty";
 import { exportToExcel, formatDateTime } from "@/utils/helpers";
 import { columnsData, ColumnsKey } from "./columnsData";
-import { TableSkeleton } from "../../skeleton/skeleton";
+import { TableCellSkeleton } from "../../skeleton/skeleton";
+import Link from "next/link";
+import Dropdown from "../dropdown/dropdown";
+import Icon from "@/components/icon/icon";
+import { studyGroupOptions } from "@/utils/constants";
 
 function TableBuilder({
   tableData,
@@ -40,28 +47,39 @@ function TableBuilder({
   columnKey,
   isLoading = false,
   className = "",
+  additionalActions = [],
 }: any) {
-  if (isLoading) {
-    return <TableSkeleton />;
-  }
-
   const columnData = columnsData[columnKey as ColumnsKey];
   if (!columnData || !columnData.length) return null;
   let defaultData = tableData;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState("");
-  const { handleMouseDown, handleMouseLeave, handleMouseUp, handleMouseMove } =
-    useDrage();
 
   const columnHelper = createColumnHelper<any>();
 
-  const renderValue = (type: string, info: any) => {
+  const renderValue = (
+    item: { type: string; lengthName: string; link: string },
+    info: any
+  ) => {
+    const { type, lengthName, link } = item;
     const value = info.getValue();
+    const id = info.row.original.id;
     if (type === "date") {
       return formatDateTime(value);
     }
+    if (type === "fullDate") {
+      return formatDateTime(value, true);
+    }
     if (type === "boolean") {
-      return value ? "Active" : "Passive";
+      return value ? "Aktif" : "Pasif";
+    }
+    if (type === "length") {
+      return (
+        <Link
+          className="text-blue-600 hover:underline"
+          href={`${link}${id}`}
+        >{`${lengthName} (${value.length})`}</Link>
+      );
     }
     if (type === "category") {
       return value.title;
@@ -86,46 +104,111 @@ function TableBuilder({
         />
       );
     }
-
+    if (type === "html") {
+      return (
+        <span
+          className="w-full block text-md space-y-1"
+          dangerouslySetInnerHTML={{ __html: value }}
+        />
+      );
+    }
+    if (type === "list") {
+      return value
+        ?.map(
+          (list: any) =>
+            studyGroupOptions.find((item) => item.value === list.group)?.name
+        )
+        ?.join(", ");
+    }
+    if (type === "studyGroup") {
+      return studyGroupOptions.find((item) => item.value === value)?.name;
+    }
     return value;
   };
 
   const columns = useMemo(() => {
     const col: any = [];
-    if (showEditColumn) {
-      col.push(
-        columnHelper.display({
-          header: () => <p className="font-bold text-black">#</p>,
-          id: "edit",
-          cell: (info) => (
-            <div className="flex gap-2 ">
-              <button onClick={() => onAction("edit", info)}>
-                <MdModeEdit className="w-5 h-5 hover:text-red-500" />
-              </button>
-              <button onClick={() => onAction("delete", info)}>
-                <MdOutlineDelete className="w-5 h-5 hover:text-red-500" />
-              </button>
-            </div>
-          ),
-        })
-      );
-    }
-
     columnData.map((item: any) => {
       let temp: any = columnHelper.accessor(item.id, {
         header: () => (
           <p className="font-bold px-1 text-black whitespace-nowrap">
             {item.name}
+            {item.totalCount ? ` ${"("}${tableData?.length}${")"}` : null}
           </p>
         ),
         cell: (info) => (
-          <p className="line-clamp-1 px-1" title={renderValue(item.type, info)}>
-            {renderValue(item.type, info)}
+          <p
+            className="line-clamp-4 px-1 flex items-center min-h-8"
+            title={renderValue(item.type, info)?.toString()}
+          >
+            {renderValue(item, info)}
           </p>
         ),
       });
       col.push(temp);
     });
+
+    if (showEditColumn) {
+      col.push(
+        columnHelper.display({
+          header: () => (
+            <p className="font-bold text-black">
+              {"("}
+              {tableData?.length}
+              {")"}
+            </p>
+          ),
+          id: "edit",
+          cell: (info) => (
+            <Dropdown
+              key={info?.row.id}
+              button={
+                <MdSettings className="w-6 h-6 cursor-pointer text-gray-600" />
+              }
+              classNames={"absolute py-2 z-[1] top-8 w-max border bg-white"}
+            >
+              <div className="flex border min-w-14 shadow rounded-lg gap-2 absolute top-0 right-[-20px] px-3  bg-white">
+                <ul className="w-full pt-1">
+                  {additionalActions?.map((item: any) => {
+                    return (
+                      <li
+                        key={item.actionName}
+                        className="py-1 w-full border-b"
+                      >
+                        <button
+                          className="flex whitespace-nowrap w-full gap-2 hover:text-blue-500"
+                          onClick={() => onAction(item.action, info)}
+                        >
+                          <Icon name={item.icon} className="w-5 h-5" />
+                          {item.actionName}
+                        </button>
+                      </li>
+                    );
+                  })}
+                  <li className="py-1 border-b w-full">
+                    <button
+                      className="flex h-full gap-2 hover:text-blue-500"
+                      onClick={() => onAction("edit", info)}
+                    >
+                      <MdModeEdit className="w-5 h-5 " /> Düzenle
+                    </button>
+                  </li>
+                  <li className="py-1 w-full">
+                    <button
+                      className="flex w-full gap-2 hover:text-red-500"
+                      onClick={() => onAction("delete", info)}
+                    >
+                      <MdOutlineDelete className="w-5 h-5 " />
+                      Sil
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </Dropdown>
+          ),
+        })
+      );
+    }
 
     return col;
   }, []);
@@ -179,27 +262,34 @@ function TableBuilder({
         </header>
       ) : null}
 
-      <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-10 border bg-white rounded-lg">
-        <div className="flex justify-between">
+      <div className="lg:w-full h-full px-5 w-full sm:overflow-auto pt-5 border bg-white rounded-lg">
+        <div className="flex justify-between mb-2">
           {title ? <h2 className="text-lg font-semibold">{title}</h2> : null}
-          <Button
-            text="Excel"
-            className={`hover:!bg-blue-400  hover:!text-white text-sm !bg-black/0 border !py-1 !text-black !max-w-fit mb-3 ${
-              title ? "ml-auto" : ""
-            }`}
-            onClick={() => exportToExcel(data, `ogrenciler.xlsx`)}
-            icon={<MdFileDownload className="w-4 h-4" />}
-          />
+          <Dropdown
+            button={
+              <MdMenu className="w-5 h-5 cursor-pointer text-gray-400 hover:text-gray-600" />
+            }
+            classNames={"absolute py-2 z-[1] top-7 w-max border bg-white"}
+          >
+            <div className="flex border min-w-20 shadow rounded-md gap-2 absolute top-0 left-[0px] bg-white">
+              <ul className="w-full">
+                <li className="py-1 border-b w-full">
+                  <Button
+                    text="Excel"
+                    className={`hover:!bg-blue-400  hover:!text-white text-sm !bg-black/0 border-b h-full !text-black -w-full ${
+                      title ? "ml-auto" : ""
+                    }`}
+                    onClick={() => exportToExcel(data, `liste.xlsx`)}
+                    icon={<MdFileDownload className="w-4 h-4" />}
+                  />
+                </li>
+              </ul>
+            </div>
+          </Dropdown>
         </div>
 
-        <div
-          className="w-full overflow-x-auto"
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-        >
-          <table className="w-full mb-10 ">
+        <div className="w-full overflow-x-auto min-h-[220px]">
+          <table className="w-full mb-10 h-full">
             <thead>
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
@@ -231,6 +321,9 @@ function TableBuilder({
               ))}
             </thead>
             <tbody>
+              {isLoading ? (
+                <TableCellSkeleton columnLength={columnData.length} />
+              ) : null}
               {table
                 .getRowModel()
                 .rows.slice()
@@ -255,7 +348,7 @@ function TableBuilder({
                 })}
             </tbody>
           </table>
-          {data.length === 0 && columnData.length > 0 ? <TableEmpty /> : null}
+          {!isLoading && data.length === 0 ? <TableEmpty /> : null}
           {showPagination ? <TablePagination table={table} /> : null}
         </div>
       </div>

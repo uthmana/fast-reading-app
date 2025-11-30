@@ -16,6 +16,34 @@ export function TableSkeleton() {
   );
 }
 
+export function TableCellSkeleton({
+  columnLength = 1,
+}: {
+  columnLength: number;
+}) {
+  const rows = Array.from({ length: columnLength + 1 }, (_, i) => i);
+
+  return (
+    <>
+      {[1, 2, 3, 4, 5, 6, 7].map((item, pIdx) => (
+        <tr
+          key={pIdx}
+          className="border-b animate-pulse text-sm hover:bg-gray-200"
+        >
+          {rows.map((item, idx) => (
+            <td key={idx} className="py-4 px-2">
+              <div key={idx} className="flex  flex-col gap-1">
+                <div className="h-[6px] w-10 rounded-lg bg-gray-200  md:w-20" />
+                <div className="h-1 w-5 rounded-lg bg-gray-200 md:w-10" />
+              </div>
+            </td>
+          ))}
+        </tr>
+      ))}
+    </>
+  );
+}
+
 export function HeaderSkeleton() {
   return (
     <header className="relative mb-7 flex animate-pulse items-center justify-between gap-4 border-b bg-gray-100/0 py-3 dark:bg-navy-800/0">

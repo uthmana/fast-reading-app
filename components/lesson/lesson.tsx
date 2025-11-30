@@ -25,8 +25,9 @@ export default function Lesson({ id }: { id?: string }) {
         setIsLoading(true);
         const resData = await fetchData({ apiPath: "/api/lessons" });
         setData(resData);
-        let lesson = id
-          ? resData?.find((item: any) => item.id === id)
+        const lessonId = parseInt(id || "");
+        let lesson = lessonId
+          ? resData?.find((item: any) => item.id === lessonId)
           : resData?.[0];
         setCurrentLesson(lesson);
 
