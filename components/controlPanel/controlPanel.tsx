@@ -476,7 +476,7 @@ export default function ControlPanel({
                 name="Harf Sayısı"
                 onChange={handleChange}
                 description="Metindeki harf sayısı"
-                min="1"
+                min="3"
                 max="10"
               />
             </div>
@@ -485,8 +485,10 @@ export default function ControlPanel({
                 !controlItem.includes("scroll") ? "hidden" : ""
               }`}
             >
-              <div className="flex w-full items-center gap-3 px-1">
-                <label className="text-white font-medium">Kaydırma</label>
+              <div className="flex w-full items-center pt-5 gap-3 px-1">
+                <label className="text-black font-medium text-sm items-center whitespace-nowrap">
+                  Kaydırma
+                </label>
                 <input
                   type="checkbox"
                   checked={
