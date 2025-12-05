@@ -8,9 +8,8 @@ import book_loader from "/public/images/book-loader.gif";
 import ControlPanel from "../controlPanel/controlPanel";
 import Link from "next/link";
 import CountDown from "../countDown/countDown";
-import { WhiteboardProvider } from "@/app/contexts/WhiteboardContext";
 
-interface WhiteboardProps {
+interface WhiteboardCopyProps {
   body?: ReactElement;
   description: ReactElement;
   options?: any;
@@ -25,7 +24,7 @@ interface WhiteboardProps {
   setControlVal?: (updateFn: (prev: any) => any) => void;
 }
 
-export default function Whiteboard({
+export default function WhiteboardCopy({
   body,
   description,
   onControlChange,
@@ -37,7 +36,7 @@ export default function Whiteboard({
   contentClassName = "",
 
   saveProgress,
-}: WhiteboardProps) {
+}: WhiteboardCopyProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [articles, setArticles] = useState([] as any);
@@ -204,12 +203,7 @@ export default function Whiteboard({
                 />
               ) : null}
 
-              <WhiteboardProvider
-                setControlVal={setControlVal}
-                controlVal={controlVal}
-              >
-                {body}
-              </WhiteboardProvider>
+              {body}
             </div>
 
             {isLoading ? (
