@@ -4342,6 +4342,20 @@ export const speedMap: Record<number, number> = {
   10: 220,
 };
 
+type ColorItem = {
+  word: string;
+  color: string;
+};
+
+export const COLORS: ColorItem[] = [
+  { word: "SİYAH", color: "black" },
+  { word: "KIRMIZI", color: "red" },
+  { word: "YEŞİL", color: "green" },
+  { word: "MAVİ", color: "blue" },
+  { word: "SARI", color: "yellow" },
+  { word: "TURUNCU", color: "orange" },
+  { word: "MOR", color: "purple" },
+];
 export const studyGroupOptions = [
   { value: "ILKOKUL_2_3", name: "İlkokul (2-3)" },
   { value: "ILKOKUL_4", name: "İlkokul (4)" },

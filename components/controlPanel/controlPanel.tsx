@@ -12,9 +12,14 @@ import {
 import { MdSpeed, MdTitle } from "react-icons/md";
 import { IoMdClock } from "react-icons/io";
 import { speedMap } from "@/utils/constants";
+import Button from "../button/button";
+import { table } from "console";
+import ActionButton from "../button/actionbutton";
+import AnswerButton from "../button/actionbutton";
 
 interface ControlPanelProps {
   onControlChange?: (v: any) => void;
+  OnClick?: () => void;
   controlVal?: any;
   setControlVal?: any;
   className?: string;
@@ -69,10 +74,36 @@ export const controlItems: any = {
     "level",
     "font",
   ],
+  "dogru-rengi-bul": [
+    "level",
+    "displayCorrectAnswer",
+    "diplayWrongAnswer",
+    "displayNetAnswer",
+    "checkCorrect",
+  ],
+  "dogru-kelimeyi-bil": [
+    "levelWord",
+    "displayCorrectAnswerWord",
+    "diplayWrongAnswerWord",
+    "displayNetAnswerWord",
+    "checkCorrectWord",
+    "difficultyWord",
+  ],
+  "dogru-sayiyi-bul": [
+    "levelNumber",
+    "difficultyNumber",
+    "displayCorrectAnswerNumber",
+    "diplayWrongAnswerNumber",
+    "displayNetAnswerNumber",
+    "userAnswerNumber",
+    "checkCorrectNumber",
+  ],
 };
 
 export default function ControlPanel({
   onControlChange,
+  OnClick,
+
   controlVal,
   setControlVal,
   className,
@@ -101,6 +132,7 @@ export default function ControlPanel({
     value: string;
     inputKey: string;
   }) => {
+    console.log("targetValue", targetValue, inputKey, value);
     let crtVal = { ...controlVal };
     if (inputKey === "categorySelect") {
       crtVal["categorySelect"].value = targetValue;
@@ -127,8 +159,70 @@ export default function ControlPanel({
       if (selectedArticle) {
         crtVal["articleSelect"].value = selectedArticle.id;
       }
+    } else if (inputKey === "checkCorrect") {
+      // Just pass through the button click - let the exercise component handle the logic
+      if (!crtVal["checkCorrect"]) {
+        crtVal["checkCorrect"] = {
+          value: "",
+          targetValue: false,
+          inputKey: "",
+        };
+      }
+
+      // Store the check values (exercise component will handle counter updates)
+      crtVal["checkCorrect"].value = targetValue;
+      crtVal["checkCorrect"].targetValue = targetValue;
+      crtVal["checkCorrect"].inputKey = inputKey;
+
+      console.log(
+        "ControlPanel: checkCorrect button clicked, targetValue:",
+        targetValue
+      );
+    } else if (inputKey === "checkCorrectWord") {
+      // Just pass through the button click - let the exercise component handle the logic
+      if (!crtVal["checkCorrectWord"]) {
+        crtVal["checkCorrectWord"] = {
+          value: "",
+          targetValue: false,
+          inputKey: "",
+        };
+      }
+
+      // Store the check values (exercise component will handle counter updates)
+      crtVal["checkCorrectWord"].value = targetValue;
+      crtVal["checkCorrectWord"].targetValue = targetValue;
+      crtVal["checkCorrectWord"].inputKey = inputKey;
+
+      console.log(
+        "ControlPanel: checkCorrectWord button clicked, targetValue:",
+        targetValue
+      );
+    } else if (inputKey === "checkCorrectNumber") {
+      // Just pass through the button click - let the exercise component handle the logic
+      if (!crtVal["checkCorrectNumber"]) {
+        crtVal["checkCorrectNumber"] = {
+          value: "",
+          targetValue: false,
+          inputKey: "",
+        };
+      }
+
+      // Store the check values (exercise component will handle counter updates)
+      crtVal["checkCorrectNumber"].value = targetValue;
+      crtVal["checkCorrectNumber"].targetValue = targetValue;
+      crtVal["checkCorrectNumber"].inputKey = inputKey;
+
+      console.log(
+        "ControlPanel: checkCorrectNumber button clicked, targetValue:",
+        targetValue
+      );
     } else {
-      crtVal[inputKey].value = targetValue;
+      if (!crtVal[inputKey]) {
+        crtVal[inputKey] = { value: targetValue };
+      } else {
+        crtVal[inputKey].value = targetValue;
+      }
+      console.log(targetValue);
     }
 
     setControlVal(crtVal);
@@ -154,6 +248,38 @@ export default function ControlPanel({
         letterCount: parseInt(crtVal.letterCount?.value),
         size: parseInt(crtVal.size?.value),
         scroll: crtVal.scroll?.value === "1" || crtVal.scroll?.value === true,
+        checkCorrect: {
+          value: crtVal.checkCorrect?.value || "",
+          targetValue: crtVal.checkCorrect?.targetValue || false,
+          inputKey: crtVal.checkCorrect?.inputKey || "",
+        },
+        displayCorrectAnswer: crtVal.displayCorrectAnswer?.value || "0",
+        diplayWrongAnswer: crtVal.diplayWrongAnswer?.value || "0",
+        displayNetAnswer: crtVal.displayNetAnswer?.value || "0",
+        // For FindTheWord exercise
+        levelWord: parseInt(crtVal.levelWord?.value),
+        displayCorrectAnswerWord: crtVal.displayCorrectAnswerWord?.value || "0",
+        diplayWrongAnswerWord: crtVal.diplayWrongAnswerWord?.value || "0",
+        displayNetAnswerWord: crtVal.displayNetAnswerWord?.value || "0",
+        checkCorrectWord: {
+          value: crtVal.checkCorrectWord?.value || "",
+          targetValue: crtVal.checkCorrectWord?.targetValue || false,
+          inputKey: crtVal.checkCorrectWord?.inputKey || "",
+        },
+        difficultyWord: crtVal.difficultyWord?.value || "",
+        // For FindTheNumber exercise
+        levelNumber: parseInt(crtVal.levelNumber?.value),
+        difficultyNumber: parseInt(crtVal.difficultyNumber?.value),
+        displayCorrectAnswerNumber:
+          crtVal.displayCorrectAnswerNumber?.value || "0",
+        diplayWrongAnswerNumber: crtVal.diplayWrongAnswerNumber?.value || "0",
+        displayNetAnswerNumber: crtVal.displayNetAnswerNumber?.value || "0",
+        userAnswerNumber: crtVal.userAnswerNumber?.value || "",
+        checkCorrectNumber: {
+          value: crtVal.checkCorrectNumber?.value || "",
+          targetValue: crtVal.checkCorrectNumber?.targetValue || false,
+          inputKey: crtVal.checkCorrectNumber?.inputKey || "",
+        },
       });
     }
   };
@@ -184,6 +310,11 @@ export default function ControlPanel({
     }
   }, [controlVal]);
 
+  const handleClick = () => {
+    if (OnClick) {
+      OnClick();
+    }
+  };
   return (
     <div className={`flex w-full flex-col ${className}`}>
       {controlItem.includes("categorySelect") ? (
@@ -480,6 +611,330 @@ export default function ControlPanel({
                 max="10"
               />
             </div>
+            <div className="flex-1 flex gap-2">
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayNetAnswer") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.displayNetAnswer}
+                  type="text"
+                  value={controlVal.displayNetAnswer}
+                  inputKey="displayNetAnswer"
+                  onChange={handleChange}
+                  name="Net"
+                />
+              </div>
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("diplayWrongAnswer") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.diplayWrongAnswer}
+                  type="text"
+                  value={controlVal.diplayWrongAnswer}
+                  inputKey="diplayWrongAnswer"
+                  name="Yanlış "
+                  onChange={handleChange}
+                />
+              </div>
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayCorrectAnswer") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.displayCorrectAnswer}
+                  type="text"
+                  value={controlVal.displayCorrectAnswer}
+                  inputKey="displayCorrectAnswer"
+                  name="Doğru"
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("checkCorrect") ? "hidden" : ""
+                }`}
+              >
+                <AnswerButton
+                  styleClass="bg-"
+                  inputKey="checkCorrect"
+                  onChange={handleChange}
+                  buttonNames={{ correct: "Doğru", wrong: "Yanlış" }}
+                />
+              </div>
+            </div>
+            {/* FindTheWord - Single Row Layout */}
+            <div className="w-full flex gap-2 justify-between items-end">
+              {/* Speed */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("levelWord") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.levelWord}
+                  placeholder="Hız"
+                  type="range"
+                  value={controlVal.levelWord}
+                  inputKey="levelWord"
+                  name="Hız"
+                  onChange={handleChange}
+                  min="1"
+                  max="10"
+                  required={false}
+                  valueMap={speedMap}
+                  styleClass="mb-0"
+                  description="Gösterim Hızı"
+                />
+              </div>
+
+              {/* Difficulty */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("difficultyWord") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.difficultyWord}
+                  placeholder="Zorluk"
+                  type="range"
+                  value={controlVal.difficultyWord}
+                  inputKey="difficultyWord"
+                  name="Zorluk"
+                  onChange={handleChange}
+                  min="2"
+                  max="6"
+                  required={false}
+                  styleClass="mb-0"
+                  description="Zorluk Durumu"
+                />
+              </div>
+
+              {/* Correct Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayCorrectAnswerWord")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.displayCorrectAnswerWord}
+                  type="text"
+                  value={controlVal.displayCorrectAnswerWord}
+                  inputKey="displayCorrectAnswerWord"
+                  name="Doğru"
+                  onChange={handleChange}
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Wrong Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("diplayWrongAnswerWord") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.diplayWrongAnswerWord}
+                  type="text"
+                  value={controlVal.diplayWrongAnswerWord}
+                  inputKey="diplayWrongAnswerWord"
+                  name="Yanlış"
+                  onChange={handleChange}
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Net Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayNetAnswerWord") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.displayNetAnswerWord}
+                  type="text"
+                  value={controlVal.displayNetAnswerWord}
+                  inputKey="displayNetAnswerWord"
+                  onChange={handleChange}
+                  name="Net"
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Answer Buttons */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("checkCorrectWord") ? "hidden" : ""
+                }`}
+              >
+                <AnswerButton
+                  styleClass="mb-0"
+                  inputKey="checkCorrectWord"
+                  onChange={handleChange}
+                  buttonNames={{ correct: "Aynı", wrong: "Farklı" }}
+                />
+              </div>
+            </div>
+
+            {/* FindTheNumber - Single Row Layout */}
+            <div className="w-full flex gap-2 justify-between items-end">
+              {/* Speed */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("levelNumber") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.levelNumber}
+                  placeholder="Hız"
+                  type="range"
+                  value={controlVal.levelNumber}
+                  inputKey="levelNumber"
+                  name="Hız"
+                  onChange={handleChange}
+                  min="1"
+                  max="10"
+                  required={false}
+                  valueMap={speedMap}
+                  styleClass="mb-0"
+                  description="Gösterim Hızı"
+                />
+              </div>
+
+              {/* Difficulty */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("difficultyNumber") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.difficultyNumber}
+                  placeholder="Zorluk"
+                  type="range"
+                  value={controlVal.difficultyNumber}
+                  inputKey="difficultyNumber"
+                  name="Zorluk"
+                  onChange={handleChange}
+                  min="5"
+                  max="10"
+                  required={false}
+                  styleClass="mb-0"
+                  description="Karakter Sayısı"
+                />
+              </div>
+
+              {/* Correct Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayCorrectAnswerNumber")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
+                <TextInput
+                  key={
+                    typeof controlVal.displayCorrectAnswerNumber === "object"
+                      ? controlVal.displayCorrectAnswerNumber.value ?? "0"
+                      : controlVal.displayCorrectAnswerNumber ?? "0"
+                  }
+                  type="text"
+                  value={
+                    typeof controlVal.displayCorrectAnswerNumber === "object"
+                      ? controlVal.displayCorrectAnswerNumber.value ?? "0"
+                      : controlVal.displayCorrectAnswerNumber ?? "0"
+                  }
+                  inputKey="displayCorrectAnswerNumber"
+                  name="Doğru"
+                  onChange={handleChange}
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Wrong Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("diplayWrongAnswerNumber")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.diplayWrongAnswerNumber}
+                  type="text"
+                  value={controlVal.diplayWrongAnswerNumber}
+                  inputKey="diplayWrongAnswerNumber"
+                  name="Yanlış"
+                  onChange={handleChange}
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Net Counter */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("displayNetAnswerNumber")
+                    ? "hidden"
+                    : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.displayNetAnswerNumber}
+                  type="text"
+                  value={controlVal.displayNetAnswerNumber}
+                  inputKey="displayNetAnswerNumber"
+                  onChange={handleChange}
+                  name="Net"
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* User Answer Input */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("userAnswerNumber") ? "hidden" : ""
+                }`}
+              >
+                <TextInput
+                  key={controlVal.userAnswerNumber}
+                  type="number"
+                  value={controlVal.userAnswerNumber}
+                  inputKey="userAnswerNumber"
+                  name="Cevap"
+                  placeholder="Sayı girin"
+                  onChange={handleChange}
+                  styleClass="mb-0"
+                />
+              </div>
+
+              {/* Check Button */}
+              <div
+                className={`flex-1 drop-shadow ${
+                  !controlItem.includes("checkCorrectNumber") ? "hidden" : ""
+                }`}
+              >
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleChange({
+                      targetValue: true,
+                      value: controlVal.userAnswerNumber,
+                      inputKey: "checkCorrectNumber",
+                    })
+                  }
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-12 px-4 rounded shadow-md transition-colors duration-200"
+                >
+                  Doğrula
+                </button>
+              </div>
+            </div>
+
             <div
               className={`flex-1 drop-shadow ${
                 !controlItem.includes("scroll") ? "hidden" : ""
