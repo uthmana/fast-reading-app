@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Student, User } from "@prisma/client";
-import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 
@@ -8,20 +7,52 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const progressParam = searchParams.get("progresspercent");
+    const whereParam = searchParams.get("where");
+    let where: any | undefined;
+    let students: any | undefined;
 
-    const students = await prisma.student.findMany({
-      include: {
-        user: true,
-        class: true,
-        Progress: true,
-        attempts: true,
-      },
-      orderBy: {
-        user: {
-          createdAt: "desc",
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+    }
+    if (where) {
+      students = await prisma.student.findMany({
+        where,
+        include: {
+          user: true,
+          class: true,
+          Progress: true,
+          attempts: true,
+          Subscriber: true,
         },
-      },
-    });
+        orderBy: {
+          user: {
+            createdAt: "desc",
+          },
+        },
+      });
+    } else {
+      students = await prisma.student.findMany({
+        include: {
+          user: true,
+          class: true,
+          Progress: true,
+          attempts: true,
+          Subscriber: true,
+        },
+        orderBy: {
+          user: {
+            createdAt: "desc",
+          },
+        },
+      });
+    }
 
     if (!students.length) {
       return NextResponse.json([], { status: 200 });
@@ -33,7 +64,7 @@ export async function GET(req: NextRequest) {
 
     // Resolve async map correctly
     const enhanced = await Promise.all(
-      students.map(async (student) => {
+      students.map(async (student: any) => {
         const [totalLessonExercises, completedCount] = await Promise.all([
           prisma.lessonExercise.count(),
           prisma.progress.count({
@@ -134,7 +165,26 @@ export async function POST(req: Request) {
     classId,
     gender,
     fee,
+    subscriberId,
   }: User | any = await req.json();
+  console.log({
+    id,
+    name,
+    username,
+    tcId,
+    email,
+    password,
+    role,
+    active,
+    startDate,
+    endDate,
+    studyGroup,
+    classId,
+    gender,
+    fee,
+    subscriberId,
+  });
+
   if (
     !username ||
     !tcId ||
@@ -144,7 +194,8 @@ export async function POST(req: Request) {
     !endDate ||
     !studyGroup ||
     !classId ||
-    !gender
+    !gender ||
+    !subscriberId
   ) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -158,10 +209,6 @@ export async function POST(req: Request) {
         },
       });
       if (userExit) {
-        // const pwd =
-        //   userExit.user.password !== password
-        //     ? await bcrypt.hash(password, 10)
-        //     : userExit.user.password;
         const pwd =
           userExit.user.password !== password
             ? password
@@ -187,15 +234,37 @@ export async function POST(req: Request) {
                 class: {
                   connect: { id: parseInt(classId) },
                 },
+                Subscriber: {
+                  connect: { id: subscriberId },
+                },
               },
             },
           },
         });
         return NextResponse.json(user, { status: 200 });
       }
+      return NextResponse.json([], { status: 201 });
     }
 
-    //const hashedPassword = await bcrypt.hash(password, 10);
+    if (subscriberId) {
+      const exitSub = await prisma.subscriber.findUnique({
+        where: { id: subscriberId },
+      });
+      if (exitSub?.credit && exitSub?.credit > 0) {
+        const subscriber = await prisma.subscriber.update({
+          where: { id: subscriberId },
+          data: {
+            credit: exitSub?.credit - 1,
+          },
+        });
+      } else {
+        return NextResponse.json(
+          { error: "Krediniz yükseltmemiz gerekiyor" },
+          { status: 400 }
+        );
+      }
+    }
+
     const user = await prisma.user.create({
       data: {
         name,
@@ -216,6 +285,9 @@ export async function POST(req: Request) {
                   class: {
                     connect: { id: parseInt(classId) },
                   },
+                  Subscriber: {
+                    connect: { id: subscriberId },
+                  },
                 },
               },
             }
@@ -232,6 +304,7 @@ export async function POST(req: Request) {
     if (role === "STUDENT" && user.Student) {
       try {
         const studentId = user.Student.id;
+        const _subscriberId = user.Student?.subscriberId;
 
         // Find the first lesson by order
         const firstLesson = await prisma.lesson.findFirst({

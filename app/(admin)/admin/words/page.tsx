@@ -6,11 +6,13 @@ import Popup from "@/components/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
+import { useAuthHandler } from "../authHandler/authOptions";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
   const [words, setWords] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const { canView, canCreate, canEdit, canDelete } = useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({
     title: "",
@@ -86,43 +88,50 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <TableBuilder
-        key={isLoading}
-        tableData={words}
-        columnKey="allWordsColumn"
-        onAction={handleAction}
-        onAdd={handleAction}
-        isLoading={isLoading}
-      />
-
-      <Popup
-        show={isShowPopUp}
-        onClose={() => setIsShowPopUp(false)}
-        title="Kelime Ekle"
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <FormBuilder
-          id={"allWords"}
-          className="px-8"
-          data={data}
-          onSubmit={(values) =>
-            handleFormSubmit({
-              values,
-              method: "POST",
-              apiPath: "/api/words",
-              callback: (res: Response) => handleFormResponse(res),
-            })
-          }
-          isSubmitting={isSubmitting}
-          resError={resError}
-          submitBtnProps={{
-            text: "Kaydet",
-            type: "submit",
-          }}
+      {canView ? (
+        <TableBuilder
+          key={isLoading}
+          tableData={words}
+          columnKey="allWordsColumn"
+          onAction={handleAction}
+          onAdd={handleAction}
+          isLoading={isLoading}
+          showAddButton={canCreate}
+          showEditRow={canEdit}
+          showDeleteRow={canDelete}
         />
-      </Popup>
+      ) : null}
+
+      {canCreate ? (
+        <Popup
+          show={isShowPopUp}
+          onClose={() => setIsShowPopUp(false)}
+          title="Kelime Ekle"
+          bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+          overlayClass="z-10"
+          titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+        >
+          <FormBuilder
+            id={"allWords"}
+            className="px-8"
+            data={data}
+            onSubmit={(values) =>
+              handleFormSubmit({
+                values,
+                method: "POST",
+                apiPath: "/api/words",
+                callback: (res: Response) => handleFormResponse(res),
+              })
+            }
+            isSubmitting={isSubmitting}
+            resError={resError}
+            submitBtnProps={{
+              text: "Kaydet",
+              type: "submit",
+            }}
+          />
+        </Popup>
+      ) : null}
     </div>
   );
 }

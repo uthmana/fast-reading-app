@@ -5,6 +5,32 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
+    const { searchParams } = new URL(req.url);
+    const whereParam = searchParams.get("where");
+    let where: any | undefined;
+
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+
+      const classes = await prisma.class.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+          students: {
+            where,
+          },
+        },
+      });
+
+      return NextResponse.json(classes, { status: 200 });
+    }
+
     const classes = await prisma.class.findMany({
       orderBy: { createdAt: "desc" },
       include: { students: true },
@@ -25,7 +51,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, name, studyGroup, teacherId, active }: Class | any =
+  const { id, name, studyGroup, teacherId, subscriberId, active }: Class | any =
     await req.json();
   if (!name || !studyGroup || !teacherId) {
     return NextResponse.json(
@@ -33,6 +59,10 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
+  const parsedTeacherId = teacherId ? parseInt(teacherId) : teacherId;
+  const parsedsubscriberId = subscriberId
+    ? parseInt(subscriberId)
+    : subscriberId;
 
   try {
     if (id) {
@@ -45,10 +75,13 @@ export async function POST(req: Request) {
           data: {
             name,
             studyGroup,
-            teacher: {
-              connect: { id: parseInt(teacherId) },
-            },
             active,
+            teacher: {
+              connect: { id: parsedTeacherId },
+            },
+            subscriber: {
+              connect: { id: parsedsubscriberId },
+            },
           },
         });
         return NextResponse.json(classItem, { status: 200 });
@@ -59,10 +92,13 @@ export async function POST(req: Request) {
       data: {
         name,
         studyGroup,
-        teacher: {
-          connect: { id: parseInt(teacherId) },
-        },
         active,
+        teacher: {
+          connect: { id: parsedTeacherId },
+        },
+        subscriber: {
+          connect: { id: parsedsubscriberId },
+        },
       },
     });
 

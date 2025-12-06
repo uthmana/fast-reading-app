@@ -26,6 +26,32 @@ async function main() {
     },
   });
 
+  // Default subscriber + class
+  const subscriber = await prisma.user.create({
+    data: {
+      email: "musteri@example.com",
+      password: "1234",
+      role: "SUBSCRIBER",
+      name: "Deneme musteri",
+      username: "denememusteri",
+      Subscriber: {
+        create: {
+          credit: 20,
+        },
+      },
+    },
+    include: {
+      Teacher: {
+        include: {
+          class: true,
+        },
+      },
+      Subscriber: true,
+    },
+  });
+
+  const subscriberId = subscriber.Subscriber!.id;
+
   // Default teacher + class
   const teacher = await prisma.user.create({
     data: {
@@ -43,6 +69,9 @@ async function main() {
               studyGroup: "ILKOKUL_2_3",
             },
           },
+          subscriber: {
+            connect: { id: subscriberId },
+          },
         },
       },
     },
@@ -50,6 +79,7 @@ async function main() {
       Teacher: {
         include: {
           class: true,
+          subscriber: true,
         },
       },
     },
@@ -79,6 +109,9 @@ async function main() {
             connect: {
               id: classId,
             },
+          },
+          Subscriber: {
+            connect: { id: subscriberId },
           },
         },
       },
@@ -151,25 +184,25 @@ async function main() {
       }
     : lesson;
 
-  const studyGroups = studyGroupOptions.map((s) => s.value);
-  const uniqueWords = [...new Set(allWords)];
+  // const studyGroups = studyGroupOptions.map((s) => s.value);
+  // const uniqueWords = [...new Set(allWords)];
 
-  for (let i = 0; i < uniqueWords.length; i++) {
-    await prisma.words
-      .create({
-        data: {
-          word: uniqueWords[i],
-          studyGroups: {
-            create: studyGroups.map((group: any) => ({
-              group: group,
-            })),
-          },
-          wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
-          lpw: uniqueWords[i]?.trim()?.length,
-        },
-      })
-      .catch(() => null);
-  }
+  // for (let i = 0; i < uniqueWords.length; i++) {
+  //   await prisma.words
+  //     .create({
+  //       data: {
+  //         word: uniqueWords[i],
+  //         studyGroups: {
+  //           create: studyGroups.map((group: any) => ({
+  //             group: group,
+  //           })),
+  //         },
+  //         wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
+  //         lpw: uniqueWords[i]?.trim()?.length,
+  //       },
+  //     })
+  //     .catch(() => null);
+  // }
 
   console.log({
     user,

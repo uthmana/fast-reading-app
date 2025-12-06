@@ -1,4 +1,8 @@
-export default function NotFound() {
+export default function NotFound({
+  redirectPath = "/",
+}: {
+  redirectPath?: string;
+}) {
   return (
     <div className="flex flex-col items-center justify-center min-h-full bg-gray-50 text-center p-6">
       <h1 className="text-6xl font-bold text-blue-600 mb-4">404</h1>
@@ -9,7 +13,7 @@ export default function NotFound() {
         Aradığınız sayfa mevcut değil veya taşınmış olabilir.
       </p>
       <a
-        href="/"
+        href={redirectPath}
         className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
       >
         Ana Sayfaya Dön

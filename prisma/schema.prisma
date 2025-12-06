@@ -8,38 +8,54 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  name      String
-  username  String    @unique
-  email     String?   @unique
-  tcId      String?   @unique
-  password  String
-  address   String?
-  active    Boolean   @default(true)
-  role      Role      @default(STUDENT)
-  Student   Student?
-  Teacher   Teacher?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id           Int         @id @default(autoincrement())
+  name         String
+  username     String      @unique
+  email        String?     @unique
+  tcId         String?     @unique
+  password     String
+  address      String?
+  active       Boolean     @default(true)
+  role         Role        @default(STUDENT)
+  Student      Student?
+  Teacher      Teacher?
+  Subscriber   Subscriber? @relation(fields: [subscriberId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
+  subscriberId Int?
 }
 
 model Student {
-  id             Int        @id @default(autoincrement())
-  userId         Int        @unique
-  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             Int         @id @default(autoincrement())
+  userId         Int         @unique
+  user           User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   startDate      DateTime?
   endDate        DateTime?
-  class          Class?     @relation(fields: [classId], references: [id])
-  studyGroup     StudyGroup @default(ILKOKUL_2_3)
+  class          Class?      @relation(fields: [classId], references: [id])
+  studyGroup     StudyGroup  @default(ILKOKUL_2_3)
   attempts       Attempt[]
   Progress       Progress[]
-  active         Boolean    @default(true)
-  gender         Gender     @default(OTHER)
-  termsAgreed    Boolean    @default(false)
-  introTestTaken Int        @default(0)
+  active         Boolean     @default(true)
+  gender         Gender      @default(OTHER)
+  termsAgreed    Boolean     @default(false)
+  introTestTaken Int         @default(0)
   classId        Int
-  fee            Int        @default(0)
-  currency       Currency   @default(TL)
+  fee            Int         @default(0)
+  currency       Currency    @default(TL)
+  Subscriber     Subscriber? @relation(fields: [subscriberId], references: [id])
+  subscriberId   Int?
+}
+
+model Subscriber {
+  id        Int       @id @default(autoincrement())
+  credit    Int       @default(10)
+  price     Float?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  users     User[]
+  students  Student[]
+  teachers  Teacher[]
+  classes   Class[]
 }
 
 model Lesson {
@@ -140,8 +156,8 @@ model Category {
 
 model Words {
   id          Int               @id @default(autoincrement())
-  word        String             @unique
-  similarWord String?           
+  word        String            @unique
+  similarWord String?
   studyGroups WordsStudyGroup[]
   wpc         Int // words per count
   lpw         Int // letters per word
@@ -157,29 +173,34 @@ model WordsStudyGroup {
 }
 
 model Class {
-  id         Int        @id @default(autoincrement())
-  name       String
-  teacher    Teacher?   @relation(fields: [teacherId], references: [id])
-  studyGroup StudyGroup @default(ILKOKUL_2_3)
-  teacherId  Int?
-  students   Student[]
-  active     Boolean    @default(true)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime?  @updatedAt
+  id           Int         @id @default(autoincrement())
+  name         String
+  studyGroup   StudyGroup  @default(ILKOKUL_2_3)
+  teacher      Teacher?    @relation(fields: [teacherId], references: [id])
+  teacherId    Int?
+  subscriber   Subscriber? @relation(fields: [subscriberId], references: [id])
+  subscriberId Int?
+  students     Student[]
+  active       Boolean     @default(true)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime?   @updatedAt
 }
 
 model Teacher {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @unique
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  class     Class[]
-  active    Boolean   @default(true)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id           Int        @id @default(autoincrement())
+  userId       Int        @unique
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  class        Class[]
+  subscriber   Subscriber @relation(fields: [subscriberId], references: [id])
+  active       Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  subscriberId Int
 }
 
 enum Role {
   ADMIN
+  SUBSCRIBER
   STUDENT
   TEACHER
 }
@@ -212,9 +233,9 @@ enum Gender {
   FEMALE
   OTHER
 }
+
 enum Currency {
   TL
   USD
   EURO
 }
-
