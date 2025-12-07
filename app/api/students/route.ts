@@ -167,23 +167,6 @@ export async function POST(req: Request) {
     fee,
     subscriberId,
   }: User | any = await req.json();
-  console.log({
-    id,
-    name,
-    username,
-    tcId,
-    email,
-    password,
-    role,
-    active,
-    startDate,
-    endDate,
-    studyGroup,
-    classId,
-    gender,
-    fee,
-    subscriberId,
-  });
 
   if (
     !username ||

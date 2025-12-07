@@ -1,5 +1,16 @@
 import { fetchData } from "@/utils/fetchData";
 
+interface SessionTypes {
+  user: {
+    id: string;
+    role: string;
+    name: string;
+    username: string;
+    student: any;
+    subscriberId?: number;
+  };
+}
+
 export const getCategoryOptions = async () => {
   try {
     const resData = await fetchData({ apiPath: "/api/category" });
@@ -25,7 +36,7 @@ export const getArticleByCategoryId = async (id: string) => {
   }
 };
 
-export const getExerciseOptions = async () => {
+export const getExerciseOptions = async (session: SessionTypes) => {
   try {
     const resData = await fetchData({ apiPath: "/api/exercises" });
     const res = resData?.map((item: { title: string; id: string }) => {
@@ -38,9 +49,16 @@ export const getExerciseOptions = async () => {
   }
 };
 
-export const getTeacherOptions = async () => {
+export const getTeacherOptions = async (session: SessionTypes) => {
   try {
-    const resData = await fetchData({ apiPath: "/api/teachers" });
+    const query = encodeURIComponent(
+      JSON.stringify({
+        subscriberId: session.user.subscriberId,
+      })
+    );
+    const resData = await fetchData({
+      apiPath: `/api/teachers?where=${query}`,
+    });
     const res = resData?.map(
       (item: { title: string; id: string; user: any }) => {
         return { name: item.user.name, value: item.id };
@@ -53,9 +71,16 @@ export const getTeacherOptions = async () => {
   }
 };
 
-export const getClassOptions = async () => {
+export const getClassOptions = async (session: SessionTypes) => {
   try {
-    const resData = await fetchData({ apiPath: "/api/classes" });
+    const query = encodeURIComponent(
+      JSON.stringify({
+        subscriberId: session.user.subscriberId,
+      })
+    );
+    const resData = await fetchData({
+      apiPath: `/api/classes?where=${query}&subscriber=true`,
+    });
     const res = resData?.map((item: { id: string; name: any }) => {
       return { name: item.name, value: item.id };
     });

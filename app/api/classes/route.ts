@@ -7,6 +7,8 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
+    const subscriberParam = searchParams.get("subscriber");
+
     let where: any | undefined;
 
     if (whereParam) {
@@ -18,7 +20,16 @@ export async function GET(req: NextRequest) {
           { status: 400 }
         );
       }
-
+      if (subscriberParam) {
+        const classes = await prisma.class.findMany({
+          where,
+          orderBy: { createdAt: "desc" },
+          include: {
+            students: true,
+          },
+        });
+        return NextResponse.json(classes, { status: 200 });
+      }
       const classes = await prisma.class.findMany({
         orderBy: { createdAt: "desc" },
         include: {
@@ -27,7 +38,6 @@ export async function GET(req: NextRequest) {
           },
         },
       });
-
       return NextResponse.json(classes, { status: 200 });
     }
 

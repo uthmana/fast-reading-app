@@ -67,6 +67,9 @@ async function main() {
             create: {
               name: "Demo",
               studyGroup: "ILKOKUL_2_3",
+              subscriber: {
+                connect: { id: subscriberId },
+              },
             },
           },
           subscriber: {
@@ -206,6 +209,8 @@ async function main() {
 
   console.log({
     user,
+    subscriber,
+    teacher,
     student,
     category,
     article,

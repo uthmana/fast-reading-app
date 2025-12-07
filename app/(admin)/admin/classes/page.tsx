@@ -14,7 +14,7 @@ export default function page() {
   const [isLoading, setIsloading] = useState(false);
   const [classes, setClasses] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
-  const { canView, canCreate, canEdit, canDelete, loading, userData } =
+  const { loading, canView, canCreate, canEdit, canDelete, userData } =
     useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({
@@ -35,7 +35,7 @@ export default function page() {
         );
         setIsloading(true);
         const resData = await fetchData({
-          apiPath: `/api/classes?where=${query}`,
+          apiPath: `/api/classes?where=${query}&subscriber=true`,
         });
 
         setClasses(resData);

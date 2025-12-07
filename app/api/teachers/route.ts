@@ -18,14 +18,13 @@ export async function GET(req: NextRequest) {
           { status: 400 }
         );
       }
-      if (where) {
-        const teachers = await prisma.teacher.findMany({
-          where,
-          orderBy: { createdAt: "desc" },
-          include: { user: true, subscriber: true },
-        });
-        return NextResponse.json(teachers, { status: 200 });
-      }
+
+      const teachers = await prisma.teacher.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        include: { user: true, subscriber: true },
+      });
+      return NextResponse.json(teachers, { status: 200 });
     }
 
     const teachers = await prisma.teacher.findMany({

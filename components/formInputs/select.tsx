@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 type SelectPropTypes = {
@@ -17,7 +18,7 @@ type SelectPropTypes = {
   }) => void;
   inputKey: string;
   styleClass?: string;
-  asyncOption?: () => any;
+  asyncOption?: (session: any) => any;
   multipleSelect?: boolean;
 };
 
@@ -38,17 +39,20 @@ function Select({
 }: SelectPropTypes) {
   const [localOptions, setLocalOptions] = useState(options as any);
   const [isLodingOption, setisLodingOption] = useState(false);
+  const { data: session } = useSession();
+
   useEffect(() => {
+    if (!session) return;
     if (!options.length && asyncOption) {
       const getOptions = async () => {
         setisLodingOption(true);
-        const res = await asyncOption();
+        const res = await asyncOption(session);
         setLocalOptions(res);
         setisLodingOption(false);
       };
       getOptions();
     }
-  }, [asyncOption]);
+  }, [session, asyncOption]);
 
   return (
     <div className={`w-full mb-2 text-sm ${styleClass}`}>

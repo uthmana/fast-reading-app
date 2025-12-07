@@ -23,11 +23,7 @@ export default function page() {
 
     const requestData = async () => {
       try {
-        // setIsloading(true);
-        // const res = await fetchData({
-        //   apiPath: "/api/teachers",
-        // });
-
+        if (!userData.subscriberId) return;
         const query = encodeURIComponent(
           JSON.stringify({
             subscriberId: userData.subscriberId,

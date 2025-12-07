@@ -23,7 +23,7 @@ export default function StudentPageContent() {
   const [isShowStudyResultPopUp, setIsShowStudyResultPopUp] = useState(false);
   const [studentResult, setStudentResult] = useState({} as any);
   const [loadingResult, setLoadingResult] = useState(false);
-  const { canView, canCreate, canEdit, canDelete, loading, userData } =
+  const { loading, canView, canCreate, canEdit, canDelete, userData } =
     useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({
@@ -33,6 +33,7 @@ export default function StudentPageContent() {
 
   useEffect(() => {
     if (loading || !userData) return;
+
     const requestData = async () => {
       try {
         setIsloading(true);
@@ -50,6 +51,12 @@ export default function StudentPageContent() {
             return item.classId === parseInt(classId);
           });
         }
+
+        if (editmodel && classId) {
+          setData({ classId, subscriberId: userData.subscriberId });
+          setIsShowPopUp(true);
+        }
+
         const allData = resData.map((dVal: any) => {
           const { user, ...rest } = dVal;
           const { id, ...userRest } = user;
@@ -97,11 +104,7 @@ export default function StudentPageContent() {
     };
 
     requestData();
-    if (editmodel && classId) {
-      setData({ classId });
-      setIsShowPopUp(true);
-    }
-  }, [classId, editmodel, loading, userData]);
+  }, [loading, userData, classId, editmodel]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;
