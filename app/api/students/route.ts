@@ -71,12 +71,9 @@ export async function GET(req: NextRequest) {
             where: { studentId: student.id, done: true },
           }),
         ]);
-
-        const progressPercent =
-          totalLessonExercises > 0
-            ? Math.round((completedCount / totalLessonExercises) * 100)
-            : 0;
-
+        const progressPercent = totalLessonExercises
+          ? Math.round((completedCount / totalLessonExercises) * 100)
+          : 0;
         return {
           ...student,
           progressPercent,
@@ -287,7 +284,6 @@ export async function POST(req: Request) {
     if (role === "STUDENT" && user.Student) {
       try {
         const studentId = user.Student.id;
-        const _subscriberId = user.Student?.subscriberId;
 
         // Find the first lesson by order
         const firstLesson = await prisma.lesson.findFirst({

@@ -89,7 +89,7 @@ export default function SideBar({
         </button>
       </div>
 
-      <div className="w-full h-[calc(100%-60px)]  flex flex-col justify-between">
+      <div className="w-full h-[calc(100%-160px)]  flex flex-col justify-between">
         <nav className="p-4 space-y-1">
           {routes.map((route, idx) => {
             const rp = route.path ? normalize(route.path) : "";

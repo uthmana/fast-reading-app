@@ -11,8 +11,6 @@ import { Category, StudyGroup } from "@prisma/client";
 
 async function main() {
   // Default admin user
-  //const hashedPassword = await bcrypt.hash("1234", 10);
-
   const user = await prisma.user.upsert({
     where: { username: "deneme" },
     update: {},
@@ -26,7 +24,7 @@ async function main() {
     },
   });
 
-  // Default subscriber + class
+  // Default subscriber
   const subscriber = await prisma.user.create({
     data: {
       email: "musteri@example.com",
@@ -90,7 +88,6 @@ async function main() {
 
   // Extract created classId
   const classId = teacher.Teacher!.class[0].id;
-  console.log({ classId });
 
   // Create student connected to the class
   const student = await prisma.user.create({
@@ -132,8 +129,6 @@ async function main() {
     orderBy: { createdAt: "asc" },
   });
 
-  console.log({ firstCategory });
-
   const categoryId = firstCategory?.id;
   const article = await prisma.article.create({
     data: {
@@ -152,60 +147,44 @@ async function main() {
   );
 
   // create a lesson and link exercises via the LessonExercise join model
-  const lesson = await prisma.lesson.create({
-    data: {
-      title: "1. Ders aşağıdaki egzersizleri yapınız.",
-      order: 1,
-    },
-  });
+  const lessonsNumbers = Array.from({ length: 40 }, (_, i) => i + 1);
 
-  if (createdExercises && createdExercises.length > 0) {
-    const lessonExerciseData = createdExercises.map((item, idx) => ({
-      lessonId: lesson.id,
-      exerciseId: item.id,
-      order: idx + 1,
-    }));
+  await prisma.$transaction(
+    lessonsNumbers.map((num) =>
+      prisma.lesson.create({
+        data: {
+          title: `${num}. Ders aşağıdaki egzersizleri yapınız.`,
+          order: num,
+          LessonExercise: {
+            create: createdExercises.map((item, idx) => ({
+              exerciseId: item.id,
+              order: idx + 1,
+            })),
+          },
+        },
+      })
+    )
+  );
 
-    // create the join rows
-    await prisma.lessonExercise.createMany({ data: lessonExerciseData });
+  const studyGroups = studyGroupOptions.map((s) => s.value);
+  const uniqueWords = [...new Set(allWords)];
+
+  for (let i = 0; i < uniqueWords.length; i++) {
+    await prisma.words
+      .create({
+        data: {
+          word: uniqueWords[i],
+          studyGroups: {
+            create: studyGroups.map((group: any) => ({
+              group: group,
+            })),
+          },
+          wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
+          lpw: uniqueWords[i]?.trim()?.length,
+        },
+      })
+      .catch(() => null);
   }
-
-  const lessonWithExercises = await prisma.lesson.findUnique({
-    where: { id: lesson.id },
-    include: { LessonExercise: { include: { exercise: true } } },
-  });
-
-  // expose the mapped shape used by the API (Exercise array)
-  const mappedLesson = lessonWithExercises
-    ? {
-        ...lessonWithExercises,
-        Exercise: (lessonWithExercises.LessonExercise || []).map((le) => ({
-          ...le.exercise,
-          lessonExerciseId: le.id,
-          order: le.order,
-        })),
-      }
-    : lesson;
-
-  // const studyGroups = studyGroupOptions.map((s) => s.value);
-  // const uniqueWords = [...new Set(allWords)];
-
-  // for (let i = 0; i < uniqueWords.length; i++) {
-  //   await prisma.words
-  //     .create({
-  //       data: {
-  //         word: uniqueWords[i],
-  //         studyGroups: {
-  //           create: studyGroups.map((group: any) => ({
-  //             group: group,
-  //           })),
-  //         },
-  //         wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
-  //         lpw: uniqueWords[i]?.trim()?.length,
-  //       },
-  //     })
-  //     .catch(() => null);
-  // }
 
   console.log({
     user,
@@ -215,8 +194,6 @@ async function main() {
     category,
     article,
     createdExercises,
-    lesson,
-    mappedLesson,
   });
 }
 
