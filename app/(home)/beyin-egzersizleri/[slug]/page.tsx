@@ -21,12 +21,13 @@ export default function page() {
 
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
-    categorySelect: "",
-    articleSelect: "",
-    font: "16",
     level: 1,
-    wordsPerFrame: 2,
-    objectIcon: "1",
+    difficultyLevel: 1,
+    resultDisplay: {
+      right: 0,
+      wrong: 0,
+      net: 0,
+    },
   });
 
   const currentMenu = menuItems.filter((m) =>
@@ -53,6 +54,14 @@ export default function page() {
       setPause(!pause);
       return;
     }
+  };
+
+  const onResultDisplay = async (val: {
+    right: number;
+    wrong: number;
+    net: number;
+  }) => {
+    setControl({ ...control, resultDisplay: val });
   };
 
   const saveProgress = async () => {
@@ -85,7 +94,7 @@ export default function page() {
           onFinishTest={onFinishTest}
           controls={control}
           pathname={pathname}
-          article={control.articleSelect as any}
+          onResultDisplay={onResultDisplay}
         />
       }
       control={control}

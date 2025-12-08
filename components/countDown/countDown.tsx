@@ -7,11 +7,13 @@ export default function Countdown({
   start = false,
   onFinish,
   className = "",
+  text = "sec.",
 }: {
   initial: number;
   start: boolean;
   onFinish?: () => void;
   className?: string;
+  text?: string;
 }) {
   const [time, setTime] = useState(initial);
   const finishedRef = useRef(false);
@@ -48,7 +50,7 @@ export default function Countdown({
       ) : (
         <IoMdClock className="w-5 h-5 text-white" />
       )}
-      <span className="font-bold"> {time} </span> sec.
+      <span className="font-bold"> {time} </span> {text}
     </div>
   );
 }

@@ -49,6 +49,16 @@ export default function Whiteboard({
     objectIcon,
     wordsPerFrame,
     type,
+    resultDisplay,
+    frame,
+    grid,
+    color,
+    perspectivecolor,
+    distance,
+    letterCount,
+    size,
+    scroll,
+    difficultyLevel,
   } = control;
 
   const [controlVal, setControlVal] = useState({
@@ -73,19 +83,28 @@ export default function Whiteboard({
     wordsPerFrame: {
       value: (wordsPerFrame ? wordsPerFrame : 1)?.toString(),
     },
-    frame: { value: (control.frame ? control.frame : 8)?.toString() },
-    grid: { value: (control.grid ? control.grid : 2)?.toString() },
-    color: { value: (control.color ? control.color : 1)?.toString() },
-    perspectivecolor: {
-      value: (control.perspectivecolor
-        ? control.perspectivecolor
-        : 1
-      )?.toString(),
+    difficultyLevel: {
+      value: (difficultyLevel ? difficultyLevel : 1)?.toString(),
     },
-    distance: { value: 1 },
-    letterCount: { value: 3 },
-    size: { value: 1 },
-    scroll: { value: 1 },
+    frame: { value: (frame ? frame : 8)?.toString() },
+    grid: { value: (grid ? grid : 2)?.toString() },
+    color: { value: (color ? color : 1)?.toString() },
+    distance: { value: distance ? distance : 1 },
+    letterCount: { value: letterCount ? letterCount : 3 },
+    size: { value: size ? size : 1 },
+    scroll: { value: scroll ? scroll : 1 },
+    perspectivecolor: {
+      value: (perspectivecolor ? perspectivecolor : 1)?.toString(),
+    },
+    resultDisplay: {
+      value: resultDisplay
+        ? resultDisplay
+        : {
+            right: 0,
+            wrong: 0,
+            net: 0,
+          },
+    },
   } as any);
 
   useEffect(() => {
@@ -93,6 +112,14 @@ export default function Whiteboard({
       setIsPlaying(pause ? !isPlaying : pause);
     }
   }, [pause]);
+
+  useEffect(() => {
+    if (control?.resultDisplay === undefined) return;
+    setControlVal({
+      ...controlVal,
+      resultDisplay: { value: control.resultDisplay },
+    });
+  }, [control?.resultDisplay]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -103,7 +130,7 @@ export default function Whiteboard({
   };
 
   return (
-    <div className="flex flex-col px-5">
+    <div className="flex flex-col px-5 mb-5">
       {/* Whiteboard preview */}
       <div className="relative w-full overflow-hidden mb-1 rounded-md border border-gray-400 min-h-[460px]  mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img

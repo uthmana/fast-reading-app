@@ -39,6 +39,11 @@ export const controlItems: any = {
   "hizli-gorme": ["level", "font", "wordsPerFrame"],
   "goz-cevikligi-artirma": ["level", "font", "wordsPerFrame"],
   "seviye-yukselt": ["level", "font", "wordsPerFrame"],
+
+  "dogru-rengi-bul": ["level", "resultDisplay"],
+  "dogru-kelimeyi-bil": ["level", "difficultyLevel", "resultDisplay"],
+  "dogru-sayiyi-bul": ["level", "difficultyLevel", "resultDisplay"],
+
   "hizli-okuma-testi": ["font", "categorySelect", "articleSelect"],
   "anlama-testi": ["font", "categorySelect", "articleSelect"],
   "silinmeden-okuma": [
@@ -154,6 +159,8 @@ export default function ControlPanel({
         letterCount: parseInt(crtVal.letterCount?.value),
         size: parseInt(crtVal.size?.value),
         scroll: crtVal.scroll?.value === "1" || crtVal.scroll?.value === true,
+        resultDisplay: crtVal.resultDisplay.value,
+        difficultyLevel: parseInt(crtVal.difficultyLevel.value),
       });
     }
   };
@@ -503,6 +510,55 @@ export default function ControlPanel({
                     })
                   }
                 />
+              </div>
+            </div>
+
+            <div
+              className={`flex-1 drop-shadow ${
+                !controlItem.includes("difficultyLevel") ? "hidden" : ""
+              }`}
+            >
+              <TextInput
+                key={controlVal.difficultyLevel}
+                placeholder="Zorluk"
+                type="range"
+                value={controlVal.difficultyLevel}
+                inputKey="difficultyLevel"
+                name="Zorluk"
+                onChange={handleChange}
+                min="1"
+                max="6"
+                description="Zorluk durumu"
+              />
+            </div>
+
+            <div
+              className={`flex-1 drop-shadow flex justify-center  ${
+                !controlItem.includes("resultDisplay") ? "hidden" : ""
+              }`}
+            >
+              <div
+                key={controlVal.resultDisplay.value}
+                className="flex w-fit h-full items-center gap-3"
+              >
+                <div className="flex flex-col justify-center items-center">
+                  <label className="text-sm font-semibold">Doğru</label>
+                  <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
+                    {controlVal.resultDisplay.value.right}
+                  </div>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                  <label className="text-sm font-semibold">Yanlış</label>
+                  <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
+                    {controlVal.resultDisplay.value.wrong}
+                  </div>
+                </div>
+                <div className="flex flex-col justify-center items-center">
+                  <label className="text-sm font-semibold">Net</label>
+                  <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
+                    {controlVal.resultDisplay.value.net}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
