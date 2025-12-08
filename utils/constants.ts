@@ -39,6 +39,19 @@ export const lessons = {
     { name: "Anlama Tesi", link: "/goster-kendini/anlama-testi" },
   ],
 };
+type ColorItem = {
+  word: string;
+  color: string;
+};
+export const COLORS: ColorItem[] = [
+  { word: "SİYAH", color: "black" },
+  { word: "KIRMIZI", color: "red" },
+  { word: "YEŞİL", color: "green" },
+  { word: "MAVİ", color: "blue" },
+  { word: "SARI", color: "yellow" },
+  { word: "TURUNCU", color: "orange" },
+  { word: "MOR", color: "purple" },
+];
 export const letterWords = {
   "kelimeler-1": [
     "bal",
