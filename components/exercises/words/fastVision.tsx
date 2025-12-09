@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { MdPauseCircle } from "react-icons/md";
-import { speedMap, WordsPerSentence } from "@/utils/constants";
+import { speedMap } from "@/utils/constants";
 import Button from "@/components/button/button";
 
 type TachistoProps = {
@@ -36,13 +36,13 @@ export default function Tachistoscope({
 
   const level = controls?.level || 1;
   const text = controls?.wordList;
+  const font = controls?.font;
 
   // Keep the latest onComplete reference
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // 🧩 Setup frames from WordsPerSentence directly
   useEffect(() => {
     if (!text?.length) {
       setFrames([]);
@@ -54,7 +54,7 @@ export default function Tachistoscope({
     setFrames(text);
     setFrameDurationMs(speedMap[level]);
     setIndex(0);
-  }, [text, level]);
+  }, [text, level, font]);
 
   // ▶️ Auto start playback
   useEffect(() => {

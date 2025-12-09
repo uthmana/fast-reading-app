@@ -21,6 +21,11 @@ interface WhiteboardProps {
   lessonData?: { id: string; duration: string };
   contentClassName?: string;
   saveProgress?: () => void;
+  resultDisplay?: {
+    right: number;
+    wrong: number;
+    net: number;
+  };
 }
 
 export default function Whiteboard({
@@ -34,6 +39,7 @@ export default function Whiteboard({
   lessonData,
   contentClassName = "",
   saveProgress,
+  resultDisplay,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +55,6 @@ export default function Whiteboard({
     objectIcon,
     wordsPerFrame,
     type,
-    resultDisplay,
     frame,
     grid,
     color,
@@ -96,15 +101,6 @@ export default function Whiteboard({
     perspectivecolor: {
       value: (perspectivecolor ? perspectivecolor : 1)?.toString(),
     },
-    resultDisplay: {
-      value: resultDisplay
-        ? resultDisplay
-        : {
-            right: 0,
-            wrong: 0,
-            net: 0,
-          },
-    },
   } as any);
 
   useEffect(() => {
@@ -113,13 +109,13 @@ export default function Whiteboard({
     }
   }, [pause]);
 
-  useEffect(() => {
-    if (control?.resultDisplay === undefined) return;
-    setControlVal({
-      ...controlVal,
-      resultDisplay: { value: control.resultDisplay },
-    });
-  }, [control?.resultDisplay]);
+  // useEffect(() => {
+  //   if (control?.resultDisplay === undefined) return;
+  //   setControlVal({
+  //     ...controlVal,
+  //     resultDisplay: { value: control.resultDisplay },
+  //   });
+  // }, [control?.resultDisplay]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -193,6 +189,7 @@ export default function Whiteboard({
           setArticleOptions={setArticleOptions}
           isfastTest={isfastTest}
           readingStatus={readingStatus}
+          resultDisplay={resultDisplay}
         />
       </div>
 
@@ -256,6 +253,7 @@ export default function Whiteboard({
               setArticleOptions={setArticleOptions}
               isfastTest={isfastTest}
               readingStatus={readingStatus}
+              resultDisplay={resultDisplay}
             />
           </div>
         </div>

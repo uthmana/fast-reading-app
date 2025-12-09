@@ -23,11 +23,12 @@ export default function page() {
   const [control, setControl] = useState({
     level: 1,
     difficultyLevel: 1,
-    resultDisplay: {
-      right: 0,
-      wrong: 0,
-      net: 0,
-    },
+  });
+
+  const [resultDisplay, setResultDisplay] = useState({
+    right: 0,
+    wrong: 0,
+    net: 0,
   });
 
   const currentMenu = menuItems.filter((m) =>
@@ -56,13 +57,13 @@ export default function page() {
     }
   };
 
-  const onResultDisplay = async (val: {
-    right: number;
-    wrong: number;
-    net: number;
-  }) => {
-    setControl({ ...control, resultDisplay: val });
-  };
+  // const onResultDisplay = async (val: {
+  //   right: number;
+  //   wrong: number;
+  //   net: number;
+  // }) => {
+  //   setResultDisplay(val);
+  // };
 
   const saveProgress = async () => {
     try {
@@ -94,7 +95,10 @@ export default function page() {
           onFinishTest={onFinishTest}
           controls={control}
           pathname={pathname}
-          onResultDisplay={onResultDisplay}
+          //onResultDisplay={onResultDisplay}
+
+          resultDisplay={resultDisplay}
+          setResultDisplay={setResultDisplay}
         />
       }
       control={control}
@@ -102,6 +106,7 @@ export default function page() {
       lessonData={{ id: lessonParams, duration: durationParams } as any}
       contentClassName="!w-full"
       saveProgress={saveProgress}
+      resultDisplay={resultDisplay}
     />
   );
 }

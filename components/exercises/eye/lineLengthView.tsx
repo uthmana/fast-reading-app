@@ -25,7 +25,6 @@ export default function LineLengthView({
   const [word, setWord] = useState("...");
   const [yOffset, setYOffset] = useState(0);
   const [flipping, setFlipping] = useState(false);
-
   const distance = (controls?.distance ?? 3) * 20;
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
@@ -112,9 +111,9 @@ export default function LineLengthView({
       )}
 
       {/* LEFT SIDE WORD */}
-      <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-center">
+      <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-end">
         <div
-          className="text-4xl font-light text-black"
+          className="text-2xl font-light text-black"
           style={{
             transform: `translateX(calc(-50% - ${distance}px)) translateY(${yOffset}px)`,
             transition: "transform 0.2s linear",
@@ -125,9 +124,9 @@ export default function LineLengthView({
       </div>
 
       {/* RIGHT SIDE WORD */}
-      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-center">
+      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-left">
         <div
-          className="text-4xl font-light text-black"
+          className="text-2xl font-light text-black"
           style={{
             transform: `translateX(calc(50% + ${distance}px)) translateY(${yOffset}px)`,
             transition: "transform 0.2s linear",

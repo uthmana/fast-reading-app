@@ -24,6 +24,7 @@ type InputProps = {
   colorList?: any;
   valueMap?: any;
   showLabel?: boolean;
+  labelClassName?: string;
 };
 
 function TextInput(props: InputProps) {
@@ -38,6 +39,7 @@ function TextInput(props: InputProps) {
     disabled,
     maxlength,
     styleClass = "",
+    labelClassName = "",
     step,
     showRangeIcon = false,
     showRangeColor = false,
@@ -51,10 +53,10 @@ function TextInput(props: InputProps) {
   } = props;
 
   return (
-    <div className={`w-full mb-2 text-sm  ${styleClass}`}>
+    <div className={`w-full mb-2 text-sm relative ${styleClass}`}>
       {showLabel ? (
         <label
-          className="font-medium flex gap-1 w-full items-center whitespace-nowrap"
+          className={`font-medium flex gap-1 w-full items-center whitespace-nowrap ${labelClassName}`}
           htmlFor={inputKey}
         >
           {name}

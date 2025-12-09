@@ -1,34 +1,3 @@
-// import Button from "@/components/button/button";
-// import React from "react";
-// import { MdPauseCircle } from "react-icons/md";
-
-// export default function ActivevisionAreaOne({
-//   onFinishTest,
-//   pathname,
-//   controls,
-// }: {
-//   onFinishTest: (v: any) => void;
-//   pathname: string;
-//   controls: any;
-// }) {
-//   const handlePause = () => {
-//     if (onFinishTest) {
-//       onFinishTest(null);
-//     }
-//   };
-
-//   return (
-//     <div className="w-full h-full group">
-//       ActivevisionArea 1
-//       <Button
-//         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-//         className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
-//         onClick={handlePause}
-//       />
-//     </div>
-//   );
-// }
-
 "use client";
 
 import { useEffect, useState, useRef } from "react";
@@ -49,7 +18,6 @@ type VisualFieldTrainerProps = {
 
 export default function VisualFieldTrainer({
   controls,
-  pathname,
   onFinishTest,
 }: VisualFieldTrainerProps) {
   // Range-controlled values
@@ -105,9 +73,8 @@ export default function VisualFieldTrainer({
       <div
         className="relative border border-black flex items-center justify-center"
         style={{
-          width: "450px",
-          height: "450px",
-          padding: `${frame * 2}px`,
+          width: `${150 + frame * 50}px`,
+          height: `${150 + frame * 50}px`,
         }}
       >
         {/* Number Grid */}

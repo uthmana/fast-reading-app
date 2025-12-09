@@ -28,6 +28,11 @@ interface ControlPanelProps {
   setArticleOptions?: any;
   isfastTest?: boolean;
   readingStatus?: any;
+  resultDisplay?: {
+    right: number;
+    wrong: number;
+    net: number;
+  };
 }
 
 export const controlItems: any = {
@@ -90,6 +95,7 @@ export default function ControlPanel({
   setArticleOptions,
   isfastTest = false,
   readingStatus,
+  resultDisplay,
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug;
@@ -159,7 +165,6 @@ export default function ControlPanel({
         letterCount: parseInt(crtVal.letterCount?.value),
         size: parseInt(crtVal.size?.value),
         scroll: crtVal.scroll?.value === "1" || crtVal.scroll?.value === true,
-        resultDisplay: crtVal.resultDisplay.value,
         difficultyLevel: parseInt(crtVal.difficultyLevel.value),
       });
     }
@@ -245,7 +250,7 @@ export default function ControlPanel({
         </div>
       ) : null}
 
-      <div className="relative w-full overflow-hidden rounded-md border border-gray-400  min-h-[138px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
+      <div className="relative w-full overflow-hidden rounded-md border border-gray-400  min-h-[124px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img
           src={wood_img.src}
           alt="Wood background"
@@ -492,24 +497,28 @@ export default function ControlPanel({
                 !controlItem.includes("scroll") ? "hidden" : ""
               }`}
             >
-              <div className="flex w-full items-center pt-5 gap-3 px-1">
+              <div className="flex w-full text-center flex-col items-center pt-3 gap-3 px-1">
                 <label className="text-black font-medium text-sm items-center whitespace-nowrap">
                   Kaydırma
+                  <input
+                    className="ml-2"
+                    type="checkbox"
+                    checked={
+                      controlVal?.scroll?.value === "1" ||
+                      controlVal?.scroll?.value === true
+                    }
+                    onChange={(e) =>
+                      handleChange({
+                        targetValue: e.target.checked ? "1" : "0",
+                        value: controlVal.scroll,
+                        inputKey: "scroll",
+                      })
+                    }
+                  />
                 </label>
-                <input
-                  type="checkbox"
-                  checked={
-                    controlVal?.scroll?.value === "1" ||
-                    controlVal?.scroll?.value === true
-                  }
-                  onChange={(e) =>
-                    handleChange({
-                      targetValue: e.target.checked ? "1" : "0",
-                      value: controlVal.scroll,
-                      inputKey: "scroll",
-                    })
-                  }
-                />
+                <span className="text-xs text-center lg:text-left">
+                  Kelime yukarıdan aşağıya kaysın mı?
+                </span>
               </div>
             </div>
 
@@ -538,25 +547,25 @@ export default function ControlPanel({
               }`}
             >
               <div
-                key={controlVal.resultDisplay.value}
+                key={resultDisplay as any}
                 className="flex w-fit h-full items-center gap-3"
               >
                 <div className="flex flex-col justify-center items-center">
                   <label className="text-sm font-semibold">Doğru</label>
                   <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
-                    {controlVal.resultDisplay.value.right}
+                    {resultDisplay?.right || 0}
                   </div>
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <label className="text-sm font-semibold">Yanlış</label>
                   <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
-                    {controlVal.resultDisplay.value.wrong}
+                    {resultDisplay?.wrong || 0}
                   </div>
                 </div>
                 <div className="flex flex-col justify-center items-center">
                   <label className="text-sm font-semibold">Net</label>
                   <div className="w-7 h-8 border text-sm bg-white flex justify-center items-center">
-                    {controlVal.resultDisplay.value.net}
+                    {resultDisplay?.net || 0}
                   </div>
                 </div>
               </div>
