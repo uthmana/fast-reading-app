@@ -38,7 +38,6 @@ export default function page() {
   }
 
   const handleControl = (val: any) => {
-    console.log(val);
     setControl(val);
   };
 

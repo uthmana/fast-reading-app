@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@prisma/client";
-//import bcrypt from "bcryptjs";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 
@@ -9,6 +8,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
     const username = searchParams.get("username");
+    const findMany = searchParams.get("many");
 
     let where: any | undefined;
 
@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
               attempts: true,
             },
           },
+          Subscriber: true,
         },
       });
 
@@ -46,7 +47,28 @@ export async function GET(req: NextRequest) {
     }
 
     if (where) {
-      const user = await prisma.user.findUnique({
+      if (findMany) {
+        const user = await prisma.user.findMany({
+          where,
+          include: {
+            Student: {
+              include: {
+                attempts: true,
+              },
+            },
+            Subscriber: true,
+          },
+        });
+        if (!user) {
+          return NextResponse.json(
+            { error: "Kullanıcı bulunamadı" },
+            { status: 404 }
+          );
+        }
+        return NextResponse.json(user, { status: 200 });
+      }
+
+      const user = await prisma.user.findFirst({
         where,
         include: {
           Student: {
@@ -54,6 +76,7 @@ export async function GET(req: NextRequest) {
               attempts: true,
             },
           },
+          Subscriber: true,
         },
       });
 
@@ -69,6 +92,9 @@ export async function GET(req: NextRequest) {
 
     const users = await prisma.user.findMany({
       orderBy: { createdAt: "desc" },
+      include: {
+        Subscriber: true,
+      },
     });
 
     return NextResponse.json(users, { status: 200 });
@@ -96,6 +122,9 @@ export async function POST(req: Request) {
     role,
     active,
     startDate,
+    credit,
+    price,
+    subscriberId,
     endDate,
   }: User | any = await req.json();
   if (!name || !password || !role) {
@@ -111,10 +140,6 @@ export async function POST(req: Request) {
         where: { id },
       });
       if (userExit) {
-        // const pwd =
-        //   userExit.password !== password
-        //     ? await bcrypt.hash(password, 10)
-        //     : userExit.password;
         const pwd =
           userExit.password !== password ? password : userExit.password;
 
@@ -138,13 +163,25 @@ export async function POST(req: Request) {
                   },
                 }
               : {}),
+            ...(role === "SUBSCRIBER"
+              ? {
+                  Subscriber: {
+                    update: {
+                      where: { id: subscriberId },
+                      data: {
+                        credit,
+                        price,
+                      },
+                    },
+                  },
+                }
+              : {}),
           },
         });
         return NextResponse.json(user, { status: 200 });
       }
     }
 
-    //const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         name,
@@ -159,6 +196,16 @@ export async function POST(req: Request) {
                 create: {
                   startDate,
                   endDate,
+                },
+              },
+            }
+          : {}),
+        ...(role === "SUBSCRIBER"
+          ? {
+              Subscriber: {
+                create: {
+                  ...(credit ? { credit } : {}),
+                  ...(price ? { price } : {}),
                 },
               },
             }

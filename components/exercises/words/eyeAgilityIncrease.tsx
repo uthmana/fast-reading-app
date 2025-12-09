@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
-import { speedMap, WordsPerSentence } from "@/utils/constants";
+import { speedMap } from "@/utils/constants";
 import Button from "@/components/button/button";
 
 type TachistoProps = {

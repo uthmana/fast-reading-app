@@ -16,9 +16,9 @@ export default withAuth(
     }
 
     // Block admin routes for non-admins
-    if (role === "TEACHER" && req.nextUrl.pathname.startsWith("/admin/users")) {
-      return NextResponse.redirect(new URL("/admin/classes", req.url));
-    }
+    // if (role === "TEACHER" && req.nextUrl.pathname.startsWith("/admin/users")) {
+    //   return NextResponse.redirect(new URL("/admin/classes", req.url));
+    // }
 
     return NextResponse.next();
   },

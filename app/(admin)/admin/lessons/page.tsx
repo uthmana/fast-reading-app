@@ -24,6 +24,7 @@ import {
 import SortableItem from "@/components/admin/sortableItem/sortableItem";
 import Button from "@/components/button/button";
 import dynamic from "next/dynamic";
+import { useAuthHandler } from "../authHandler/authOptions";
 
 const DndContextWithNoSSR = dynamic(
   () => import("@dnd-kit/core").then((mod) => mod.DndContext),
@@ -35,6 +36,7 @@ export default function page() {
   const [lessons, setLessons] = useState([] as any);
   const [isSorting, setIsSorting] = useState(false);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const { canView, canCreate, canEdit, canDelete } = useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
   const [isShowLessonPopUp, setIsShowExercisePopUp] = useState(false);
@@ -212,98 +214,110 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <TableBuilder
-        key={isLoading}
-        tableData={lessons}
-        columnKey="lessonColumn"
-        onAction={handleAction}
-        onAdd={handleAction}
-        isLoading={isLoading}
-      />
-
-      <Popup
-        key="lessonpopup"
-        show={isShowPopUp}
-        onClose={() => setIsShowPopUp(false)}
-        title="Ders Ekle"
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <FormBuilder
-          key={"lesson" + isShowPopUp}
-          className="px-8 overflow-y-auto"
-          id={"lessons"}
-          data={data}
-          onSubmit={(values) => {
-            handleLesssonData(values);
-          }}
-          isSubmitting={isSubmitting}
-          resError={resError}
-          submitBtnProps={{
-            text: "Kaydet",
-            type: "submit",
-          }}
+      {canView ? (
+        <TableBuilder
+          key={isLoading}
+          tableData={lessons}
+          columnKey="lessonColumn"
+          onAction={handleAction}
+          onAdd={handleAction}
+          isLoading={isLoading}
+          showAddButton={canCreate}
+          showEditRow={canEdit}
+          showDeleteRow={canDelete}
         />
-      </Popup>
+      ) : null}
 
-      <Popup
-        key={activeItem}
-        show={isShowLessonPopUp}
-        onClose={() => setIsShowExercisePopUp(false)}
-        title={`${selectedlesson?.title}`}
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <div className="text-left w-full px-8 overflow-y-auto mx-auto">
-          {items?.length ? (
-            <DndContextWithNoSSR
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
-              onDragCancel={handleDragCancel}
-            >
-              <SortableContext
-                items={items?.map((item: any) => item.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <ul className="list-decimal px-3 lg:px-5 mx-auto space-y-1">
-                  {items?.map((item: any) => (
-                    <SortableItem
-                      key={item.id}
-                      className="hover:text-blue-500"
-                      item={item}
-                      removeItem={removeItem}
-                    />
-                  ))}
-                </ul>
-              </SortableContext>
-              <DragOverlay
-                adjustScale
-                style={{ transformOrigin: "0 0 ", backgroundColor: "white" }}
-              >
-                {activeItem ? (
-                  <SortableItem
-                    item={activeItem}
-                    removeItem={removeItem}
-                    forceDragging={true}
-                  />
-                ) : null}
-              </DragOverlay>
-            </DndContextWithNoSSR>
-          ) : null}
+      {canCreate ? (
+        <>
+          <Popup
+            key="lessonpopup"
+            show={isShowPopUp}
+            onClose={() => setIsShowPopUp(false)}
+            title="Ders Ekle"
+            bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+            overlayClass="z-10"
+            titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+          >
+            <FormBuilder
+              key={"lesson" + isShowPopUp}
+              className="px-8 overflow-y-auto"
+              id={"lessons"}
+              data={data}
+              onSubmit={(values) => {
+                handleLesssonData(values);
+              }}
+              isSubmitting={isSubmitting}
+              resError={resError}
+              submitBtnProps={{
+                text: "Kaydet",
+                type: "submit",
+              }}
+            />
+          </Popup>
 
-          <Button
-            isSubmiting={isSorting}
-            disabled={isSorting}
-            className="mt-3"
-            text="KAYDET"
-            onClick={handleSortable}
-          />
-        </div>
-      </Popup>
+          <Popup
+            key={activeItem}
+            show={isShowLessonPopUp}
+            onClose={() => setIsShowExercisePopUp(false)}
+            title={`${selectedlesson?.title}`}
+            bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+            overlayClass="z-10"
+            titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+          >
+            <div className="text-left w-full px-8 overflow-y-auto mx-auto">
+              {items?.length ? (
+                <DndContextWithNoSSR
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragStart={handleDragStart}
+                  onDragEnd={handleDragEnd}
+                  onDragCancel={handleDragCancel}
+                >
+                  <SortableContext
+                    items={items?.map((item: any) => item.id)}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    <ul className="list-decimal px-3 lg:px-5 mx-auto space-y-1">
+                      {items?.map((item: any) => (
+                        <SortableItem
+                          key={item.id}
+                          className="hover:text-blue-500"
+                          item={item}
+                          removeItem={removeItem}
+                        />
+                      ))}
+                    </ul>
+                  </SortableContext>
+                  <DragOverlay
+                    adjustScale
+                    style={{
+                      transformOrigin: "0 0 ",
+                      backgroundColor: "white",
+                    }}
+                  >
+                    {activeItem ? (
+                      <SortableItem
+                        item={activeItem}
+                        removeItem={removeItem}
+                        forceDragging={true}
+                      />
+                    ) : null}
+                  </DragOverlay>
+                </DndContextWithNoSSR>
+              ) : null}
+
+              <Button
+                isSubmiting={isSorting}
+                disabled={isSorting}
+                className="mt-3"
+                text="KAYDET"
+                onClick={handleSortable}
+              />
+            </div>
+          </Popup>
+        </>
+      ) : null}
     </div>
   );
 }

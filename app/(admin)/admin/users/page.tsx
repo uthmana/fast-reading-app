@@ -6,24 +6,54 @@ import Popup from "@/components/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
+import { useAuthHandler } from "../authHandler/authOptions";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
-  const [students, setStudents] = useState([] as any);
+  const [users, setUsers] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
-
+  const { loading, canView, canCreate, canEdit, canDelete, userData } =
+    useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
-  const [data, setData] = useState({
-    role: "ADMIN",
-    active: true,
-  } as any);
+  const [data, setData] = useState({} as any);
 
   useEffect(() => {
+    if (loading || !userData) return;
+
     const requestData = async () => {
       try {
-        setIsloading(true);
-        const res = await fetchData({ apiPath: "/api/users" });
-        setStudents(res.filter((val: any) => val.role === "ADMIN"));
+        if (userData.role === "TEACHER" || userData.role === "SUBSCRIBER") {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              subscriberId: userData.subscriberId,
+            })
+          );
+          setIsloading(true);
+          const resData = await fetchData({
+            apiPath: `/api/users?where=${query}`,
+          });
+          setUsers([resData]);
+          setIsloading(false);
+        } else {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              role: {
+                in: ["ADMIN", "SUBSCRIBER"],
+              },
+            })
+          );
+          setIsloading(true);
+          const res = await fetchData({
+            apiPath: `/api/users?where=${query}&many=true`,
+          });
+
+          setUsers(
+            res.filter(
+              (val: any) => val.role === "ADMIN" || val.role === "SUBSCRIBER"
+            )
+          );
+        }
+
         setIsloading(false);
       } catch (error) {
         setIsloading(false);
@@ -33,7 +63,7 @@ export default function page() {
     };
 
     requestData();
-  }, []);
+  }, [loading, userData]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;
@@ -45,6 +75,12 @@ export default function page() {
     if (actionType === "edit") {
       setData({
         ...currentUser,
+        ...(currentUser?.subscriberId
+          ? {
+              credit: currentUser.Subscriber.credit,
+              price: currentUser.Subscriber.price,
+            }
+          : {}),
         createdAt: new Date(currentUser.createdAt).toISOString().split("T")[0],
       });
       setIsShowPopUp(true);
@@ -60,8 +96,8 @@ export default function page() {
           });
 
           if (res) {
-            setStudents(
-              [...students].filter((val: any) => val.id !== currentUser.id)
+            setUsers(
+              [...users].filter((val: any) => val.id !== currentUser.id)
             );
             setIsloading(false);
           }
@@ -84,43 +120,50 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <TableBuilder
-        key={isLoading}
-        tableData={students}
-        columnKey="usersColumn"
-        onAction={handleAction}
-        onAdd={handleAction}
-        isLoading={isLoading}
-      />
-
-      <Popup
-        show={isShowPopUp}
-        onClose={() => setIsShowPopUp(false)}
-        title="Kullanıcı Ekle"
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <FormBuilder
-          id={"user"}
-          className="px-8"
-          data={data}
-          onSubmit={(values) =>
-            handleFormSubmit({
-              values,
-              method: "POST",
-              apiPath: "/api/users",
-              callback: (res: Response) => handleFormResponse(res),
-            })
-          }
-          isSubmitting={isSubmitting}
-          resError={resError}
-          submitBtnProps={{
-            text: "Kaydet",
-            type: "submit",
-          }}
+      {canView ? (
+        <TableBuilder
+          key={isLoading}
+          tableData={users}
+          columnKey="usersColumn"
+          onAction={handleAction}
+          onAdd={handleAction}
+          isLoading={isLoading}
+          showAddButton={canCreate}
+          showEditRow={canEdit}
+          showDeleteRow={canDelete}
         />
-      </Popup>
+      ) : null}
+
+      {canCreate ? (
+        <Popup
+          show={isShowPopUp}
+          onClose={() => setIsShowPopUp(false)}
+          title="Kullanıcı Ekle"
+          bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+          overlayClass="z-10"
+          titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+        >
+          <FormBuilder
+            id={"user"}
+            className="px-8"
+            data={data}
+            onSubmit={(values) =>
+              handleFormSubmit({
+                values,
+                method: "POST",
+                apiPath: "/api/users",
+                callback: (res: Response) => handleFormResponse(res),
+              })
+            }
+            isSubmitting={isSubmitting}
+            resError={resError}
+            submitBtnProps={{
+              text: "Kaydet",
+              type: "submit",
+            }}
+          />
+        </Popup>
+      ) : null}
     </div>
   );
 }
