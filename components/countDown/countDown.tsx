@@ -7,11 +7,15 @@ export default function Countdown({
   start = false,
   onFinish,
   className = "",
+  text = "sec.",
+  showCheckmark = true,
 }: {
   initial: number;
   start: boolean;
   onFinish?: () => void;
   className?: string;
+  text?: string;
+  showCheckmark?: boolean;
 }) {
   const [time, setTime] = useState(initial);
   const finishedRef = useRef(false);
@@ -44,11 +48,15 @@ export default function Countdown({
       className={`flex gap-1 px-3 opacity-45 py-2 rounded  text-white items-center justify-center bg-blue-500 ${className}`}
     >
       {time === 0 ? (
-        <MdCheck className="w-5 h-5 text-white" />
+        showCheckmark ? (
+          <MdCheck className="w-5 h-5 text-white" />
+        ) : (
+          <IoMdClock className="w-5 h-5 text-white" />
+        )
       ) : (
         <IoMdClock className="w-5 h-5 text-white" />
       )}
-      <span className="font-bold"> {time} </span> sec.
+      <span className="font-bold"> {time} </span> {text}
     </div>
   );
 }

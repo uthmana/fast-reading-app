@@ -7,7 +7,6 @@ import {
   MdFileDownload,
   MdChecklist,
   MdSettings,
-  MdSettingsApplications,
   MdMenu,
 } from "react-icons/md";
 
@@ -25,9 +24,12 @@ import {
 import Search from "../search/search";
 import Button from "../../button/button";
 import TablePagination from "./tablePagination";
-import { useDrage } from "@/utils/hooks";
 import TableEmpty from "./tableEmpty";
-import { exportToExcel, formatDateTime } from "@/utils/helpers";
+import {
+  exportToExcel,
+  formatDateTime,
+  formatNumberLocale,
+} from "@/utils/helpers";
 import { columnsData, ColumnsKey } from "./columnsData";
 import { TableCellSkeleton } from "../../skeleton/skeleton";
 import Link from "next/link";
@@ -43,6 +45,8 @@ function TableBuilder({
   showPagination = true,
   showSearchbar = true,
   showHeader = true,
+  showEditRow = true,
+  showDeleteRow = true,
   title = "",
   columnKey,
   isLoading = false,
@@ -73,6 +77,13 @@ function TableBuilder({
     if (type === "boolean") {
       return value ? "Aktif" : "Pasif";
     }
+    if (type === "subscriber") {
+      return value?.credit;
+    }
+    if (type === "currency") {
+      return formatNumberLocale(value);
+    }
+
     if (type === "length") {
       return (
         <Link
@@ -185,23 +196,28 @@ function TableBuilder({
                       </li>
                     );
                   })}
-                  <li className="py-1 border-b w-full">
-                    <button
-                      className="flex h-full gap-2 hover:text-blue-500"
-                      onClick={() => onAction("edit", info)}
-                    >
-                      <MdModeEdit className="w-5 h-5 " /> Düzenle
-                    </button>
-                  </li>
-                  <li className="py-1 w-full">
-                    <button
-                      className="flex w-full gap-2 hover:text-red-500"
-                      onClick={() => onAction("delete", info)}
-                    >
-                      <MdOutlineDelete className="w-5 h-5 " />
-                      Sil
-                    </button>
-                  </li>
+
+                  {showEditRow ? (
+                    <li className="py-1 border-b w-full">
+                      <button
+                        className="flex h-full gap-2 hover:text-blue-500"
+                        onClick={() => onAction("edit", info)}
+                      >
+                        <MdModeEdit className="w-5 h-5 " /> Düzenle
+                      </button>
+                    </li>
+                  ) : null}
+                  {showDeleteRow ? (
+                    <li className="py-1 w-full">
+                      <button
+                        className="flex w-full gap-2 hover:text-red-500"
+                        onClick={() => onAction("delete", info)}
+                      >
+                        <MdOutlineDelete className="w-5 h-5 " />
+                        Sil
+                      </button>
+                    </li>
+                  ) : null}
                 </ul>
               </div>
             </Dropdown>

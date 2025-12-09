@@ -8,6 +8,7 @@ import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
 import { MdModeEdit, MdOutlineDelete } from "react-icons/md";
+import { useAuthHandler } from "../authHandler/authOptions";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
@@ -15,6 +16,7 @@ export default function page() {
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
+  const { canView, canCreate, canEdit, canDelete } = useAuthHandler();
 
   const defaultQuizValue = {
     id: Date.now().toString(),
@@ -173,124 +175,132 @@ export default function page() {
 
   return (
     <div className="w-full">
-      <TableBuilder
-        key={isLoading}
-        tableData={articles}
-        columnKey="articlesColumn"
-        onAction={handleAction}
-        onAdd={handleAction}
-        isLoading={isLoading}
-      />
-
-      <Popup
-        key="articlepopup"
-        show={isShowPopUp}
-        onClose={() => setIsShowPopUp(false)}
-        title="Okuma Metin Ekle"
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <FormBuilder
-          key={"article"}
-          className="px-8"
-          id={"article"}
-          data={data}
-          onSubmit={(values) => {
-            handleFormSubmit({
-              values,
-              method: "POST",
-              apiPath: "/api/articles",
-              callback: (res: Response) => handleFormResponse(res),
-            });
-          }}
-          isSubmitting={isSubmitting}
-          resError={resError}
-          submitBtnProps={{
-            text: "Kaydet",
-            type: "submit",
-          }}
+      {canView ? (
+        <TableBuilder
+          key={isLoading}
+          tableData={articles}
+          columnKey="articlesColumn"
+          onAction={handleAction}
+          onAdd={handleAction}
+          isLoading={isLoading}
+          showAddButton={canCreate}
+          showEditRow={canEdit}
+          showDeleteRow={canDelete}
         />
-      </Popup>
+      ) : null}
+      {canCreate ? (
+        <>
+          <Popup
+            key="articlepopup"
+            show={isShowPopUp}
+            onClose={() => setIsShowPopUp(false)}
+            title="Okuma Metin Ekle"
+            bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+            overlayClass="z-10"
+            titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+          >
+            <FormBuilder
+              key={"article"}
+              className="px-8"
+              id={"article"}
+              data={data}
+              onSubmit={(values) => {
+                handleFormSubmit({
+                  values,
+                  method: "POST",
+                  apiPath: "/api/articles",
+                  callback: (res: Response) => handleFormResponse(res),
+                });
+              }}
+              isSubmitting={isSubmitting}
+              resError={resError}
+              submitBtnProps={{
+                text: "Kaydet",
+                type: "submit",
+              }}
+            />
+          </Popup>
 
-      <Popup
-        key="quizpopup"
-        show={isShowQuizPopUp}
-        onClose={() => setIsShowQuizPopUp(false)}
-        title={`${selectedArticle?.title} - TEST`}
-        bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
-        overlayClass="z-10"
-        titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
-      >
-        <div className="flex h-full px-8 gap-2 overflow-y-auto ">
-          <div className="w-full flex flex-col justify-between">
-            <div className="w-full pb-5 space-y-4 max-h-[480px] overflow-y-auto">
-              {quiz?.map((q: any, idx: number) => (
-                <div className="text-sm text-gray-800 text-left" key={idx}>
-                  <p className="font-semibold relative pr-5">
-                    {idx + 1}. {q.question}
-                    <span className="absolute right-0 top-0 flex">
-                      <Button
-                        className="!p-0  !w-fit !bg-black/0"
-                        text=""
-                        icon={<MdModeEdit className="w-5 h-5 text-black" />}
-                        onClick={() => editQuiz(q)}
-                      />
-                      <Button
-                        onClick={() => deleteQuiz(q)}
-                        className="!p-0 !w-fit !bg-black/0"
-                        text=""
-                        icon={
-                          <MdOutlineDelete className="w-5 h-5 text-black" />
-                        }
-                      />
-                    </span>
-                  </p>
+          <Popup
+            key="quizpopup"
+            show={isShowQuizPopUp}
+            onClose={() => setIsShowQuizPopUp(false)}
+            title={`${selectedArticle?.title} - TEST`}
+            bodyClass="flex flex-col gap-3 pb-6 pt-0 !max-w-[700px] !w-[90%] max-h-[80%]"
+            overlayClass="z-10"
+            titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
+          >
+            <div className="flex h-full px-8 gap-2 overflow-y-auto ">
+              <div className="w-full flex flex-col justify-between">
+                <div className="w-full pb-5 space-y-4 max-h-[480px] overflow-y-auto">
+                  {quiz?.map((q: any, idx: number) => (
+                    <div className="text-sm text-gray-800 text-left" key={idx}>
+                      <p className="font-semibold relative pr-5">
+                        {idx + 1}. {q.question}
+                        <span className="absolute right-0 top-0 flex">
+                          <Button
+                            className="!p-0  !w-fit !bg-black/0"
+                            text=""
+                            icon={<MdModeEdit className="w-5 h-5 text-black" />}
+                            onClick={() => editQuiz(q)}
+                          />
+                          <Button
+                            onClick={() => deleteQuiz(q)}
+                            className="!p-0 !w-fit !bg-black/0"
+                            text=""
+                            icon={
+                              <MdOutlineDelete className="w-5 h-5 text-black" />
+                            }
+                          />
+                        </span>
+                      </p>
 
-                  {q.options.map((option: any) => (
-                    <div
-                      key={option.id}
-                      className={`flex items-center gap-3  py-1 hover: transition `}
-                    >
-                      <span
-                        className={`capitalize h-4  border-gray-300  ${
-                          q.answer === option.id
-                            ? "text-blue-400 font-semibold"
-                            : ""
-                        }`}
-                      >
-                        {option.id}
-                        {")"}
-                      </span>
+                      {q.options.map((option: any) => (
+                        <div
+                          key={option.id}
+                          className={`flex items-center gap-3  py-1 hover: transition `}
+                        >
+                          <span
+                            className={`capitalize h-4  border-gray-300  ${
+                              q.answer === option.id
+                                ? "text-blue-400 font-semibold"
+                                : ""
+                            }`}
+                          >
+                            {option.id}
+                            {")"}
+                          </span>
 
-                      <span className="text-gray-700">{option.text}</span>
+                          <span className="text-gray-700">{option.text}</span>
+                        </div>
+                      ))}
                     </div>
                   ))}
                 </div>
-              ))}
-            </div>
-            <Button
-              isSubmiting={isQuizSubmitting}
-              disabled={!formTouched}
-              className="bg-green-600"
-              text="Kaydet"
-              onClick={saveQuiz}
-            />
-          </div>
+                <Button
+                  isSubmiting={isQuizSubmitting}
+                  disabled={!formTouched}
+                  className="bg-green-600"
+                  text="Kaydet"
+                  onClick={saveQuiz}
+                />
+              </div>
 
-          <FormBuilder
-            key={quizFormData.id || "new-quiz"}
-            className="p-3 border max-w-[40%]"
-            id={"quiz"}
-            data={quizFormData}
-            onSubmit={(values) => handleForm(values)}
-            submitBtnProps={{
-              text: "Test Ekle",
-              type: "submit",
-            }}
-          />
-        </div>
-      </Popup>
+              <FormBuilder
+                key={quizFormData.id || "new-quiz"}
+                className="p-3 border max-w-[40%]"
+                id={"quiz"}
+                data={quizFormData}
+                onSubmit={(values) => handleForm(values)}
+                submitBtnProps={{
+                  text: "Test Ekle",
+                  type: "submit",
+                }}
+              />
+            </div>
+          </Popup>
+        </>
+      ) : null}
     </div>
   );
 }

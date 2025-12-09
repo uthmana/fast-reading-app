@@ -21,7 +21,17 @@ export const authOptions: NextAuthOptions = {
           const user = await prisma.user.findUnique({
             where,
             include: {
-              Student: true,
+              Student: {
+                include: {
+                  Subscriber: true,
+                },
+              },
+              Subscriber: true,
+              Teacher: {
+                include: {
+                  subscriber: true,
+                },
+              },
             },
           });
 
@@ -40,6 +50,11 @@ export const authOptions: NextAuthOptions = {
               throw new Error("Student subscription has expired");
             }
           }
+          let subscriberId: any = user.Subscriber?.id ?? null;
+          if (user.role === "STUDENT" && user?.Student)
+            subscriberId = user?.Student?.Subscriber?.id;
+          if (user.role === "TEACHER" && user?.Teacher)
+            subscriberId = user?.Teacher?.subscriber?.id;
 
           return {
             id: user.id,
@@ -48,6 +63,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name ?? "",
             username: user.username ?? "",
             student: user.Student ?? null,
+            subscriberId,
           };
         } catch (error) {
           console.error(error);
@@ -74,6 +90,7 @@ export const authOptions: NextAuthOptions = {
         token.username = user.username;
         token.id = user.id;
         token.student = user.student ?? null;
+        token.subscriberId = user.subscriberId;
       }
 
       return token;
@@ -86,6 +103,7 @@ export const authOptions: NextAuthOptions = {
         session.user.username = token.username as string;
         session.user.id = token.id as string;
         session.user.student = token.student ?? null;
+        session.user.subscriberId = token.subscriberId as number;
       }
 
       return session;

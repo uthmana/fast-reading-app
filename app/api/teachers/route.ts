@@ -5,12 +5,34 @@ import { Teacher } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
   try {
-    const classes = await prisma.teacher.findMany({
+    const { searchParams } = new URL(req.url);
+    const whereParam = searchParams.get("where");
+    let where: any | undefined;
+
+    if (whereParam) {
+      try {
+        where = JSON.parse(whereParam);
+      } catch (err) {
+        return NextResponse.json(
+          { error: "Invalid 'where' parameter" },
+          { status: 400 }
+        );
+      }
+
+      const teachers = await prisma.teacher.findMany({
+        where,
+        orderBy: { createdAt: "desc" },
+        include: { user: true, subscriber: true },
+      });
+      return NextResponse.json(teachers, { status: 200 });
+    }
+
+    const teachers = await prisma.teacher.findMany({
       orderBy: { createdAt: "desc" },
-      include: { user: true },
+      include: { user: true, subscriber: true },
     });
 
-    return NextResponse.json(classes, { status: 200 });
+    return NextResponse.json(teachers, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
@@ -34,6 +56,7 @@ export async function POST(req: Request) {
     role,
     active,
     address,
+    subscriberId,
   }: Teacher | any = await req.json();
   if (!name || !username || !password || !role) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
@@ -45,6 +68,7 @@ export async function POST(req: Request) {
         where: { id },
         include: {
           user: true,
+          subscriber: true,
         },
       });
       if (userExit) {
@@ -66,6 +90,9 @@ export async function POST(req: Request) {
             Teacher: {
               update: {
                 active: active,
+                subscriber: {
+                  connect: { id: subscriberId },
+                },
               },
             },
           },
@@ -88,6 +115,9 @@ export async function POST(req: Request) {
               Teacher: {
                 create: {
                   active,
+                  subscriber: {
+                    connect: { id: subscriberId },
+                  },
                 },
               },
             }
@@ -95,6 +125,7 @@ export async function POST(req: Request) {
       },
       include: {
         Student: true,
+        Subscriber: true,
       },
     });
 

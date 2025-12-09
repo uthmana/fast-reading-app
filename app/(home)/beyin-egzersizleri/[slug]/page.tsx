@@ -21,12 +21,14 @@ export default function page() {
 
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
-    categorySelect: "",
-    articleSelect: "",
-    font: "16",
     level: 1,
-    wordsPerFrame: 2,
-    objectIcon: "1",
+    difficultyLevel: 1,
+  });
+
+  const [resultDisplay, setResultDisplay] = useState({
+    right: 0,
+    wrong: 0,
+    net: 0,
   });
 
   const currentMenu = menuItems.filter((m) =>
@@ -54,6 +56,14 @@ export default function page() {
       return;
     }
   };
+
+  // const onResultDisplay = async (val: {
+  //   right: number;
+  //   wrong: number;
+  //   net: number;
+  // }) => {
+  //   setResultDisplay(val);
+  // };
 
   const saveProgress = async () => {
     try {
@@ -85,7 +95,10 @@ export default function page() {
           onFinishTest={onFinishTest}
           controls={control}
           pathname={pathname}
-          article={control.articleSelect as any}
+          //onResultDisplay={onResultDisplay}
+
+          resultDisplay={resultDisplay}
+          setResultDisplay={setResultDisplay}
         />
       }
       control={control}
@@ -93,6 +106,7 @@ export default function page() {
       lessonData={{ id: lessonParams, duration: durationParams } as any}
       contentClassName="!w-full"
       saveProgress={saveProgress}
+      resultDisplay={resultDisplay}
     />
   );
 }

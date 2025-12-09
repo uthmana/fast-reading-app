@@ -72,15 +72,19 @@ export default function Home() {
         if (!attempts.length) return;
 
         const formatted = attempts.map(
-          ({ wpm, createdAt, correct, variant }: any) => ({
+          ({ wpm, createdAt, correct, variant, wpf }: any) => ({
             wpm,
+            wpf,
             correct,
             variant,
             category: formatDateTime(createdAt),
           })
         );
 
-        const buildData = (key: "wpm" | "correct" | "wpc", variant: string) => {
+        const buildData = (
+          key: "wpm" | "correct" | "wpc" | "wpf",
+          variant: string
+        ) => {
           const filtered = formatted.filter((i: any) => i.variant === variant);
           return {
             data: filtered.map((i: any) => i[key]),
@@ -89,7 +93,7 @@ export default function Home() {
         };
 
         setFastReadingData(buildData("wpm", "FASTREADING"));
-        setFastVisionData(buildData("wpm", "FASTVISION"));
+        setFastVisionData(buildData("wpf", "FASTVISION"));
       } catch (error) {}
     };
     const fetchProgressSummary = async () => {

@@ -7,6 +7,7 @@ export const columnsData = {
     { id: "email", name: "E-posta", type: "string" },
     { id: "active", name: "Durum", type: "boolean" },
     { id: "role", name: "Rolü", type: "string" },
+    { id: "Subscriber", name: "Kredi", type: "subscriber" },
   ],
   studentColumn: [
     { id: "id", name: "#", type: "string" },
@@ -66,7 +67,15 @@ export const columnsData = {
   billingColumn: [
     { id: "id", name: "#", type: "string" },
     { id: "name", name: "Öğrenci Adı", type: "string" },
-    { id: "fee", name: "Tutar", type: "string" },
+    { id: "fee", name: "Tutar", type: "currency" },
+    { id: "currency", name: "Para Birim", type: "string" },
+    { id: "startDate", name: "Tarih", type: "fullDate", totalCount: true },
+  ],
+  adminBillingColumn: [
+    { id: "id", name: "#", type: "string" },
+    { id: "name", name: "Müşteri Adı", type: "string" },
+    { id: "credit", name: "Kredi", type: "string" },
+    { id: "price", name: "Tutar", type: "currency" },
     { id: "currency", name: "Para Birim", type: "string" },
     { id: "startDate", name: "Tarih", type: "fullDate", totalCount: true },
   ],

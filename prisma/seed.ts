@@ -11,8 +11,6 @@ import { Category, StudyGroup } from "@prisma/client";
 
 async function main() {
   // Default admin user
-  //const hashedPassword = await bcrypt.hash("1234", 10);
-
   const user = await prisma.user.upsert({
     where: { username: "deneme" },
     update: {},
@@ -25,6 +23,32 @@ async function main() {
       tcId: "99999999999",
     },
   });
+
+  // Default subscriber
+  const subscriber = await prisma.user.create({
+    data: {
+      email: "musteri@example.com",
+      password: "1234",
+      role: "SUBSCRIBER",
+      name: "Deneme musteri",
+      username: "denememusteri",
+      Subscriber: {
+        create: {
+          credit: 20,
+        },
+      },
+    },
+    include: {
+      Teacher: {
+        include: {
+          class: true,
+        },
+      },
+      Subscriber: true,
+    },
+  });
+
+  const subscriberId = subscriber.Subscriber!.id;
 
   // Default teacher + class
   const teacher = await prisma.user.create({
@@ -41,7 +65,13 @@ async function main() {
             create: {
               name: "Demo",
               studyGroup: "ILKOKUL_2_3",
+              subscriber: {
+                connect: { id: subscriberId },
+              },
             },
+          },
+          subscriber: {
+            connect: { id: subscriberId },
           },
         },
       },
@@ -50,6 +80,7 @@ async function main() {
       Teacher: {
         include: {
           class: true,
+          subscriber: true,
         },
       },
     },
@@ -57,7 +88,6 @@ async function main() {
 
   // Extract created classId
   const classId = teacher.Teacher!.class[0].id;
-  console.log({ classId });
 
   // Create student connected to the class
   const student = await prisma.user.create({
@@ -80,6 +110,9 @@ async function main() {
               id: classId,
             },
           },
+          Subscriber: {
+            connect: { id: subscriberId },
+          },
         },
       },
     },
@@ -95,8 +128,6 @@ async function main() {
   const firstCategory = await prisma.category.findFirst({
     orderBy: { createdAt: "asc" },
   });
-
-  console.log({ firstCategory });
 
   const categoryId = firstCategory?.id;
   const article = await prisma.article.create({
@@ -116,40 +147,24 @@ async function main() {
   );
 
   // create a lesson and link exercises via the LessonExercise join model
-  const lesson = await prisma.lesson.create({
-    data: {
-      title: "1. Ders aşağıdaki egzersizleri yapınız.",
-      order: 1,
-    },
-  });
+  const lessonsNumbers = Array.from({ length: 40 }, (_, i) => i + 1);
 
-  if (createdExercises && createdExercises.length > 0) {
-    const lessonExerciseData = createdExercises.map((item, idx) => ({
-      lessonId: lesson.id,
-      exerciseId: item.id,
-      order: idx + 1,
-    }));
-
-    // create the join rows
-    await prisma.lessonExercise.createMany({ data: lessonExerciseData });
-  }
-
-  const lessonWithExercises = await prisma.lesson.findUnique({
-    where: { id: lesson.id },
-    include: { LessonExercise: { include: { exercise: true } } },
-  });
-
-  // expose the mapped shape used by the API (Exercise array)
-  const mappedLesson = lessonWithExercises
-    ? {
-        ...lessonWithExercises,
-        Exercise: (lessonWithExercises.LessonExercise || []).map((le) => ({
-          ...le.exercise,
-          lessonExerciseId: le.id,
-          order: le.order,
-        })),
-      }
-    : lesson;
+  await prisma.$transaction(
+    lessonsNumbers.map((num) =>
+      prisma.lesson.create({
+        data: {
+          title: `${num}. Ders aşağıdaki egzersizleri yapınız.`,
+          order: num,
+          LessonExercise: {
+            create: createdExercises.map((item, idx) => ({
+              exerciseId: item.id,
+              order: idx + 1,
+            })),
+          },
+        },
+      })
+    )
+  );
 
   const studyGroups = studyGroupOptions.map((s) => s.value);
   const uniqueWords = [...new Set(allWords)];
@@ -173,12 +188,12 @@ async function main() {
 
   console.log({
     user,
+    subscriber,
+    teacher,
     student,
     category,
     article,
     createdExercises,
-    lesson,
-    mappedLesson,
   });
 }
 

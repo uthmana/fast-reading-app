@@ -95,7 +95,7 @@ export default function LoginPage() {
   return (
     <section
       className="flex w-full relative justify-center items-center gap-2 h-screen bg-no-repeat bg-[url('/images/kutuphane-millet.png')] bg-center bg-cover
-      before:absolute before:top-0 before:z-1 before:h-full before:left-0 before:w-full before:bg-gradient-to-b before:from-[#1745d2]  before:to-transparent before:to-[60%] before:bg-no-repeat before:bg-top  
+      before:absolute before:top-0 before:z-1 before:h-full before:left-0 before:w-full before:bg-gradient-to-b before:from-[#000000]/50  before:to-transparent before:to-[60%] before:bg-no-repeat before:bg-top  
       "
     >
       <div className="flex-1 h-full flex items-center ">

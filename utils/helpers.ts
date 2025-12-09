@@ -224,3 +224,11 @@ export const getInputTypeValue = (value: string): UserWhereInput | null => {
 export const mapStudyGroup = (key: string) => {
   return studyGroupOptions?.find((item) => item.value === key)?.name || key;
 };
+
+export const formatNumberLocale = (num: number, locale = "tr") => {
+  if (!num) return num;
+  const nFormat = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 0,
+  });
+  return nFormat.format(num);
+};
