@@ -11,6 +11,7 @@ import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { getArticleByStudyGroup } from "@/components/formBuilder/request";
+import { eyeExerciseDescription } from "@/utils/constants";
 
 export default function page() {
   const { data: session } = useSession();
@@ -231,8 +232,14 @@ export default function page() {
         readingStatus={readingStatus}
         description={
           <ControlPanelGuide
-            howToPlay="<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
-            description="Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir. "
+            howToPlay={
+              eyeExerciseDescription[pathname]?.howToPlay ??
+              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
+            }
+            description={
+              eyeExerciseDescription[pathname]?.description ??
+              "Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir. "
+            }
           />
         }
         body={

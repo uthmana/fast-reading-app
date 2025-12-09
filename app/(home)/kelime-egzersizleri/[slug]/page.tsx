@@ -9,6 +9,7 @@ import NotFound from "../../not-found";
 import { menuItems } from "@/app/routes";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
+import { eyeExerciseDescription } from "@/utils/constants";
 
 const getRandomWords = (arr: string[], count: number) => {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
@@ -144,8 +145,14 @@ export default function page() {
       }
       description={
         <ControlPanelGuide
-          description="Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır."
-          howToPlay="<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
+          description={
+            eyeExerciseDescription[pathname]?.description ??
+            "Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır."
+          }
+          howToPlay={
+            eyeExerciseDescription[pathname]?.howToPlay ??
+            "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
+          }
         />
       }
       control={control}

@@ -9,6 +9,7 @@ import { useState } from "react";
 import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
+import { eyeExerciseDescription } from "@/utils/constants";
 
 export default function page() {
   const { data: session } = useSession();
@@ -74,8 +75,14 @@ export default function page() {
       pause={pause}
       description={
         <ControlPanelGuide
-          howToPlay="<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
-          description="Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
+          howToPlay={
+            eyeExerciseDescription[pathname]?.howToPlay ??
+            "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
+          }
+          description={
+            eyeExerciseDescription[pathname]?.description ??
+            "Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
+          }
         />
       }
       body={
