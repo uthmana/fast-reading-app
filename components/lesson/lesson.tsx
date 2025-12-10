@@ -118,7 +118,7 @@ export default function Lesson({ id }: { id?: string }) {
                   text=""
                   className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
                   icon={
-                    <Icon name="chevron-left" className="w-6 h-6 text-black" />
+                    <Icon name="chevron-left" className="w-6 h-6 text-white" />
                   }
                   onClick={() => handleNav("prev", currentLesson?.order)}
                 ></Button>
@@ -126,7 +126,7 @@ export default function Lesson({ id }: { id?: string }) {
                 <Button
                   text=""
                   icon={
-                    <Icon name="chevron-right" className="w-6 h-6 text-black" />
+                    <Icon name="chevron-right" className="w-6 h-6 text-white" />
                   }
                   className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
                   onClick={() => handleNav("next", currentLesson?.order)}

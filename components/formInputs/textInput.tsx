@@ -120,7 +120,9 @@ function TextInput(props: InputProps) {
       />
 
       {description ? (
-        <div className="text-xs text-center lg:text-left">{description}</div>
+        <div className="text-xs font-medium text-center lg:text-left">
+          {description}
+        </div>
       ) : null}
     </div>
   );
