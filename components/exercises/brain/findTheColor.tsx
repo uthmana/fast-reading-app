@@ -1,7 +1,14 @@
 import Button from "@/components/button/button";
 import { COLORS } from "@/utils/constants";
 import React, { useEffect, useState, useCallback } from "react";
-import { MdArrowBack, MdArrowForward, MdPauseCircle } from "react-icons/md";
+import { IoArrowForward } from "react-icons/io5";
+import {
+  MdArrowBack,
+  MdArrowForward,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdPauseCircle,
+} from "react-icons/md";
 
 export default function FindTheColor({
   onFinishTest,
@@ -45,7 +52,11 @@ export default function FindTheColor({
     (answer: number) => {
       setSelectedAnswer(answer);
       setAnsweredThisRound(true);
-      playSound("punch");
+      if (answer === 1) {
+        playSound("punch");
+      } else {
+        playSound("beep", 1000);
+      }
       const isCorrect = displayColor === currentWord?.color;
       const correctAnswerValue = isCorrect ? 1 : 0;
 
@@ -125,19 +136,20 @@ export default function FindTheColor({
         )}
       </div>
 
-      <div className="flex gap-4 mx-auto max-w-[60%]">
+      <div className="flex gap-2 mx-auto max-w-[60%]">
         <Button
-          icon={<MdArrowBack className="w-6 h-6 text-white" />}
+          icon={<MdKeyboardArrowLeft className="w-7 h-7 text-white" />}
           text="Doğru"
-          className={`my-4 ml-auto outline-none transition-transform bg-green-600 hover:bg-green-700 shadow-lg 
+          className={`my-4 ml-auto max-w-[200px] outline-none transition-transform bg-green-600 hover:bg-green-700 shadow-lg 
             ${selectedAnswer === 1 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(1)}
         />
 
         <Button
-          icon={<MdArrowForward className="w-6 h-6 text-white" />}
+          icon={<MdKeyboardArrowRight className="w-7 h-7 text-white" />}
           text="Yanlış"
-          className={`my-4 ml-auto outline-none transition-transform bg-red-600 hover:bg-red-700 shadow-lg
+          iconPosition="right"
+          className={`my-4 ml-auto outline-none max-w-[200px] transition-transform bg-red-600 hover:bg-red-700 shadow-lg
             ${selectedAnswer === 0 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(0)}
         />
@@ -145,7 +157,7 @@ export default function FindTheColor({
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

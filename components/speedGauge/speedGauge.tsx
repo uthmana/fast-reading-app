@@ -14,7 +14,13 @@ type GaugeProps = {
   max: number;
   title: string;
   ranges?: Range;
+  needleColor?: string;
+  width?: number;
+  height?: number;
+  ticksWidth?: string;
+  ticksHeight?: string;
   className?: string;
+  valueTextFontSize?: string;
   segmentsList?: Array<{ start: number; end: number; color: string }>;
 };
 
@@ -23,6 +29,12 @@ export default function SpeedGauge({
   max,
   title = "Value: ${value}",
   className = "",
+  needleColor = "#715540",
+  width = 260,
+  height = 180,
+  valueTextFontSize = "12px",
+  ticksWidth = "260",
+  ticksHeight = "154",
   ranges = {
     red: [0, 40],
     blue: [40, 60],
@@ -50,29 +62,31 @@ export default function SpeedGauge({
         minValue={0}
         maxValue={max}
         value={value}
-        needleColor="#1e69f1"
+        needleColor={needleColor}
         currentValueText={title}
         needleTransitionDuration={1500}
         segments={segments.length}
         segmentColors={segmentColors}
         customSegmentStops={[0, ...segmentStops]}
-        height={180}
-        width={260}
+        height={height}
+        width={width}
         ringWidth={4}
         textColor="#333"
-        valueTextFontSize="12px"
+        valueTextFontSize={valueTextFontSize}
         labelFontSize="12px"
       />
 
       {/* TICKS OVERLAY */}
-      <svg
-        width="260"
-        height="154"
-        viewBox="0 0 260 180"
-        className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
-      >
-        {renderTicks(130, 150, 105)}
-      </svg>
+      {value !== null && value !== undefined && (
+        <svg
+          width={ticksWidth}
+          height={ticksHeight}
+          viewBox="0 0 260 180"
+          className="absolute top-0 left-1/2 -translate-x-1/2 pointer-events-none"
+        >
+          {renderTicks(130, 150, 105)}
+        </svg>
+      )}
     </div>
   );
 }

@@ -225,6 +225,7 @@ export default function FindTheNumber({
           />
           <Button
             icon={<MdThumbUp className="w-4 h-4 text-white" />}
+            iconPosition="right"
             text="Doğrula"
             className="max-w-fit rounded-none h-10 border mb-2 !px-2 text-sm bg-green-600 hover:bg-green-700"
             type="submit"
@@ -234,7 +235,7 @@ export default function FindTheNumber({
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

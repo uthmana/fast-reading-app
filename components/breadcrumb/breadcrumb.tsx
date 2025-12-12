@@ -6,7 +6,7 @@ export default function Breadcrumb({ menuItem }: any) {
 
   return (
     <div className="w-full lg:min-h-[56px]  min-h-[46px] py-2 px-6 mb-4 flex-wrap  border-b border-dotted lg:border-black flex justify-between items-center">
-      <h1 className="lg:text-2xl whitespace-nowrap  text-base font-sans font-semibold">
+      <h1 className="lg:text-2xl whitespace-nowrap  text-base font-oswald font-normal">
         {menuItem[0]?.name}
       </h1>
 

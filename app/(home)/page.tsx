@@ -161,27 +161,27 @@ export default function Home() {
       <div className="flex flex-wrap gap-4 w-full mb-5 mt-3">
         <Widget
           icon={
-            <MdGroups className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+            <MdGroups className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Grubunuz"
           title={user?.Student ? mapStudyGroup(user?.Student?.studyGroup) : " "}
-          className="flex-1 !capitalizes bg-white"
+          className="flex-1 !capitalizes bg-white shadow-sm"
         />
         <Widget
           icon={
-            <MdHourglassTop className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+            <MdHourglassTop className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
-          className="flex-1 bg-white"
+          className="flex-1 bg-white shadow-sm"
         />
         <Widget
           icon={
-            <MdHourglassBottom className="w-10 h-10 text-blue-500 transition-transform group-hover:scale-110" />
+            <MdHourglassBottom className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
-          className="flex-1 bg-white"
+          className="flex-1 bg-white shadow-sm"
         />
         <Link
           className="inline-block flex-1 lg:max-w-[32.3%]"
@@ -192,12 +192,12 @@ export default function Home() {
               <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />
             }
             title="Eğitime Başla"
-            className="flex-1 bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD] hover:!bg-blue-700 text-white"
+            className="flex-1 border-white bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50 hover:!bg-blue-700 text-white"
           />
         </Link>
       </div>
 
-      <div className="flex bg-white flex-col w-full mb-5 rounded shadow py-10 border">
+      <div className="flex bg-white flex-col w-full mb-5 rounded shadow-sm py-10 border">
         <div className="flex  flex-wrap gap-4">
           <SpeedGauge
             className="flex-1"
@@ -244,8 +244,10 @@ export default function Home() {
       </div>
 
       <div className="flex w-full flex-wrap mb-5 gap-4">
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
-          <h2 className="text-md mb-4 font-medium">Seviye Gelişim Durumunuz</h2>
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+          <h2 className="mb-4 font-oswald font-normal text-lg">
+            Seviye Gelişim Durumunuz
+          </h2>
           <BarChart
             chartData={[
               {
@@ -257,14 +259,15 @@ export default function Home() {
               chart: {
                 id: "basic-bar",
               },
+              colors: ["#0a715c"],
               xaxis: {
                 categories: fastVisionData.categories || [],
               },
             }}
           />
         </div>
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
-          <h2 className="text-md mb-4 font-medium">
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+          <h2 className="mb-4 font-oswald font-normal text-lg">
             Hızlı Okuma Gelişim Durumunuz
           </h2>
           <BarChart
@@ -278,6 +281,7 @@ export default function Home() {
               chart: {
                 id: "basic-bar",
               },
+              colors: ["#0a715c"],
               xaxis: {
                 categories: fastReadingData.categories || [],
               },
@@ -287,8 +291,10 @@ export default function Home() {
       </div>
 
       <div className="flex w-full mb-5 flex-wrap gap-4">
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow">
-          <h2 className="text-md mb-4 font-medium">Yapılan Ödev Grafiği</h2>
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+          <h2 className="mb-4 font-oswald font-normal text-lg">
+            Yapılan Ödev Grafiği
+          </h2>
           <PieChart
             chartOptions={{
               chart: {
@@ -296,7 +302,7 @@ export default function Home() {
                 type: "pie",
               },
               labels: ["Yapılan Ders", "Yapılmayan Ders"],
-              colors: ["#28a0fc", "#dc3912"],
+              colors: ["#0a715c", "#dc3912"],
               legend: {
                 position: "bottom",
               },
@@ -307,8 +313,8 @@ export default function Home() {
             ]}
           />
         </div>
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4  rounded shadow">
-          <h2 className="text-md mb-4 font-medium"> Anlama Oranı</h2>
+        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4  rounded shadow-sm">
+          <h2 className="mb-4 font-oswald font-normal text-lg">Anlama Oranı</h2>
           <PieChart
             chartOptions={{
               chart: {
@@ -316,7 +322,7 @@ export default function Home() {
                 type: "pie",
               },
               labels: ["Anlama Oranı", "Anlama Oranı Dışında"],
-              colors: ["#28a0fc", "#dc3912"],
+              colors: ["#0a715c", "#dc3912"],
               legend: {
                 position: "bottom",
               },
@@ -395,7 +401,7 @@ export default function Home() {
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
             text="TEST BAŞLA"
             onClick={handleIntroTest}
-            className="!bg-gradient-to-r  from-[#1D63F0] to-[#1AD7FD]"
+            className="!bg-gradient-to-r  from-brand-primary-200 to-brand-secondary-50"
           />
         </div>
       </Popup>

@@ -82,7 +82,7 @@ export default function ActivevisionAreaThree({
       {/* Pause Button */}
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 bg-blue-600 hover:bg-blue-700"
+        className="max-w-fit absolute right-1 -bottom-1 my-4 bg-red-600 hover:bg-red-700"
         onClick={handlePause}
       />
     </div>
