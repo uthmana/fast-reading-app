@@ -4,6 +4,8 @@ import { menuItems } from "@/app/routes";
 import { fetchData } from "@/utils/fetchData";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import Icon from "../icon/icon";
+import SpeedGauge from "../speedGauge/speedGauge";
 
 type MenuItem = {
   name: string;
@@ -18,9 +20,10 @@ export default function Sidebar({
   activeMenu: string | null;
   pathname: string;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [progressSummary, setProgressSummary] = useState(
     {} as {
-      lessons: {};
+      lessons: { correct: number };
       levelUp: {};
       fastReadingProgress: {};
       fastUnderstandingProgress: {};
@@ -31,8 +34,10 @@ export default function Sidebar({
     if (pathname.includes("/dersler")) {
       const fetchProgressSummary = async () => {
         try {
+          setIsLoading(true);
           const resData = await fetchData({ apiPath: "/api/progressSummary" });
           setProgressSummary(resData);
+          setIsLoading(false);
         } catch (error) {
           console.error("Error fetching progress summary:", error);
         }
@@ -67,7 +72,7 @@ export default function Sidebar({
     if (pathLink === "/okuma-anlama-testleri/hizli-okuma-testi-gelisim") {
       return `1 dk. ${
         progressSummary.fastReadingProgress?.wpm || "0"
-      } kelime`.trim();
+      } kl`.trim();
     }
     if (pathLink === "/okuma-anlama-testleri/anlama-testi-gelisim") {
       return `% ${
@@ -85,53 +90,83 @@ export default function Sidebar({
   return (
     <aside className="hidden min-h-96 lg:block w-64 pl-4">
       <ul className="space-y-[1px]">
-        {selected?.subMenu?.map((item: MenuItem) => {
-          if (item?.type === "info") {
+        {isLoading ? (
+          <li> Yükleniyor.... </li>
+        ) : (
+          selected?.subMenu?.map((item: MenuItem) => {
+            if (item?.type === "info") {
+              return (
+                <li key={item.name}>
+                  {item.link === "/dersler" ? (
+                    <div className="w-full min-h-[160px]">
+                      <SpeedGauge
+                        title="%${value}"
+                        max={100}
+                        width={230}
+                        height={160}
+                        ticksWidth={"230"}
+                        ticksHeight={"136"}
+                        valueTextFontSize="18px"
+                        className="text-center mx-auto"
+                        needleColor="#0a715c"
+                        value={progressSummary?.lessons?.correct || 0}
+                        segmentsList={[
+                          { start: 0, end: 20, color: "#052921" },
+                          { start: 20, end: 40, color: "#052921" },
+                          { start: 40, end: 60, color: "#052921" },
+                          { start: 60, end: 80, color: "#052921" },
+                          { start: 80, end: 100, color: "#052921" },
+                        ]}
+                      />
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.link || "#"}
+                      className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition ${
+                        pathname === item.link
+                          ? "text-white hover:text-white bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50"
+                          : ""
+                      }`}
+                    >
+                      <span
+                        className={`flex justify-between transition-transform items-center`}
+                      >
+                        <span className="font-oswald font-normal">
+                          {item.name}
+                        </span>
+                        <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-50">
+                          {renderSummary(item.link, progressSummary)}
+                        </span>
+                      </span>
+                    </Link>
+                  )}
+                </li>
+              );
+            }
+
             return (
               <li key={item.name}>
                 <Link
                   href={item.link || "#"}
-                  className={`block px-3 py-5 bg-white border-2 border-blue-600 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition ${
+                  className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-[#0a5854] group  transition ${
                     pathname === item.link
-                      ? "text-white hover:text-white bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
+                      ? "bg-gradient-to-r from-[#0a5854] to-[#ead0ad]"
                       : ""
                   }`}
                 >
-                  <span
-                    className={`block gap-2 transition-transform   group-hover:translate-x-2 `}
-                  >
-                    {item.name}{" "}
-                    <span className="font-bold  text-xs text-white whitespace-nowrap px-1 py-[2px] bg-blue-600">
-                      {renderSummary(item.link, progressSummary)}
-                    </span>
+                  <span className="flex gap-[6px] items-center transition-transform group-hover:translate-x-2">
+                    <Icon
+                      name={`${selected.icon as "menu"}`}
+                      className="w-4 h-4"
+                      fill="white"
+                    />{" "}
+                    {item.name}
                   </span>
                 </Link>
-                <div className="space-y-[3px] mt-1">
-                  <hr className="w-[calc(100%-16px)] mx-auto" />
-                  <hr className="w-[calc(100%-32px)] mx-auto" />
-                  <hr className="w-[calc(100%-48px)] mx-auto" />
-                </div>
               </li>
             );
-          }
-
-          return (
-            <li key={item.name}>
-              <Link
-                href={item.link || "#"}
-                className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-blue-600 group  hover:bg-blue-700 transition ${
-                  pathname === item.link
-                    ? "bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
-                    : ""
-                }`}
-              >
-                <span className="block transition-transform group-hover:translate-x-2">
-                  {item.name}
-                </span>
-              </Link>
-            </li>
-          );
-        })}
+          })
+        )}
       </ul>
     </aside>
   );

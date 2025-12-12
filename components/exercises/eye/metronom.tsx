@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
+import { useAudioSound } from "@/utils/hooks";
 
 type MetronomeEyeProps = {
   controls?: {
@@ -25,11 +26,13 @@ export default function Metronom({
   const level = controls?.level || 3;
   const speedMs = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
+  const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
 
   useEffect(() => {
     const timer = setInterval(() => {
+      stopSound();
       setLeftSide((prev) => !prev);
-      playBeep(leftSide ? "left" : "right");
+      playSound();
     }, speedMs);
 
     return () => clearInterval(timer);

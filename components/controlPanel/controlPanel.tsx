@@ -202,9 +202,7 @@ export default function ControlPanel({
     <div className={`flex w-full flex-col ${className}`}>
       {controlItem.includes("categorySelect") ? (
         <div
-          className={`relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[84px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] ${
-            isTestSlug ? "!min-h-[130px]" : ""
-          }`}
+          className={`relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[84px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
         >
           <img
             src={wood_img.src}
@@ -270,8 +268,7 @@ export default function ControlPanel({
                     max="32"
                     step="2"
                     required={false}
-                    styleClass="mb-0"
-                    description="Yazı karekterinin büyüklüğü, okuma zorluğu çekiyorsanız büyütün"
+                    styleClass="pb-8 h-4"
                   />
                 </div>
               ) : null}
@@ -607,7 +604,7 @@ export default function ControlPanel({
       ) : null}
 
       {isfastTest ? (
-        <div className="relative w-full overflow-hidden rounded-md border border-gray-400  min-h-[100px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
+        <div className="relative w-full overflow-hidden rounded-md border border-gray-400  min-h-[84px] mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
           <img
             src={wood_img.src}
             alt="Wood background"

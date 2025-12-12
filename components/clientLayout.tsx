@@ -9,7 +9,6 @@ import { playlists } from "../utils/constants";
 import { menuItems } from "@/app/routes";
 import Breadcrumb from "./breadcrumb/breadcrumb";
 import LogOutInput from "./formInputs/logoutInput";
-import { fetchData } from "@/utils/fetchData";
 
 interface ClientLayoutProps {
   children: React.ReactNode;
@@ -38,22 +37,22 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
   return (
     <div className="w-full pb-16 relative flex flex-col min-h-screen lg:bg-[url('/images/kutuphane-millet.png')]  bg-fixed bg-cover bg-no-repeat bg-center">
       <div
-        className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#1745d2] from-[170px]  to-transparent to-[60%] lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top 
-    lg:after:fixed lg:after:z-1 lg:after:top-0 lg:after:left-0  lg:after:bg-[url('/images/blue-gradient.jpeg')] lg:after:h-[170px]  lg:after:w-full lg:after:bg-cover lg:after:bg-no-repeat lg:after:bg-top"
+        className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#000000]/50   to-transparent  lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top 
+    lg:after:fixed lg:after:z-1 lg:after:top-0 lg:after:left-0  lg:after:bg-[#1c3327] lg:after:h-[170px] lg:after:shadow-2xl  lg:after:w-full lg:after:bg-cover lg:after:bg-no-repeat lg:after:bg-top"
       >
         <Menu
           pathname={pathname}
           onActiveMenu={(menuName) => setActiveMenu(menuName)}
         />
       </div>
-      <main className="w-full h-full relative ">
+      <main className="w-full min-h-full relative">
         <div
-          className={`flex flex-col items-start bg-white lg:bg-white/85 lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
+          className={`flex flex-col items-start bg-brand-secondary-50 lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
         >
           <Breadcrumb menuItem={currentMenu} />
-          <div className="w-full flex ">
+          <div className="w-full flex h-full">
             <Sidebar pathname={pathname} activeMenu={activeMenu} />
-            <div className="flex-1 min-h-[500px]">{children}</div>
+            <div className="flex-1 min-h-[650px]">{children}</div>
           </div>
           <div className="w-full  pt-3 items-center border-t border-dotted border-black hidden -mb-5 lg:flex opacity-50 hover:opacity-100">
             <LogOutInput
