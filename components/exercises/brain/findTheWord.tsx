@@ -1,7 +1,13 @@
 import Button from "@/components/button/button";
 import { letterWords } from "@/utils/constants";
 import React, { useCallback, useEffect, useState } from "react";
-import { MdArrowBack, MdArrowForward, MdPauseCircle } from "react-icons/md";
+import {
+  MdArrowBack,
+  MdArrowForward,
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdPauseCircle,
+} from "react-icons/md";
 
 export default function FindTheWord({
   onFinishTest,
@@ -64,7 +70,11 @@ export default function FindTheWord({
   const handleAnswer = useCallback(
     (answer: number) => {
       setSelectedAnswer(answer);
-      playSound("punch");
+      if (answer === 1) {
+        playSound("punch");
+      } else {
+        playSound("beep", 1000);
+      }
       const { right, wrong } = resultDisplay;
       const correctValue = isSame ? 1 : 0;
 
@@ -124,7 +134,7 @@ export default function FindTheWord({
 
       <div className="flex gap-4 mx-auto max-w-[80%]">
         <Button
-          icon={<MdArrowBack className="w-6 h-6 text-white" />}
+          icon={<MdKeyboardArrowLeft className="w-7 h-7 text-white" />}
           text="Aynı"
           className={`my-4 ml-auto bg-green-600 hover:bg-green-700 shadow-lg 
             ${selectedAnswer === 1 ? "scale-105" : "scale-95"}`}
@@ -132,7 +142,8 @@ export default function FindTheWord({
         />
 
         <Button
-          icon={<MdArrowForward className="w-6 h-6 text-white" />}
+          icon={<MdKeyboardArrowRight className="w-7 h-7 text-white" />}
+          iconPosition="right"
           text="Farklı"
           className={`my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg
             ${selectedAnswer === 0 ? "scale-105" : "scale-95"}`}
@@ -142,7 +153,7 @@ export default function FindTheWord({
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-2 bottom-0 my-4 bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit absolute right-2 bottom-0 my-4 bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

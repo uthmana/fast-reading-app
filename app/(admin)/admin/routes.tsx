@@ -17,7 +17,7 @@ const routes = [
   //   roles: ["ADMIN", "TEACHER"],
   // },
   {
-    name: "Ders Yönetimi",
+    name: "Kurs Yönetimi",
     path: "",
     icon: <MdGroups className="w-6 h-6" />,
     roles: ["ADMIN", "TEACHER"],

@@ -25,7 +25,10 @@ export default function LineLengthView({
   const [word, setWord] = useState("...");
   const [yOffset, setYOffset] = useState(0);
   const [flipping, setFlipping] = useState(false);
-  const distance = (controls?.distance ?? 3) * 20;
+  const distance =
+    controls?.distance && controls?.distance > 1
+      ? controls?.distance * 40
+      : controls?.distance ?? 1 * 2;
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
   const level = controls?.level || 3;
@@ -138,7 +141,7 @@ export default function LineLengthView({
       {/* Pause Button (same style as your EyeMuscleDevelopment) */}
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

@@ -57,14 +57,6 @@ export default function page() {
     }
   };
 
-  // const onResultDisplay = async (val: {
-  //   right: number;
-  //   wrong: number;
-  //   net: number;
-  // }) => {
-  //   setResultDisplay(val);
-  // };
-
   const saveProgress = async () => {
     try {
       await fetchData({
@@ -95,8 +87,6 @@ export default function page() {
           onFinishTest={onFinishTest}
           controls={control}
           pathname={pathname}
-          //onResultDisplay={onResultDisplay}
-
           resultDisplay={resultDisplay}
           setResultDisplay={setResultDisplay}
         />

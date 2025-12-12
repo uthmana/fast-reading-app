@@ -10,6 +10,7 @@ type ButtonProps = {
   disabled?: boolean;
   icon?: ReactElement;
   loading?: boolean;
+  iconPosition?: "left" | "right";
 };
 
 export default function Button({
@@ -21,6 +22,7 @@ export default function Button({
   isSubmiting,
   icon,
   loading,
+  iconPosition = "left",
 }: ButtonProps) {
   return (
     <button
@@ -29,7 +31,7 @@ export default function Button({
       onClick={onClick}
       className={`bg-blue-500 flex items-center justify-center gap-2 text-white px-4 py-2 rounded w-full ${
         disabled ? "opacity-30" : ""
-      } ${className}`}
+      } ${className} ${iconPosition === "right" ? "flex-row-reverse" : ""}`}
     >
       {icon}
       {isSubmiting || loading ? (

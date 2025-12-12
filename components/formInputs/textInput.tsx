@@ -69,9 +69,9 @@ function TextInput(props: InputProps) {
                   : value?.value}
               </span>
               {type === "range" && showRangeIcon ? (
-                <span className="absolute right-1 -top-[5px]">
+                <span className="absolute rounded-full w-10 h-8 right-1 -top-[5px]">
                   <img
-                    className="h-8 inline-block"
+                    className="h-full aspect-auto inline-block"
                     src={`/images/objects/icon${value?.value}.png`}
                   />
                 </span>

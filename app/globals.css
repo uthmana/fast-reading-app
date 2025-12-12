@@ -2,7 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 1 — Bold */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbece-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2 — Arrow variant (usually regular) */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceArrow.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 3 — Body (regular main font) */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceBody.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 4 — Dot (lighter dotted version) */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceDot.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 5 — OutBody */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceOutBody.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 6 — OutLine (outline version — lighter) */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceOutLine.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 7 — OutUni */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceOutUni.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 8 — Uni (main universal version) */
+@font-face {
+  font-family: "TttkbDikTemelAbece";
+  src: url("/fonts/TTKBDikTemelAbeceUni.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 .container{
-@apply max-w-5xl mx-auto;
+@apply max-w-7xl mx-auto px-4;
 }
 

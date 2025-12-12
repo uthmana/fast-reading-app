@@ -28,39 +28,41 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   };
 
   return (
-    <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]">
+    <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-brand-primary-200">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
         <div className="w-full flex items-center justify-between gap-8">
           <h1 className="capitalize text-white text-base">
             <Link
               href="/"
-              className="flex gap-3 items-center"
+              className="flex min-w-[200px] gap-3 items-center"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 h-10 border-2  font-semibold text-lg bg-blue-600 flex items-center justify-center rounded-full">
+              <span className="w-10 h-10 border-2 text-black font-semibold text-lg bg-brand-secondary-50 flex items-center justify-center rounded-full">
                 {!session ? " " : session?.user?.name[0]?.toUpperCase()}
               </span>
-              <span className="flex whitespace-nowrap hover:underline">
-                <span
-                  title={session?.user?.name}
-                  className="lg:max-w-[200px] max-w-[300px] overflow-hidden text-ellipsis"
-                >
-                  Hoşgeldin, {session?.user?.name}
+              <span className="flex  hover:underline">
+                <span title={session?.user?.name} className="leading-4">
+                  <span className="text-base font-oswald font-light">
+                    Hoşgeldin,
+                  </span>{" "}
+                  <span className="whitespace-nowrap">
+                    {session?.user?.name}
+                  </span>
                 </span>
               </span>
             </Link>
           </h1>
 
           {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center space-x-1">
+          <nav className="hidden lg:flex items-center space-x-2">
             {menuItems.map((item) => (
               <div key={item.name} className="relative h-full">
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative whitespace-nowrap  group flex-col items-center text-sm text-white hover:shadow border border-black/0  hover:bg-blue-600 hover:border-blue-800 rounded-md px-2 py-2 ${
+                    className={`flex relative font-oswald font-normal  whitespace-nowrap  group flex-col items-center text-base -tracking-tighter text-white hover:shadow border border-black/0  hover:bg-brand-secondary-150 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link)
-                        ? "!bg-blue-700 shadow !border-white"
+                        ? "!bg-brand-secondary-150 shadow !border-white"
                         : ""
                     }`}
                     onClick={() => item.subMenu && toggleSubMenu(item.name)}
@@ -161,7 +163,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
                         href={sub.link}
                         className={`block py-2 px-2 text-sm text-gray-700  hover:text-blue-600 ${
                           pathname === sub.link
-                            ? "!bg-blue-600 !text-white rounded bg-gradient-to-r from-[#1D63F0] to-[#1AD7FD]"
+                            ? "!bg-blue-600 !text-white rounded bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50"
                             : ""
                         }`}
                         onClick={() => setMenuOpen(false)}
