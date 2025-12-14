@@ -107,23 +107,6 @@ model Attempt {
   createdAt   DateTime @default(now())
 }
 
-// model Progress {
-//   id               Int            @id @default(autoincrement())
-//   studentId        Int
-//   lessonId         Int
-//   lessonExerciseId Int
-//   exerciseId       Int
-//   done             Boolean        @default(false)
-//   createdAt        DateTime       @default(now())
-//   updatedAt        DateTime?      @updatedAt
-//   student          Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
-//   lesson           Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-//   exercise         Exercise       @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-//   lessonExercise   LessonExercise @relation(fields: [lessonExerciseId], references: [id], onDelete: Cascade)
-
-//   @@unique([studentId, lessonExerciseId]) // progress is tracked per student per lessonExercise occurrence
-// }
-
 model Article {
   id          Int        @id @default(autoincrement())
   title       String
