@@ -90,7 +90,7 @@ export default function page() {
 
         <div className="flex-1 bg-white min-h-[270px] max-h-[400px] overflow-y-auto border  rounded shadow">
           <div className="w-full px-3">
-            <div className="grid grid-cols-12 sticky pt-8 top-0 bg-white text-balck text-sm whitespace-nowrap font-semibold border-b">
+            <div className="grid grid-cols-12 sticky pt-8 top-0 bg-white text-black text-sm whitespace-nowrap font-semibold border-b">
               <div className="col-span-3">Tarih</div>
               <div className="col-span-3">Kelime Adet</div>
               <div className="col-span-2">Hız (ms)</div>

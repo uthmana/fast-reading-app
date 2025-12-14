@@ -59,13 +59,13 @@ export default function page() {
 
   const saveProgress = async () => {
     try {
+      if (!session?.user?.student?.id) return;
       await fetchData({
-        apiPath: "/api/progress",
-        method: "POST",
+        apiPath: "/api/lessonExercises",
+        method: "PUT",
         payload: {
-          studentId: session?.user?.student?.id,
+          id: parseInt(exerciseParams || ""),
           lessonId: parseInt(lessonParams || ""),
-          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {

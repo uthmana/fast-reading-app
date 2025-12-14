@@ -23,6 +23,7 @@ export default function page() {
   const lessonParams = searchParams.get("lessonId");
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
+  const orderParams = searchParams.get("order");
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL");
 
@@ -120,13 +121,13 @@ export default function page() {
 
   const saveProgress = async () => {
     try {
+      if (!session?.user?.student?.id) return;
       await fetchData({
-        apiPath: "/api/progress",
-        method: "POST",
+        apiPath: "/api/lessonExercises",
+        method: "PUT",
         payload: {
-          studentId: session?.user?.student?.id,
+          id: parseInt(exerciseParams || ""),
           lessonId: parseInt(lessonParams || ""),
-          exerciseId: parseInt(exerciseParams || ""),
         },
       });
     } catch (error) {
@@ -153,7 +154,13 @@ export default function page() {
       }
       control={control}
       onControlChange={handleControl}
-      lessonData={{ id: lessonParams, duration: durationParams } as any}
+      lessonData={
+        {
+          id: lessonParams,
+          duration: durationParams,
+          order: orderParams,
+        } as any
+      }
       contentClassName="!w-full"
       saveProgress={saveProgress}
     />

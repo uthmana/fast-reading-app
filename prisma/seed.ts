@@ -5,6 +5,7 @@ import {
   articleCategory,
   articleData,
   exerciseData,
+  lessonData,
   studyGroupOptions,
 } from "./mockData";
 import { Category, StudyGroup } from "@prisma/client";
@@ -116,7 +117,45 @@ async function main() {
         },
       },
     },
+    include: {
+      Student: true,
+    },
   });
+
+  const defaultLessons = await prisma.$transaction(
+    lessonData.map((item) =>
+      prisma.lesson.create({
+        data: {
+          ...item,
+          LessonExercise: {
+            create: item.LessonExercise.map((exercise) => ({
+              ...exercise,
+            })),
+          },
+        },
+      })
+    )
+  );
+
+  const studentId = student.Student?.id;
+
+  const studentLessons = await prisma.$transaction(
+    lessonData.map((item) =>
+      prisma.lesson.create({
+        data: {
+          ...item,
+          student: {
+            connect: { id: studentId },
+          },
+          LessonExercise: {
+            create: item.LessonExercise.map((exercise) => ({
+              ...exercise,
+            })),
+          },
+        },
+      })
+    )
+  );
 
   const category: Category[] | any = await prisma.category.createMany({
     data: articleCategory.map((item) => ({
@@ -146,26 +185,6 @@ async function main() {
     exerciseData.map((item) => prisma.exercise.create({ data: item }))
   );
 
-  // create a lesson and link exercises via the LessonExercise join model
-  const lessonsNumbers = Array.from({ length: 40 }, (_, i) => i + 1);
-
-  await prisma.$transaction(
-    lessonsNumbers.map((num) =>
-      prisma.lesson.create({
-        data: {
-          title: `${num}. Ders aşağıdaki egzersizleri yapınız.`,
-          order: num,
-          LessonExercise: {
-            create: createdExercises.map((item, idx) => ({
-              exerciseId: item.id,
-              order: idx + 1,
-            })),
-          },
-        },
-      })
-    )
-  );
-
   const studyGroups = studyGroupOptions.map((s) => s.value);
   const uniqueWords = [...new Set(allWords)];
 
@@ -193,7 +212,9 @@ async function main() {
     student,
     category,
     article,
+    studentLessons,
     createdExercises,
+    defaultLessons,
   });
 }
 

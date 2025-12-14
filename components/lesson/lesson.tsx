@@ -13,63 +13,24 @@ import { useSession } from "next-auth/react";
 export default function Lesson({ id }: { id?: string }) {
   const router = useRouter();
   const { data: session } = useSession();
-  const [data, setData] = useState({} as any);
   const [currentLesson, setCurrentLesson] = useState({} as any);
-  const [progress, setProgress] = useState([]);
-  const [lessonAssigned, setLessonAssigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const maxOrder = 40; //TODO: get the value from api with pagination
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
         setIsLoading(true);
-        const resData = await fetchData({ apiPath: "/api/lessons" });
-        setData(resData);
-        const lessonId = parseInt(id || "");
-        let lesson = lessonId
-          ? resData?.find((item: any) => item.id === lessonId)
-          : resData?.[0];
-        setCurrentLesson(lesson);
-
-        // fetch progress for this lesson (if session/student available)
-        if (lesson) {
-          // First try: ask the server to infer the student from the server session.
-          let progressRes = await fetchData({
-            apiPath: `/api/progress?lessonId=${lesson.id}`,
-          }).catch(() => []);
-
-          // If that returned nothing and we have a client session student id,
-          // retry with explicit studentId parameter (covers session-hydration edge cases).
-          const clientStudentId = session?.user?.student?.id;
-          if (
-            (!progressRes ||
-              (Array.isArray(progressRes) && progressRes.length === 0)) &&
-            clientStudentId
-          ) {
-            progressRes = await fetchData({
-              apiPath: `/api/progress?lessonId=${lesson.id}&studentId=${clientStudentId}`,
-            }).catch(() => []);
-          }
-
-          // normalize progress response to an array when possible
-          const normalizedProgress = Array.isArray(progressRes)
-            ? progressRes
-            : progressRes &&
-              typeof progressRes === "object" &&
-              !progressRes.error
-            ? // sometimes the API may return an object; try to extract array-like values
-              Array.isArray((progressRes as any).data)
-              ? (progressRes as any).data
-              : (progressRes as any).progress || (progressRes as any).rows || []
-            : [];
-
-          setProgress(normalizedProgress);
-
-          // lesson is considered assigned if there are any progress rows for it
-          const assigned = normalizedProgress.length > 0;
-          setLessonAssigned(assigned);
-          setIsLoading(false);
+        let lessonId = id;
+        if (!lessonId) {
+          lessonId = "1";
         }
+        const resData = await fetchData({
+          apiPath: `/api/lessons?order=${lessonId}`,
+        });
+        setCurrentLesson(resData);
+        setIsLoading(false);
+        // }
       } catch (error) {
         console.error("Error fetching lessons:", error);
         setIsLoading(false);
@@ -80,23 +41,23 @@ export default function Lesson({ id }: { id?: string }) {
   }, [id, session?.user?.student?.id]);
 
   const handleNav = (direction: string, order: number) => {
-    const maxOrder = data.length;
     const prev = order - 1;
     const next = order + 1;
 
     // Prevent going before the first item
     if (direction === "prev") {
-      if (prev < 1) return;
-      const prevData = data?.find((item: any) => item.order === prev);
-      if (prevData) router.push(`/dersler/${prevData.id}`);
+      if (prev < 1 || !prev) {
+        router.push(`/dersler/1`);
+        return;
+      }
+      router.push(`/dersler/${prev}`);
       return;
     }
 
     // Prevent going past the last item
     if (direction === "next") {
       if (next > maxOrder) return;
-      const nextData = data?.find((item: any) => item.order === next);
-      if (nextData) router.push(`/dersler/${nextData.id}`);
+      router.push(`/dersler/${next}`);
       return;
     }
   };
@@ -116,7 +77,7 @@ export default function Lesson({ id }: { id?: string }) {
               <div className="flex gap-3 items-center whitespace-nowrap ml-auto justify-start font-medium">
                 <Button
                   text=""
-                  className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
+                  className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
                   icon={
                     <Icon name="chevron-left" className="w-6 h-6 text-white" />
                   }
@@ -128,7 +89,7 @@ export default function Lesson({ id }: { id?: string }) {
                   icon={
                     <Icon name="chevron-right" className="w-6 h-6 text-white" />
                   }
-                  className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
+                  className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
                   onClick={() => handleNav("next", currentLesson?.order)}
                 ></Button>
               </div>
@@ -136,33 +97,25 @@ export default function Lesson({ id }: { id?: string }) {
 
             {isLoading ? (
               <div className="w-full py-10 flex justify-center items-center">
-                <span className="text-gray-500 italic">Ders yükleniyor...</span>
+                <span className="text-current italic">
+                  Ders yükleniyor.....
+                </span>
               </div>
             ) : (
               <ul className="space-y-[2px]">
-                {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
-                  // determine if this particular lesson-exercise occurrence is done
-                  const isDone = progress?.some(
-                    (p: any) =>
-                      // prefer lessonExerciseId when available
-                      (lesson.lessonExerciseId &&
-                        p.lessonExerciseId === lesson.lessonExerciseId &&
-                        p.done) ||
-                      // fallback: match by exerciseId + lessonId
-                      (p.exerciseId === lesson.id &&
-                        p.lessonId === currentLesson.id &&
-                        p.done)
-                  );
-                  const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
-                  // only lock exercises for students; assigned lessons are unlocked
-                  const isStudent = session?.user?.role === "STUDENT";
-                  const unlocked = true; //isStudent ? lessonAssigned : true;
-                  const linkAllowed = unlocked && !isDone;
+                {currentLesson?.LessonExercise?.map(
+                  (lesson: any, idx: number) => {
+                    const isDone = lesson.isDone;
+                    const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}&order=${currentLesson.order}`;
+                    // only lock exercises for students; assigned lessons are unlocked
+                    const isStudent = session?.user?.role === "STUDENT";
+                    const unlocked = isStudent ? !currentLesson.isLocked : true;
+                    const linkAllowed = unlocked && !isDone;
 
-                  return (
-                    <li
-                      key={lesson.pathName + idx}
-                      className={`group relative overflow-hidden rounded-lg border-current
+                    return (
+                      <li
+                        key={lesson.pathName + idx}
+                        className={`group relative overflow-hidden rounded-lg border-current
                     bg-gradient-to-r from-[#fdfdfd] to-[#f4f4f4]
                     border-gray-400 shadow-[0_6px_12px_rgba(0,0,0,0.3)]
                     before:content-[''] before:absolute before:inset-0 
@@ -176,101 +129,102 @@ export default function Lesson({ id }: { id?: string }) {
                         ? "!line-through decoration-2 decoration-black opacity-70"
                         : ""
                     }`}
-                      style={{
-                        perspective: "1000px",
-                        backgroundImage: `url(/images/linen-texture.jpg)`,
-                        backgroundColor: "#ffffff",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                      }}
-                    >
-                      {linkAllowed ? (
-                        <Link
-                          href={linkPath}
-                          className={`flex justify-between items-center flex-wrap
-                      px-6 py-3 text-gray-800 font-medium
+                        style={{
+                          perspective: "1000px",
+                          backgroundImage: `url(/images/linen-texture.jpg)`,
+                          backgroundColor: "#ffffff",
+                          backgroundRepeat: "no-repeat",
+                          backgroundPosition: "center",
+                          backgroundSize: "cover",
+                        }}
+                      >
+                        {linkAllowed ? (
+                          <Link
+                            href={linkPath}
+                            className={`flex justify-between items-center flex-wrap
+                      px-6 py-3 text-gray-800 font-semibold
                       relative z-10
                       transition-all duration-300`}
-                        >
-                          <span
-                            className={`flex`}
-                            style={{
-                              textShadow:
-                                "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                            }}
                           >
-                            {idx + 1}. {lesson.title}
-                          </span>
-                          <span className="text-sm italic flex">
-                            ( En Az {lesson.minDuration / 60}{" "}
-                            <span className="flex gap-1 whitespace-nowrap pl-1">
-                              <span className="block lg:hidden"> dk.</span>
-                              <span className="lg:block hidden">Dakika</span>
+                            <span
+                              className={`flex`}
+                              style={{
+                                textShadow:
+                                  "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                              }}
+                            >
+                              {idx + 1}. {lesson.title}
                             </span>
-                            )
-                          </span>
-                        </Link>
-                      ) : (
-                        <div
-                          role="button"
-                          onClick={() => {
-                            if (!unlocked) {
-                              alert(
-                                "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
-                              );
-                            } else if (isDone) {
-                              alert("Bu egzersizi zaten tamamladınız.");
-                            }
-                          }}
-                          className={`flex justify-between items-center flex-wrap
-                      px-6 py-3 text-gray-800 font-medium
+                            <span className="text-sm italic flex">
+                              ( En Az {lesson.minDuration / 60}{" "}
+                              <span className="flex gap-1 whitespace-nowrap pl-1">
+                                <span className="block lg:hidden"> dk.</span>
+                                <span className="lg:block hidden">Dakika</span>
+                              </span>
+                              )
+                            </span>
+                          </Link>
+                        ) : (
+                          <div
+                            role="button"
+                            onClick={() => {
+                              if (!unlocked) {
+                                alert(
+                                  "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
+                                );
+                              } else if (isDone) {
+                                alert("Bu egzersizi zaten tamamladınız.");
+                              }
+                            }}
+                            className={`flex justify-between items-center flex-wrap
+                      px-6 py-3 text-gray-800 font-semibold
                       relative z-10
                       transition-all duration-300 cursor-default`}
-                        >
-                          <span
-                            className={`flex items-center gap-2`}
-                            style={{
-                              textShadow:
-                                "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
-                            }}
                           >
-                            {!unlocked && (
-                              <IoMdLock className="ml-2 text-black" />
-                            )}{" "}
-                            {idx + 1}. {lesson.title}
-                          </span>
-                          <span className="text-sm italic flex">
-                            ( En Az {lesson.minDuration / 60}{" "}
-                            <span className="flex gap-1 whitespace-nowrap pl-1">
-                              <span className="block lg:hidden"> dk.</span>
-                              <span className="lg:block hidden">Dakika</span>
+                            <span
+                              className={`flex items-center gap-2`}
+                              style={{
+                                textShadow:
+                                  "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
+                              }}
+                            >
+                              {!unlocked && (
+                                <IoMdLock className="text-2xl text-black" />
+                              )}{" "}
+                              {idx + 1}. {lesson.title}
                             </span>
-                            )
-                          </span>
-                        </div>
-                      )}
+                            <span className="text-sm italic flex">
+                              ( En Az {lesson.minDuration / 60}{" "}
+                              <span className="flex gap-1 whitespace-nowrap pl-1">
+                                <span className="block lg:hidden"> dk.</span>
+                                <span className="lg:block hidden">Dakika</span>
+                              </span>
+                              )
+                            </span>
+                          </div>
+                        )}
 
-                      {/* Darker side shadow */}
-                      <div
-                        className="
+                        {/* Darker side shadow */}
+                        <div
+                          className="
                       absolute right-0 top-0 w-3 h-full
                       bg-gradient-to-l from-black/50 via-black/25 to-transparent
                       pointer-events-none
                     "
-                      ></div>
+                        ></div>
 
-                      {/* Darker bottom edge */}
-                      <div
-                        className="
+                        {/* Darker bottom edge */}
+                        <div
+                          className="
                       absolute bottom-0 left-0 w-full h-2
                       bg-gradient-to-t from-black/40 via-black/20 to-transparent
                       pointer-events-none
                     "
-                      ></div>
-                    </li>
-                  );
-                })}
+                        ></div>
+                      </li>
+                    );
+                  }
+                )}
               </ul>
             )}
           </div>

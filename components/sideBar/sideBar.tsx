@@ -88,7 +88,7 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="hidden min-h-96 lg:block w-64 pl-4">
+    <aside className="hidden min-h-96  lg:block w-64 pl-4">
       <ul className="space-y-[1px]">
         {isLoading ? (
           <li> Yükleniyor.... </li>
@@ -106,7 +106,7 @@ export default function Sidebar({
                         height={160}
                         ticksWidth={"230"}
                         ticksHeight={"136"}
-                        valueTextFontSize="18px"
+                        valueTextFontSize="22px"
                         className="text-center mx-auto"
                         needleColor="#0a715c"
                         value={progressSummary?.lessons?.correct || 0}

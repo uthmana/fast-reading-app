@@ -33,7 +33,7 @@ const routes = [
     icon: <MdOutlineArticle className="w-6 h-6" />,
     roles: ["ADMIN", "TEACHER"],
     children: [
-      { name: "Dersler", path: "/admin/lessons" },
+      //{ name: "Dersler", path: "/admin/lessons" },
       { name: "Kategoriler", path: "/admin/category" },
       { name: "Makaleler", path: "/admin/articles" },
       { name: "Kelimeler", path: "/admin/words" },

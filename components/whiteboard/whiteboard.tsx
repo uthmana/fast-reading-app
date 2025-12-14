@@ -18,7 +18,7 @@ interface WhiteboardProps {
   control?: any;
   isfastTest?: boolean;
   readingStatus?: any;
-  lessonData?: { id: string; duration: string };
+  lessonData?: { id: string; duration: string; order: string };
   contentClassName?: string;
   saveProgress?: () => void;
   isPrimaryStudent?: boolean;
@@ -153,7 +153,7 @@ export default function Whiteboard({
           {lessonData?.id ? (
             <Link
               className="absolute flex gap-2 bottom-5 transition hover:bg-blue-600 right-20 rounded-md bg-blue-500 text-white py-2 px-3"
-              href={`/dersler/${lessonData?.id}`}
+              href={`/dersler/${lessonData?.order}`}
             >
               <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
             </Link>
@@ -228,7 +228,7 @@ export default function Whiteboard({
             {lessonData?.id ? (
               <Link
                 className="absolute transition-opacity z-20 lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
-                href={`/dersler/${lessonData?.id}`}
+                href={`/dersler/${lessonData?.order}`}
               >
                 <MdArrowBack className="text-white w-6 h-6" />
                 <span className="hidden md:inline-block"> Derslere Dön</span>

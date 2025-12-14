@@ -201,13 +201,13 @@ export default function Home() {
         <div className="flex  flex-wrap gap-4">
           <SpeedGauge
             className="flex-1"
-            title="DERSLER %${value}"
+            title="Dersler %${value}"
             max={100}
             value={progressSummary?.lessons?.correct || 0}
           />
           <SpeedGauge
             className="flex-1"
-            title={`OKUMA HIZINIZ ${
+            title={`Okuma Hızınız ${
               progressSummary?.fastReadingProgress?.wpm || 0
             } kl/dk`}
             max={1500}
@@ -229,7 +229,7 @@ export default function Home() {
           />
           <SpeedGauge
             className="flex-1"
-            title="ANLAMA HIZINIZ %${value}"
+            title="Anlama Hızınız %${value}"
             max={100}
             value={progressSummary?.fastUnderstandingProgress?.correct || 0}
           />

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Student, User } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+import { lessonData } from "@/utils/constants";
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,9 +28,11 @@ export async function GET(req: NextRequest) {
         include: {
           user: true,
           class: true,
-          Progress: true,
           attempts: true,
           Subscriber: true,
+          lessons: {
+            include: { LessonExercise: true },
+          },
         },
         orderBy: {
           user: {
@@ -42,8 +45,10 @@ export async function GET(req: NextRequest) {
         include: {
           user: true,
           class: true,
-          Progress: true,
           attempts: true,
+          lessons: {
+            include: { LessonExercise: true },
+          },
           Subscriber: true,
         },
         orderBy: {
@@ -62,26 +67,43 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(students, { status: 200 });
     }
 
-    // Resolve async map correctly
-    const enhanced = await Promise.all(
-      students.map(async (student: any) => {
-        const [totalLessonExercises, completedCount] = await Promise.all([
-          prisma.lessonExercise.count(),
-          prisma.progress.count({
-            where: { studentId: student.id, done: true },
-          }),
-        ]);
-        const progressPercent = totalLessonExercises
-          ? Math.round((completedCount / totalLessonExercises) * 100)
-          : 0;
-        return {
-          ...student,
-          progressPercent,
-        };
-      })
-    );
+    // Get studentLesson percentage
+    const enhancedData = students?.map((student: any) => {
+      const totalLessonExercises = student?.lessons?.flatMap(
+        (lesson: any) => lesson.LessonExercise
+      );
 
-    return NextResponse.json(enhanced, { status: 200 });
+      const completedCount = totalLessonExercises.filter(
+        (exercise: any) => exercise.isDone
+      ).length;
+
+      const lessonsPercent =
+        totalLessonExercises.length > 0
+          ? Math.round((completedCount / totalLessonExercises.length) * 100)
+          : 0;
+
+      return { ...student, progressPercent: lessonsPercent };
+    });
+
+    // const enhanced = await Promise.all(
+    //   students.map(async (student: any) => {
+    //     const [totalLessonExercises, completedCount] = await Promise.all([
+    //       prisma.lessonExercise.count(),
+    //       prisma.progress.count({
+    //         where: { studentId: student.id, done: true },
+    //       }),
+    //     ]);
+    //     const progressPercent = totalLessonExercises
+    //       ? Math.round((completedCount / totalLessonExercises) * 100)
+    //       : 0;
+    //     return {
+    //       ...student,
+    //       progressPercent,
+    //     };
+    //   })
+    // );
+
+    return NextResponse.json(enhancedData, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
@@ -284,37 +306,25 @@ export async function POST(req: Request) {
     if (role === "STUDENT" && user.Student) {
       try {
         const studentId = user.Student.id;
-
-        // Find the first lesson by order
-        const firstLesson = await prisma.lesson.findFirst({
-          orderBy: { order: "asc" },
-        });
-        if (firstLesson) {
-          const lesExercises = await prisma.lessonExercise.findMany({
-            where: { lessonId: firstLesson.id },
-            orderBy: { order: "asc" },
-          });
-
-          if (lesExercises.length > 0) {
-            const progressData = lesExercises.map((le) => ({
-              studentId,
-              lessonId: firstLesson.id,
-              lessonExerciseId: le.id,
-              exerciseId: le.exerciseId,
-              done: false,
-            }));
-
-            // createMany with skipDuplicates to be idempotent
-            await prisma.progress.createMany({
-              // cast to any because generated Prisma types need regenerate
-              data: progressData as any,
-              skipDuplicates: true,
-            } as any);
-          }
-        }
+        const studentLessons = await prisma.$transaction(
+          lessonData.map((item) =>
+            prisma.lesson.create({
+              data: {
+                ...item,
+                student: {
+                  connect: { id: studentId },
+                },
+                LessonExercise: {
+                  create: item.LessonExercise.map((exercise) => ({
+                    ...exercise,
+                  })),
+                },
+              },
+            })
+          )
+        );
       } catch (e) {
         console.error("Error assigning first lesson to student:", e);
-        // Non-fatal: we still return the created user even if assignment fails
       }
     }
 
