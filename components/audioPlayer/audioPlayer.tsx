@@ -64,9 +64,11 @@ export default function AudioPlayer({
 
   return (
     <div className="fixed flex items-center -right-[150px] transition-all hover:right-0 bottom-5 z-50">
-      <div className="h-9  w-9 flex justify-center items-center bg-white border-2  shadow-xl rounded-tl-xl rounded-bl-xl">
+      <div className="h-9  w-9 flex justify-center items-center bg-brand-primary-200 border-2  shadow-xl rounded-tl-xl rounded-bl-xl">
         <MdMusicNote
-          className={`w-5 h-5 ${isPlaying ? "animate-pulse" : ""}`}
+          className={`w-5 h-5 text-brand-secondary-50 ${
+            isPlaying ? "animate-pulse" : ""
+          }`}
         />
       </div>
       <div

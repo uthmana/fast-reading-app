@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
-import { speedMap, WordsPerSentence } from "@/utils/constants";
+import { speedMap } from "@/utils/constants";
 import Button from "@/components/button/button";
 
 type TachistoProps = {
@@ -135,7 +135,7 @@ export default function EyeAgilityIncrease({
       {/* Pause Button */}
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

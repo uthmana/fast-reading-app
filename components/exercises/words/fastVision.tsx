@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { MdPauseCircle } from "react-icons/md";
-import { speedMap, WordsPerSentence } from "@/utils/constants";
+import { speedMap } from "@/utils/constants";
 import Button from "@/components/button/button";
 
 type TachistoProps = {
@@ -36,13 +36,13 @@ export default function Tachistoscope({
 
   const level = controls?.level || 1;
   const text = controls?.wordList;
+  const font = controls?.font;
 
   // Keep the latest onComplete reference
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
 
-  // 🧩 Setup frames from WordsPerSentence directly
   useEffect(() => {
     if (!text?.length) {
       setFrames([]);
@@ -54,7 +54,7 @@ export default function Tachistoscope({
     setFrames(text);
     setFrameDurationMs(speedMap[level]);
     setIndex(0);
-  }, [text, level]);
+  }, [text, level, font]);
 
   // ▶️ Auto start playback
   useEffect(() => {
@@ -125,7 +125,7 @@ export default function Tachistoscope({
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-blue-600 hover:bg-blue-700 shadow-lg"
+        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
       />
     </div>

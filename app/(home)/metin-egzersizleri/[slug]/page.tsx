@@ -19,6 +19,8 @@ export default function page() {
   const lessonParams = searchParams.get("lessonId");
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
+  const isPrimaryStudent =
+    session?.user?.student?.studyGroup?.includes("ILKOKUL");
 
   const [pause, setPause] = useState(false);
   const [control, setControl] = useState({
@@ -72,6 +74,7 @@ export default function page() {
 
   return (
     <Whiteboard
+      isPrimaryStudent={isPrimaryStudent}
       pause={pause}
       description={
         <ControlPanelGuide

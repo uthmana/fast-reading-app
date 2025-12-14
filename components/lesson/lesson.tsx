@@ -118,7 +118,7 @@ export default function Lesson({ id }: { id?: string }) {
                   text=""
                   className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
                   icon={
-                    <Icon name="chevron-left" className="w-6 h-6 text-black" />
+                    <Icon name="chevron-left" className="w-6 h-6 text-white" />
                   }
                   onClick={() => handleNav("prev", currentLesson?.order)}
                 ></Button>
@@ -126,7 +126,7 @@ export default function Lesson({ id }: { id?: string }) {
                 <Button
                   text=""
                   icon={
-                    <Icon name="chevron-right" className="w-6 h-6 text-black" />
+                    <Icon name="chevron-right" className="w-6 h-6 text-white" />
                   }
                   className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
                   onClick={() => handleNav("next", currentLesson?.order)}
@@ -172,7 +172,9 @@ export default function Lesson({ id }: { id?: string }) {
                     hover:-translate-y-[3px] hover:shadow-[0_10px_25px_rgba(0,0,0,0.4)]
                     active:translate-y-[1px]
                     transition-all duration-300 ease-in-out ${
-                      isDone ? "!line-through decoration-2" : ""
+                      isDone
+                        ? "!line-through decoration-2 decoration-black opacity-70"
+                        : ""
                     }`}
                       style={{
                         perspective: "1000px",

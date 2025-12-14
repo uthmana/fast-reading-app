@@ -139,7 +139,7 @@ export const menuItems = [
     youtubeId: "xiTK523Ot5U",
   },
   {
-    name: "Okuma ve Anlama Testleri",
+    name: "Okuma-Anlama Testleri",
     link: "/okuma-anlama-testleri",
     icon: "test",
     subMenu: [

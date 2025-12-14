@@ -21,6 +21,12 @@ interface WhiteboardProps {
   lessonData?: { id: string; duration: string };
   contentClassName?: string;
   saveProgress?: () => void;
+  isPrimaryStudent?: boolean;
+  resultDisplay?: {
+    right: number;
+    wrong: number;
+    net: number;
+  };
 }
 
 export default function Whiteboard({
@@ -34,6 +40,8 @@ export default function Whiteboard({
   lessonData,
   contentClassName = "",
   saveProgress,
+  resultDisplay,
+  isPrimaryStudent = false,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +57,6 @@ export default function Whiteboard({
     objectIcon,
     wordsPerFrame,
     type,
-    resultDisplay,
     frame,
     grid,
     color,
@@ -96,15 +103,6 @@ export default function Whiteboard({
     perspectivecolor: {
       value: (perspectivecolor ? perspectivecolor : 1)?.toString(),
     },
-    resultDisplay: {
-      value: resultDisplay
-        ? resultDisplay
-        : {
-            right: 0,
-            wrong: 0,
-            net: 0,
-          },
-    },
   } as any);
 
   useEffect(() => {
@@ -112,14 +110,6 @@ export default function Whiteboard({
       setIsPlaying(pause ? !isPlaying : pause);
     }
   }, [pause]);
-
-  useEffect(() => {
-    if (control?.resultDisplay === undefined) return;
-    setControlVal({
-      ...controlVal,
-      resultDisplay: { value: control.resultDisplay },
-    });
-  }, [control?.resultDisplay]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -130,7 +120,11 @@ export default function Whiteboard({
   };
 
   return (
-    <div className="flex flex-col px-5 mb-5">
+    <div
+      className={`flex flex-col px-5 mb-5  ${
+        isPrimaryStudent ? "font-tttkbDikTemelAbece" : ""
+      }`}
+    >
       {/* Whiteboard preview */}
       <div className="relative w-full overflow-hidden mb-1 rounded-md border border-gray-400 min-h-[460px]  mx-auto flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
         <img
@@ -140,7 +134,7 @@ export default function Whiteboard({
         />
 
         <div
-          className="absolute bg-[url('/images/slate.jpg')]  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] flex flex-col items-center justify-center  bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
+          className="absolute bg-[url('/images/slate.jpg')] top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] flex flex-col items-center justify-center  bg-white px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)]"
           style={{
             fontSize: `${parseInt(control.font)}px`,
             lineHeight: `${parseInt(control.font) * 1.5}px`,
@@ -165,7 +159,7 @@ export default function Whiteboard({
             </Link>
           ) : null}
           <Button
-            className={`!w-fit !h-10 my-4  absolute right-3 bottom-1 bg-blue-600 hover:bg-blue-700 shadow-lg  ml-auto`}
+            className={`!w-fit !h-10 my-4  absolute right-3 bottom-1 bg-brand-primary-50 hover:bg-brand-primary-100 shadow-lg  ml-auto`}
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
             onClick={handlePlay}
           />
@@ -193,6 +187,7 @@ export default function Whiteboard({
           setArticleOptions={setArticleOptions}
           isfastTest={isfastTest}
           readingStatus={readingStatus}
+          resultDisplay={resultDisplay}
         />
       </div>
 
@@ -256,6 +251,7 @@ export default function Whiteboard({
               setArticleOptions={setArticleOptions}
               isfastTest={isfastTest}
               readingStatus={readingStatus}
+              resultDisplay={resultDisplay}
             />
           </div>
         </div>

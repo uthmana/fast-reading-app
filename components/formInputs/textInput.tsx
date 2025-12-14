@@ -24,6 +24,7 @@ type InputProps = {
   colorList?: any;
   valueMap?: any;
   showLabel?: boolean;
+  labelClassName?: string;
 };
 
 function TextInput(props: InputProps) {
@@ -38,6 +39,7 @@ function TextInput(props: InputProps) {
     disabled,
     maxlength,
     styleClass = "",
+    labelClassName = "",
     step,
     showRangeIcon = false,
     showRangeColor = false,
@@ -51,10 +53,10 @@ function TextInput(props: InputProps) {
   } = props;
 
   return (
-    <div className={`w-full mb-2 text-sm  ${styleClass}`}>
+    <div className={`w-full mb-2 text-sm relative ${styleClass}`}>
       {showLabel ? (
         <label
-          className="font-medium flex gap-1 w-full items-center whitespace-nowrap"
+          className={`font-medium flex gap-1 w-full items-center whitespace-nowrap ${labelClassName}`}
           htmlFor={inputKey}
         >
           {name}
@@ -67,9 +69,9 @@ function TextInput(props: InputProps) {
                   : value?.value}
               </span>
               {type === "range" && showRangeIcon ? (
-                <span className="absolute right-1 -top-[5px]">
+                <span className="absolute rounded-full w-10 h-8 right-1 -top-[5px]">
                   <img
-                    className="h-8 inline-block"
+                    className="h-full aspect-auto inline-block"
                     src={`/images/objects/icon${value?.value}.png`}
                   />
                 </span>
@@ -118,7 +120,9 @@ function TextInput(props: InputProps) {
       />
 
       {description ? (
-        <div className="text-xs text-center lg:text-left">{description}</div>
+        <div className="text-xs font-medium text-center lg:text-left">
+          {description}
+        </div>
       ) : null}
     </div>
   );
