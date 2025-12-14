@@ -47,7 +47,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
       </div>
       <main className="w-full min-h-full relative">
         <div
-          className={`flex flex-col items-start bg-brand-secondary-50 lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
+          className={`flex flex-col items-start bg-brand-tertiary-50 lg:shadow lg:rounded-xl lg:px-4 lg:pb-10 lg:border container`}
         >
           <Breadcrumb menuItem={currentMenu} />
           <div className="w-full flex h-full">
