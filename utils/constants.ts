@@ -278,8 +278,8 @@ type ExerciseDescription = {
   description: string;
   howToPlay: string;
 };
-type EyeExerciseDescriptionMap = Record<string, ExerciseDescription>;
-export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
+type ExerciseDescriptionMap = Record<string, ExerciseDescription>;
+export const ExerciseDescription: ExerciseDescriptionMap = {
   "goz-kaslarini-gelistirme": {
     description:
       "Gözlerimizde toplam 6 adet kas var. Göz kaslarını geliştirmek için koordineli olarak hareket ettirmek gerekmektedir. Bu uygulamayı günde en az 5 dakika yaparak göz kaslarınızı geliştirebilirsiniz.",

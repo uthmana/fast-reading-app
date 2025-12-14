@@ -67,24 +67,6 @@ export default function FindTheWord({
     });
   };
 
-  // -------------------------------------------------------
-  // SCORE HELPERS
-  // -------------------------------------------------------
-  const applyCorrect = () => {
-    const { right, wrong } = controls.resultDisplay;
-    onResultDisplay({ right: right + 1, wrong, net: right + 1 - wrong });
-    setFeedback("correct");
-  };
-
-  const applyWrong = () => {
-    const { right, wrong } = controls.resultDisplay;
-    onResultDisplay({ right, wrong: wrong + 1, net: right - (wrong + 1) });
-    setFeedback("wrong");
-  };
-
-  // -------------------------------------------------------
-  // HANDLE ANSWER (1 = SAME, 0 = DIFFERENT)
-  // -------------------------------------------------------
   const handleAnswer = useCallback(
     (answer: number) => {
       setSelectedAnswer(answer);
