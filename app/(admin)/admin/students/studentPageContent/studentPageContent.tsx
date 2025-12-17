@@ -45,7 +45,6 @@ export default function StudentPageContent() {
         let resData = await fetchData({
           apiPath: `/api/students?where=${query}&progresspercent=true`,
         });
-        console.log(resData);
         setStudentsRaw(resData);
         if (classId && !editmodel) {
           resData = [...resData].filter((item) => {
