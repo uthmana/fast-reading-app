@@ -61,11 +61,11 @@ export async function GET(req: NextRequest) {
     ]);
 
     const totalLessonExercises = studentLessons.flatMap(
-      (lesson) => lesson.LessonExercise
+      (lesson: any) => lesson.LessonExercise
     );
 
     const completedCount = totalLessonExercises.filter(
-      (exercise) => exercise.isDone
+      (exercise: any) => exercise.isDone
     ).length;
 
     const lessonsPercent =

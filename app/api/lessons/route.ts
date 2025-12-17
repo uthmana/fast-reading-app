@@ -8,11 +8,13 @@ import { authOptions } from "@/lib/authOptions";
 export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions as any);
-    const studentId = (session as any)?.user?.student?.id ?? null;
+    let studentId = (session as any)?.user?.student?.id ?? null;
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const order = searchParams.get("order");
+    const studentIdParam: string | null = searchParams.get("studentId");
+    if (!studentId && studentIdParam) studentId = parseInt(studentIdParam);
 
     if (id) {
       const lesson = await prisma.lesson.findUnique({
@@ -48,7 +50,7 @@ export async function GET(req: NextRequest) {
       }
 
       const filteredLesson = lesson.find(
-        (item) => item.order === parseInt(order)
+        (item: any) => item.order === parseInt(order)
       );
 
       return NextResponse.json(filteredLesson, { status: 200 });
@@ -70,7 +72,7 @@ export async function GET(req: NextRequest) {
       }
 
       const filteredLesson = lesson.find(
-        (item) => item.order === parseInt(order)
+        (item: any) => item.order === parseInt(order)
       );
 
       return NextResponse.json(filteredLesson, { status: 200 });

@@ -6,6 +6,7 @@ import Button from "@/components/button/button";
 import { MdPlayCircle } from "react-icons/md";
 import YouTubeEmbed from "../youtubeEmbed/youbuteEmbed";
 import { useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 type MenuPropsTypes = {
   name: string;
@@ -16,12 +17,11 @@ type MenuPropsTypes = {
 };
 
 export default function ExerciseDetail({
-  pathname,
   menuItems,
 }: {
-  pathname: string;
   menuItems: MenuPropsTypes[];
 }) {
+  const pathname = usePathname();
   const { data: session } = useSession();
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL");

@@ -54,7 +54,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
           </h1>
 
           {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center space-x-2">
+          <nav className="hidden lg:flex items-center space-x-1">
             {menuItems.map((item) => (
               <div key={item.name} className="relative h-full">
                 {item.link ? (
