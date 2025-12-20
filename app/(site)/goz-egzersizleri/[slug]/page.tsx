@@ -5,13 +5,11 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import NotFound from "../../not-found";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { ExerciseDescription } from "@/utils/constants";
-
-const debounceDelay = 500; // ms
 
 export default function page() {
   const queryParams = useParams();
@@ -23,16 +21,15 @@ export default function page() {
   const exerciseParams = searchParams.get("exerciseId");
   const orderParams = searchParams.get("order");
   const [pause, setPause] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const [control, setControl] = useState({
-    categorySelect: "",
-    articleSelect: "",
+  const [controlData, setControlData] = useState({
     font: "16",
     level: 1,
+    type: 3,
     wordsPerFrame: 2,
-    objectIcon: "1",
+    objectIcon: 1,
     letterCount: 3,
+    distance: 1,
     wordList: [] as string[],
   });
 
@@ -40,57 +37,15 @@ export default function page() {
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
-  const requestData = useCallback(
-    async (letterCount = 0) => {
-      try {
-        const query = encodeURIComponent(
-          JSON.stringify({
-            lpw: letterCount || control.letterCount,
-            wpc: 1,
-            studyGroups: {
-              some: {
-                group: session?.user?.student?.studyGroup,
-              },
-            },
-          })
-        );
-
-        const wordData = await fetchData({
-          apiPath: `/api/words?where=${query}`,
-        });
-
-        setControl((prev) => ({ ...prev, wordList: wordData }));
-        return wordData;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-    [control.letterCount, session?.user?.student?.studyGroup]
-  );
-
-  // Debounce effect
-  useEffect(() => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-
-    timeoutRef.current = setTimeout(() => {
-      requestData();
-    }, debounceDelay);
-
-    return () => clearTimeout(timeoutRef.current!);
-  }, [requestData]);
+  const lessonData = {
+    id: lessonParams,
+    duration: durationParams,
+    order: orderParams,
+  } as any;
 
   if (!currentMenu.length) {
     return <NotFound />;
   }
-
-  const handleControl = async (val: any) => {
-    if (pathname === "satir-boyu-gorme-uygulamasi") {
-      const wordList = await requestData(val?.letterCount);
-      setControl({ ...val, wordList });
-      return;
-    }
-    setControl(val);
-  };
 
   const onFinishTest = async (
     val: {
@@ -125,36 +80,18 @@ export default function page() {
   return (
     <Whiteboard
       pause={pause}
-      description={
-        <ControlPanelGuide
-          description={
-            ExerciseDescription[pathname]?.description ??
-            "Gözlerimizde toplam 6 adet kas var. Göz kaslarını geliştirmek için koordineli olarak hareket ettirmek gerekmektedir. Bu uygulamayı günde en az 5 dakika yaparak göz kaslarınızı geliştirebilirsiniz."
-          }
-          howToPlay={
-            ExerciseDescription[pathname]?.howToPlay ??
-            "<p> Alttaki araçlardan hız, egzersiz tipi ve simgeyi seçip  <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Bilgisayarı tam karşınıza alarak, başınızı hareket ettirmeden sadece gözleriniz ile ekrandaki simgeyi süre bitene kadar takip edin.</p>"
-          }
-        />
-      }
-      body={
-        <RenderExercise
-          onFinishTest={onFinishTest}
-          pathname={pathname}
-          controls={control}
-        />
-      }
-      control={control}
-      onControlChange={handleControl}
-      lessonData={
-        {
-          id: lessonParams,
-          duration: durationParams,
-          order: orderParams,
-        } as any
-      }
-      contentClassName="!w-full"
+      controlData={controlData}
+      setControlData={setControlData}
+      lessonData={lessonData}
       saveProgress={saveProgress}
-    />
+      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+    >
+      <RenderExercise
+        pathname={pathname}
+        controls={controlData}
+        setControlData={setControlData}
+        onFinishTest={onFinishTest}
+      />
+    </Whiteboard>
   );
 }

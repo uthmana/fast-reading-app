@@ -90,7 +90,7 @@ export default function LoginPage() {
       "
     >
       <div className="flex-1 h-full flex items-center ">
-        <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto  p-4 lg:p-8">
+        <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">
             Etkin Hızlı Okuma
           </h1>

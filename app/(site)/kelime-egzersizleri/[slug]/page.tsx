@@ -4,7 +4,7 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NotFound from "../../not-found";
 import { menuItems } from "@/app/routes";
 import { fetchData } from "@/utils/fetchData";
@@ -29,13 +29,14 @@ export default function page() {
     session?.user?.student?.studyGroup?.includes("ILKOKUL");
 
   const [pause, setPause] = useState(false);
-  const [control, setControl] = useState({
+
+  const [controlData, setControlData] = useState({
     categorySelect: "",
     articleSelect: "",
     font: "16",
     level: 1,
     wordsPerFrame: 1,
-    objectIcon: "1",
+    objectIcon: 1,
     wordList: [] as string[],
   });
 
@@ -43,48 +44,15 @@ export default function page() {
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
-  const requestData = async (wordsPerFrame = 0) => {
-    try {
-      const query = encodeURIComponent(
-        JSON.stringify({
-          wpc: wordsPerFrame || control.wordsPerFrame,
-          studyGroups: {
-            some: {
-              group: session?.user?.student?.studyGroup,
-            },
-          },
-        })
-      );
-      const wordData = await fetchData({
-        apiPath: `/api/words?where=${query}`,
-      });
-      const wordList = getRandomWords(wordData || [], 20);
-      setControl({
-        ...control,
-        wordList,
-      });
-      return wordList;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    requestData();
-  }, [control.wordsPerFrame]);
+  const lessonData = {
+    id: lessonParams,
+    duration: durationParams,
+    order: orderParams,
+  } as any;
 
   if (!currentMenu.length) {
     return <NotFound />;
   }
-
-  const handleControl = async (val: any) => {
-    if (pathname === "seviye-yukselt") {
-      const wordList = await requestData(val?.wordsPerFrame);
-      setControl({ ...val, wordList });
-      return;
-    }
-    setControl(val);
-  };
 
   const onFinishTest = async (
     val: {
@@ -140,36 +108,17 @@ export default function page() {
     <Whiteboard
       isPrimaryStudent={isPrimaryStudent}
       pause={pause}
-      body={
-        <RenderExercise
-          onFinishTest={onFinishTest}
-          pathname={pathname}
-          controls={control}
-        />
-      }
-      description={
-        <ControlPanelGuide
-          description={
-            ExerciseDescription[pathname]?.description ??
-            "Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır."
-          }
-          howToPlay={
-            ExerciseDescription[pathname]?.howToPlay ??
-            "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
-          }
-        />
-      }
-      control={control}
-      onControlChange={handleControl}
-      lessonData={
-        {
-          id: lessonParams,
-          duration: durationParams,
-          order: orderParams,
-        } as any
-      }
-      contentClassName="!w-full"
+      controlData={controlData}
+      setControlData={setControlData}
+      lessonData={lessonData}
       saveProgress={saveProgress}
-    />
+      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+    >
+      <RenderExercise
+        pathname={pathname}
+        controls={controlData}
+        onFinishTest={onFinishTest}
+      />
+    </Whiteboard>
   );
 }

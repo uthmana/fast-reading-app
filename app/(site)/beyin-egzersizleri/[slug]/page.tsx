@@ -20,30 +20,30 @@ export default function page() {
   const exerciseParams = searchParams.get("exerciseId");
   const durationParams = searchParams.get("duration");
   const orderParams = searchParams.get("order");
-
   const [pause, setPause] = useState(false);
-  const [control, setControl] = useState({
+  const [controlData, setControlData] = useState({
     level: 1,
     difficultyLevel: 1,
-  });
-
-  const [resultDisplay, setResultDisplay] = useState({
-    right: 0,
-    wrong: 0,
-    net: 0,
+    resultDisplay: {
+      right: 0,
+      wrong: 0,
+      net: 0,
+    },
   });
 
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
+  const lessonData = {
+    id: lessonParams,
+    duration: durationParams,
+    order: orderParams,
+  } as any;
+
   if (!currentMenu.length) {
     return <NotFound />;
   }
-
-  const handleControl = (val: any) => {
-    setControl(val);
-  };
 
   const onFinishTest = async (
     val: {
@@ -78,39 +78,18 @@ export default function page() {
   return (
     <Whiteboard
       pause={pause}
-      description={
-        <ControlPanelGuide
-          description={
-            ExerciseDescription[pathname]?.description ??
-            "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
-          }
-          howToPlay={
-            ExerciseDescription[pathname]?.howToPlay ??
-            "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
-          }
-        />
-      }
-      body={
-        <RenderExercise
-          onFinishTest={onFinishTest}
-          controls={control}
-          pathname={pathname}
-          resultDisplay={resultDisplay}
-          setResultDisplay={setResultDisplay}
-        />
-      }
-      control={control}
-      onControlChange={handleControl}
-      lessonData={
-        {
-          id: lessonParams,
-          duration: durationParams,
-          order: orderParams,
-        } as any
-      }
-      contentClassName="!w-full"
+      lessonData={lessonData}
+      controlData={controlData}
+      setControlData={setControlData}
       saveProgress={saveProgress}
-      resultDisplay={resultDisplay}
-    />
+      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+    >
+      <RenderExercise
+        pathname={pathname}
+        controls={controlData}
+        setControlData={setControlData}
+        onFinishTest={onFinishTest}
+      />
+    </Whiteboard>
   );
 }

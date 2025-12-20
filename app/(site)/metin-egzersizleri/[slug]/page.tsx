@@ -24,26 +24,30 @@ export default function page() {
     session?.user?.student?.studyGroup?.includes("ILKOKUL");
 
   const [pause, setPause] = useState(false);
-  const [control, setControl] = useState({
+  const [controlData, setControlData] = useState({
     categorySelect: "",
     articleSelect: "",
+    selectedData: null,
+    selectedArticle: null,
     font: "16",
     level: 1,
     wordsPerFrame: 2,
-    objectIcon: "1",
+    objectIcon: 1,
   });
 
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname))
   );
 
+  const lessonData = {
+    id: lessonParams,
+    duration: durationParams,
+    order: orderParams,
+  } as any;
+
   if (!currentMenu.length) {
     return <NotFound />;
   }
-
-  const handleControl = (val: any) => {
-    setControl(val);
-  };
 
   const onFinishTest = async (
     val: {
@@ -75,38 +79,20 @@ export default function page() {
 
   return (
     <Whiteboard
-      isPrimaryStudent={isPrimaryStudent}
       pause={pause}
-      description={
-        <ControlPanelGuide
-          howToPlay={
-            ExerciseDescription[pathname]?.howToPlay ??
-            "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>"
-          }
-          description={
-            ExerciseDescription[pathname]?.description ??
-            "Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar."
-          }
-        />
-      }
-      body={
-        <RenderExercise
-          onFinishTest={onFinishTest}
-          controls={control}
-          pathname={pathname}
-          article={control.articleSelect as any}
-        />
-      }
-      control={control}
-      onControlChange={handleControl}
-      lessonData={
-        {
-          id: lessonParams,
-          duration: durationParams,
-          order: orderParams,
-        } as any
-      }
+      lessonData={lessonData}
+      controlData={controlData}
+      setControlData={setControlData}
+      isPrimaryStudent={isPrimaryStudent}
       saveProgress={saveProgress}
-    />
+      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+    >
+      <RenderExercise
+        pathname={pathname}
+        controls={controlData}
+        onFinishTest={onFinishTest}
+        article={controlData.selectedData as any}
+      />
+    </Whiteboard>
   );
 }

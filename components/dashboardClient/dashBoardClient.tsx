@@ -52,9 +52,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
   };
 
   const attempts = user?.Student?.attempts || [];
-  if (!attempts.length) return;
-
-  const formatted = attempts.map(
+  const formatted = attempts?.map(
     ({ wpm, createdAt, correct, variant, wpf }: any) => ({
       wpm,
       wpf,

@@ -27,9 +27,8 @@ export default async function page() {
   ).then((r) => r.json());
 
   const attempts = resData?.Student?.attempts || [];
-  if (!attempts.length) return;
 
-  const formatted = attempts.map(
+  const formatted = attempts?.map(
     ({ wpm, createdAt, correct, variant }: any) => ({
       wpm,
       correct,
@@ -48,8 +47,12 @@ export default async function page() {
     };
   };
 
-  const fastReadingData = buildData("wpm", "FASTREADING");
-  const understandingData = buildData("correct", "UNDERSTANDING");
+  const fastReadingData = !attempts?.length
+    ? { data: [], categories: [] }
+    : buildData("wpm", "FASTREADING");
+  const understandingData = !attempts?.length
+    ? { data: [], categories: [] }
+    : buildData("correct", "UNDERSTANDING");
 
   return (
     <ReadingScoreClient

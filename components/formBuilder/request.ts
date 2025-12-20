@@ -24,6 +24,21 @@ export const getCategoryOptions = async () => {
   }
 };
 
+export const getArticleOptionsByCategoryId = async (id: string) => {
+  try {
+    const resData = await fetchData({
+      apiPath: `/api/articles?categoryId=${id}`,
+    });
+    const res = resData?.map((item: { title: string; id: string }) => {
+      return { name: item.title, value: item.id, data: JSON.stringify(item) };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
 export const getArticleByCategoryId = async (id: string) => {
   try {
     const resData = await fetchData({
@@ -109,6 +124,42 @@ export const getArticleByStudyGroup = async ({
       apiPath: `/api/articles?where=${query}`,
     });
     return resData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getWordListByLetterCount = async (
+  letterCount: number,
+  wpc: number
+) => {
+  const query = encodeURIComponent(
+    JSON.stringify({
+      lpw: letterCount,
+      wpc: wpc || 1,
+    })
+  );
+  try {
+    const wordData = await fetchData({
+      apiPath: `/api/words?where=${query}`,
+    });
+    return wordData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getWordListPerCount = async (letterCount: number) => {
+  const query = encodeURIComponent(
+    JSON.stringify({
+      wpc: letterCount || 1,
+    })
+  );
+  try {
+    const wordData = await fetchData({
+      apiPath: `/api/words?where=${query}`,
+    });
+    return wordData;
   } catch (error) {
     console.error(error);
   }

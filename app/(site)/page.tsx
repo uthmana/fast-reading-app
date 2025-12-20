@@ -28,7 +28,7 @@ export default async function Page() {
     ).then((r) => r.json()),
 
     fetch(
-      `${baseUrl}/api/progressSummary?studentId=${session.user.student.id}`,
+      `${baseUrl}/api/progressSummary?studentId=${session?.user?.student?.id}`,
       {
         cache: "no-store",
       }

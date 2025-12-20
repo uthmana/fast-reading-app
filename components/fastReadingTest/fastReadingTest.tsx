@@ -140,7 +140,7 @@ export default function FastReadingTest({
     <div className="w-full">
       <div className="w-full text-right sticky top-0">
         <Timer
-          className="drop-shadow w-fit ml-auto rounded opacity-10"
+          className="drop-shadow w-fit ml-auto rounded opacity-[0.2]"
           onValue={(v) => setCounter(v)}
           start={isReading}
         />

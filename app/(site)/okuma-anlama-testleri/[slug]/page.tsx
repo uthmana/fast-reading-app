@@ -5,7 +5,7 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
-import { countWords, formatDateTime } from "@/utils/helpers";
+import { formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,18 +17,15 @@ export default function page() {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const queryParams = useParams();
+  const pathname = queryParams.slug;
   const lessonParams = searchParams.get("lessonId");
   const durationParams = searchParams.get("duration");
   const exerciseParams = searchParams.get("exerciseId");
   const orderParams = searchParams.get("order");
   const introTest = searchParams.get("intro-test");
-  const queryParams = useParams();
-  const pathname = queryParams.slug;
-  const [questions, setQuestions] = useState([] as any);
   const [pause, setPause] = useState(false);
-  const isPrimaryStudent =
-    session?.user?.student?.studyGroup?.includes("ILKOKUL");
-
+  const [questions, setQuestions] = useState([] as any);
   const [readingStatus, setReadingStatus] = useState({
     counter: 0,
     totalWords: 0,
@@ -44,25 +41,40 @@ export default function page() {
     [] as Record<string, any>
   );
 
-  const [control, setControl] = useState({
+  const [controlData, setControlData] = useState({
     categorySelect: "",
     articleSelect: "",
+    selectedData: null as any,
     font: "16",
     level: 1,
     wordsPerFrame: 2,
-    objectIcon: "1",
+    objectIcon: 1,
   });
 
+  const lessonData = {
+    id: lessonParams,
+    duration: durationParams,
+    order: orderParams,
+  } as any;
+
   useEffect(() => {
+    if (!controlData.selectedData) return;
+    setQuestions(controlData.selectedData?.tests);
+  }, [controlData.selectedData, setQuestions]);
+
+  const isPrimaryStudent =
+    session?.user?.student?.studyGroup?.includes("ILKOKUL");
+
+  useEffect(() => {
+    if (!session) return;
     const requestData = async () => {
-      if (!session) return;
       try {
         if (introTest) {
           const testArticle = await getArticleByStudyGroup({
             studyGroup: session?.user?.student?.studyGroup,
             hasQuestion: true,
           });
-          setControl({ ...control, articleSelect: testArticle });
+          setControlData({ ...controlData, selectedData: testArticle });
           setQuestions(testArticle?.tests);
           return;
         }
@@ -78,7 +90,11 @@ export default function page() {
           });
 
           const attempts = resData?.Student?.attempts || [];
-          if (!attempts.length) return;
+          if (!attempts.length) {
+            setFastReadingData({ data: [], categories: [] });
+            setUnderstandingData({ data: [], categories: [] });
+            return;
+          }
 
           const formatted = attempts.map(
             ({ wpm, createdAt, correct, variant }: any) => ({
@@ -199,17 +215,6 @@ export default function page() {
     }
   };
 
-  const handleControl = (val: any) => {
-    if (val.articleSelect) {
-      setQuestions(val.articleSelect?.tests);
-      const totalWords = countWords(val.articleSelect?.description);
-      setReadingStatus({ ...readingStatus, totalWords });
-    } else {
-      setReadingStatus({ ...readingStatus, totalWords: 0 });
-    }
-    setControl(val);
-  };
-
   const saveProgress = async () => {
     try {
       if (!session?.user?.student?.id) return;
@@ -229,43 +234,25 @@ export default function page() {
   if (pathname === "hizli-okuma-testi") {
     return (
       <Whiteboard
-        isPrimaryStudent={isPrimaryStudent}
         pause={pause}
-        control={control}
         isfastTest={true}
+        isPrimaryStudent={isPrimaryStudent}
+        controlData={controlData}
+        setControlData={setControlData}
         readingStatus={readingStatus}
-        description={
-          <ControlPanelGuide
-            howToPlay={
-              ExerciseDescription[pathname]?.howToPlay ??
-              "<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
-            }
-            description={
-              ExerciseDescription[pathname]?.description ??
-              "Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir. "
-            }
-          />
-        }
-        body={
-          <FastReadingTest
-            control={control}
-            questions={questions}
-            onFinishTest={onFinishTest}
-            article={control.articleSelect as any}
-            variant="FASTREADING"
-            readingStatus={(v) => setReadingStatus(v)}
-          />
-        }
-        onControlChange={handleControl}
-        lessonData={
-          {
-            id: lessonParams,
-            duration: durationParams,
-            order: orderParams,
-          } as any
-        }
+        lessonData={lessonData}
         saveProgress={saveProgress}
-      />
+        description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      >
+        <FastReadingTest
+          control={controlData}
+          questions={questions}
+          onFinishTest={onFinishTest}
+          article={controlData.selectedData as any}
+          variant="FASTREADING"
+          readingStatus={(v) => setReadingStatus(v)}
+        />
+      </Whiteboard>
     );
   }
 
@@ -329,48 +316,26 @@ export default function page() {
   if (pathname === "anlama-testi") {
     return (
       <Whiteboard
+        pause={pause}
         isPrimaryStudent={isPrimaryStudent}
         isfastTest={true}
-        pause={pause}
-        control={control}
+        controlData={controlData}
+        setControlData={setControlData}
         readingStatus={readingStatus}
-        description={
-          <ControlPanelGuide
-            howToPlay="<p>Kategori ve makaleyi seçip  <span style='color:blue'>►</span>  butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>"
-            description={`Okuma Hızı Testi. Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir.`}
-            intoTest={
-              introTest
-                ? {
-                    id: introTest,
-                    title: "Seviye Belirleme Testi",
-                    description:
-                      "Bu test ile mevcut okuma anlama seviyeniz belirlenecektir. Test sonucunuza göre size uygun okuma anlama egzersizleri sunulacaktır. Üç farklı okuma anlama testi yapmanızı gerekiyor. Her testte 10'ar soru sorulacaktır. Test sonunda doğru cevap sayınıza göre seviyeniz belirlenecektir.",
-                  }
-                : {}
-            }
-          />
-        }
-        body={
-          <FastReadingTest
-            variant="UNDERSTANDING"
-            control={control}
-            questions={questions}
-            onFinishTest={onFinishTest}
-            article={control.articleSelect as any}
-            readingStatus={(v) => setReadingStatus(v)}
-            introTest={introTest}
-          />
-        }
-        onControlChange={handleControl}
-        lessonData={
-          {
-            id: lessonParams,
-            duration: durationParams,
-            order: orderParams,
-          } as any
-        }
+        lessonData={lessonData}
         saveProgress={saveProgress}
-      />
+        description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      >
+        <FastReadingTest
+          variant="UNDERSTANDING"
+          control={controlData}
+          questions={questions}
+          onFinishTest={onFinishTest}
+          article={controlData.selectedData as any}
+          readingStatus={(v) => setReadingStatus(v)}
+          introTest={introTest}
+        />
+      </Whiteboard>
     );
   }
 
