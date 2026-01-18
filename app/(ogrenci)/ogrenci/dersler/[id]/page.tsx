@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import Lesson from "../../../../components/lesson/lesson";
+import Lesson from "../../../../../components/lesson/lesson";
 import NotFound from "../../not-found";
 import { authOptions } from "@/lib/authOptions";
 

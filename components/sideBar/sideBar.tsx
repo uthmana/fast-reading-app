@@ -27,7 +27,7 @@ export default function Sidebar({
     }
   }
 
-  if (pathname === "/" || pathname.includes("/dersler")) {
+  if (pathname === "/ogrenci" || pathname.includes("/ogrenci/dersler")) {
     return null;
   }
 
@@ -41,7 +41,7 @@ export default function Sidebar({
                 href={item.link || "#"}
                 className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-[#0a5854] group  transition ${
                   pathname === item.link
-                    ? "bg-gradient-to-r from-[#0a5854] to-[#ead0ad]"
+                    ? "bg-gradient-to-r from-brand-primary-50 to-brand-primary-200 shadow-lg"
                     : ""
                 }`}
               >

@@ -144,8 +144,16 @@ function TextInput(props: InputProps) {
         type={type}
         step={step}
         value={value?.value}
+        inputMode={type === "tel" ? "numeric" : undefined}
         onChange={(e) => {
-          onChange({ targetValue: e.target.value, value, inputKey });
+          let nextValue = e.target.value;
+
+          if (type === "tel") {
+            nextValue = nextValue.replace(/\D/g, "");
+            if (maxlength) nextValue = nextValue.slice(0, maxlength);
+          }
+
+          onChange({ targetValue: nextValue, value, inputKey });
         }}
         disabled={disabled}
         {...rest}

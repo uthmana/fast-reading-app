@@ -5,6 +5,8 @@ import FormBuilder from "../../../components/formBuilder";
 import { useState } from "react";
 import { fetchData } from "@/utils/fetchData";
 import { getInputTypeValue } from "@/utils/helpers";
+import Icon from "@/components/icon/icon";
+import { useSearchParams } from "next/navigation";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -13,8 +15,12 @@ type ValuesTypes = {
 };
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
+  const logintype = searchParams.get("giris");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resError, setResError] = useState("" as any);
+
+  const isAdmin = logintype && logintype === "egtmen";
 
   const handleFormSubmit = async (values: ValuesTypes) => {
     const { isValid, formData, event } = values;
@@ -67,7 +73,7 @@ export default function LoginPage() {
         //  Redirect based on role
         if (typeof window !== "undefined") {
           if (resData.role === "STUDENT") {
-            window.location.replace("/");
+            window.location.replace("/ogrenci");
           } else {
             window.location.replace("/admin/classes");
           }
@@ -86,17 +92,24 @@ export default function LoginPage() {
   return (
     <section
       className="flex w-full relative justify-center items-center gap-2 h-screen bg-no-repeat bg-[url('/images/kutuphane-millet.png')] bg-center bg-cover
-      before:absolute before:top-0 before:z-1 before:h-full before:left-0 before:w-full before:bg-gradient-to-b before:from-[#000000]/50  before:to-transparent before:to-[60%] before:bg-no-repeat before:bg-top  
+      before:absolute before:top-0 before:z-1 before:h-full before:left-0 before:w-full before:bg-gradient-to-b before:from-[#000000]/0  before:to-transparent before:to-[60%] before:bg-no-repeat before:bg-top  
       "
     >
       <div className="flex-1 h-full flex items-center ">
         <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">
-            Etkin Hızlı Okuma
+            <Icon name="logo" className="h-10 mx-auto" />
           </h1>
-          <p className="mb-7 text-sm text-center">
-            Öğrenci Çalışma Platformu Girişi
-          </p>
+          {isAdmin ? (
+            <p className="mb-7 text-base font-medium text-center">
+              Kurum Yönetim Paneline Hoşgeldiniz.
+            </p>
+          ) : (
+            <p className="mb-7 text-base font-medium text-center">
+              Öğrenci Çalışma Platformuna Hoşgeldiniz.
+            </p>
+          )}
+
           <FormBuilder
             id={"login"}
             isSubmitting={isSubmitting}
@@ -107,9 +120,33 @@ export default function LoginPage() {
               type: "submit",
             }}
           />
-          <p className="text-xs my-2  text-center">
-            © {new Date().getFullYear()} Tüm Hakları saklıdır.
-          </p>
+
+          <div className="text-xs font-light pt-2 text-center">
+            <div className="flex gap-2 mt-2  justify-center whitespace-nowrap items-center w-full md:flex-1 font-normal">
+              <a
+                href="/"
+                className="text-blue-500 hover:underline opacity-75 hover:opacity-100"
+              >
+                🌐 Serioku
+              </a>
+              <a
+                href="tel:+905456432420"
+                className="hover:underline opacity-75 hover:opacity-100"
+              >
+                +90 545 643 24 00
+              </a>
+              <a
+                href="mailto:info@serioku.com"
+                className="hover:underline text-black opacity-75 hover:opacity-100"
+              >
+                <span className="!text-gray-500">&#x2709;</span>{" "}
+                info@serioku.com
+              </a>
+            </div>
+            <div suppressHydrationWarning>
+              © {new Date().getFullYear()} Tüm Hakları saklıdır.
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -15,6 +15,7 @@ import { useAuthHandler } from "../../authHandler/authOptions";
 export default function StudentPageContent() {
   const searchParams = useSearchParams();
   const classId = searchParams.get("classId");
+  const regno = searchParams.get("regno");
   const editmodel = searchParams.get("editmodel");
   const [isLoading, setIsloading] = useState(false);
   const [students, setStudents] = useState([] as any);
@@ -54,6 +55,15 @@ export default function StudentPageContent() {
 
         if (editmodel && classId) {
           setData({ classId, subscriberId: userData.subscriberId });
+          setIsShowPopUp(true);
+        }
+
+        if (regno) {
+          alert("regno found in students page");
+          const resData = await fetchData({
+            apiPath: `/api/registration?id=${regno}`,
+          });
+          setData({ name: resData.name, email: resData.email, regno });
           setIsShowPopUp(true);
         }
 
@@ -104,7 +114,7 @@ export default function StudentPageContent() {
     };
 
     requestData();
-  }, [loading, userData, classId, editmodel]);
+  }, [loading, userData, classId, editmodel, regno]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;

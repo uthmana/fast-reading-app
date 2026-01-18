@@ -1,28 +1,28 @@
 export const menuItems = [
   {
     name: "Dersler",
-    link: "/dersler",
+    link: "/ogrenci/dersler",
     icon: "lesson",
     subMenu: [
-      { name: "Dersler", link: "/dersler", type: "info" },
+      { name: "Dersler", link: "/ogrenci/dersler", type: "info" },
       {
         name: "Ders Videoları",
-        link: "/dersler/videolar",
+        link: "/ogrenci/dersler/videolar",
         type: "info",
       },
       {
         name: "Takistoskop Gelişimi",
-        link: "/kelime-egzersizleri/seviye-gelisim",
+        link: "/ogrenci/kelime-egzersizleri/seviye-gelisim",
         type: "info",
       },
       {
         name: "Hızlı Okuma Gelişimi",
-        link: "/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
+        link: "/ogrenci/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
         type: "info",
       },
       {
         name: "Anlama Gelişimi",
-        link: "/okuma-anlama-testleri/anlama-testi-gelisim",
+        link: "/ogrenci/okuma-anlama-testleri/anlama-testi-gelisim",
         type: "info",
       },
     ],
@@ -31,34 +31,34 @@ export const menuItems = [
   },
   {
     name: "Göz Egzersizleri",
-    link: "/goz-egzersizleri",
+    link: "/ogrenci/goz-egzersizleri",
     icon: "eye",
     subMenu: [
       {
         name: "Göz Egzersizleri",
-        link: "/goz-egzersizleri",
+        link: "/ogrenci/goz-egzersizleri",
       },
       {
         name: "Göz Kaslarını Geliştirme",
-        link: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        link: "/ogrenci/goz-egzersizleri/goz-kaslarini-gelistirme",
       },
       {
         name: "Aktif Görme Alanını Genişletme 1",
-        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        link: "/ogrenci/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
       },
       {
         name: "Aktif Görme Alanını Genişletme 2",
-        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        link: "/ogrenci/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
       },
       {
         name: "Aktif Görme Alanını Genişletme 3",
-        link: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        link: "/ogrenci/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
       },
       {
         name: "Satır Boyu Görme",
-        link: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        link: "/ogrenci/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
       },
-      { name: "Metronom", link: "/goz-egzersizleri/metronom" },
+      { name: "Metronom", link: "/ogrenci/goz-egzersizleri/metronom" },
     ],
     description:
       "Göz egzersizlerindeki temel amaç göze hız kazandırmak, göz kaslarını güçlendirmek, gözün görme çevikliğini artırmak. Bu uygulamadan yeterince yararlanmak için her egzersizi 1. sevi- den 5. seviyeye kadar kademe kademe uygulayınız.",
@@ -66,18 +66,21 @@ export const menuItems = [
   },
   {
     name: "Beyin Egzersizleri",
-    link: "/beyin-egzersizleri",
+    link: "/ogrenci/beyin-egzersizleri",
     icon: "brain",
     subMenu: [
-      { name: "Beyin Egzersizleri", link: "/beyin-egzersizleri" },
-      { name: "Doğru Rengi Bul", link: "/beyin-egzersizleri/dogru-rengi-bul" },
+      { name: "Beyin Egzersizleri", link: "/ogrenci/beyin-egzersizleri" },
+      {
+        name: "Doğru Rengi Bul",
+        link: "/ogrenci/beyin-egzersizleri/dogru-rengi-bul",
+      },
       {
         name: "Doğru Kelmeyi Bil",
-        link: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        link: "/ogrenci/beyin-egzersizleri/dogru-kelimeyi-bil",
       },
       {
         name: "Doğru Sayıyı Bul",
-        link: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        link: "/ogrenci/beyin-egzersizleri/dogru-sayiyi-bul",
       },
     ],
     description:
@@ -86,22 +89,22 @@ export const menuItems = [
   },
   {
     name: "Kelime Egzersizleri",
-    link: "/kelime-egzersizleri",
+    link: "/ogrenci/kelime-egzersizleri",
     icon: "text",
     subMenu: [
-      { name: "Kelime Egzersizleri", link: "/kelime-egzersizleri" },
-      { name: "Hızlı Görme", link: "/kelime-egzersizleri/hizli-gorme" },
+      { name: "Kelime Egzersizleri", link: "/ogrenci/kelime-egzersizleri" },
+      { name: "Hızlı Görme", link: "/ogrenci/kelime-egzersizleri/hizli-gorme" },
       {
         name: "Göz Çevikliğini Arttırma",
-        link: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        link: "/ogrenci/kelime-egzersizleri/goz-cevikligi-artirma",
       },
       {
         name: "Seviyenizi Yükseltin",
-        link: "/kelime-egzersizleri/seviye-yukselt",
+        link: "/ogrenci/kelime-egzersizleri/seviye-yukselt",
       },
       {
         name: "Gelişim Durumunuz",
-        link: "/kelime-egzersizleri/seviye-gelisim",
+        link: "/ogrenci/kelime-egzersizleri/seviye-gelisim",
       },
     ],
     description:
@@ -110,28 +113,28 @@ export const menuItems = [
   },
   {
     name: "Metin Egzersizleri",
-    link: "/metin-egzersizleri",
+    link: "/ogrenci/metin-egzersizleri",
     icon: "book",
     subMenu: [
       {
         name: "Metin Egzersizleri",
-        link: "/metin-egzersizleri",
+        link: "/ogrenci/metin-egzersizleri",
       },
       {
         name: "Silinmeden Blok Okuma",
-        link: "/metin-egzersizleri/silinmeden-okuma",
+        link: "/ogrenci/metin-egzersizleri/silinmeden-okuma",
       },
       {
         name: "Silinerek Blok Okuma",
-        link: "/metin-egzersizleri/silinerek-okuma",
+        link: "/ogrenci/metin-egzersizleri/silinerek-okuma",
       },
       {
         name: "Odaklı Blok Okuma",
-        link: "/metin-egzersizleri/odakli-okuma",
+        link: "/ogrenci/metin-egzersizleri/odakli-okuma",
       },
       {
         name: "Grup Okuma",
-        link: "/metin-egzersizleri/grup-okuma",
+        link: "/ogrenci/metin-egzersizleri/grup-okuma",
       },
     ],
     description:
@@ -140,22 +143,28 @@ export const menuItems = [
   },
   {
     name: "Okuma-Anlama Testleri",
-    link: "/okuma-anlama-testleri",
+    link: "/ogrenci/okuma-anlama-testleri",
     icon: "test",
     subMenu: [
-      { name: "Okuma ve Anlama Testleri", link: "/okuma-anlama-testleri" },
+      {
+        name: "Okuma ve Anlama Testleri",
+        link: "/ogrenci/okuma-anlama-testleri",
+      },
       {
         name: "Hızlı Okuma Testi",
-        link: "/okuma-anlama-testleri/hizli-okuma-testi",
+        link: "/ogrenci/okuma-anlama-testleri/hizli-okuma-testi",
       },
       {
         name: "Hızlı Okuma Gelişimi",
-        link: "/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
+        link: "/ogrenci/okuma-anlama-testleri/hizli-okuma-testi-gelisim",
       },
-      { name: "Anlama Testi", link: "/okuma-anlama-testleri/anlama-testi" },
+      {
+        name: "Anlama Testi",
+        link: "/ogrenci/okuma-anlama-testleri/anlama-testi",
+      },
       {
         name: "Anlama Gelişimi",
-        link: "/okuma-anlama-testleri/anlama-testi-gelisim",
+        link: "/ogrenci/okuma-anlama-testleri/anlama-testi-gelisim",
       },
     ],
     description: "Okuma ve Anlama Testleri",

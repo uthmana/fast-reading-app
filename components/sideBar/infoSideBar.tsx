@@ -17,7 +17,7 @@ export default function InfoSideBar({
   return (
     <aside className="min-h-96 mx-auto lg:w-64 w-full">
       <div className="w-full min-w-[230px] min-h-[160px">
-        <Link className="block  min-h-[160px]" href={"/dersler"}>
+        <Link className="block  min-h-[160px]" href={"/ogrenci/dersler"}>
           <SpeedGauge
             title="%${value}"
             max={100}
@@ -41,9 +41,9 @@ export default function InfoSideBar({
       </div>
       <ul className="space-y-[1px]">
         <Link
-          href={"/dersler/videolar"}
+          href={"/ogrenci/dersler/videolar"}
           className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg  hover:shadow-md hover:text-blue-600 rounded-lg  transition ${
-            pathname === "/dersler/videolar"
+            pathname === "/ogrenci/dersler/videolar"
               ? "text-white hover:text-white bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50"
               : "text-black"
           }`}
@@ -59,7 +59,7 @@ export default function InfoSideBar({
         </Link>
 
         <Link
-          href={"/kelime-egzersizleri/seviye-gelisim"}
+          href={"/ogrenci/kelime-egzersizleri/seviye-gelisim"}
           className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition`}
         >
           <span
@@ -76,7 +76,7 @@ export default function InfoSideBar({
           </span>
         </Link>
         <Link
-          href={"/okuma-anlama-testleri/hizli-okuma-testi-gelisim"}
+          href={"/ogrenci/okuma-anlama-testleri/hizli-okuma-testi-gelisim"}
           className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition`}
         >
           <span
@@ -93,7 +93,7 @@ export default function InfoSideBar({
           </span>
         </Link>
         <Link
-          href={"/okuma-anlama-testleri/anlama-testi-gelisim"}
+          href={"/ogrenci/okuma-anlama-testleri/anlama-testi-gelisim"}
           className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg hover:text-blue-600 hover:shadow-md  rounded-lg text-black transition`}
         >
           <span

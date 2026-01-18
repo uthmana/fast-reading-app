@@ -178,7 +178,7 @@ export default function SideBar({
         <nav className=" border-t text-left w-full flex flex-col px-4">
           <Link
             target="_blank"
-            href={"/"}
+            href={"/ogrenci"}
             className="border-b py-3 text-gray-500 hover:text-gray-900 flex gap-3 ml-2 items-center text-base"
           >
             <IoMdGlobe className="w-6 h-6" /> Siteyi Görüntüle

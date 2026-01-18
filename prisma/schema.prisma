@@ -184,6 +184,31 @@ model Teacher {
   subscriberId Int
 }
 
+model Registration {
+  id          Int              @id @default(autoincrement())
+  name        String
+  email       String           @unique
+  phone       String?          @unique
+  type        RegistrationType @default(GENERAL_INFO)
+  studyGroup  String?
+  companyInfo String?          @db.Text
+  message     String?          @db.Text
+  isProcessed Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime?        @updatedAt
+}
+
+model FranchiseApplication {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  phone       String?   @unique
+  message     String?   @db.Text
+  isProcessed Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
 enum Role {
   ADMIN
   SUBSCRIBER
@@ -224,4 +249,10 @@ enum Currency {
   TL
   USD
   EURO
+}
+
+enum RegistrationType {
+  FRANCHISE
+  TRIAL_CLASS
+  GENERAL_INFO
 }

@@ -13,6 +13,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view", "create", "edit", "delete"],
     billing: ["view", "create", "edit", "delete"],
+    registration: ["view", "create", "edit", "delete"],
   },
   SUBSCRIBER: {
     classes: ["view", "create", "edit", "delete"],
@@ -24,6 +25,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
+    registration: ["view"],
   },
   TEACHER: {
     classes: ["view", "create", "edit", "delete"],
@@ -35,6 +37,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
+    registration: ["view"],
   },
 };
 

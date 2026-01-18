@@ -99,7 +99,14 @@ export default function DashboardClient({ user, progressSummary }: any) {
   };
 
   return (
-    <section className="flex w-full flex-col items-center justify-center lg:p-6 p-3">
+    <section className="flex w-full flex-col items-center justify-center  p-3">
+      <div className="pb-3 pt-2 mb-2 flex justify-start  border-b border-dotted border-black  w-full">
+        <h1 className="flex items-center font-oswald text-2xl">
+          <span className="mr-2 font-light">Hoşgeldin,</span>
+          <span className="whitespace-nowrap ">{user?.name}</span>
+        </h1>
+      </div>
+
       <div className="flex flex-wrap gap-4 w-full mb-5 mt-3">
         <Widget
           icon={
@@ -107,7 +114,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
           }
           description="Eğitim Grubunuz"
           title={user?.Student ? mapStudyGroup(user?.Student?.studyGroup) : " "}
-          className="flex-1 !capitalizes bg-white shadow-sm"
+          className="flex-1 !capitalizes bg-white shadow-sm border-brand-tertiary-50"
         />
         <Widget
           icon={
@@ -115,7 +122,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
           }
           description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
-          className="flex-1 bg-white shadow-sm"
+          className="flex-1 bg-white shadow-sm border-brand-tertiary-50"
         />
         <Widget
           icon={
@@ -123,23 +130,23 @@ export default function DashboardClient({ user, progressSummary }: any) {
           }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
-          className="flex-1 bg-white shadow-sm"
+          className="flex-1 bg-white shadow-sm border-brand-tertiary-50"
         />
         <Link
           className="inline-block flex-1 lg:max-w-[32.3%]"
-          href={"/dersler"}
+          href={"/ogrenci/dersler"}
         >
           <Widget
             icon={
               <MdPlayCircle className="w-10 h-10 transition-transform text-white group-hover:scale-110" />
             }
             title="Eğitime Başla"
-            className="flex-1 border-white bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50 hover:!bg-blue-700 text-white"
+            className="flex-1 border-brand-tertiary-50 bg-gradient-to-r from-brand-primary-50 to-brand-primary-200 hover:!bg-blue-700 text-white"
           />
         </Link>
       </div>
 
-      <div className="flex  bg-white flex-col w-full mb-5 rounded shadow-sm py-10 border">
+      <div className="flex  bg-white flex-col w-full mb-5 rounded shadow-sm py-10 border border-brand-tertiary-50">
         <div className="flex min-h-[180px] flex-wrap gap-4">
           <SpeedGauge
             className="flex-1"
@@ -184,7 +191,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
       </div>
 
       <div className="flex w-full flex-wrap mb-5 gap-4">
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+        <div className="flex-1 bg-white h-[400px] border border-brand-tertiary-50 pb-16 py-5 px-4 rounded shadow-sm">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Seviye Gelişim Durumunuz
           </h2>
@@ -206,7 +213,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
             }}
           />
         </div>
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+        <div className="flex-1 bg-white h-[400px] border border-brand-tertiary-50 pb-16 py-5 px-4 rounded shadow-sm">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Hızlı Okuma Gelişim Durumunuz
           </h2>
@@ -231,7 +238,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
       </div>
 
       <div className="flex w-full mb-5 flex-wrap gap-4">
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4 rounded shadow-sm">
+        <div className="flex-1 bg-white h-[400px] border border-brand-tertiary-50 pb-16 py-5 px-4 rounded shadow-sm">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Yapılan Ödev Grafiği
           </h2>
@@ -253,7 +260,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
             ]}
           />
         </div>
-        <div className="flex-1 bg-white h-[400px] border pb-16 py-5 px-4  rounded shadow-sm">
+        <div className="flex-1 bg-white h-[400px] border border-brand-tertiary-50 pb-16 py-5 px-4  rounded shadow-sm">
           <h2 className="mb-4 font-oswald font-normal text-lg">Anlama Oranı</h2>
           <PieChart
             chartOptions={{
@@ -308,6 +315,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
               loading={isTermsPolicy}
               text="Okudum Onayladım"
               onClick={handleUserPolicy}
+              className="!bg-brand-primary-100"
             />
           </div>
         </Popup>
@@ -342,7 +350,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
             </p>
             <p>Hazırsanız, BAŞLA butonuna basarak hemen başlayabilirsiniz.</p>
             <Link
-              href={`/okuma-anlama-testleri/anlama-testi?intro-test=${(
+              href={`/ogrenci/okuma-anlama-testleri/anlama-testi?intro-test=${(
                 user?.Student.introTestTaken + 1
               ).toString()}`}
               className="block"
@@ -350,7 +358,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
               <Button
                 icon={<MdPlayCircle className="w-6 h-6 text-white" />}
                 text="TEST BAŞLA"
-                className="!bg-gradient-to-r  from-brand-primary-200 to-brand-secondary-50"
+                className="!bg-brand-primary-100"
               />
             </Link>
           </div>

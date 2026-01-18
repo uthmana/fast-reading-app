@@ -30,7 +30,7 @@ export default function ExerciseDetail({
   const startLink = menu?.subMenu?.[1]?.link || "";
 
   return (
-    <div className="px-4 mb-5 shadow pb-4 rounded-md w-full lg:px-0 lg:w-[calc(100%-32px)] mx-auto bg-white flex flex-col">
+    <div className="mb-5 shadow border border-brand-tertiary-50 pb-4 rounded-md   w-[calc(100%-32px)] mx-auto bg-white flex flex-col">
       {menu?.youtubeId ? (
         <YouTubeEmbed
           videoId={menu?.youtubeId}

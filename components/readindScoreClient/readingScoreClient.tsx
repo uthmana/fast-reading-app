@@ -15,7 +15,7 @@ export default function ReadingScoreClient({
   return (
     <div className="flex flex-col mb-5 w-full px-6 gap-4">
       <div className="w-full flex gap-3 flex-col rounded shadow">
-        <div className="w-full bg-white max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Okuma Hızı Gelişimi
           </h2>
@@ -37,7 +37,7 @@ export default function ReadingScoreClient({
             }}
           />
         </div>
-        <div className="w-full bg-white max-h-[300px] overflow-y-auto border  px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[300px] overflow-y-auto border border-brand-tertiary-50 px-4 rounded shadow">
           <div className="w-full py-5 mb-5">
             <div className="sticky top-0 bg-white">
               <h2 className=" mb-4 font-oswald font-normal text-lg">
@@ -68,7 +68,7 @@ export default function ReadingScoreClient({
         </div>
       </div>
       <div className="flex w-full gap-3 flex-col">
-        <div className="w-full bg-white max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Anlama Gelişimi
           </h2>
@@ -97,7 +97,7 @@ export default function ReadingScoreClient({
             }}
           />
         </div>
-        <div className="w-full bg-white max-h-[300px] overflow-y-auto border px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[300px] overflow-y-auto border border-brand-tertiary-50 px-4 rounded shadow">
           <div className="w-full py-5 mb-5">
             <div className="sticky top-0 bg-white">
               <h2 className="mb-4 font-oswald font-normal text-lg">

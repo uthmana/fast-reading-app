@@ -26,7 +26,7 @@ export default function Lesson({
       <InfoSideBar
         progressSummary={progressSummary}
         videoItems={videoItems}
-        pathname={"/dersler"}
+        pathname={"/ogrenci/dersler"}
       />
 
       <LessonBoard
@@ -48,7 +48,7 @@ export default function Lesson({
               {currentLesson?.LessonExercise?.map(
                 (lesson: any, idx: number) => {
                   const isDone = lesson.isDone;
-                  const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}&order=${currentLesson.order}`;
+                  const linkPath = `/ogrenci${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}&order=${currentLesson.order}`;
                   const isStudent = session?.user?.role === "STUDENT";
                   const unlocked = isStudent ? !currentLesson.isLocked : true;
                   const linkAllowed = unlocked && !isDone;

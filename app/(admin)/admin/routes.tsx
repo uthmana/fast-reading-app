@@ -7,6 +7,7 @@ import {
   MdGroups,
   MdBusiness,
   MdPayment,
+  MdAppRegistration,
 } from "react-icons/md";
 
 const routes = [
@@ -45,6 +46,12 @@ const routes = [
     icon: <MdPerson className="w-6 h-6" />,
     roles: ["ADMIN"],
     children: [{ name: "Kullanıcılar", path: "/admin/users" }],
+  },
+  {
+    name: "Başvurular",
+    path: "/admin/registration",
+    icon: <MdAppRegistration className="w-6 h-6" />,
+    roles: ["ADMIN"],
   },
   {
     name: "Cari Hareketler",

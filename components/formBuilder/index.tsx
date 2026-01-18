@@ -208,11 +208,11 @@ export default function FormBuilder({
                 name={v.name}
                 onChange={handleChange}
                 required={v.required}
-                disabled={v.disabled}
-                maxlength={v.maxlength}
-                styleClass={v.styleClass}
-                min={v.min}
-                max={v.max}
+                disabled={v?.disabled}
+                maxlength={v?.maxlength}
+                styleClass={v?.styleClass}
+                min={v?.min}
+                max={v?.max}
               />
             );
           }

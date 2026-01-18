@@ -21,7 +21,7 @@ export default function LessonNavClient({ order, maxOrder }: Props) {
         text=""
         className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
         icon={<Icon name="chevron-left" className="w-6 h-6 text-white" />}
-        onClick={() => router.push(`/dersler/${Math.max(prev, 1)}`)}
+        onClick={() => router.push(`/ogrenci/dersler/${Math.max(prev, 1)}`)}
       ></Button>
       {order || 1}. Ders
       <Button
@@ -30,7 +30,7 @@ export default function LessonNavClient({ order, maxOrder }: Props) {
         className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
         onClick={() => {
           if (next <= maxOrder) {
-            router.push(`/dersler/${next}`);
+            router.push(`/ogrenci/dersler/${next}`);
           }
         }}
       ></Button>

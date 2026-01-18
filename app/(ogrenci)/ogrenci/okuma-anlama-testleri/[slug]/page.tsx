@@ -259,7 +259,7 @@ export default function page() {
   if (pathname === "hizli-okuma-testi-gelisim") {
     return (
       <div className="flex w-full mb-5 flex-col px-6 gap-4">
-        <div className="w-full bg-white max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="w-full bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Okuma Hızı Gelişimi
           </h2>
@@ -282,7 +282,7 @@ export default function page() {
           />
         </div>
 
-        <div className="flex-1 max-h-[400px] bg-white overflow-y-auto border py-5 px-4 rounded shadow">
+        <div className="flex-1 max-h-[400px] bg-white overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Okuma Hızı Gelişimi
           </h2>
@@ -342,7 +342,7 @@ export default function page() {
   if (pathname === "anlama-testi-gelisim") {
     return (
       <div className="flex w-full flex-col mb-5 px-6 gap-4">
-        <div className="flex-1 bg-white max-h-[400px] border py-5 px-4 rounded shadow">
+        <div className="flex-1 bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Anlama Gelişimi
           </h2>
@@ -372,7 +372,7 @@ export default function page() {
           />
         </div>
 
-        <div className="flex-1 bg-white max-h-[400px] overflow-y-auto border py-5 px-4 rounded shadow">
+        <div className="flex-1 bg-white max-h-[400px] overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
           <h2 className="mb-4 font-oswald font-normal text-lg">
             Anlama Gelişimi
           </h2>

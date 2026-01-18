@@ -1,10 +1,10 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../lib/authOptions";
-import SessionProvider from "../../components/providers";
-import ClientLayout from "../../components/clientLayout";
+import { authOptions } from "../../../lib/authOptions";
+import SessionProvider from "../../../components/providers";
+import ClientLayout from "../../../components/clientLayout";
 import { redirect } from "next/navigation";
-import "../globals.css";
+import "../../globals.css";
 
 import { Oswald } from "next/font/google";
 

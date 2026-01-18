@@ -185,25 +185,25 @@ async function main() {
     exerciseData.map((item) => prisma.exercise.create({ data: item }))
   );
 
-  const studyGroups = studyGroupOptions.map((s) => s.value);
-  const uniqueWords = [...new Set(allWords)];
+  // const studyGroups = studyGroupOptions.map((s) => s.value);
+  // const uniqueWords = [...new Set(allWords)];
 
-  for (let i = 0; i < uniqueWords.length; i++) {
-    await prisma.words
-      .create({
-        data: {
-          word: uniqueWords[i],
-          studyGroups: {
-            create: studyGroups.map((group: any) => ({
-              group: group,
-            })),
-          },
-          wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
-          lpw: uniqueWords[i]?.trim()?.length,
-        },
-      })
-      .catch(() => null);
-  }
+  // for (let i = 0; i < uniqueWords.length; i++) {
+  //   await prisma.words
+  //     .create({
+  //       data: {
+  //         word: uniqueWords[i],
+  //         studyGroups: {
+  //           create: studyGroups.map((group: any) => ({
+  //             group: group,
+  //           })),
+  //         },
+  //         wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
+  //         lpw: uniqueWords[i]?.trim()?.length,
+  //       },
+  //     })
+  //     .catch(() => null);
+  // }
 
   console.log({
     user,
