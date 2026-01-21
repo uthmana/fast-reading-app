@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -70,11 +70,11 @@ export async function GET(req: NextRequest) {
     // Get studentLesson percentage
     const enhancedData = students?.map((student: any) => {
       const totalLessonExercises = student?.lessons?.flatMap(
-        (lesson: any) => lesson.LessonExercise
+        (lesson: any) => lesson.LessonExercise,
       );
 
       const completedCount = totalLessonExercises.filter(
-        (exercise: any) => exercise.isDone
+        (exercise: any) => exercise.isDone,
       ).length;
 
       const lessonsPercent =
@@ -85,24 +85,6 @@ export async function GET(req: NextRequest) {
       return { ...student, progressPercent: lessonsPercent };
     });
 
-    // const enhanced = await Promise.all(
-    //   students.map(async (student: any) => {
-    //     const [totalLessonExercises, completedCount] = await Promise.all([
-    //       prisma.lessonExercise.count(),
-    //       prisma.progress.count({
-    //         where: { studentId: student.id, done: true },
-    //       }),
-    //     ]);
-    //     const progressPercent = totalLessonExercises
-    //       ? Math.round((completedCount / totalLessonExercises) * 100)
-    //       : 0;
-    //     return {
-    //       ...student,
-    //       progressPercent,
-    //     };
-    //   })
-    // );
-
     return NextResponse.json(enhancedData, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -112,7 +94,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -138,7 +120,7 @@ export async function PUT(req: Request) {
     if (!studentExit) {
       return NextResponse.json(
         { error: "Student does not exist" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -163,7 +145,7 @@ export async function PUT(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Student already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -262,7 +244,7 @@ export async function POST(req: Request) {
       } else {
         return NextResponse.json(
           { error: "Krediniz yükseltmemiz gerekiyor" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -320,8 +302,8 @@ export async function POST(req: Request) {
                   })),
                 },
               },
-            })
-          )
+            }),
+          ),
         );
       } catch (e) {
         console.error("Error assigning first lesson to student:", e);
@@ -333,7 +315,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Student already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -354,7 +336,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Student does not exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

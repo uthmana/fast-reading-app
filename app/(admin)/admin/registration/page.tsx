@@ -58,7 +58,9 @@ export default function page() {
           if (res.ok) {
             await res.json();
             setRegistrations(
-              [...registrations].filter((val: any) => val.id !== currentUser.id)
+              [...registrations].filter(
+                (val: any) => val.id !== currentUser.id,
+              ),
             );
             setIsloading(false);
           }
@@ -207,9 +209,12 @@ export default function page() {
                     ? "users"
                     : "students"
                 }?regno=${selectedRegistration?.id}`}
-                className="text-blue-600 underline text-sm"
+                className="text-sm no-underline"
               >
-                <Button className="uppercase" text="Kayit olustur" />
+                <Button
+                  className="uppercase hover:bg-blue-600"
+                  text="Kayit olustur"
+                />
               </Link>
             </div>
           )}

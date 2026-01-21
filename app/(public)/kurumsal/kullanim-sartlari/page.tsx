@@ -1,3 +1,4 @@
+import { contactInfo } from "@/utils/constants";
 import React from "react";
 
 export default function TermsOfUsePage() {
@@ -108,10 +109,10 @@ export default function TermsOfUsePage() {
           <p className="mt-2">
             <strong>E-posta:</strong>{" "}
             <a
-              href="mailto:info@serioku.com"
+              href={`mailto:${contactInfo.email}`}
               className="text-blue-600 hover:underline"
             >
-              info@serioku.com
+              {contactInfo.email}
             </a>
           </p>
         </div>

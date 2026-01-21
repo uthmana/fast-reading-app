@@ -366,7 +366,7 @@ function Icon({
         <svg
           xmlns="http://www.w3.org/2000/svg"
           version="1.1"
-          viewBox="132 107 516 120" // example bounding box covering all content
+          viewBox="132 107 516 120"
           preserveAspectRatio="xMidYMid meet"
           className={className}
         >
@@ -431,7 +431,7 @@ function Icon({
             fontWeight="700"
             letterSpacing="0.4"
           >
-            <tspan fill="#0D7FC8">Seri</tspan>
+            <tspan fill="#03a7eb">Seri</tspan>
             <tspan fill="#FD8029">Oku</tspan>
           </text>
         </svg>

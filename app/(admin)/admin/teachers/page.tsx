@@ -23,19 +23,25 @@ export default function page() {
 
     const requestData = async () => {
       try {
-        if (!userData.subscriberId) return;
-        const query = encodeURIComponent(
-          JSON.stringify({
-            subscriberId: userData.subscriberId,
-          })
-        );
+        let resData = [] as any;
         setIsloading(true);
-        const res = await fetchData({
-          apiPath: `/api/teachers?where=${query}`,
-        });
+        if (userData.role && userData.role !== "ADMIN") {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              subscriberId: userData.subscriberId,
+            }),
+          );
+          resData = await fetchData({
+            apiPath: `/api/teachers?where=${query}`,
+          });
+        } else {
+          resData = await fetchData({
+            apiPath: `/api/teachers`,
+          });
+        }
 
-        setTeachersRaw(res);
-        const formattedData = res?.map((item: any) => {
+        setTeachersRaw(resData);
+        const formattedData = resData?.map((item: any) => {
           const { user, ...rest } = item;
           return {
             ...rest,
@@ -63,7 +69,7 @@ export default function page() {
     }
     if (actionType === "edit") {
       const tempData = [...teachersRaw].find(
-        (item: any) => item.id === currentUser.id
+        (item: any) => item.id === currentUser.id,
       );
       const { id, active, ...rest } = tempData?.user;
       setData({
@@ -83,7 +89,7 @@ export default function page() {
             payload: { id: currentUser.id },
           });
           setTeachers(
-            [...teachers].filter((val: any) => val.id !== currentUser.id)
+            [...teachers].filter((val: any) => val.id !== currentUser.id),
           );
           setIsloading(false);
         } catch (error) {

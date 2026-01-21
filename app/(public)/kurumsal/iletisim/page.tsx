@@ -1,3 +1,4 @@
+import { contactInfo } from "@/utils/constants";
 import React from "react";
 
 export default function ContactPage() {
@@ -34,16 +35,19 @@ export default function ContactPage() {
             <p>
               <strong>E-posta:</strong>
               <a
-                href="mailto:info@serioku.com"
+                href={`mailto:${contactInfo.email}`}
                 className="text-blue-600 hover:underline"
               >
-                info@serioku.com
+                {contactInfo.email}
               </a>
             </p>
             <p>
               <strong>Telefon:</strong>
-              <a href="tel:+905456432400" className="hover:underline">
-                +90 545 643 24 00
+              <a
+                href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
+                className="hover:underline"
+              >
+                {contactInfo.phone}
               </a>
             </p>
             <p>

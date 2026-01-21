@@ -1,5 +1,6 @@
 import React from "react";
 import LogOutInput from "../formInputs/logoutInput";
+import { contactInfo } from "@/utils/constants";
 
 export default function SecondaryFooter() {
   return (
@@ -20,16 +21,16 @@ export default function SecondaryFooter() {
           Serioku
         </a>
         <a
-          href="tel:+905456432420"
+          href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
           className="hover:underline opacity-75 hover:opacity-100"
         >
-          +90 545 643 24 00
+          {contactInfo.phone}
         </a>
         <a
-          href="mailto:info@serioku.com"
+          href={`mailto:${contactInfo.email}`}
           className="hover:underline opacity-75 hover:opacity-100"
         >
-          info@serioku.com
+          {contactInfo.email}
         </a>
       </div>
     </div>

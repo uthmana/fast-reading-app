@@ -1,5 +1,3 @@
-import { object } from "framer-motion/client";
-
 export const columnsData = {
   usersColumn: [
     { id: "id", name: "#", type: "string" },
@@ -8,7 +6,12 @@ export const columnsData = {
     { id: "tcId", name: "TC Kimlik No", type: "string" },
     { id: "email", name: "E-posta", type: "string" },
     { id: "active", name: "Durum", type: "boolean" },
-    { id: "role", name: "Rolü", type: "string" },
+    {
+      id: "role",
+      name: "Rolü",
+      type: "string",
+      objectMap: { ADMIN: "Yönetici", SUBSCRIBER: "Kurum" },
+    },
     { id: "Subscriber", name: "Kredi", type: "subscriber" },
   ],
   studentColumn: [

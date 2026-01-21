@@ -28,16 +28,22 @@ export default function page() {
     const requestData = async () => {
       try {
         setIsloading(true);
-        const query = encodeURIComponent(
-          JSON.stringify({
-            subscriberId: userData.subscriberId,
-          })
-        );
-        setIsloading(true);
-        const resData = await fetchData({
-          apiPath: `/api/classes?where=${query}&subscriber=true`,
-        });
-
+        let resData = [] as any;
+        if (userData.role && userData.role !== "ADMIN") {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              subscriberId: userData.subscriberId,
+            }),
+          );
+          setIsloading(true);
+          resData = await fetchData({
+            apiPath: `/api/classes?where=${query}&subscriber=true`,
+          });
+        } else {
+          resData = await fetchData({
+            apiPath: `/api/classes?subscriber=true`,
+          });
+        }
         setClasses(resData);
         setIsloading(false);
       } catch (error) {
@@ -76,7 +82,7 @@ export default function page() {
             payload: { id: currentUser.id },
           });
           setClasses(
-            [...classes].filter((val: any) => val.id !== currentUser.id)
+            [...classes].filter((val: any) => val.id !== currentUser.id),
           );
           setIsloading(false);
         } catch (error) {

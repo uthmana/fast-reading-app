@@ -7,6 +7,7 @@ import { fetchData } from "@/utils/fetchData";
 import { getInputTypeValue } from "@/utils/helpers";
 import Icon from "@/components/icon/icon";
 import { useSearchParams } from "next/navigation";
+import { contactInfo } from "@/utils/constants";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -52,7 +53,7 @@ export default function LoginPage() {
           resData?.active === false
         ) {
           setResError(
-            "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz..."
+            "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz...",
           );
           setIsSubmitting(false);
           return;
@@ -63,7 +64,7 @@ export default function LoginPage() {
           const endDate = new Date(resData.Student.endDate);
           if (endDate < now) {
             setResError(
-              "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz..."
+              "Kursunuz Süresi Dolmuştur. Lütfen Sistem Yöneticisi ile Görüşünüz...",
             );
             setIsSubmitting(false);
             return;
@@ -130,17 +131,17 @@ export default function LoginPage() {
                 🌐 Serioku
               </a>
               <a
-                href="tel:+905456432420"
+                href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
                 className="hover:underline opacity-75 hover:opacity-100"
               >
-                +90 545 643 24 00
+                {contactInfo.phone}
               </a>
               <a
-                href="mailto:info@serioku.com"
+                href={`mailto:${contactInfo.email}`}
                 className="hover:underline text-black opacity-75 hover:opacity-100"
               >
                 <span className="!text-gray-500">&#x2709;</span>{" "}
-                info@serioku.com
+                {contactInfo.email}
               </a>
             </div>
             <div suppressHydrationWarning>

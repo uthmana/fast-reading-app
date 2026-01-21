@@ -141,7 +141,6 @@ export const letterWords = [
   "gözlemci",
   "yardımse",
 ];
-
 export const letterNumbers = {
   "sayilar-1": [
     "123",
@@ -264,7 +263,6 @@ export const playlists = [
     src: "https://www.coothead.co.uk/audio/You-Cant-Always-Get-What-You-Want.mp3",
   },
 ];
-
 export const speedMap: Record<number, number> = {
   1: 600,
   2: 500,
@@ -277,7 +275,6 @@ export const speedMap: Record<number, number> = {
   9: 260,
   10: 220,
 };
-
 export const studyGroupOptions = [
   { value: "ILKOKUL_2_3", name: "İlkokul (2-3)" },
   { value: "ILKOKUL_4", name: "İlkokul (4)" },
@@ -294,7 +291,6 @@ export const studyGroupOptions = [
   { value: "TYT_AYT_HAZIRLIK", name: "TYT-AYT Hazırlık" },
   { value: "DEMO", name: "Demo" },
 ];
-
 type ColorItem = {
   word: string;
   color: string;
@@ -308,7 +304,6 @@ export const COLORS: ColorItem[] = [
   { word: "TURUNCU", color: "orange" },
   { word: "MOR", color: "purple" },
 ];
-
 export const lessonData = [
   {
     title: "1. Ders aşağıdaki egzersizleri yapınız.",
@@ -2812,7 +2807,6 @@ export const lessonData = [
     ],
   },
 ];
-
 type ExerciseDescription = {
   description: string;
   howToPlay: string;
@@ -2929,4 +2923,9 @@ export const ExerciseDescription: ExerciseDescriptionMap = {
     howToPlay:
       "<p>Kategori ve makale seçip <span style='color:blue'>►</span> butonuna basarak anlama testine başlayın. Makaleyi sonuna kadar okuyup, bittiğinde  düğmesine basınız. Sistem size metin ile ilgili sorular soracaktır. Cevaplayıp gönder düğmesine basınız.</p>",
   },
+};
+
+export const contactInfo = {
+  email: "info@serioku.com",
+  phone: "+90 545 643 24 00",
 };

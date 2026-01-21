@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
@@ -26,12 +26,10 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(teachers, { status: 200 });
     }
-
     const teachers = await prisma.teacher.findMany({
       orderBy: { createdAt: "desc" },
       include: { user: true, subscriber: true },
     });
-
     return NextResponse.json(teachers, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -41,7 +39,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -134,7 +132,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Student already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -155,7 +153,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Student does not exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

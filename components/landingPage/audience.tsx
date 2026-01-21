@@ -74,8 +74,8 @@ export default function Audience() {
               transition-transform duration-400 ease-in
               group-hover:translate-y-0"
               >
-                <h3 className="text-xl drop-shadow-lg">{item.group}</h3>
-                <p className="text-sm drop-shadow-lg">{item.desc}</p>
+                <h3 className="text-lg drop-shadow-xl">{item.group}</h3>
+                <p className="text-sm drop-shadow-xl">{item.desc}</p>
               </div>
             </div>
           ))}

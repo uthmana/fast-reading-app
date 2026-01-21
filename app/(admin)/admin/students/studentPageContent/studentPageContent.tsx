@@ -38,14 +38,23 @@ export default function StudentPageContent() {
     const requestData = async () => {
       try {
         setIsloading(true);
-        const query = encodeURIComponent(
-          JSON.stringify({
-            subscriberId: userData.subscriberId,
-          })
-        );
-        let resData = await fetchData({
-          apiPath: `/api/students?where=${query}&progresspercent=true`,
-        });
+
+        let resData = [] as any;
+        if (userData.role && userData.role !== "ADMIN") {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              subscriberId: userData.subscriberId,
+            }),
+          );
+          resData = await fetchData({
+            apiPath: `/api/students?where=${query}&progresspercent=true`,
+          });
+        } else {
+          resData = await fetchData({
+            apiPath: `/api/students?progresspercent=true`,
+          });
+        }
+
         setStudentsRaw(resData);
         if (classId && !editmodel) {
           resData = [...resData].filter((item) => {
@@ -59,10 +68,10 @@ export default function StudentPageContent() {
         }
 
         if (regno) {
-          alert("regno found in students page");
           const resData = await fetchData({
             apiPath: `/api/registration?id=${regno}`,
           });
+
           setData({ name: resData.name, email: resData.email, regno });
           setIsShowPopUp(true);
         }
@@ -124,7 +133,7 @@ export default function StudentPageContent() {
     }
     if (actionType === "edit") {
       const tempData = [...studentsRaw].find(
-        (item) => item.id === currentUser.id
+        (item) => item.id === currentUser.id,
       );
       const { user, Progress, ...rest } = tempData;
       const { id, ...restUser } = user;
@@ -150,7 +159,7 @@ export default function StudentPageContent() {
           if (res.ok) {
             await res.json();
             setStudents(
-              [...students].filter((val: any) => val.id !== currentUser.id)
+              [...students].filter((val: any) => val.id !== currentUser.id),
             );
             setIsloading(false);
           }
@@ -166,7 +175,7 @@ export default function StudentPageContent() {
       setLoadingResult(true);
       setIsShowStudyResultPopUp(true);
       const tempData = [...studentsRaw].find(
-        (item) => item.id === currentUser.id
+        (item) => item.id === currentUser.id,
       );
 
       const attempts = tempData?.attempts || [];
@@ -177,11 +186,11 @@ export default function StudentPageContent() {
           correct,
           variant,
           category: formatDateTime(createdAt),
-        })
+        }),
       );
       const buildData = (
         key: "wpm" | "correct" | "wpc" | "wpf",
-        variant: string
+        variant: string,
       ) => {
         const filtered = formatted.filter((i: any) => i.variant === variant);
         return {
