@@ -138,7 +138,7 @@ export default function page() {
           titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
         >
           <FormBuilder
-            id={"classes"}
+            id={userData?.role !== "ADMIN" ? "classes" : "registerClasses"}
             className="px-8"
             data={data}
             onSubmit={(values) =>

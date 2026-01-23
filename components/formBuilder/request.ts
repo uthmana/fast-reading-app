@@ -1,16 +1,5 @@
 import { fetchData } from "@/utils/fetchData";
 
-interface SessionTypes {
-  user: {
-    id: string;
-    role: string;
-    name: string;
-    username: string;
-    student: any;
-    subscriberId?: number;
-  };
-}
-
 export const getCategoryOptions = async () => {
   try {
     const resData = await fetchData({ apiPath: "/api/category" });
@@ -23,7 +12,6 @@ export const getCategoryOptions = async () => {
     return;
   }
 };
-
 export const getArticleOptionsByCategoryId = async (id: string) => {
   try {
     const resData = await fetchData({
@@ -38,7 +26,6 @@ export const getArticleOptionsByCategoryId = async (id: string) => {
     return;
   }
 };
-
 export const getArticleByCategoryId = async (id: string) => {
   try {
     const resData = await fetchData({
@@ -50,8 +37,7 @@ export const getArticleByCategoryId = async (id: string) => {
     return;
   }
 };
-
-export const getExerciseOptions = async (session: SessionTypes) => {
+export const getExerciseOptions = async () => {
   try {
     const resData = await fetchData({ apiPath: "/api/exercises" });
     const res = resData?.map((item: { title: string; id: string }) => {
@@ -64,15 +50,10 @@ export const getExerciseOptions = async (session: SessionTypes) => {
   }
 };
 
-export const getTeacherOptions = async (session: SessionTypes) => {
+export const getTeacherOptions = async () => {
   try {
-    const query = encodeURIComponent(
-      JSON.stringify({
-        subscriberId: session.user.subscriberId,
-      }),
-    );
     const resData = await fetchData({
-      apiPath: `/api/teachers?where=${query}`,
+      apiPath: `/api/teachers?subscriber-options=true`,
     });
     const res = resData?.map(
       (item: { title: string; id: string; user: any }) => {
@@ -85,16 +66,30 @@ export const getTeacherOptions = async (session: SessionTypes) => {
     return;
   }
 };
-
-export const getClassOptions = async (session: SessionTypes) => {
+export const getTeacherOptionsById = async (id: string) => {
   try {
     const query = encodeURIComponent(
       JSON.stringify({
-        subscriberId: session.user.subscriberId,
+        subscriberId: id,
       }),
     );
     const resData = await fetchData({
-      apiPath: `/api/classes?where=${query}&subscriber=true`,
+      apiPath: `/api/teachers?where=${query}`,
+    });
+    const res = resData?.map((item: { id: string; user: any }) => {
+      return { name: item.user.name, value: item.id };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+export const getClassOptions = async () => {
+  try {
+    const resData = await fetchData({
+      apiPath: `/api/classes?subscriber-options=true`,
     });
     const res = resData?.map((item: { id: string; name: any }) => {
       return { name: item.name, value: item.id };
@@ -105,7 +100,6 @@ export const getClassOptions = async (session: SessionTypes) => {
     return;
   }
 };
-
 export const getClassOptionsById = async (id: string) => {
   try {
     const query = encodeURIComponent(
@@ -125,7 +119,6 @@ export const getClassOptionsById = async (id: string) => {
     return;
   }
 };
-
 export const getSubscriberOptions = async () => {
   try {
     const resData = await fetchData({
@@ -161,7 +154,6 @@ export const getArticleByStudyGroup = async ({
     console.error(error);
   }
 };
-
 export const getWordListByLetterCount = async (
   letterCount: number,
   wpc: number,
@@ -181,7 +173,6 @@ export const getWordListByLetterCount = async (
     console.error(error);
   }
 };
-
 export const getWordListPerCount = async (letterCount: number) => {
   const query = encodeURIComponent(
     JSON.stringify({

@@ -72,7 +72,12 @@ export default function StudentPageContent() {
             apiPath: `/api/registration?id=${regno}`,
           });
 
-          setData({ name: resData.name, email: resData.email, regno });
+          setData({
+            name: resData.name,
+            email: resData.email,
+            studyGroup: resData.studyGroup,
+            regno,
+          });
           setIsShowPopUp(true);
         }
 

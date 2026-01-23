@@ -19,9 +19,8 @@ const routes = [
   // },
   {
     name: "Kurs Yönetimi",
-    path: "",
+    path: "/admin/classes",
     icon: <MdGroups className="w-6 h-6" />,
-    roles: ["ADMIN", "TEACHER"],
     children: [
       { name: "Sınıflar", path: "/admin/classes" },
       { name: "Öğrenciler", path: "/admin/students" },
@@ -32,7 +31,6 @@ const routes = [
     name: "Özelleştirme",
     path: "/admin/category",
     icon: <MdOutlineArticle className="w-6 h-6" />,
-    roles: ["ADMIN", "TEACHER"],
     children: [
       //{ name: "Dersler", path: "/admin/lessons" },
       { name: "Kategoriler", path: "/admin/category" },
@@ -44,20 +42,17 @@ const routes = [
     name: "Kullanıcı Ayarları",
     path: "/admin/users",
     icon: <MdPerson className="w-6 h-6" />,
-    roles: ["ADMIN"],
     children: [{ name: "Kullanıcılar", path: "/admin/users" }],
   },
   {
     name: "Başvurular",
     path: "/admin/registration",
     icon: <MdAppRegistration className="w-6 h-6" />,
-    roles: ["ADMIN"],
   },
   {
     name: "Cari Hareketler",
     path: "/admin/billing",
     icon: <MdPayment className="w-6 h-6" />,
-    roles: ["ADMIN"],
   },
   // {
   //   name: "Firma Bilgileri",

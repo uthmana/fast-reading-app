@@ -19,7 +19,7 @@ type SelectPropTypes = {
   }) => void;
   inputKey: string;
   styleClass?: string;
-  asyncOption?: (session: any) => any;
+  asyncOption?: () => any;
   asyncOptionById?: (categoryId: string) => any;
   multipleSelect?: boolean;
   optionId?: string;
@@ -48,22 +48,21 @@ function Select({
 }: SelectPropTypes) {
   const [localOptions, setLocalOptions] = useState(options as any);
   const [isLodingOption, setisLodingOption] = useState(false);
-  const { data: session } = useSession();
 
   useEffect(() => {
-    if (disabled || !session || !asyncOption) return;
+    if (disabled || !asyncOption) return;
     if (!optionId && !options.length && asyncOption) {
       const getOptions = async () => {
         setisLodingOption(true);
         if (setIsLoading) setIsLoading(true);
-        const res = await asyncOption(session);
+        const res = await asyncOption();
         setLocalOptions(res);
         setisLodingOption(false);
         if (setIsLoading) setIsLoading(false);
       };
       getOptions();
     }
-  }, [disabled, asyncOption, session]);
+  }, [disabled, asyncOption, options.length, optionId, setIsLoading]);
 
   useEffect(() => {
     if (disabled || !optionId || !asyncOptionById) return;
@@ -94,7 +93,7 @@ function Select({
           {
             <span
               className={
-                required && !value.value ? "text-red-400" : "text-green-400"
+                required && !value?.value ? "text-red-400" : "text-green-400"
               }
             >
               *
@@ -116,7 +115,7 @@ function Select({
             ? Array.isArray(value?.value)
               ? value.value
               : []
-            : value?.value ?? ""
+            : (value?.value ?? "")
         }
         multiple={multipleSelect}
         onChange={(e) => {
@@ -124,7 +123,7 @@ function Select({
             ? Array.from(e.target.selectedOptions).map((opt) => opt.value)
             : e.target.value;
           const selectedData = localOptions?.find(
-            (item: any) => item.value?.toString() === e.target.value
+            (item: any) => item.value?.toString() === e.target.value,
           );
           onChange({ targetValue: newValue, value, inputKey, selectedData });
         }}
@@ -141,7 +140,7 @@ function Select({
                   {item.name}
                 </option>
               );
-            }
+            },
           )}
       </select>
     </div>

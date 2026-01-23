@@ -1,12 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions as any);
+    let subscriberId = (session as any)?.user.subscriberId ?? null;
+
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
+    const subscriberOptionsParam = searchParams.get("subscriber-options");
     let where: any | undefined;
 
     if (whereParam) {
@@ -26,6 +32,15 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(teachers, { status: 200 });
     }
+    if (subscriberOptionsParam && subscriberId) {
+      const teachers = await prisma.teacher.findMany({
+        where: { subscriberId: subscriberId },
+        orderBy: { createdAt: "desc" },
+        include: { user: true, subscriber: true },
+      });
+      return NextResponse.json(teachers, { status: 200 });
+    }
+
     const teachers = await prisma.teacher.findMany({
       orderBy: { createdAt: "desc" },
       include: { user: true, subscriber: true },

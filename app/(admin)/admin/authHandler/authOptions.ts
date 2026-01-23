@@ -25,7 +25,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
-    registration: ["view"],
+    registration: [],
   },
   TEACHER: {
     classes: ["view", "create", "edit", "delete"],
@@ -37,7 +37,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
-    registration: ["view"],
+    registration: [],
   },
 };
 

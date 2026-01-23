@@ -79,7 +79,9 @@ export default function SideBar({
       style={{ width: `${sidebarWidth}px` }}
     >
       <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-xl ml-4 font-semibold">Admin Panel</h2>
+        <h2 className="text-xl ml-4 font-semibold font-roboto">
+          Yönetim Paneli
+        </h2>
 
         <button
           className="lg:hidden text-gray-600 hover:text-black"
@@ -103,6 +105,10 @@ export default function SideBar({
               manualOpen[route.name] !== undefined
                 ? manualOpen[route.name]
                 : active;
+
+            if (!canViewMenu(rp)) {
+              return null;
+            }
 
             return (
               <div key={route.name + idx}>

@@ -56,7 +56,6 @@ export default function page() {
         return;
       }
     };
-
     requestData();
   }, [loading, userData]);
 
@@ -134,7 +133,7 @@ export default function page() {
           titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
         >
           <FormBuilder
-            id={"teacher"}
+            id={userData?.role !== "ADMIN" ? "teacher" : "registerTeacher"}
             data={data}
             className="px-8 overflow-y-auto"
             onSubmit={(values) =>
