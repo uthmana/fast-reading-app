@@ -167,6 +167,7 @@ export async function POST(req: Request) {
     gender,
     fee,
     subscriberId,
+    regno,
   }: User | any = await req.json();
 
   if (
@@ -232,11 +233,11 @@ export async function POST(req: Request) {
 
     if (subscriberId) {
       const exitSub = await prisma.subscriber.findUnique({
-        where: { id: subscriberId },
+        where: { id: parseInt(subscriberId) },
       });
       if (exitSub?.credit && exitSub?.credit > 0) {
         const subscriber = await prisma.subscriber.update({
-          where: { id: subscriberId },
+          where: { id: parseInt(subscriberId) },
           data: {
             credit: exitSub?.credit - 1,
           },
@@ -270,7 +271,7 @@ export async function POST(req: Request) {
                     connect: { id: parseInt(classId) },
                   },
                   Subscriber: {
-                    connect: { id: subscriberId },
+                    connect: { id: parseInt(subscriberId) },
                   },
                 },
               },
@@ -308,6 +309,15 @@ export async function POST(req: Request) {
       } catch (e) {
         console.error("Error assigning first lesson to student:", e);
       }
+    }
+
+    if (regno) {
+      await prisma.registration.update({
+        where: { id: parseInt(regno) },
+        data: {
+          isProcessed: true,
+        },
+      });
     }
 
     return NextResponse.json(user, { status: 201 });

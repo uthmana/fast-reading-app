@@ -264,7 +264,7 @@ export default function StudentPageContent() {
           titleClass="border-b-2 border-blue-400 pt-6 pb-2 px-8 bg-[#f5f5f5]"
         >
           <FormBuilder
-            id={"student"}
+            id={userData?.role !== "ADMIN" ? "student" : "registerStudent"}
             className="px-8 overflow-y-auto"
             data={data}
             onSubmit={(values) =>

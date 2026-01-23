@@ -69,7 +69,7 @@ export const getTeacherOptions = async (session: SessionTypes) => {
     const query = encodeURIComponent(
       JSON.stringify({
         subscriberId: session.user.subscriberId,
-      })
+      }),
     );
     const resData = await fetchData({
       apiPath: `/api/teachers?where=${query}`,
@@ -77,7 +77,7 @@ export const getTeacherOptions = async (session: SessionTypes) => {
     const res = resData?.map(
       (item: { title: string; id: string; user: any }) => {
         return { name: item.user.name, value: item.id };
-      }
+      },
     );
     return res;
   } catch (error) {
@@ -91,7 +91,7 @@ export const getClassOptions = async (session: SessionTypes) => {
     const query = encodeURIComponent(
       JSON.stringify({
         subscriberId: session.user.subscriberId,
-      })
+      }),
     );
     const resData = await fetchData({
       apiPath: `/api/classes?where=${query}&subscriber=true`,
@@ -106,6 +106,39 @@ export const getClassOptions = async (session: SessionTypes) => {
   }
 };
 
+export const getClassOptionsById = async (id: string) => {
+  try {
+    const query = encodeURIComponent(
+      JSON.stringify({
+        subscriberId: id,
+      }),
+    );
+    const resData = await fetchData({
+      apiPath: `/api/classes?where=${query}&subscriber=true`,
+    });
+    const res = resData?.map((item: { id: string; name: any }) => {
+      return { name: item.name, value: item.id };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
+export const getSubscriberOptions = async () => {
+  try {
+    const resData = await fetchData({
+      apiPath: `/api/subscribers`,
+    });
+    const res = resData?.map((item: { id: string; users: any }) => {
+      return { name: item.users?.[0].name, value: item.id };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
 export const getArticleByStudyGroup = async ({
   studyGroup,
   hasQuestion,
@@ -117,7 +150,7 @@ export const getArticleByStudyGroup = async ({
     JSON.stringify({
       studyGroup,
       hasQuestion,
-    })
+    }),
   );
   try {
     const resData = await fetchData({
@@ -131,13 +164,13 @@ export const getArticleByStudyGroup = async ({
 
 export const getWordListByLetterCount = async (
   letterCount: number,
-  wpc: number
+  wpc: number,
 ) => {
   const query = encodeURIComponent(
     JSON.stringify({
       lpw: letterCount,
       wpc: wpc || 1,
-    })
+    }),
   );
   try {
     const wordData = await fetchData({
@@ -153,7 +186,7 @@ export const getWordListPerCount = async (letterCount: number) => {
   const query = encodeURIComponent(
     JSON.stringify({
       wpc: letterCount || 1,
-    })
+    }),
   );
   try {
     const wordData = await fetchData({
