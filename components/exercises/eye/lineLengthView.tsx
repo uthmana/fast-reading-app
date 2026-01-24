@@ -27,8 +27,8 @@ export default function LineLengthView({
   const [flipping, setFlipping] = useState(false);
   const distance =
     controls?.distance && controls?.distance > 1
-      ? controls?.distance * 40
-      : controls?.distance ?? 1 * 2;
+      ? controls?.distance * 20
+      : (controls?.distance ?? 1 * 2);
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
   const level = controls?.level || 3;
