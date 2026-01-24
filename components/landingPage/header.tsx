@@ -30,7 +30,7 @@ export default function Header() {
               </Link>
 
               <Link
-                href="/login?giris=egtmen"
+                href="/login?giris=egitmen"
                 className="rounded-lg border border-brand-secondary-150 px-4 py-2 font-semibold text-brand-secondary-150 hover:bg-brand-secondary-50 transition"
               >
                 Eğitmen Giriş
