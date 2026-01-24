@@ -1,10 +1,7 @@
 import Button from "@/components/button/button";
 import { COLORS } from "@/utils/constants";
 import React, { useEffect, useState, useCallback } from "react";
-import { IoArrowForward } from "react-icons/io5";
 import {
-  MdArrowBack,
-  MdArrowForward,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdPauseCircle,
@@ -12,16 +9,17 @@ import {
 
 export default function FindTheColor({
   onFinishTest,
-  setResultDisplay,
-  resultDisplay,
+  setControlData,
   controls,
   colors = COLORS,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
-  controls: { level: number };
-  setResultDisplay: any;
-  resultDisplay: any;
+  controls: {
+    level: number;
+    resultDisplay: { right: number; wrong: number; net: number };
+  };
+  setControlData: any;
   colors: any;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -60,19 +58,25 @@ export default function FindTheColor({
       const isCorrect = displayColor === currentWord?.color;
       const correctAnswerValue = isCorrect ? 1 : 0;
 
-      const { right, wrong } = resultDisplay;
+      const { right, wrong } = controls.resultDisplay;
 
       if (answer === correctAnswerValue) {
-        setResultDisplay({
-          right: right + 1,
-          wrong,
-          net: right - wrong,
+        setControlData({
+          ...controls,
+          resultDisplay: {
+            right: right + 1,
+            wrong,
+            net: right - wrong,
+          },
         });
       } else {
-        setResultDisplay({
-          right,
-          wrong: wrong + 1,
-          net: right - wrong,
+        setControlData({
+          ...controls,
+          resultDisplay: {
+            right,
+            wrong: wrong + 1,
+            net: right - wrong,
+          },
         });
       }
 
@@ -83,7 +87,7 @@ export default function FindTheColor({
 
       generateNewWord();
     },
-    [resultDisplay, currentWord, displayColor, generateNewWord]
+    [controls.resultDisplay, currentWord, displayColor, generateNewWord]
   );
 
   // auto-show next color based on speed
@@ -95,10 +99,13 @@ export default function FindTheColor({
     const timer = setInterval(() => {
       if (!answeredThisRound) {
         // AUTO WRONG ANSWER
-        setResultDisplay((prev: any) => ({
-          right: prev.right,
-          wrong: prev.wrong + 1,
-          net: prev.right - (prev.wrong + 1),
+        setControlData((prev: any) => ({
+          ...prev,
+          resultDisplay: {
+            right: prev.resultDisplay.right,
+            wrong: prev.resultDisplay.wrong + 1,
+            net: prev.resultDisplay.right - (prev.resultDisplay.wrong + 1),
+          },
         }));
       }
 

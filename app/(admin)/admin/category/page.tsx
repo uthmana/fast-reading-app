@@ -12,20 +12,37 @@ export default function page() {
   const [isLoading, setIsloading] = useState(false);
   const [categories, setCategories] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
-  const { canView, canCreate, canEdit, canDelete } = useAuthHandler();
+  const { canView, canCreate, canEdit, canDelete, userData, loading } =
+    useAuthHandler();
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({
     title: "",
     description: "",
+    subscriberId: userData?.subscriberId || "",
   } as any);
 
   useEffect(() => {
+    if (loading || !userData) return;
+
     const requestData = async () => {
       try {
         setIsloading(true);
-        const resData = await fetchData({
-          apiPath: "/api/category",
-        });
+        let resData = [] as any;
+        if (userData.role && userData.role !== "ADMIN") {
+          const query = encodeURIComponent(
+            JSON.stringify({
+              subscriberId: userData.subscriberId,
+            }),
+          );
+          resData = await fetchData({
+            apiPath: `/api/category?where=${query}`,
+          });
+        } else {
+          resData = await fetchData({
+            apiPath: "/api/category",
+          });
+        }
+
         setCategories(resData);
         setIsloading(false);
       } catch (error) {
@@ -36,13 +53,17 @@ export default function page() {
     };
 
     requestData();
-  }, []);
+  }, [userData, loading]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;
 
     if (actionType === "add") {
-      setData({});
+      setData({
+        title: "",
+        description: "",
+        subscriberId: userData?.subscriberId || "",
+      });
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
@@ -64,7 +85,7 @@ export default function page() {
           if (res.ok) {
             await res.json();
             setCategories(
-              [...categories].filter((val: any) => val.id !== currentUser.id)
+              [...categories].filter((val: any) => val.id !== currentUser.id),
             );
             setIsloading(false);
           }

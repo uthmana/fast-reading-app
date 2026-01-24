@@ -34,16 +34,14 @@ export async function GET(req: NextRequest) {
     // Compute overall lesson completion percentage (student-specific)
     const id = parseInt(studentId || "0");
     const [
-      totalLessonExercises,
-      completedCount,
+      studentLessons,
       levelUp,
       fastReadingProgress,
       fastUnderstandingProgress,
     ] = await Promise.all([
-      prisma.lessonExercise.count(),
-
-      prisma.progress.count({
-        where: { studentId: id, done: true },
+      prisma.lesson.findMany({
+        where: { studentId: id },
+        include: { LessonExercise: true },
       }),
       prisma.attempt.findFirst({
         where: { variant: "FASTVISION", studentId: id },
@@ -62,9 +60,18 @@ export async function GET(req: NextRequest) {
       }),
     ]);
 
-    const lessonsPercent = totalLessonExercises
-      ? Math.round((completedCount / totalLessonExercises) * 100)
-      : 0;
+    const totalLessonExercises = studentLessons.flatMap(
+      (lesson: any) => lesson.LessonExercise
+    );
+
+    const completedCount = totalLessonExercises.filter(
+      (exercise: any) => exercise.isDone
+    ).length;
+
+    const lessonsPercent =
+      totalLessonExercises.length > 0
+        ? Math.round((completedCount / totalLessonExercises.length) * 100)
+        : 0;
 
     return NextResponse.json(
       {

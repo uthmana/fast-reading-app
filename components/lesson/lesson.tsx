@@ -1,108 +1,34 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import Icon from "../icon/icon";
-import Button from "../button/button";
 import LessonBoard from "../lessonBoard/lessonBoard";
-import { useEffect, useState } from "react";
-import { fetchData } from "@/utils/fetchData";
 import { IoMdLock } from "react-icons/io";
-import { useSession } from "next-auth/react";
+import LessonNavClient from "./lessonNavClient";
+import { menuItems } from "@/app/routes";
+import InfoSideBar from "../sideBar/infoSideBar";
 
-export default function Lesson({ id }: { id?: string }) {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const [data, setData] = useState({} as any);
-  const [currentLesson, setCurrentLesson] = useState({} as any);
-  const [progress, setProgress] = useState([]);
-  const [lessonAssigned, setLessonAssigned] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchLessons = async () => {
-      try {
-        setIsLoading(true);
-        const resData = await fetchData({ apiPath: "/api/lessons" });
-        setData(resData);
-        const lessonId = parseInt(id || "");
-        let lesson = lessonId
-          ? resData?.find((item: any) => item.id === lessonId)
-          : resData?.[0];
-        setCurrentLesson(lesson);
-
-        // fetch progress for this lesson (if session/student available)
-        if (lesson) {
-          // First try: ask the server to infer the student from the server session.
-          let progressRes = await fetchData({
-            apiPath: `/api/progress?lessonId=${lesson.id}`,
-          }).catch(() => []);
-
-          // If that returned nothing and we have a client session student id,
-          // retry with explicit studentId parameter (covers session-hydration edge cases).
-          const clientStudentId = session?.user?.student?.id;
-          if (
-            (!progressRes ||
-              (Array.isArray(progressRes) && progressRes.length === 0)) &&
-            clientStudentId
-          ) {
-            progressRes = await fetchData({
-              apiPath: `/api/progress?lessonId=${lesson.id}&studentId=${clientStudentId}`,
-            }).catch(() => []);
-          }
-
-          // normalize progress response to an array when possible
-          const normalizedProgress = Array.isArray(progressRes)
-            ? progressRes
-            : progressRes &&
-              typeof progressRes === "object" &&
-              !progressRes.error
-            ? // sometimes the API may return an object; try to extract array-like values
-              Array.isArray((progressRes as any).data)
-              ? (progressRes as any).data
-              : (progressRes as any).progress || (progressRes as any).rows || []
-            : [];
-
-          setProgress(normalizedProgress);
-
-          // lesson is considered assigned if there are any progress rows for it
-          const assigned = normalizedProgress.length > 0;
-          setLessonAssigned(assigned);
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching lessons:", error);
-        setIsLoading(false);
-      }
-    };
-
-    fetchLessons();
-  }, [id, session?.user?.student?.id]);
-
-  const handleNav = (direction: string, order: number) => {
-    const maxOrder = data.length;
-    const prev = order - 1;
-    const next = order + 1;
-
-    // Prevent going before the first item
-    if (direction === "prev") {
-      if (prev < 1) return;
-      const prevData = data?.find((item: any) => item.order === prev);
-      if (prevData) router.push(`/dersler/${prevData.id}`);
-      return;
-    }
-
-    // Prevent going past the last item
-    if (direction === "next") {
-      if (next > maxOrder) return;
-      const nextData = data?.find((item: any) => item.order === next);
-      if (nextData) router.push(`/dersler/${nextData.id}`);
-      return;
-    }
-  };
+export default function Lesson({
+  maxOrder = 40,
+  session,
+  currentLesson,
+  progressSummary,
+}: {
+  id?: string;
+  maxOrder?: number;
+  session: { user: { student: any; role: string } };
+  currentLesson: any;
+  progressSummary: any;
+}) {
+  const videoItems = menuItems.filter((m) => m.youtubeId !== "");
 
   return (
-    <div className="w-full px-5 items-start">
+    <div className="w-full px-3 items-start flex flex-col lg:flex-row gap-5">
+      <InfoSideBar
+        progressSummary={progressSummary}
+        videoItems={videoItems}
+        pathname={"/ogrenci/dersler"}
+      />
+
       <LessonBoard
         key={currentLesson}
         lessons={
@@ -113,50 +39,18 @@ export default function Lesson({ id }: { id?: string }) {
                 yapınız.
               </h1>
 
-              <div className="flex gap-3 items-center whitespace-nowrap ml-auto justify-start font-medium">
-                <Button
-                  text=""
-                  className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
-                  icon={
-                    <Icon name="chevron-left" className="w-6 h-6 text-white" />
-                  }
-                  onClick={() => handleNav("prev", currentLesson?.order)}
-                ></Button>
-                {currentLesson?.order || 1}. Ders
-                <Button
-                  text=""
-                  icon={
-                    <Icon name="chevron-right" className="w-6 h-6 text-white" />
-                  }
-                  className="border !p-1 rounded !bg-black/0 hover:!bg-gray-200"
-                  onClick={() => handleNav("next", currentLesson?.order)}
-                ></Button>
-              </div>
+              <LessonNavClient
+                order={currentLesson?.order}
+                maxOrder={maxOrder}
+              />
             </div>
-
-            {isLoading ? (
-              <div className="w-full py-10 flex justify-center items-center">
-                <span className="text-gray-500 italic">Ders yükleniyor...</span>
-              </div>
-            ) : (
-              <ul className="space-y-[2px]">
-                {currentLesson?.Exercise?.map((lesson: any, idx: number) => {
-                  // determine if this particular lesson-exercise occurrence is done
-                  const isDone = progress?.some(
-                    (p: any) =>
-                      // prefer lessonExerciseId when available
-                      (lesson.lessonExerciseId &&
-                        p.lessonExerciseId === lesson.lessonExerciseId &&
-                        p.done) ||
-                      // fallback: match by exerciseId + lessonId
-                      (p.exerciseId === lesson.id &&
-                        p.lessonId === currentLesson.id &&
-                        p.done)
-                  );
-                  const linkPath = `${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}`;
-                  // only lock exercises for students; assigned lessons are unlocked
+            <ul className="space-y-[2px]">
+              {currentLesson?.LessonExercise?.map(
+                (lesson: any, idx: number) => {
+                  const isDone = lesson.isDone;
+                  const linkPath = `/ogrenci${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}&order=${currentLesson.order}`;
                   const isStudent = session?.user?.role === "STUDENT";
-                  const unlocked = true; //isStudent ? lessonAssigned : true;
+                  const unlocked = isStudent ? !currentLesson.isLocked : true;
                   const linkAllowed = unlocked && !isDone;
 
                   return (
@@ -189,7 +83,7 @@ export default function Lesson({ id }: { id?: string }) {
                         <Link
                           href={linkPath}
                           className={`flex justify-between items-center flex-wrap
-                      px-6 py-3 text-gray-800 font-medium
+                      px-6 py-3 text-gray-800 font-semibold
                       relative z-10
                       transition-all duration-300`}
                         >
@@ -224,7 +118,7 @@ export default function Lesson({ id }: { id?: string }) {
                             }
                           }}
                           className={`flex justify-between items-center flex-wrap
-                      px-6 py-3 text-gray-800 font-medium
+                      px-6 py-3 text-gray-800 font-semibold
                       relative z-10
                       transition-all duration-300 cursor-default`}
                         >
@@ -236,7 +130,7 @@ export default function Lesson({ id }: { id?: string }) {
                             }}
                           >
                             {!unlocked && (
-                              <IoMdLock className="ml-2 text-black" />
+                              <IoMdLock className="text-2xl text-black" />
                             )}{" "}
                             {idx + 1}. {lesson.title}
                           </span>
@@ -251,7 +145,6 @@ export default function Lesson({ id }: { id?: string }) {
                         </div>
                       )}
 
-                      {/* Darker side shadow */}
                       <div
                         className="
                       absolute right-0 top-0 w-3 h-full
@@ -260,7 +153,6 @@ export default function Lesson({ id }: { id?: string }) {
                     "
                       ></div>
 
-                      {/* Darker bottom edge */}
                       <div
                         className="
                       absolute bottom-0 left-0 w-full h-2
@@ -270,9 +162,9 @@ export default function Lesson({ id }: { id?: string }) {
                       ></div>
                     </li>
                   );
-                })}
-              </ul>
-            )}
+                }
+              )}
+            </ul>
           </div>
         }
       />

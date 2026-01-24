@@ -38,15 +38,17 @@ const TURKISH_LETTERS = [
 
 export default function FindTheNumber({
   onFinishTest,
-  setResultDisplay,
-  resultDisplay,
+  setControlData,
   controls,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
-  controls: { level: number; difficultyLevel: number };
-  setResultDisplay: any;
-  resultDisplay: any;
+  controls: {
+    level: number;
+    difficultyLevel: number;
+    resultDisplay: { right: number; wrong: number; net: number };
+  };
+  setControlData: any;
 }) {
   const [letters, setLetters] = useState<
     { letter: string; top: number; left: number }[]
@@ -139,14 +141,17 @@ export default function FindTheNumber({
 
   // TIMER FINISHED
   const handleCountDownFinish = () => {
-    const { right, wrong } = resultDisplay;
+    const { right, wrong } = controls.resultDisplay;
 
     // no answer → wrong
     if (userAnswer === "") {
-      setResultDisplay({
-        right,
-        wrong: wrong + 1,
-        net: right - (wrong + 1),
+      setControlData({
+        ...controls,
+        resultDisplay: {
+          right,
+          wrong: wrong + 1,
+          net: right - (wrong + 1),
+        },
       });
     }
 
@@ -162,19 +167,25 @@ export default function FindTheNumber({
       (l) => l.letter === targetLetter
     ).length;
 
-    const { right, wrong } = resultDisplay;
+    const { right, wrong } = controls.resultDisplay;
 
     if (parseInt(userAnswer) === correctCount) {
-      setResultDisplay({
-        right: right + 1,
-        wrong,
-        net: right + 1 - wrong,
+      setControlData({
+        ...controls,
+        resultDisplay: {
+          right: right + 1,
+          wrong,
+          net: right + 1 - wrong,
+        },
       });
     } else {
-      setResultDisplay({
-        right,
-        wrong: wrong + 1,
-        net: right - (wrong + 1),
+      setControlData({
+        ...controls,
+        resultDisplay: {
+          right,
+          wrong: wrong + 1,
+          net: right - (wrong + 1),
+        },
       });
     }
 

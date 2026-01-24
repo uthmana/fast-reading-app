@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import NavBar from "../../../components/admin/navBar/navBar";
 import SideBar from "../../../components/admin/sideBar/sideBar";
-import "../../globals.css";
 import { SessionProvider } from "next-auth/react";
 import routes from "./routes";
 import { PopupProvider } from "../../contexts/popupContext";
 import Breadcrumb from "@/components/admin/breadcrumb/breadcrumb";
 import { usePathname } from "next/navigation";
+import "../../globals.css";
 
 export default function DashboardLayout({
   children,

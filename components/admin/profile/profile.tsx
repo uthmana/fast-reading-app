@@ -32,7 +32,7 @@ export default function Profile({ user }: any) {
             <li className="">
               <Link
                 target="_blank"
-                href="/"
+                href="/ogrenci"
                 title="Çalışma platformu"
                 className="hover:text-blue-600 tracking-tight"
               >

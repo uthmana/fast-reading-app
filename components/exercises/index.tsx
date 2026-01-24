@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import NotFound from "@/app/(home)/not-found";
+import NotFound from "@/app/(ogrenci)/ogrenci/not-found";
 import EyeMuscle from "./eye/eyeMuscle";
 import ActivevisionAreaOne from "./eye/activevisionAreaOne";
 import ActivevisionAreaTwo from "./eye/activevisionAreaTwo";

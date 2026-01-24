@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Subscriber } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,13 +15,16 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       const subscribers = await prisma.subscriber.findFirst({
         where,
         orderBy: { createdAt: "desc" },
+        include: {
+          users: true,
+        },
       });
 
       return NextResponse.json(subscribers, { status: 200 });
@@ -43,7 +46,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

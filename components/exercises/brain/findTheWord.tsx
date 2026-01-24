@@ -2,25 +2,25 @@ import Button from "@/components/button/button";
 import { letterWords } from "@/utils/constants";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  MdArrowBack,
-  MdArrowForward,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdPauseCircle,
 } from "react-icons/md";
 
 export default function FindTheWord({
-  onFinishTest,
-  setResultDisplay,
-  resultDisplay,
   controls,
+  setControlData,
   words = letterWords,
+  onFinishTest,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
-  controls: { level: number; difficultyLevel: 1 | 2 | 3 | 4 | 5 | 6 };
-  setResultDisplay: any;
-  resultDisplay: any;
+  controls: {
+    level: number;
+    difficultyLevel: number;
+    resultDisplay: { right: number; wrong: number; net: number };
+  };
+  setControlData: any;
   words: string[];
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -59,11 +59,14 @@ export default function FindTheWord({
   };
 
   const markWrongAnswer = () => {
-    const { right, wrong } = resultDisplay;
-    setResultDisplay({
-      right,
-      wrong: wrong + 1,
-      net: right - (wrong + 1),
+    const { right, wrong } = controls.resultDisplay;
+    setControlData({
+      ...controls,
+      resultDisplay: {
+        right,
+        wrong: wrong + 1,
+        net: right - (wrong + 1),
+      },
     });
   };
 
@@ -75,14 +78,17 @@ export default function FindTheWord({
       } else {
         playSound("beep", 1000);
       }
-      const { right, wrong } = resultDisplay;
+      const { right, wrong } = controls.resultDisplay;
       const correctValue = isSame ? 1 : 0;
 
       if (answer === correctValue) {
-        setResultDisplay({
-          right: right + 1,
-          wrong,
-          net: right + 1 - wrong,
+        setControlData({
+          ...controls,
+          resultDisplay: {
+            right: right + 1,
+            wrong,
+            net: right + 1 - wrong,
+          },
         });
       } else {
         markWrongAnswer();
@@ -90,7 +96,7 @@ export default function FindTheWord({
 
       setTimeout(() => generateWords(), 250);
     },
-    [resultDisplay, isSame, generateWords]
+    [controls.resultDisplay, isSame, generateWords]
   );
 
   // On mount

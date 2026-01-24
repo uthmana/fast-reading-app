@@ -141,7 +141,6 @@ export const letterWords = [
   "gözlemci",
   "yardımse",
 ];
-
 export const letterNumbers = {
   "sayilar-1": [
     "123",
@@ -264,13 +263,2556 @@ export const playlists = [
     src: "https://www.coothead.co.uk/audio/You-Cant-Always-Get-What-You-Want.mp3",
   },
 ];
+export const speedMap: Record<number, number> = {
+  1: 600,
+  2: 500,
+  3: 450,
+  4: 425,
+  5: 400,
+  6: 380,
+  7: 370,
+  8: 320,
+  9: 260,
+  10: 220,
+};
+export const studyGroupOptions = [
+  { value: "ILKOKUL_2_3", name: "İlkokul (2-3)" },
+  { value: "ILKOKUL_4", name: "İlkokul (4)" },
+  { value: "ORTAOKUL", name: "Ortaokul" },
+  { value: "LISE", name: "Lise" },
+  { value: "UNIVERSITE", name: "Üniversite" },
+  { value: "DOKTORA", name: "Doktora" },
+  { value: "GENEL", name: "Genel" },
+  { value: "YETISKIN", name: "Yetişkin" },
+  { value: "DISLEKSI", name: "Disleksi" },
+  { value: "TIP", name: "Tıp" },
+  { value: "IELTS", name: "IELTS" },
+  { value: "LGS_HAZIRLIK", name: "LGS Hazırlık" },
+  { value: "TYT_AYT_HAZIRLIK", name: "TYT-AYT Hazırlık" },
+  { value: "DEMO", name: "Demo" },
+];
+type ColorItem = {
+  word: string;
+  color: string;
+};
+export const COLORS: ColorItem[] = [
+  { word: "SİYAH", color: "black" },
+  { word: "KIRMIZI", color: "red" },
+  { word: "YEŞİL", color: "green" },
+  { word: "MAVİ", color: "blue" },
+  { word: "SARI", color: "yellow" },
+  { word: "TURUNCU", color: "orange" },
+  { word: "MOR", color: "purple" },
+];
+export const lessonData = [
+  {
+    title: "1. Ders aşağıdaki egzersizleri yapınız.",
+    order: 1,
+    isLocked: false,
+    LessonExercise: [
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "2. Ders aşağıdaki egzersizleri yapınız.",
+    order: 2,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "3. Ders aşağıdaki egzersizleri yapınız.",
+    order: 3,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
 
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "4. Ders aşağıdaki egzersizleri yapınız.",
+    order: 4,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "5. Ders aşağıdaki egzersizleri yapınız.",
+    order: 5,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "6. Ders aşağıdaki egzersizleri yapınız.",
+    order: 6,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "7. Ders aşağıdaki egzersizleri yapınız.",
+    order: 7,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "8. Ders aşağıdaki egzersizleri yapınız.",
+    order: 8,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "9. Ders aşağıdaki egzersizleri yapınız.",
+    order: 9,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "10. Ders aşağıdaki egzersizleri yapınız.",
+    order: 10,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+
+  {
+    title: "11. Ders aşağıdaki egzersizleri yapınız.",
+    order: 11,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "12. Ders aşağıdaki egzersizleri yapınız.",
+    order: 12,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "13. Ders aşağıdaki egzersizleri yapınız.",
+    order: 13,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "14. Ders aşağıdaki egzersizleri yapınız.",
+    order: 14,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "15. Ders aşağıdaki egzersizleri yapınız.",
+    order: 15,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "16. Ders aşağıdaki egzersizleri yapınız.",
+    order: 16,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "17. Ders aşağıdaki egzersizleri yapınız.",
+    order: 17,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "18. Ders aşağıdaki egzersizleri yapınız.",
+    order: 18,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "19. Ders aşağıdaki egzersizleri yapınız.",
+    order: 19,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "20. Ders aşağıdaki egzersizleri yapınız.",
+    order: 20,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+
+  {
+    title: "21. Ders aşağıdaki egzersizleri yapınız.",
+    order: 21,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "22. Ders aşağıdaki egzersizleri yapınız.",
+    order: 22,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "23. Ders aşağıdaki egzersizleri yapınız.",
+    order: 23,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "24. Ders aşağıdaki egzersizleri yapınız.",
+    order: 24,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "25. Ders aşağıdaki egzersizleri yapınız.",
+    order: 25,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "26. Ders aşağıdaki egzersizleri yapınız.",
+    order: 26,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "27. Ders aşağıdaki egzersizleri yapınız.",
+    order: 27,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "28. Ders aşağıdaki egzersizleri yapınız.",
+    order: 28,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "29. Ders aşağıdaki egzersizleri yapınız.",
+    order: 29,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "30. Ders aşağıdaki egzersizleri yapınız.",
+    order: 30,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+
+  {
+    title: "31. Ders aşağıdaki egzersizleri yapınız.",
+    order: 31,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "32. Ders aşağıdaki egzersizleri yapınız.",
+    order: 32,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "33. Ders aşağıdaki egzersizleri yapınız.",
+    order: 33,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "34. Ders aşağıdaki egzersizleri yapınız.",
+    order: 34,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 2",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-2",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "35. Ders aşağıdaki egzersizleri yapınız.",
+    order: 35,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 3",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-3",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Satır Boyu Görme",
+        pathName: "/goz-egzersizleri/satir-boyu-gorme-uygulamasi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "36. Ders aşağıdaki egzersizleri yapınız.",
+    order: 36,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Göz Kaslarını Geliştirme",
+        pathName: "/goz-egzersizleri/goz-kaslarini-gelistirme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Rengi Bul",
+        pathName: "/beyin-egzersizleri/dogru-rengi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "37. Ders aşağıdaki egzersizleri yapınız.",
+    order: 37,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Kelmeyi Bil",
+        pathName: "/beyin-egzersizleri/dogru-kelimeyi-bil",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Aktif Görme Alanını Genişletme 1",
+        pathName: "/goz-egzersizleri/aktif-gorme-alanini-genisletme-1",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "38. Ders aşağıdaki egzersizleri yapınız.",
+    order: 38,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinmeden Blok Okuma",
+        pathName: "/metin-egzersizleri/silinmeden-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "39. Ders aşağıdaki egzersizleri yapınız.",
+    order: 39,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Metronom",
+        pathName: "/goz-egzersizleri/metronom",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Doğru Sayıyı Bul",
+        pathName: "/beyin-egzersizleri/dogru-sayiyi-bul",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+  {
+    title: "40. Ders aşağıdaki egzersizleri yapınız.",
+    order: 40,
+    isLocked: true,
+    LessonExercise: [
+      {
+        title: "Hızlı Görme Uygulaması",
+        pathName: "/kelime-egzersizleri/hizli-gorme",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Göz Çevikliğini Arttırma",
+        pathName: "/kelime-egzersizleri/goz-cevikligi-artirma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Odaklı Blok Okuma",
+        pathName: "/metin-egzersizleri/odakli-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Grup Okuma Uygulaması",
+        pathName: "/metin-egzersizleri/grup-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Silinerek Blok Okuma",
+        pathName: "/metin-egzersizleri/silinerek-okuma",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Okuma Hızı Testi ",
+        pathName: "/okuma-anlama-testleri/hizli-okuma-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Anlama Testi",
+        pathName: "/okuma-anlama-testleri/anlama-testi",
+        minDuration: 180,
+        isDone: false,
+      },
+      {
+        title: "Seviyenizi Yükseltin",
+        pathName: "/kelime-egzersizleri/seviye-yukselt",
+        minDuration: 180,
+        isDone: false,
+      },
+    ],
+  },
+];
 type ExerciseDescription = {
   description: string;
   howToPlay: string;
 };
-type EyeExerciseDescriptionMap = Record<string, ExerciseDescription>;
-export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
+type ExerciseDescriptionMap = Record<string, ExerciseDescription>;
+export const ExerciseDescription: ExerciseDescriptionMap = {
   "goz-kaslarini-gelistirme": {
     description:
       "Gözlerimizde toplam 6 adet kas var. Göz kaslarını geliştirmek için koordineli olarak hareket ettirmek gerekmektedir. Bu uygulamayı günde en az 5 dakika yaparak göz kaslarınızı geliştirebilirsiniz.",
@@ -309,48 +2851,81 @@ export const eyeExerciseDescription: EyeExerciseDescriptionMap = {
     howToPlay:
       "<p>Alttaki araçlardan merkeze uzaklık, harf Sayısı ve hız ayarlarınızı yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Ekranın ortasında ki çizgiye odaklanarak kenarlardaki kelime ve kelime gruplarını gözlerinizi hareket etmeden okuyun. Süre bitene kadar egzersize devam edin.</p>",
   },
+  "dogru-rengi-bul": {
+    description:
+      "İnsanın beyin yapısına göre sol tarafımız kelimeleri söylemeye çalışırken, sağ tarafımız renkleri söylemeye çalışır. Bu egzersiz ile dikkat, odaklanma ve konsantrasyon sevinizde artış olacaktır.",
+    howToPlay:
+      "<p>Alttaki araçlardan hız seçilip <span style='color:blue'>►</span> butonunu basarak uygulamayı başlatın. Ekrana renk isimleri farklı renklerde gelecektir. Klaveye veya fareyi kullanarak yazan kelime ile renk <span style='color:green'>aynıysa DOĞRU</span>, <span style='color:red'>farklıysa YANLIŞ</span> düğmeye basınız. Ekranda gözüken süre bitene kadar çalışmaya devam ediniz</p>",
+  },
+  "dogru-sayiyi-bul": {
+    description:
+      "Bu çalışma size hızlı görmeyi, anlamayı, hafızayı, dikkat ve konsantrasyonu arttırmayı sağlar.",
+    howToPlay:
+      "<p>Alttaki araçlardan Süre ve zorluk ayarlamalarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza rastgele harfler ve sayılar gelecektir. Size sorulan harfin sayısını kutucuğa yazın ve <span style='color:black; font-weight: bold'>Doğrula</span> butonuna basın. Süre bitene kadar egzersize devam edin</p>",
+  },
+  "dogru-kelimeyi-bil": {
+    description:
+      "Okuma esnasında yapılan en büyük hatalardan biri de benzer kelimeleri ayırt edememektir. Bu egzersiz ile yanlış okumalardan kurtulacaksınız. Bunun yanı sıra dikkat ve konsantrasyonunuz da artacaktır.",
+    howToPlay:
+      "<p>Alttaki araçlardan hız ve zorluk seçilip <span style='color:blue'>►</span> botununu basarak uygulamayı başlatın. Ekranın farklı yerlerinde kelimeler gelecektir. Klaveye veya fareyi kullanarak sözcükler aynıysa <span style='color:green; font-weight: bold'>SOL</span>, farklıysa <span style='color:red; font-weight: bold'>SAĞ</span> düğmeye basınız. Ekranda gözüken süre bitene kadar çalışmaya devam ediniz.</p>",
+  },
+  "kelime-egzersizleri": {
+    description:
+      "Takistoskop çalışmaları, gözün kelime veya kelime gruplarını 100ms ile 1000ms (1sn=1000ms) arasında bir hızla gösterip, gözünüzün görme hızını arttırır.",
+    howToPlay:
+      "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>",
+  },
+  "goz-cevikligi-artirma": {
+    description:
+      "Bu uygulama ile hızlı okumanın temelini oluşturan takistokop çalışması ve göz kaslarını geliştirme çalışması beraber sunulmaktadır. Bu uygulama göz kaslarını geliştirme ve göz çevikliğini arttırmanın yanı sıra dikkatinizi de geliştirecektir.",
+    howToPlay:
+      "<p>Alttaki araçlardan, kelime sayısı ve hız ayarlarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Karşınıza rastgele çıkan kelime veya kelime gruplarını okuyun. Süre bitene kadar uygulamaya devam edin.</p>",
+  },
+  "seviye-yukselt": {
+    description:
+      "Şuan 1 kelimelik metinleri 900 milisaniyede algılıyorsunuz.Takistoskop Seviye Yükseltme Dikkat En son yaptığınız takistoskop hızlı görme uygulamasının hız ve kelime seviyesine göre, ekrana kelimeler gelecektir. Her kelimenin ardından ekrana bir kutu açılacaktır. Görmüş olduğunuz kelimeyi ekrana gelen kutuya yazın ve ENTER tuşuna basın. Girmiş olduğunuz kelimeler doğru ve yanlış olarak sisteme kayıt edilecektir. Yeterli başarıyı sağladığınızda bir üst seviyeye geçeceksiniz. Çalışmaya ara vermek içim açılan cevaplama penceresindeki  düğmesine, cevabı boş geçmek için hiçbir şey yazmadan ENTER tuşuna basın.",
+    howToPlay:
+      "<p>Seviyenizi arttırmak için <span style='color:blue'>►</span> butonuna basın.</p>",
+  },
+  "silinmeden-okuma": {
+    description:
+      "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, göze metin üzerinde sıçrama noktalarını öğreterek, gözün metin üzerinde seri bir şekilde akmasını sağlar.",
+    howToPlay:
+      "<p>Önce makale kategori seçin. Sonra o kategori içindeki metinlerden birini seçin. Daha sonra alttaki araçlardan kelime sayısı ve hız ayarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Metin bittikten sonra tekrar başka bir metin seçerek uygulamaya devam edin.</p>",
+  },
+  "silinerek-okuma": {
+    description:
+      "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, gözün metin üzerinde hakimiyetini arttırırken, aynı zamanda gözün metin üzerinde hem kısa, hem de uzun geriye dönüşler yapmasını önler.",
+    howToPlay:
+      "<p>Önce makale kategori seçin. Sonra o kategori içindeki metinlerden birini seçin. Daha sonra alttaki araçlardan kelime sayısı ve hız ayarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Metin bittikten sonra tekrar başka bir metin seçerek uygulamaya devam edin.</p>",
+  },
+  "odakli-okuma": {
+    description:
+      "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Bu egzersiz, gözün metin üzerinde hakimiyetini arttırmak için gözün nere odaklaması gerektiğini öğretir.",
+    howToPlay:
+      "<p>Önce makale kategori seçin. Sonra o kategori içindeki metinlerden birini seçin. Daha sonra alttaki araçlardan kelime sayısı ve hız ayarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Metin bittikten sonra tekrar başka bir metin seçerek uygulamaya devam edin.</p>",
+  },
+  "grup-okuma": {
+    description:
+      "Takistoskop çalışmasının en büyük kazanımı kelimeleri grup halde algılaya bilmektir. Bu edindiğimiz beceriyi metinler üzerinde uygulayabilmek için bloklama egzersizleri yapmak gerekmektedir. Grup okuma uygulamasında artık bloğu kaldırarak göze serbest bir çalışma şekli sunar.",
+    howToPlay:
+      "<p>Önce makale kategori seçin. Sonra o kategori içindeki metinlerden birini seçin. Daha sonra alttaki araçlardan kelime sayısı ve hız ayarını yapıp <span style='color:blue'>►</span> butonuna basarak uygulamayı başlatın. Metin bittikten sonra tekrar başka bir metin seçerek uygulamaya devam edin.</p>",
+  },
+  "hizli-okuma-testi": {
+    description:
+      "Bu uygulama ile 1 dakika da kaç kelime okuduğunuz tespit edilir.",
+    howToPlay:
+      "<p>Kategori ve makaleyi seçip <span style='color:blue'>►</span> butonuna basarak hız testine başlayın. Süre bitene kadar devam edin. Süre bitmeden makale biterse yeni bir makale seçerek okumaya devam edin. Yapmış olduğunuz hız testleri ile sistem, gelişiminizi takip edecektir.</p>",
+  },
+  "anlama-testi": {
+    description:
+      "Bu uygulama ile okuduğunuz metinlerdeki anlama oranınız tespit edilir.",
+    howToPlay:
+      "<p>Kategori ve makale seçip <span style='color:blue'>►</span> butonuna basarak anlama testine başlayın. Makaleyi sonuna kadar okuyup, bittiğinde  düğmesine basınız. Sistem size metin ile ilgili sorular soracaktır. Cevaplayıp gönder düğmesine basınız.</p>",
+  },
 };
 
-export const speedMap: Record<number, number> = {
-  1: 600,
-  2: 500,
-  3: 450,
-  4: 425,
-  5: 400,
-  6: 380,
-  7: 370,
-  8: 320,
-  9: 260,
-  10: 220,
+export const contactInfo = {
+  email: "info@serioku.com",
+  phone: "+90 545 643 24 00",
 };
-
-export const studyGroupOptions = [
-  { value: "ILKOKUL_2_3", name: "İlkokul (2-3)" },
-  { value: "ILKOKUL_4", name: "İlkokul (4)" },
-  { value: "ORTAOKUL", name: "Ortaokul" },
-  { value: "LISE", name: "Lise" },
-  { value: "UNIVERSITE", name: "Üniversite" },
-  { value: "DOKTORA", name: "Doktora" },
-  { value: "GENEL", name: "Genel" },
-  { value: "YETISKIN", name: "Yetişkin" },
-  { value: "DISLEKSI", name: "Disleksi" },
-  { value: "TIP", name: "Tıp" },
-  { value: "IELTS", name: "IELTS" },
-  { value: "LGS_HAZIRLIK", name: "LGS Hazırlık" },
-  { value: "TYT_AYT_HAZIRLIK", name: "TYT-AYT Hazırlık" },
-  { value: "DEMO", name: "Demo" },
-];
-
-type ColorItem = {
-  word: string;
-  color: string;
-};
-export const COLORS: ColorItem[] = [
-  { word: "SİYAH", color: "black" },
-  { word: "KIRMIZI", color: "red" },
-  { word: "YEŞİL", color: "green" },
-  { word: "MAVİ", color: "blue" },
-  { word: "SARI", color: "yellow" },
-  { word: "TURUNCU", color: "orange" },
-  { word: "MOR", color: "purple" },
-];
