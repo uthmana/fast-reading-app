@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Subscriber } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   try {
