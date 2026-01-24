@@ -1,7 +1,10 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React from "react";
-import ReactSpeedometer from "react-d3-speedometer";
+const ReactSpeedometer = dynamic(() => import("react-d3-speedometer"), {
+  ssr: false,
+});
 
 type Range = {
   red: [number, number];
@@ -61,7 +64,7 @@ export default function SpeedGauge({
       <ReactSpeedometer
         minValue={0}
         maxValue={max}
-        value={value}
+        value={value || 0}
         needleColor={needleColor}
         currentValueText={title}
         needleTransitionDuration={1500}

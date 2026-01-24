@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get("id");
     const categoryId = searchParams.get("categoryId");
     const whereParam = searchParams.get("where");
+    const randomParam = searchParams.get("random");
     let where: any | undefined;
 
     if (id) {
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
       if (!article) {
         return NextResponse.json(
           { error: "Article not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -28,15 +29,15 @@ export async function GET(req: NextRequest) {
     }
 
     if (categoryId) {
-      // Fetch a single user by name
       const article = await prisma.article.findMany({
         where: { categoryId: parseInt(categoryId) },
+        orderBy: { subscriberId: "desc" },
       });
 
       if (!article) {
         return NextResponse.json(
           { error: "Article not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -46,14 +47,29 @@ export async function GET(req: NextRequest) {
     if (whereParam) {
       try {
         where = JSON.parse(whereParam);
-        const total = await prisma.article.count({ where });
-        if (total === 0) {
-          return NextResponse.json(null, { status: 200 });
+
+        if (randomParam === "true") {
+          const total = await prisma.article.count({ where });
+          if (total === 0) {
+            return NextResponse.json(null, { status: 200 });
+          }
+          const randomIndex = Math.floor(Math.random() * total);
+          const articles = await prisma.article.findFirst({
+            where,
+            skip: randomIndex,
+            include: {
+              category: {
+                select: { id: true, title: true },
+              },
+            },
+            orderBy: { subscriberId: "desc" },
+          });
+          return NextResponse.json(articles, { status: 200 });
         }
-        const randomIndex = Math.floor(Math.random() * total);
-        const articles = await prisma.article.findFirst({
+
+        const articles = await prisma.article.findMany({
           where,
-          skip: randomIndex,
+          orderBy: { subscriberId: "desc" },
           include: {
             category: {
               select: { id: true, title: true },
@@ -64,7 +80,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -86,7 +102,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -101,6 +117,7 @@ export async function POST(req: Request) {
     hasQuestion,
     active,
     tests,
+    subscriberId,
   }: Article | any = await req.json();
 
   if (!title || !description || !categoryId) {
@@ -119,6 +136,7 @@ export async function POST(req: Request) {
             title,
             description,
             studyGroup,
+            subscriberId,
             hasQuestion: tests?.length > 0 ? true : false,
             active,
             tests: tests,
@@ -136,6 +154,7 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
+        subscriberId,
         hasQuestion: tests?.length > 0 ? true : false,
         active,
         tests: tests,
@@ -149,7 +168,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Article already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -171,7 +190,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Article does not exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

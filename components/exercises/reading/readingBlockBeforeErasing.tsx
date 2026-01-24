@@ -3,7 +3,6 @@
 import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
 import React, { useEffect, useRef, useState } from "react";
-
 import { MdPauseCircle } from "react-icons/md";
 
 export default function ReadingBlockBeforeErasing({
@@ -26,6 +25,7 @@ export default function ReadingBlockBeforeErasing({
     font: string;
     level: number;
     wordsPerFrame: number;
+    selectedArticle?: any;
   };
 }) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);

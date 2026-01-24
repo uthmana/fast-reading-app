@@ -6,7 +6,12 @@ export const columnsData = {
     { id: "tcId", name: "TC Kimlik No", type: "string" },
     { id: "email", name: "E-posta", type: "string" },
     { id: "active", name: "Durum", type: "boolean" },
-    { id: "role", name: "Rolü", type: "string" },
+    {
+      id: "role",
+      name: "Rolü",
+      type: "string",
+      objectMap: { ADMIN: "Yönetici", SUBSCRIBER: "Kurum" },
+    },
     { id: "Subscriber", name: "Kredi", type: "subscriber" },
   ],
   studentColumn: [
@@ -78,6 +83,25 @@ export const columnsData = {
     { id: "price", name: "Tutar", type: "currency" },
     { id: "currency", name: "Para Birim", type: "string" },
     { id: "startDate", name: "Tarih", type: "fullDate", totalCount: true },
+  ],
+  registrationColumn: [
+    { id: "id", name: "#", type: "string" },
+    { id: "name", name: "Adı Soyadı", type: "string" },
+    { id: "email", name: "E-posta", type: "string" },
+    {
+      id: "type",
+      name: "Başvuru Türü",
+      type: "registrationType",
+      objectMap: { TRIAL_CLASS: "Öğrenci Kaydı", FRANCHISE: "Bayilik" },
+    },
+    { id: "message", name: "Mesaj", type: "string" },
+    {
+      id: "isProcessed",
+      name: "İşlem Durumu",
+      type: "boolean",
+      objectMap: { true: "İşlem Yapıldı", false: "Beklemede" },
+    },
+    { id: "createdAt", name: "Başvuru Tarihi", type: "fullDate" },
   ],
 } as const;
 

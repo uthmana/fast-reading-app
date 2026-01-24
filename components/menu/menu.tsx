@@ -33,28 +33,16 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
         <div className="w-full flex items-center justify-between gap-8">
           <h1 className="capitalize text-white text-base">
             <Link
-              href="/"
+              href="/ogrenci"
               className="flex min-w-[200px] gap-3 items-center"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="w-10 h-10 border-2 text-black font-semibold text-lg bg-brand-secondary-50 flex items-center justify-center rounded-full">
-                {!session ? " " : session?.user?.name[0]?.toUpperCase()}
-              </span>
-              <span className="flex  hover:underline">
-                <span title={session?.user?.name} className="leading-4">
-                  <span className="text-base font-oswald font-light">
-                    Hoşgeldin,
-                  </span>{" "}
-                  <span className="whitespace-nowrap">
-                    {session?.user?.name}
-                  </span>
-                </span>
-              </span>
+              <Icon name="logo" className="h-10" />
             </Link>
           </h1>
 
           {/* Desktop Menu */}
-          <nav className="hidden lg:flex items-center space-x-2">
+          <nav className="hidden lg:flex items-center space-x-1">
             {menuItems.map((item) => (
               <div key={item.name} className="relative h-full">
                 {item.link ? (

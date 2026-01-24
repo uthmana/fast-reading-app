@@ -62,10 +62,10 @@ function TableBuilder({
   const columnHelper = createColumnHelper<any>();
 
   const renderValue = (
-    item: { type: string; lengthName: string; link: string },
+    item: { type: string; lengthName: string; link: string; objectMap?: any },
     info: any
   ) => {
-    const { type, lengthName, link } = item;
+    const { type, lengthName, link, objectMap } = item;
     const value = info.getValue();
     const id = info.row.original.id;
     if (type === "date") {
@@ -75,7 +75,17 @@ function TableBuilder({
       return formatDateTime(value, true);
     }
     if (type === "boolean") {
-      return value ? "Aktif" : "Pasif";
+      return (
+        <span
+          className={`px-2 py-1 whitespace-nowrap rounded-full text-xs font-semibold ${
+            value
+              ? "bg-green-100 text-green-700"
+              : "bg-yellow-100 text-yellow-700"
+          }`}
+        >
+          {objectMap ? objectMap[value] : value ? "Aktif" : "Pasif"}
+        </span>
+      );
     }
     if (type === "subscriber") {
       return value?.credit;
@@ -83,7 +93,6 @@ function TableBuilder({
     if (type === "currency") {
       return formatNumberLocale(value);
     }
-
     if (type === "length") {
       return (
         <Link
@@ -134,6 +143,10 @@ function TableBuilder({
     if (type === "studyGroup") {
       return studyGroupOptions.find((item) => item.value === value)?.name;
     }
+    if (objectMap) {
+      return objectMap[value] || value;
+    }
+
     return value;
   };
 
@@ -310,7 +323,7 @@ function TableBuilder({
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr
                   key={headerGroup.id}
-                  className="border-b border-gray-400 text-sm text-gray-200"
+                  className="border-b border-gray-400 text-sm"
                 >
                   {headerGroup.headers.map((header, idx) => {
                     return (
@@ -318,7 +331,7 @@ function TableBuilder({
                         key={header.id + idx}
                         colSpan={header.colSpan}
                         onClick={header.column.getToggleSortingHandler()}
-                        className="cursor-pointer  px-1 text-start"
+                        className="cursor-pointer  px-1 text-start text-xs uppercase. whitespace-nowrap py-2"
                       >
                         <div className="items-center justify-between">
                           {flexRender(

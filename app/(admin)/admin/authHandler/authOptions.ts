@@ -4,15 +4,16 @@ import { useMemo } from "react";
 
 export const authOptions: any = {
   ADMIN: {
-    classes: ["view"],
-    students: ["view"],
-    teachers: ["view"],
+    classes: ["view", "create", "edit", "delete"],
+    students: ["view", "create", "edit", "delete"],
+    teachers: ["view", "create", "edit", "delete"],
     lessons: ["view", "create", "edit", "delete"],
     category: ["view", "create", "edit", "delete"],
     articles: ["view", "create", "edit", "delete"],
     words: ["view", "create", "edit", "delete"],
     users: ["view", "create", "edit", "delete"],
     billing: ["view", "create", "edit", "delete"],
+    registration: ["view", "create", "edit", "delete"],
   },
   SUBSCRIBER: {
     classes: ["view", "create", "edit", "delete"],
@@ -24,6 +25,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
+    registration: [],
   },
   TEACHER: {
     classes: ["view", "create", "edit", "delete"],
@@ -35,6 +37,7 @@ export const authOptions: any = {
     words: ["view", "create", "edit", "delete"],
     users: ["view"],
     billing: ["view"],
+    registration: [],
   },
 };
 

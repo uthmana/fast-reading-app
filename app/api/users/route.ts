@@ -114,6 +114,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: Request) {
   const {
     id,
+    regno,
     name,
     username,
     tcId,
@@ -212,6 +213,16 @@ export async function POST(req: Request) {
           : {}),
       },
     });
+
+    if (regno) {
+      await prisma.registration.update({
+        where: { id: parseInt(regno) },
+        data: {
+          isProcessed: true,
+        },
+      });
+    }
+
     return NextResponse.json(user, { status: 201 });
   } catch (err) {
     console.log(err);

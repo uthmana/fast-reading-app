@@ -2,12 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { Class } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions as any);
+    let subscriberId = (session as any)?.user.subscriberId ?? null;
+
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
     const subscriberParam = searchParams.get("subscriber");
+    const subscriberOptionsParam = searchParams.get("subscriber-options");
 
     let where: any | undefined;
 
@@ -17,7 +23,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       if (subscriberParam) {
@@ -41,6 +47,15 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(classes, { status: 200 });
     }
 
+    if (subscriberOptionsParam && subscriberId) {
+      const classes = await prisma.class.findMany({
+        where: { subscriberId: subscriberId },
+        orderBy: { createdAt: "desc" },
+        include: { students: true },
+      });
+      return NextResponse.json(classes, { status: 200 });
+    }
+
     const classes = await prisma.class.findMany({
       orderBy: { createdAt: "desc" },
       include: { students: true },
@@ -55,7 +70,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -66,7 +81,7 @@ export async function POST(req: Request) {
   if (!name || !studyGroup || !teacherId) {
     return NextResponse.json(
       { error: "Girdiğiniz bilgi hatalıdır" },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const parsedTeacherId = teacherId ? parseInt(teacherId) : teacherId;
@@ -136,7 +151,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Sınıf zaten mevcut değildir" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

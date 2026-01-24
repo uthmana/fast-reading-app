@@ -16,7 +16,8 @@ export default function page() {
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
-  const { canView, canCreate, canEdit, canDelete } = useAuthHandler();
+  const { canView, canCreate, canEdit, canDelete, loading, userData } =
+    useAuthHandler();
 
   const defaultQuizValue = {
     id: Date.now().toString(),
@@ -36,9 +37,24 @@ export default function page() {
   const [formTouched, setFormTouched] = useState(false);
 
   const requestData = async () => {
+    if (loading || !userData) return;
+
     try {
       setIsloading(true);
-      const resData = await fetchData({ apiPath: "/api/articles" });
+      let resData = [] as any;
+      if (userData.role && userData.role !== "ADMIN") {
+        const query = encodeURIComponent(
+          JSON.stringify({
+            subscriberId: userData.subscriberId,
+          }),
+        );
+        resData = await fetchData({
+          apiPath: `/api/articles?where=${query}`,
+        });
+      } else {
+        resData = await fetchData({ apiPath: "/api/articles" });
+      }
+
       setArticles(resData);
       setIsloading(false);
     } catch (error) {
@@ -50,14 +66,16 @@ export default function page() {
 
   useEffect(() => {
     requestData();
-  }, []);
+  }, [loading, userData]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentArticle = info?.row?.original;
     setSelectedArticle(currentArticle);
 
     if (actionType === "add") {
-      setData({});
+      setData({
+        subscriberId: userData?.subscriberId || "",
+      });
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
@@ -76,7 +94,7 @@ export default function page() {
             payload: { id: currentArticle.id },
           });
           setArticles(
-            [...articles].filter((val: any) => val.id !== currentArticle.id)
+            [...articles].filter((val: any) => val.id !== currentArticle.id),
           );
           setIsloading(false);
         } catch (error) {
@@ -133,7 +151,7 @@ export default function page() {
 
   const deleteQuiz = (selectedQuiz: any) => {
     const filteredQuiz = [...(quiz || [])].filter(
-      (q) => q.id !== selectedQuiz.id
+      (q) => q.id !== selectedQuiz.id,
     );
     setQuiz(filteredQuiz);
     setFormTouched(true);

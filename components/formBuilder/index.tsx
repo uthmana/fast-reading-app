@@ -61,9 +61,25 @@ export default function FormBuilder({
     });
   }
 
+  fieldsData = [...fieldsData].map((fd: any) => {
+    // check for dependentKey and update its optionId if exists
+    if (fd.type === "select" && fd.optionId !== undefined) {
+      const value = [...fieldsData].find(
+        (d: any) => fd.key === d.dependentKey,
+      )?.value;
+      const optionId =
+        fd.value.type === "number" && value?.value
+          ? parseInt(value?.value?.toString())
+          : null;
+      return { ...fd, optionId };
+    }
+    return fd;
+  });
+
   const [formData, setFormData] = useState(fieldsData as any);
   const [newData, setNewData] = useState(data);
   const [isFormValid, setIsFormValid] = useState(true);
+  const [isFormTouched, setIsFormTouched] = useState(false);
 
   const handleChange = ({
     targetValue,
@@ -72,39 +88,56 @@ export default function FormBuilder({
     targetValue: any; // can be string, number, object, etc.
     inputKey: string;
   }) => {
+    setIsFormTouched(true);
     // update formData
-    const newValues = formData.map((d: any) =>
-      d.key === inputKey
-        ? { ...d, value: { ...d.value, value: targetValue } }
-        : d
-    );
-    setFormData(newValues);
-
-    // build newData for submission
-    const newDataObj = newValues.reduce((acc: any, newVal: any) => {
-      let val: any = newVal.value.value;
-
-      switch (newVal.value.type) {
-        case "number":
-          val = Number(val);
-          break;
-        case "boolean":
-          val = val === "true" || val === true;
-          break;
-        case "date":
-          val = convertToISO8601(val);
-          break;
-        case "multipleSelect":
-          val = Array.isArray(val) ? val : [];
-          break;
-
-        default:
-          val = Array.isArray(val) ? val : val?.toString()?.trim();
+    let newValues = formData.map((d: any) => {
+      if (d.key === inputKey) {
+        return { ...d, value: { ...d.value, value: targetValue } };
       }
+      return d;
+    });
 
-      acc[newVal.key] = val;
-      return acc;
-    }, {} as Record<string, any>);
+    // check for dependentKey and update its optionId if exists
+    const dependentKey = newValues.find(
+      (d: any) => d.key === inputKey,
+    )?.dependentKey;
+    if (dependentKey) {
+      newValues = [...newValues].map((d: any) => {
+        if (d.key === dependentKey) {
+          return { ...d, optionId: parseInt(targetValue) };
+        }
+        return d;
+      });
+    }
+    setFormData(newValues);
+    // build newData for submission
+    const newDataObj = newValues.reduce(
+      (acc: any, newVal: any) => {
+        let val: any = newVal.value.value;
+
+        switch (newVal.value.type) {
+          case "number":
+            val = Number(val);
+            break;
+          case "boolean":
+            val = val === "true" || val === true;
+            break;
+          case "date":
+            val = convertToISO8601(val);
+            break;
+          case "multipleSelect":
+            val = Array.isArray(val) ? val : [];
+            break;
+
+          default:
+            val = Array.isArray(val) ? val : val?.toString()?.trim();
+        }
+
+        acc[newVal.key] = val;
+        return acc;
+      },
+      {} as Record<string, any>,
+    );
 
     setNewData(newDataObj);
     setIsFormValid(true);
@@ -157,17 +190,21 @@ export default function FormBuilder({
               multipleSelect: boolean;
               min: string;
               max: string;
+              optionId: any;
+              asyncOptionById: any;
             },
-            idx: number
+            idx: number,
           ) => {
             if (v.type === "select") {
               return (
                 <Select
                   key={idx + v.type}
-                  asyncOption={v.asyncOption}
-                  placeholder={v.placeholder}
+                  asyncOption={v?.asyncOption}
+                  placeholder={v?.placeholder}
                   options={v.options}
                   value={v.value}
+                  optionId={v?.optionId}
+                  asyncOptionById={v?.asyncOptionById}
                   onChange={handleChange}
                   inputKey={v.key}
                   name={v.name}
@@ -208,14 +245,14 @@ export default function FormBuilder({
                 name={v.name}
                 onChange={handleChange}
                 required={v.required}
-                disabled={v.disabled}
-                maxlength={v.maxlength}
-                styleClass={v.styleClass}
-                min={v.min}
-                max={v.max}
+                disabled={v?.disabled}
+                maxlength={v?.maxlength}
+                styleClass={v?.styleClass}
+                min={v?.min}
+                max={v?.max}
               />
             );
-          }
+          },
         )}
       </div>
       {!isFormValid ? (
@@ -233,8 +270,9 @@ export default function FormBuilder({
       <Button
         text={submitBtnProps?.text || "Submit"}
         type={submitBtnProps?.type || "button"}
-        className="mt-5 hover:bg-blue-600 transition uppercase"
+        className="mt-5 bg-brand-primary-50 hover:bg-brand-primary-100 transition uppercase"
         isSubmiting={isSubmitting}
+        disabled={isSubmitting || !isFormTouched}
       />
     </form>
   );

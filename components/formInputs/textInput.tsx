@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useRef } from "react";
 
 type InputProps = {
   placeholder?: string;
@@ -25,6 +25,9 @@ type InputProps = {
   valueMap?: any;
   showLabel?: boolean;
   labelClassName?: string;
+  handleAsyncList?: (inputKey: string, data: any) => void;
+  asyncList?: any;
+  setIsLoading?: (val: boolean) => void;
 };
 
 function TextInput(props: InputProps) {
@@ -49,8 +52,37 @@ function TextInput(props: InputProps) {
     max,
     colorList,
     valueMap,
+    asyncList,
+    handleAsyncList,
+    setIsLoading,
     ...rest
   } = props;
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceDelay = 500; // ms
+
+  useEffect(() => {
+    if (!asyncList) return;
+    const getWordList = async () => {
+      try {
+        if (setIsLoading) setIsLoading(true);
+        const res = await asyncList(
+          parseInt(value?.value?.toString() || "1"),
+          1
+        );
+        handleAsyncList && handleAsyncList(inputKey, res);
+        if (setIsLoading) setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    timeoutRef.current = setTimeout(() => {
+      getWordList();
+    }, debounceDelay);
+
+    return () => clearTimeout(timeoutRef.current!);
+  }, [value?.value, inputKey, asyncList, handleAsyncList]);
 
   return (
     <div className={`w-full mb-2 text-sm relative ${styleClass}`}>
@@ -112,8 +144,16 @@ function TextInput(props: InputProps) {
         type={type}
         step={step}
         value={value?.value}
+        inputMode={type === "tel" ? "numeric" : undefined}
         onChange={(e) => {
-          onChange({ targetValue: e.target.value, value, inputKey });
+          let nextValue = e.target.value;
+
+          if (type === "tel") {
+            nextValue = nextValue.replace(/\D/g, "");
+            if (maxlength) nextValue = nextValue.slice(0, maxlength);
+          }
+
+          onChange({ targetValue: nextValue, value, inputKey });
         }}
         disabled={disabled}
         {...rest}

@@ -15,13 +15,16 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
       const subscribers = await prisma.subscriber.findFirst({
         where,
         orderBy: { createdAt: "desc" },
+        include: {
+          users: true,
+        },
       });
 
       return NextResponse.json(subscribers, { status: 200 });
@@ -43,7 +46,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

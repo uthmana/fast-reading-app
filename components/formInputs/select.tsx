@@ -1,6 +1,5 @@
 "use client";
 
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 
 type SelectPropTypes = {
@@ -15,11 +14,16 @@ type SelectPropTypes = {
     targetValue: string | string[];
     value: string;
     inputKey: string;
+    selectedData: any;
   }) => void;
   inputKey: string;
   styleClass?: string;
-  asyncOption?: (session: any) => any;
+  asyncOption?: () => any;
+  asyncOptionById?: (categoryId: string) => any;
   multipleSelect?: boolean;
+  optionId?: string;
+  setAsyncOptions?: (data: any) => any;
+  setIsLoading?: (val: boolean) => any;
 };
 
 function Select({
@@ -35,24 +39,47 @@ function Select({
   styleClass = "",
   asyncOption,
   multipleSelect = false,
+  asyncOptionById,
+  optionId,
+  setAsyncOptions,
+  setIsLoading,
   ...rest
 }: SelectPropTypes) {
   const [localOptions, setLocalOptions] = useState(options as any);
   const [isLodingOption, setisLodingOption] = useState(false);
-  const { data: session } = useSession();
 
   useEffect(() => {
-    if (!session) return;
-    if (!options.length && asyncOption) {
+    if (disabled || !asyncOption) return;
+    if (!optionId && !options.length && asyncOption) {
       const getOptions = async () => {
         setisLodingOption(true);
-        const res = await asyncOption(session);
+        if (setIsLoading) setIsLoading(true);
+        const res = await asyncOption();
         setLocalOptions(res);
         setisLodingOption(false);
+        if (setIsLoading) setIsLoading(false);
       };
       getOptions();
     }
-  }, [session, asyncOption]);
+  }, [disabled, asyncOption, options.length, optionId, setIsLoading]);
+
+  useEffect(() => {
+    if (disabled || !optionId || !asyncOptionById) return;
+    if (!options.length) {
+      const getOptions = async () => {
+        setisLodingOption(true);
+        if (setIsLoading) setIsLoading(true);
+        const res = await asyncOptionById(optionId);
+        setLocalOptions(res);
+        if (setAsyncOptions) {
+          setAsyncOptions({ options: res, inputKey });
+        }
+        setisLodingOption(false);
+        if (setIsLoading) setIsLoading(false);
+      };
+      getOptions();
+    }
+  }, [optionId, disabled, asyncOptionById, setAsyncOptions]);
 
   return (
     <div className={`w-full mb-2 text-sm ${styleClass}`}>
@@ -65,7 +92,7 @@ function Select({
           {
             <span
               className={
-                required && !value.value ? "text-red-400" : "text-green-400"
+                required && !value?.value ? "text-red-400" : "text-green-400"
               }
             >
               *
@@ -87,30 +114,33 @@ function Select({
             ? Array.isArray(value?.value)
               ? value.value
               : []
-            : value?.value ?? ""
+            : (value?.value ?? "")
         }
         multiple={multipleSelect}
         onChange={(e) => {
           const newValue = multipleSelect
             ? Array.from(e.target.selectedOptions).map((opt) => opt.value)
             : e.target.value;
-
-          onChange({ targetValue: newValue, value, inputKey });
+          const selectedData = localOptions?.find(
+            (item: any) => item.value?.toString() === e.target.value,
+          );
+          onChange({ targetValue: newValue, value, inputKey, selectedData });
         }}
         {...rest}
       >
         <option value=""> {placeholder}</option>
         {isLodingOption ? <option value=""> Loading... </option> : null}
 
-        {localOptions?.map(
-          (item: { name: string; value: string }, idx: number) => {
-            return (
-              <option value={item.value} key={idx}>
-                {item.name}
-              </option>
-            );
-          }
-        )}
+        {!isLodingOption &&
+          localOptions?.map(
+            (item: { name: string; value: string }, idx: number) => {
+              return (
+                <option value={item.value} key={idx}>
+                  {item.name}
+                </option>
+              );
+            },
+          )}
       </select>
     </div>
   );

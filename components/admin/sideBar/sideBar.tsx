@@ -79,7 +79,9 @@ export default function SideBar({
       style={{ width: `${sidebarWidth}px` }}
     >
       <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-xl ml-4 font-semibold">Admin Panel</h2>
+        <h2 className="text-xl ml-4 font-semibold font-roboto">
+          Yönetim Paneli
+        </h2>
 
         <button
           className="lg:hidden text-gray-600 hover:text-black"
@@ -103,6 +105,10 @@ export default function SideBar({
               manualOpen[route.name] !== undefined
                 ? manualOpen[route.name]
                 : active;
+
+            if (!canViewMenu(rp)) {
+              return null;
+            }
 
             return (
               <div key={route.name + idx}>
@@ -178,7 +184,7 @@ export default function SideBar({
         <nav className=" border-t text-left w-full flex flex-col px-4">
           <Link
             target="_blank"
-            href={"/"}
+            href={"/ogrenci"}
             className="border-b py-3 text-gray-500 hover:text-gray-900 flex gap-3 ml-2 items-center text-base"
           >
             <IoMdGlobe className="w-6 h-6" /> Siteyi Görüntüle

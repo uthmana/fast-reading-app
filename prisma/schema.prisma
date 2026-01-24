@@ -34,7 +34,7 @@ model Student {
   class          Class?      @relation(fields: [classId], references: [id])
   studyGroup     StudyGroup  @default(ILKOKUL_2_3)
   attempts       Attempt[]
-  Progress       Progress[]
+  lessons        Lesson[]
   active         Boolean     @default(true)
   gender         Gender      @default(OTHER)
   termsAgreed    Boolean     @default(false)
@@ -63,33 +63,36 @@ model Lesson {
   title          String
   description    String?
   order          Int              @default(1)
+  isLocked       Boolean          @default(true)
   LessonExercise LessonExercise[]
   createdAt      DateTime         @default(now())
   updatedAt      DateTime?        @updatedAt
-  Progress       Progress[]
-}
-
-model Exercise {
-  id             Int              @id @default(autoincrement())
-  title          String?
-  pathName       String
-  minDuration    Int              @default(180) // minimum Duration in seconds
-  config         Json?
-  createdAt      DateTime         @default(now())
-  taken          Boolean          @default(false)
-  Progress       Progress[]
-  LessonExercise LessonExercise[]
+  student        Student?         @relation(fields: [studentId], references: [id])
+  studentId      Int?
 }
 
 model LessonExercise {
-  id         Int        @id @default(autoincrement())
-  lessonId   Int
-  exerciseId Int
-  order      Int?
-  createdAt  DateTime   @default(now())
-  lesson     Lesson     @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  exercise   Exercise   @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  Progress   Progress[]
+  id          Int       @id @default(autoincrement())
+  title       String?
+  pathName    String
+  minDuration Int       @default(180)
+  isDone      Boolean   @default(false)
+  config      Json?
+  lesson      Lesson?   @relation(fields: [lessonId], references: [id])
+  lessonId    Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Exercise {
+  id          Int       @id @default(autoincrement())
+  title       String?
+  pathName    String
+  minDuration Int       @default(180) // minimum Duration in seconds
+  config      Json?
+  isDone      Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 }
 
 model Attempt {
@@ -104,35 +107,19 @@ model Attempt {
   createdAt   DateTime @default(now())
 }
 
-model Progress {
-  id               Int            @id @default(autoincrement())
-  studentId        Int
-  lessonId         Int
-  lessonExerciseId Int
-  exerciseId       Int
-  done             Boolean        @default(false)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime?      @updatedAt
-  student          Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
-  lesson           Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  exercise         Exercise       @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
-  lessonExercise   LessonExercise @relation(fields: [lessonExerciseId], references: [id], onDelete: Cascade)
-
-  @@unique([studentId, lessonExerciseId]) // progress is tracked per student per lessonExercise occurrence
-}
-
 model Article {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String     @db.Text
-  studyGroup  StudyGroup @default(ILKOKUL_2_3)
-  category    Category   @relation(fields: [categoryId], references: [id])
-  hasQuestion Boolean    @default(false)
-  active      Boolean    @default(true)
-  tests       Json?
-  categoryId  Int
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  description  String     @db.Text
+  studyGroup   StudyGroup @default(ILKOKUL_2_3)
+  category     Category   @relation(fields: [categoryId], references: [id])
+  subscriberId Int?
+  hasQuestion  Boolean    @default(false)
+  active       Boolean    @default(true)
+  tests        Json?
+  categoryId   Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
 }
 
 model ArticleTest {
@@ -145,24 +132,26 @@ model ArticleTest {
 }
 
 model Category {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String?
-  studyGroup  StudyGroup @default(ILKOKUL_2_3)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
-  Article     Article[]
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  description  String?
+  subscriberId Int?
+  studyGroup   StudyGroup @default(ILKOKUL_2_3)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  Article      Article[]
 }
 
 model Words {
-  id          Int               @id @default(autoincrement())
-  word        String            @unique
-  similarWord String?
-  studyGroups WordsStudyGroup[]
-  wpc         Int // words per count
-  lpw         Int // letters per word
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime?         @updatedAt
+  id           Int               @id @default(autoincrement())
+  word         String            @unique
+  similarWord  String?
+  studyGroups  WordsStudyGroup[]
+  subscriberId Int?
+  wpc          Int // words per count
+  lpw          Int // letters per word
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime?         @updatedAt
 }
 
 model WordsStudyGroup {
@@ -196,6 +185,31 @@ model Teacher {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime?  @updatedAt
   subscriberId Int
+}
+
+model Registration {
+  id          Int              @id @default(autoincrement())
+  name        String
+  email       String           @unique
+  phone       String?          @unique
+  type        RegistrationType @default(GENERAL_INFO)
+  studyGroup  String?
+  companyInfo String?          @db.Text
+  message     String?          @db.Text
+  isProcessed Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime?        @updatedAt
+}
+
+model FranchiseApplication {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  phone       String?   @unique
+  message     String?   @db.Text
+  isProcessed Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime? @updatedAt
 }
 
 enum Role {
@@ -238,4 +252,10 @@ enum Currency {
   TL
   USD
   EURO
+}
+
+enum RegistrationType {
+  FRANCHISE
+  TRIAL_CLASS
+  GENERAL_INFO
 }
