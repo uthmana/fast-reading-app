@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-//import bcrypt from "bcryptjs";
 import {
   allWords,
   articleCategory,
@@ -8,19 +7,19 @@ import {
   lessonData,
   studyGroupOptions,
 } from "./mockData";
-import { Category, StudyGroup } from "@prisma/client";
+import { StudyGroup } from "@prisma/client";
 
 async function main() {
   // Default admin user
   const user = await prisma.user.upsert({
-    where: { username: "deneme" },
+    where: { username: "seriokuyonetim" },
     update: {},
     create: {
-      email: "deneme@example.com",
+      email: "yonetim@serioku.com",
       password: "1234",
       role: "ADMIN",
-      name: "Deneme kullanıcı",
-      username: "deneme",
+      name: "Serioku Yönetim",
+      username: "seriokuyonetim",
       tcId: "99999999999",
     },
   });
@@ -28,14 +27,14 @@ async function main() {
   // Default subscriber
   const subscriber = await prisma.user.create({
     data: {
-      email: "musteri@example.com",
+      email: "info@serioku.com",
       password: "1234",
       role: "SUBSCRIBER",
-      name: "Deneme musteri",
-      username: "denememusteri",
+      name: "serioku ",
+      username: "serioku",
       Subscriber: {
         create: {
-          credit: 20,
+          credit: 1000,
         },
       },
     },
@@ -54,11 +53,11 @@ async function main() {
   // Default teacher + class
   const teacher = await prisma.user.create({
     data: {
-      email: "denemeogretmeni@example.com",
+      email: "mahmutyilmaz@serioku.com",
       password: "1234",
       role: "TEACHER",
-      name: "Deneme Öğretmen",
-      username: "denemeogretmeni",
+      name: "Mahmut Yılmaz",
+      username: "mahmutyilmaz",
       Teacher: {
         create: {
           active: true,
@@ -133,8 +132,8 @@ async function main() {
             })),
           },
         },
-      })
-    )
+      }),
+    ),
   );
 
   const studentId = student.Student?.id;
@@ -153,65 +152,73 @@ async function main() {
             })),
           },
         },
-      })
-    )
+      }),
+    ),
   );
 
-  const category: Category[] | any = await prisma.category.createMany({
-    data: articleCategory.map((item) => ({
-      ...item,
-      studyGroup: item.studyGroup as StudyGroup, // Cast th
-    })),
-  });
+  // Create categories and articles
+  await prisma.$transaction(async (tx) => {
+    await tx.category.createMany({
+      data: articleCategory.map((item) => ({
+        title: item.title,
+        description: item.description,
+        studyGroup: item.studyGroup as StudyGroup,
+      })),
+      skipDuplicates: true,
+    });
 
-  const firstCategory = await prisma.category.findFirst({
-    orderBy: { createdAt: "asc" },
-  });
+    const categories = await tx.category.findMany();
 
-  const categoryId = firstCategory?.id;
-  const article = await prisma.article.create({
-    data: {
-      ...articleData,
-      studyGroup: articleData.studyGroup as StudyGroup,
-      category: {
-        connect: {
-          id: categoryId,
+    for (const articleItem of articleData) {
+      const category = categories.find(
+        (c) => c.studyGroup === articleItem.studyGroup,
+      );
+
+      if (!category) continue;
+
+      await tx.article.create({
+        data: {
+          title: articleItem.title,
+          description: articleItem.description,
+          studyGroup: articleItem.studyGroup as StudyGroup,
+          hasQuestion: articleItem.hasQuestion,
+          active: articleItem.active,
+          tests: articleItem.tests,
+          category: { connect: { id: category.id } },
         },
-      },
-    },
+      });
+    }
   });
 
   const createdExercises = await prisma.$transaction(
-    exerciseData.map((item) => prisma.exercise.create({ data: item }))
+    exerciseData.map((item) => prisma.exercise.create({ data: item })),
   );
 
-  // const studyGroups = studyGroupOptions.map((s) => s.value);
-  // const uniqueWords = [...new Set(allWords)];
+  const studyGroups = studyGroupOptions.map((s) => s.value);
+  const uniqueWords = [...new Set(allWords)];
 
-  // for (let i = 0; i < uniqueWords.length; i++) {
-  //   await prisma.words
-  //     .create({
-  //       data: {
-  //         word: uniqueWords[i],
-  //         studyGroups: {
-  //           create: studyGroups.map((group: any) => ({
-  //             group: group,
-  //           })),
-  //         },
-  //         wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
-  //         lpw: uniqueWords[i]?.trim()?.length,
-  //       },
-  //     })
-  //     .catch(() => null);
-  // }
+  for (let i = 0; i < uniqueWords.length; i++) {
+    await prisma.words
+      .create({
+        data: {
+          word: uniqueWords[i],
+          studyGroups: {
+            create: studyGroups.map((group: any) => ({
+              group: group,
+            })),
+          },
+          wpc: uniqueWords[i]?.trim()?.split(" ")?.length,
+          lpw: uniqueWords[i]?.trim()?.length,
+        },
+      })
+      .catch(() => null);
+  }
 
   console.log({
     user,
     subscriber,
     teacher,
     student,
-    category,
-    article,
     studentLessons,
     createdExercises,
     defaultLessons,

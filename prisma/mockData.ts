@@ -109,142 +109,1238 @@ export const exerciseData = [
   },
 ];
 
-export const articleData = {
-  title: "KÜÇÜK BAHÇİVANIN MACERASI",
-  description:
-    "Bir zamanlar, küçük bir köyde Elif adında sevimli bir kız yaşardı. Elif, doğayı çok sever ve her gün bahçede vakit geçirmekten büyük keyif alırdı. En büyük hayali, kendi bahçesinde rengarenk çiçekler açtırmaktı. Bir sabah, Elif erken kalktı. Hava güneşli ve kuşlar cıvıldıyordu. “Bugün bahçem için yeni tohumlar ekeceğim!” dedi heyecanla. Annesi ona bir torba tohum verdi. “Bunlar papatya, ayçiçeği ve lavanta tohumları,” dedi. Elif, tohumları dikkatlice inceledi ve bahçeye doğru koştu. Bahçeye vardığında, toprak yumuşaktı ve hafif nemliydi. Elif, ellerini yıkadıktan sonra küçük bir kürekle toprağı kazmaya başladı. Tohumları sırasıyla toprağa ekti ve üzerlerini örttü. Ardından, sulama kabını aldı ve bitkilerin üzerine nazikçe su serpti. Elif, her gün sabah erken kalkıp bahçesine gidiyor, bitkilerine sevgiyle bakıyordu. Güneşin sıcak ışıkları altında toprak iyice ısınırken, küçük tohumlar yavaş yavaş filizlenmeye başladı. Elif’in yüzünde büyük bir mutluluk vardı. Günler geçtikçe, papatyalar beyaz yapraklarını açtı, ayçiçekleri güneşe doğru uzandı ve lavantalar hoş kokularıyla bahçeyi doldurdu. Komşular bile Elif’in bahçesinin güzelliğine hayran kaldı. Bir gün, Elif bahçede oyun oynarken küçük bir kuşun yaralandığını gördü. Kuşun kanadı hafifçe kırılmıştı. Elif hemen kuşu nazikçe aldı ve evine götürdü. Annesiyle birlikte kuşun yarasını sardılar ve ona iyi bakmaya başladılar. Haftalar sonra, kuş iyileşti ve özgürlüğüne kavuştu. Elif onu son kez sevgiyle okşadı ve kuş da hafifçe ötüp uçtu gitti. Elif, doğaya yardım etmenin ve onunla ilgilenmenin ne kadar önemli olduğunu bir kez daha anlamıştı. O günden sonra, Elif sadece bahçesine değil, etrafındaki tüm canlılara da daha çok sevgi ve ilgi göstermeye başladı. Arkadaşlarına da bunu anlattı ve birlikte doğayı korumanın yollarını öğrendiler. Elif’in küçük bahçesi, sadece bitkilerin değil, dostluğun ve sevginin de büyüdüğü bir yer olmuştu. O, her gün bahçesinde yeni bir şeyler keşfederek mutlu yaşamaya devam etti.",
-  studyGroup: "ILKOKUL_2_3",
-  tests: [
-    {
-      id: "1",
-      question: "Hikâyedeki kızın adı nedir?",
-      answer: "a",
-      options: [
-        { id: "a", text: "Elif" },
-        { id: "b", text: "Ayşe" },
-        { id: "c", text: "Zeynep" },
-        { id: "d", text: "Fatma" },
-      ],
-    },
-    {
-      id: "2",
-      question: "Elif en çok neyi seviyordu?",
-      answer: "b",
-      options: [
-        { id: "a", text: "Resim yapmayı" },
-        { id: "b", text: "Doğayı" },
-        { id: "c", text: "Oyun oynamayı" },
-        { id: "d", text: "Şeker yemeyi" },
-      ],
-    },
-    {
-      id: "3",
-      question: "Elif bahçesine hangi tohumları ekti?",
-      answer: "c",
-      options: [
-        { id: "a", text: "Gül, lale, orkide" },
-        { id: "b", text: "Elma, armut, kiraz" },
-        { id: "c", text: "Papatya, ayçiçeği, lavanta" },
-        { id: "d", text: "Buğday, arpa, mısır" },
-      ],
-    },
-    {
-      id: "4",
-      question: "Elif tohumları ektikten sonra ne yaptı?",
-      answer: "b",
-      options: [
-        { id: "a", text: "Oyun oynadı" },
-        { id: "b", text: "Tohumları suladı" },
-        { id: "c", text: "Uyudu" },
-        { id: "d", text: "Kitap okudu" },
-      ],
-    },
-    {
-      id: "5",
-      question: "Bitkiler büyüdüğünde ayçiçekleri ne yaptı?",
-      answer: "d",
-      options: [
-        { id: "a", text: "Yapraklarını döktü" },
-        { id: "b", text: "Kokusu yayıldı" },
-        { id: "c", text: "Soldu" },
-        { id: "d", text: "Güneşe doğru uzandı" },
-      ],
-    },
-    {
-      id: "6",
-      question: "Elif bahçede ne buldu?",
-      answer: "c",
-      options: [
-        { id: "a", text: "Bir köpek" },
-        { id: "b", text: "Bir kedi" },
-        { id: "c", text: "Yaralı bir kuş" },
-        { id: "d", text: "Bir kaplumbağa" },
-      ],
-    },
-    {
-      id: "7",
-      question: "Elif kuşu gördüğünde ne yaptı?",
-      answer: "a",
-      options: [
-        { id: "a", text: "Onu evine götürdü" },
-        { id: "b", text: "Bahçede bıraktı" },
-        { id: "c", text: "Uçurmayı denedi" },
-        { id: "d", text: "Arkadaşına verdi" },
-      ],
-    },
-    {
-      id: "8",
-      question: "Kuş iyileştikten sonra ne oldu?",
-      answer: "b",
-      options: [
-        { id: "a", text: "Bahçede kaldı" },
-        { id: "b", text: "Uçup gitti" },
-        { id: "c", text: "Elif'e hediye getirdi" },
-        { id: "d", text: "Yeniden yaralandı" },
-      ],
-    },
-    {
-      id: "9",
-      question: "Elif kuşa yardım ettikten sonra neyi anladı?",
-      answer: "c",
-      options: [
-        { id: "a", text: "Bahçeyle ilgilenmenin zor olduğunu" },
-        { id: "b", text: "Çiçekleri sevmediğini" },
-        { id: "c", text: "Doğaya yardım etmenin önemli olduğunu" },
-        { id: "d", text: "Kuşların uçamadığını" },
-      ],
-    },
-    {
-      id: "10",
-      question: "Elif’in bahçesi neyin büyüdüğü bir yer oldu?",
-      answer: "d",
-      options: [
-        { id: "a", text: "Sadece papatyaların" },
-        { id: "b", text: "Sadece oyunların" },
-        { id: "c", text: "Sadece hayvanların" },
-        { id: "d", text: "Dostluğun ve sevginin" },
-      ],
-    },
-  ],
-  hasQuestion: true,
-  active: true,
-};
+export const articleData = [
+  {
+    title: "KÜÇÜK BAHÇİVANIN MACERASI",
+    description:
+      "Bir zamanlar, küçük bir köyde Elif adında sevimli bir kız yaşardı. Elif, doğayı çok sever ve her gün bahçede vakit geçirmekten büyük keyif alırdı. En büyük hayali, kendi bahçesinde rengarenk çiçekler açtırmaktı. Bir sabah, Elif erken kalktı. Hava güneşli ve kuşlar cıvıldıyordu. “Bugün bahçem için yeni tohumlar ekeceğim!” dedi heyecanla. Annesi ona bir torba tohum verdi. “Bunlar papatya, ayçiçeği ve lavanta tohumları,” dedi. Elif, tohumları dikkatlice inceledi ve bahçeye doğru koştu. Bahçeye vardığında, toprak yumuşaktı ve hafif nemliydi. Elif, ellerini yıkadıktan sonra küçük bir kürekle toprağı kazmaya başladı. Tohumları sırasıyla toprağa ekti ve üzerlerini örttü. Ardından, sulama kabını aldı ve bitkilerin üzerine nazikçe su serpti. Elif, her gün sabah erken kalkıp bahçesine gidiyor, bitkilerine sevgiyle bakıyordu. Güneşin sıcak ışıkları altında toprak iyice ısınırken, küçük tohumlar yavaş yavaş filizlenmeye başladı. Elif’in yüzünde büyük bir mutluluk vardı. Günler geçtikçe, papatyalar beyaz yapraklarını açtı, ayçiçekleri güneşe doğru uzandı ve lavantalar hoş kokularıyla bahçeyi doldurdu. Komşular bile Elif’in bahçesinin güzelliğine hayran kaldı. Bir gün, Elif bahçede oyun oynarken küçük bir kuşun yaralandığını gördü. Kuşun kanadı hafifçe kırılmıştı. Elif hemen kuşu nazikçe aldı ve evine götürdü. Annesiyle birlikte kuşun yarasını sardılar ve ona iyi bakmaya başladılar. Haftalar sonra, kuş iyileşti ve özgürlüğüne kavuştu. Elif onu son kez sevgiyle okşadı ve kuş da hafifçe ötüp uçtu gitti. Elif, doğaya yardım etmenin ve onunla ilgilenmenin ne kadar önemli olduğunu bir kez daha anlamıştı. O günden sonra, Elif sadece bahçesine değil, etrafındaki tüm canlılara da daha çok sevgi ve ilgi göstermeye başladı. Arkadaşlarına da bunu anlattı ve birlikte doğayı korumanın yollarını öğrendiler. Elif’in küçük bahçesi, sadece bitkilerin değil, dostluğun ve sevginin de büyüdüğü bir yer olmuştu. O, her gün bahçesinde yeni bir şeyler keşfederek mutlu yaşamaya devam etti.",
+    studyGroup: "ILKOKUL_2_3",
+    tests: [
+      {
+        id: "1",
+        question: "Hikâyedeki kızın adı nedir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Elif" },
+          { id: "b", text: "Ayşe" },
+          { id: "c", text: "Zeynep" },
+          { id: "d", text: "Fatma" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Elif en çok neyi seviyordu?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Resim yapmayı" },
+          { id: "b", text: "Doğayı" },
+          { id: "c", text: "Oyun oynamayı" },
+          { id: "d", text: "Şeker yemeyi" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Elif bahçesine hangi tohumları ekti?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Gül, lale, orkide" },
+          { id: "b", text: "Elma, armut, kiraz" },
+          { id: "c", text: "Papatya, ayçiçeği, lavanta" },
+          { id: "d", text: "Buğday, arpa, mısır" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Elif tohumları ektikten sonra ne yaptı?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Oyun oynadı" },
+          { id: "b", text: "Tohumları suladı" },
+          { id: "c", text: "Uyudu" },
+          { id: "d", text: "Kitap okudu" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Bitkiler büyüdüğünde ayçiçekleri ne yaptı?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Yapraklarını döktü" },
+          { id: "b", text: "Kokusu yayıldı" },
+          { id: "c", text: "Soldu" },
+          { id: "d", text: "Güneşe doğru uzandı" },
+        ],
+      },
+      {
+        id: "6",
+        question: "Elif bahçede ne buldu?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Bir köpek" },
+          { id: "b", text: "Bir kedi" },
+          { id: "c", text: "Yaralı bir kuş" },
+          { id: "d", text: "Bir kaplumbağa" },
+        ],
+      },
+      {
+        id: "7",
+        question: "Elif kuşu gördüğünde ne yaptı?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Onu evine götürdü" },
+          { id: "b", text: "Bahçede bıraktı" },
+          { id: "c", text: "Uçurmayı denedi" },
+          { id: "d", text: "Arkadaşına verdi" },
+        ],
+      },
+      {
+        id: "8",
+        question: "Kuş iyileştikten sonra ne oldu?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Bahçede kaldı" },
+          { id: "b", text: "Uçup gitti" },
+          { id: "c", text: "Elif'e hediye getirdi" },
+          { id: "d", text: "Yeniden yaralandı" },
+        ],
+      },
+      {
+        id: "9",
+        question: "Elif kuşa yardım ettikten sonra neyi anladı?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Bahçeyle ilgilenmenin zor olduğunu" },
+          { id: "b", text: "Çiçekleri sevmediğini" },
+          { id: "c", text: "Doğaya yardım etmenin önemli olduğunu" },
+          { id: "d", text: "Kuşların uçamadığını" },
+        ],
+      },
+      {
+        id: "10",
+        question: "Elif’in bahçesi neyin büyüdüğü bir yer oldu?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Sadece papatyaların" },
+          { id: "b", text: "Sadece oyunların" },
+          { id: "c", text: "Sadece hayvanların" },
+          { id: "d", text: "Dostluğun ve sevginin" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+  {
+    title: "KAYBOLAN BALON",
+    description:
+      "Mert parkta kırmızı balonuyla oynuyordu. Bir anda rüzgâr çıktı ve balon gökyüzüne yükseldi. Mert çok üzüldü ama sonra balonun gökyüzünde özgürce uçtuğunu fark etti. Gülümsedi ve balonuna el salladı.",
+    studyGroup: "ILKOKUL_2_3",
+    tests: [
+      {
+        id: "1",
+        question: "Mert nerede oynuyordu?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Parkta" },
+          { id: "b", text: "Evde" },
+          { id: "c", text: "Okulda" },
+          { id: "d", text: "Bahçede" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Balona ne oldu?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Patladı" },
+          { id: "b", text: "Uçtu" },
+          { id: "c", text: "Kaybolmadı" },
+          { id: "d", text: "Islandı" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Mert sonunda nasıl hissetti?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Kızgın" },
+          { id: "b", text: "Ağladı" },
+          { id: "c", text: "Mutlu" },
+          { id: "d", text: "Korkmuş" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 2 — İlkokul 4 */
+  {
+    title: "SORU SORMANIN ÖNEMİ",
+    description:
+      "Zeynep anlamadığı konuları sormaktan çekinmezdi. Öğretmeni onun bu davranışını takdir ederdi. Zeynep soru sordukça dersleri daha iyi anlamaya başladı.",
+    studyGroup: "ILKOKUL_4",
+    tests: [
+      {
+        id: "1",
+        question: "Zeynep ne yapardı?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Soru sorardı" },
+          { id: "b", text: "Sessiz kalırdı" },
+          { id: "c", text: "Dersi dinlemezdi" },
+          { id: "d", text: "Defter tutmazdı" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Öğretmeni Zeynep’i neden takdir etti?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Sessiz olduğu için" },
+          { id: "b", text: "Meraklı olduğu için" },
+          { id: "c", text: "Hızlı yazdığı için" },
+          { id: "d", text: "Erken geldiği için" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Metnin ana fikri nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Sessiz olmak iyidir" },
+          { id: "b", text: "Ders zordur" },
+          { id: "c", text: "Soru sormak öğrenmeyi artırır" },
+          { id: "d", text: "Okul sıkıcıdır" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 3 — Ortaokul */
+  {
+    title: "HEDEF BELİRLEMENİN GÜCÜ",
+    description:
+      "Hedefi olan öğrenciler ne yapacaklarını bilir. Küçük hedeflerle başlamak motivasyonu artırır ve başarıyı kalıcı hale getirir.",
+    studyGroup: "ORTAOKUL",
+    tests: [
+      {
+        id: "1",
+        question: "Hedef ne sağlar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Yön" },
+          { id: "b", text: "Stres" },
+          { id: "c", text: "Zaman kaybı" },
+          { id: "d", text: "Kafa karışıklığı" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hangi hedef daha etkilidir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Belirsiz" },
+          { id: "b", text: "Küçük ve net" },
+          { id: "c", text: "Zor" },
+          { id: "d", text: "Uzun" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Metnin ana düşüncesi nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Başarı şanstır" },
+          { id: "b", text: "Çalışmak zor" },
+          { id: "c", text: "Hedef başarıyı artırır" },
+          { id: "d", text: "Plan gereksizdir" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 4 — Lise */
+  {
+    title: "ODAKLANARAK OKUMAK",
+    description:
+      "Odaklanarak yapılan okuma, daha kısa sürede daha fazla bilgi edinmeyi sağlar. Bu da akademik başarıyı doğrudan etkiler.",
+    studyGroup: "LISE",
+    tests: [
+      {
+        id: "1",
+        question: "Odaklanarak okumanın sonucu nedir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Verim artar" },
+          { id: "b", text: "Zaman kaybolur" },
+          { id: "c", text: "Yorgunluk olur" },
+          { id: "d", text: "Anlama azalır" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Metne göre başarı neye bağlıdır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Şansa" },
+          { id: "b", text: "Odaklanmaya" },
+          { id: "c", text: "Uzun saatlere" },
+          { id: "d", text: "Ezbere" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Ana fikir nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Çok okumak" },
+          { id: "b", text: "Hızlı yazmak" },
+          { id: "c", text: "Odaklı okuma" },
+          { id: "d", text: "Sessizlik" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 5 — Üniversite */
+  {
+    title: "AKADEMİK OKUMA BECERİSİ",
+    description:
+      "Üniversite düzeyinde okuma; seçici, hızlı ve analiz odaklı olmalıdır. Bu beceri öğrenilebilir.",
+    studyGroup: "UNIVERSITE",
+    tests: [
+      {
+        id: "1",
+        question: "Akademik okuma nasıl olmalıdır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Yavaş" },
+          { id: "b", text: "Analiz odaklı" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Dağınık" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Bu beceri nasıl kazanılır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Şansla" },
+          { id: "b", text: "Doğuştan" },
+          { id: "c", text: "Çalışarak" },
+          { id: "d", text: "Bekleyerek" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Metnin ana fikri nedir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Akademik okuma geliştirilebilir" },
+          { id: "b", text: "Üniversite zordur" },
+          { id: "c", text: "Kitaplar uzun" },
+          { id: "d", text: "Zaman yetmez" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+  /* 6 – Doktora */
+  {
+    title: "AKADEMİK OKUMADA DERİNLİK",
+    description:
+      "Doktora düzeyinde okuma, metni eleştirel analiz etmeyi ve akademik çıkarımlar yapmayı gerektirir.",
+    studyGroup: "DOKTORA",
+    tests: [
+      {
+        id: "1",
+        question: "Doktora düzeyinde okumanın temel amacı nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Hızlı bitirmek" },
+          { id: "b", text: "Ezberlemek" },
+          { id: "c", text: "Eleştirel analiz yapmak" },
+          { id: "d", text: "Metni özetlemek" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Akademik okuma neyi geliştirir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Kelime sayısını" },
+          { id: "b", text: "Bilimsel düşünmeyi" },
+          { id: "c", text: "Hikâye yazmayı" },
+          { id: "d", text: "Sesli okumayı" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Doktora metinlerinde hangi unsur önemlidir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Uzunluk" },
+          { id: "b", text: "Görseller" },
+          { id: "c", text: "Basitlik" },
+          { id: "d", text: "Yöntem ve argüman" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Eleştirel okuma ne sağlar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Derin kavrayış" },
+          { id: "b", text: "Hızlı geçiş" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Yüzeysel okuma" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Akademik üretkenlik neyle artar?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Tekrarla" },
+          { id: "b", text: "Uzun okumayla" },
+          { id: "c", text: "Doğru okuma stratejileriyle" },
+          { id: "d", text: "Sessiz ortamla" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 7 – Genel */
+  {
+    title: "ETKİLİ OKUMANIN TEMELLERİ",
+    description:
+      "Etkili okuma, metni daha kısa sürede doğru anlamayı hedefler.",
+    studyGroup: "GENEL",
+    tests: [
+      {
+        id: "1",
+        question: "Etkili okuma neyi hedefler?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Yavaş okumayı" },
+          { id: "b", text: "Hız ve anlamı" },
+          { id: "c", text: "Ezberi" },
+          { id: "d", text: "Sesli okumayı" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Etkili okuma hangi beceriyi artırır?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Anlama" },
+          { id: "b", text: "Yazma" },
+          { id: "c", text: "Konuşma" },
+          { id: "d", text: "Dinleme" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Günlük metinler için en önemli unsur nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Uzunluk" },
+          { id: "b", text: "Yazar" },
+          { id: "c", text: "Başlık" },
+          { id: "d", text: "Ana fikir" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Okuma hızını artırmak ne sağlar?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Daha az okuma" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Zaman tasarrufu" },
+          { id: "d", text: "Dikkat dağınıklığı" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Etkili okuma nasıl gelişir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Düzenli pratikle" },
+          { id: "b", text: "Tesadüfen" },
+          { id: "c", text: "Yavaş okuyarak" },
+          { id: "d", text: "Sadece kitapla" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+  /* 8 – Yetişkin */
+  {
+    title: "YOĞUN HAYATTA ETKİLİ OKUMA",
+    description:
+      "Yetişkinler için hızlı okuma, günlük bilgi akışını daha kısa sürede anlayarak zaman kazandırır.",
+    studyGroup: "YETISKIN",
+    tests: [
+      {
+        id: "1",
+        question: "Yetişkinler için hızlı okumanın en büyük faydası nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Ezber yapma" },
+          { id: "b", text: "Sesli okuma" },
+          { id: "c", text: "Zaman tasarrufu" },
+          { id: "d", text: "Yavaşlama" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Yoğun iş hayatında hızlı okuma ne sağlar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Bilgiye hızlı erişim" },
+          { id: "b", text: "Daha az okuma" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Dikkat kaybı" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Yetişkinlerde okuma becerisi nasıl gelişir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Sadece kitapla" },
+          { id: "b", text: "Tek seferde" },
+          { id: "c", text: "Uzun molalarla" },
+          { id: "d", text: "Düzenli egzersizle" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Etkili okuma hangi alanlarda kullanılır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Sadece edebiyat" },
+          { id: "b", text: "İş, eğitim ve günlük yaşam" },
+          { id: "c", text: "Sadece dersler" },
+          { id: "d", text: "Sadece sınavlar" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Hızlı okuma neyi artırır?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Odaklanmayı" },
+          { id: "b", text: "Dalgınlığı" },
+          { id: "c", text: "Yorgunluğu" },
+          { id: "d", text: "Tekrar ihtiyacını" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 9 – Disleksi */
+  {
+    title: "DİSLEKSİDE OKUMA STRATEJİLERİ",
+    description:
+      "Disleksiye özel okuma çalışmaları, harf ve kelime algısını güçlendirerek okuma güvenini artırır.",
+    studyGroup: "DISLEKSI",
+    tests: [
+      {
+        id: "1",
+        question: "Disleksiye özel eğitim neyi hedefler?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Ezberi" },
+          { id: "b", text: "Algı ve akıcılığı" },
+          { id: "c", text: "Hızlı yazmayı" },
+          { id: "d", text: "Sessizliği" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Dislekside hangi çalışma önemlidir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Uzun metinler" },
+          { id: "b", text: "Zor kelimeler" },
+          { id: "c", text: "Kısa ve yapılandırılmış metinler" },
+          { id: "d", text: "Ezber" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Okuma güveni nasıl artar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Doğru yöntemlerle" },
+          { id: "b", text: "Zorlayarak" },
+          { id: "c", text: "Hızlıca" },
+          { id: "d", text: "Tekrar etmeden" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Disleksi eğitiminde odak noktası nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Hız" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Uzunluk" },
+          { id: "d", text: "Algı ve doğruluk" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Düzenli çalışma ne sağlar?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Zorluk artışı" },
+          { id: "b", text: "Kalıcı gelişim" },
+          { id: "c", text: "Yorgunluk" },
+          { id: "d", text: "Kafa karışıklığı" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 10 – Tıp */
+  {
+    title: "TIP METİNLERİNDE HIZ VE DOĞRULUK",
+    description:
+      "Tıp alanında okuma, yoğun terminolojiye rağmen hızlı ve doğru bilgi işlemeyi gerektirir.",
+    studyGroup: "TIP",
+    tests: [
+      {
+        id: "1",
+        question: "Tıp metinlerinde en önemli unsur nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Uzunluk" },
+          { id: "b", text: "Hikâye" },
+          { id: "c", text: "Yorum" },
+          { id: "d", text: "Doğruluk" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Tıbbi okuma neyi geliştirir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Hızlı karar verme" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Tahmin" },
+          { id: "d", text: "Yavaşlık" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Terminolojiyle başa çıkmak için ne gerekir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Uzun molalar" },
+          { id: "b", text: "Okuma stratejileri" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Sesli okuma" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Tıp öğrencileri neden hızlı okur?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Keyif için" },
+          { id: "b", text: "Zaman geçirmek için" },
+          { id: "c", text: "Yoğun içerik nedeniyle" },
+          { id: "d", text: "Alışkanlık" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Doğru okuma neyi azaltır?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Hata riskini" },
+          { id: "b", text: "Bilgiyi" },
+          { id: "c", text: "Hızı" },
+          { id: "d", text: "Anlamı" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 11 – IELTS */
+  {
+    title: "IELTS OKUMA BÖLÜMÜNDE STRATEJİ",
+    description:
+      "IELTS okuma bölümünde başarı, metni hızlı tarayıp doğru bilgiyi ayırt edebilmekten geçer.",
+    studyGroup: "IELTS",
+    tests: [
+      {
+        id: "1",
+        question: "IELTS okuma bölümünde en kritik beceri nedir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Ezber" },
+          { id: "b", text: "Hızlı tarama" },
+          { id: "c", text: "Sesli okuma" },
+          { id: "d", text: "Yavaş okuma" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Zaman yönetimi neden önemlidir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Süre sınırlı olduğu için" },
+          { id: "b", text: "Metinler kısa olduğu için" },
+          { id: "c", text: "Sorular az olduğu için" },
+          { id: "d", text: "Okuma kolay olduğu için" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Skimming tekniği ne sağlar?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Ezber" },
+          { id: "b", text: "Detay okuma" },
+          { id: "c", text: "Yavaşlama" },
+          { id: "d", text: "Ana fikri hızlı bulma" },
+        ],
+      },
+      {
+        id: "4",
+        question: "IELTS metinleri genellikle nasıldır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Hikâye tarzı" },
+          { id: "b", text: "Basit" },
+          { id: "c", text: "Akademik" },
+          { id: "d", text: "Kısa" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Doğru strateji neyi artırır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Stresi" },
+          { id: "b", text: "Puanı" },
+          { id: "c", text: "Hata sayısını" },
+          { id: "d", text: "Yorgunluğu" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+  /* 12 – LGS Hazırlık */
+  {
+    title: "LGS'DE HIZLI OKUMA AVANTAJI",
+    description:
+      "LGS Türkçe sorularında başarı, uzun paragraf sorularını hızlı ve doğru anlamaktan geçer.",
+    studyGroup: "LGS_HAZIRLIK",
+    tests: [
+      {
+        id: "1",
+        question: "LGS Türkçe soruları genellikle ne türdür?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Kısa ve basit" },
+          { id: "b", text: "Uzun paragraf" },
+          { id: "c", text: "Ezbere dayalı" },
+          { id: "d", text: "Sadece kelime bilgisi" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hızlı okuma LGS’de ne kazandırır?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Zaman yönetimi" },
+          { id: "b", text: "Daha fazla soru" },
+          { id: "c", text: "Tahmin gücü" },
+          { id: "d", text: "Ezber" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Paragraf sorularında en önemli beceri nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Hızlı işaretleme" },
+          { id: "b", text: "Uzun okuma" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Ana fikri bulma" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Okuma hızının artması neyi azaltır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Anlamayı" },
+          { id: "b", text: "Bilgiyi" },
+          { id: "c", text: "Sınav stresini" },
+          { id: "d", text: "Odaklanmayı" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Düzenli egzersiz ne sağlar?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Geçici hız" },
+          { id: "b", text: "Kalıcı gelişim" },
+          { id: "c", text: "Yavaşlama" },
+          { id: "d", text: "Karışıklık" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 13 – TYT-AYT Hazırlık */
+  {
+    title: "TYT-AYT'DE PARAGRAF USTALIĞI",
+    description:
+      "TYT ve AYT sınavlarında paragraf sorularını hızlı çözmek net sayısını doğrudan artırır.",
+    studyGroup: "TYT_AYT_HAZIRLIK",
+    tests: [
+      {
+        id: "1",
+        question: "TYT Türkçe sorularının büyük kısmı nedir?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Dil bilgisi" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Paragraf" },
+          { id: "d", text: "Yazım" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hızlı okuma hangi avantajı sağlar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Daha fazla soru çözme" },
+          { id: "b", text: "Tahmin" },
+          { id: "c", text: "Daha uzun okuma" },
+          { id: "d", text: "Ezber" },
+        ],
+      },
+      {
+        id: "3",
+        question: "AYT’de metinler genellikle nasıldır?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Kısa" },
+          { id: "b", text: "Hikâye" },
+          { id: "c", text: "Basit" },
+          { id: "d", text: "Yoğun ve anlam yüklü" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Okuma stratejileri neyi artırır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Stresi" },
+          { id: "b", text: "Net sayısını" },
+          { id: "c", text: "Yorgunluğu" },
+          { id: "d", text: "Zaman kaybını" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Doğru hız neyi korur?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Anlamayı" },
+          { id: "b", text: "Yavaşlığı" },
+          { id: "c", text: "Ezberi" },
+          { id: "d", text: "Kararsızlığı" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 14 – Üniversite */
+  {
+    title: "ÜNİVERSİTEDE AKADEMİK OKUMA",
+    description:
+      "Üniversite öğrencileri için hızlı okuma, yoğun akademik metinleri kısa sürede anlamayı sağlar.",
+    studyGroup: "UNIVERSITE",
+    tests: [
+      {
+        id: "1",
+        question: "Akademik metinler genellikle nasıldır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Kısa" },
+          { id: "b", text: "Yoğun ve bilgi dolu" },
+          { id: "c", text: "Hikâye" },
+          { id: "d", text: "Basit" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hızlı okuma üniversitede ne kazandırır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Ezber" },
+          { id: "b", text: "Daha az okuma" },
+          { id: "c", text: "Zaman tasarrufu" },
+          { id: "d", text: "Yavaşlama" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Akademik başarıda hangi beceri önemlidir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Anlayarak okuma" },
+          { id: "b", text: "Sesli okuma" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Tekrar" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Not çıkarma hangi beceriyle ilişkilidir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Yavaş okuma" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Tahmin" },
+          { id: "d", text: "Ana fikir bulma" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Düzenli okuma neyi geliştirir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Stres" },
+          { id: "b", text: "Akademik verim" },
+          { id: "c", text: "Yorgunluk" },
+          { id: "d", text: "Karmaşa" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 15 – Doktora */
+  {
+    title: "DERİN OKUMA VE ANALİZ",
+    description:
+      "Doktora seviyesinde okuma, hızlı tarama ile derin analiz becerisini birlikte gerektirir.",
+    studyGroup: "DOKTORA",
+    tests: [
+      {
+        id: "1",
+        question: "Doktora okumalarının temel özelliği nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Hikâye anlatımı" },
+          { id: "b", text: "Basitlik" },
+          { id: "c", text: "Kısa metinler" },
+          { id: "d", text: "Analitik derinlik" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hızlı tarama ne sağlar?",
+        answer: "a",
+        options: [
+          { id: "a", text: "İlgili bölümü bulma" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Yavaşlama" },
+          { id: "d", text: "Karışıklık" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Akademik makalelerde amaç nedir?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Hikâye anlatmak" },
+          { id: "b", text: "Bilgi üretmek" },
+          { id: "c", text: "Eğlendirmek" },
+          { id: "d", text: "Ezberletmek" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Doğru okuma neyi artırır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Stres" },
+          { id: "b", text: "Yorgunluk" },
+          { id: "c", text: "Analiz gücü" },
+          { id: "d", text: "Kafa karışıklığı" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Derin okuma neyle mümkündür?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Odaklanma" },
+          { id: "b", text: "Ezber" },
+          { id: "c", text: "Hız" },
+          { id: "d", text: "Tahmin" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 16 – Genel */
+  {
+    title: "GÜNLÜK YAŞAMDA HIZLI OKUMA",
+    description:
+      "Hızlı okuma, haberlerden kitaplara kadar her alanda bilgiyi verimli kullanmayı sağlar.",
+    studyGroup: "GENEL",
+    tests: [
+      {
+        id: "1",
+        question: "Hızlı okuma günlük hayatta ne sağlar?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Yorgunluk" },
+          { id: "b", text: "Zaman kazanımı" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Kafa karışıklığı" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Hızlı okuma hangi alanlarda kullanılır?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Sadece kitap" },
+          { id: "b", text: "Sadece okul" },
+          { id: "c", text: "Sadece iş" },
+          { id: "d", text: "Her alanda" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Okuma alışkanlığı neyi geliştirir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Genel kültür" },
+          { id: "b", text: "Yavaşlık" },
+          { id: "c", text: "Ezber" },
+          { id: "d", text: "Stres" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Düzenli pratik ne sağlar?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Geçici hız" },
+          { id: "b", text: "Karışıklık" },
+          { id: "c", text: "Kalıcı gelişim" },
+          { id: "d", text: "Yorgunluk" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Hızlı okuma neyi korur?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Anlama" },
+          { id: "b", text: "Hatalar" },
+          { id: "c", text: "Dalgınlık" },
+          { id: "d", text: "Tekrar ihtiyacı" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+
+  /* 17 – Demo */
+  {
+    title: "HIZLI OKUMA DEMO DENEYİMİ",
+    description:
+      "Demo içeriklerle hızlı okumanın etkisini kısa sürede deneyimleyin.",
+    studyGroup: "DEMO",
+    tests: [
+      {
+        id: "1",
+        question: "Demo çalışmanın amacı nedir?",
+        answer: "a",
+        options: [
+          { id: "a", text: "Sistemi tanıtmak" },
+          { id: "b", text: "Ezber yaptırmak" },
+          { id: "c", text: "Zorlamak" },
+          { id: "d", text: "Test etmek" },
+        ],
+      },
+      {
+        id: "2",
+        question: "Demo içerikler nasıl hazırlanır?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Uzun ve zor" },
+          { id: "b", text: "Ezbere dayalı" },
+          { id: "c", text: "Kısa ve etkili" },
+          { id: "d", text: "Karışık" },
+        ],
+      },
+      {
+        id: "3",
+        question: "Demo ne kazandırır?",
+        answer: "b",
+        options: [
+          { id: "a", text: "Yorgunluk" },
+          { id: "b", text: "Farkındalık" },
+          { id: "c", text: "Stres" },
+          { id: "d", text: "Ezber" },
+        ],
+      },
+      {
+        id: "4",
+        question: "Demo sonrası hedef nedir?",
+        answer: "d",
+        options: [
+          { id: "a", text: "Bırakmak" },
+          { id: "b", text: "Tekrar etmek" },
+          { id: "c", text: "Yavaşlamak" },
+          { id: "d", text: "Eğitime devam etmek" },
+        ],
+      },
+      {
+        id: "5",
+        question: "Demo hangi seviyeye uygundur?",
+        answer: "c",
+        options: [
+          { id: "a", text: "Sadece çocuklar" },
+          { id: "b", text: "Sadece yetişkinler" },
+          { id: "c", text: "Herkes" },
+          { id: "d", text: "Sadece öğrenciler" },
+        ],
+      },
+    ],
+    hasQuestion: true,
+    active: true,
+  },
+];
 
 export const articleCategory = [
   {
-    title: "İlkokul Hikayeler",
-    description: "İlkokul Hikayeler",
+    title: "İlkokul Hikayeler (2–3)",
+    description: "İlkokul 2. ve 3. sınıf seviyesine uygun hikayeler",
     studyGroup: "ILKOKUL_2_3",
   },
   {
+    title: "İlkokul Hikayeler (4)",
+    description: "İlkokul 4. sınıf öğrencileri için hikayeler",
+    studyGroup: "ILKOKUL_4",
+  },
+  {
     title: "Ortaokul Hikayeler",
-    description: "Ortaokul Hikayeler",
+    description: "Ortaokul öğrencileri için okuma ve anlama metinleri",
     studyGroup: "ORTAOKUL",
   },
   {
-    title: "Lise Hikayeler",
-    description: "Lise Hikayeler",
-    studyGroup: "LISE",
+    title: "LGS Hazırlık",
+    description: "LGS hazırlık sürecine uygun okuma metinleri",
+    studyGroup: "LGS_HAZIRLIK",
+  },
+  {
+    title: "TYT – AYT Türkçe",
+    description: "TYT ve AYT Türkçe için hız ve anlama metinleri",
+    studyGroup: "TYT_AYT_HAZIRLIK",
+  },
+  {
+    title: "Üniversite Metinleri",
+    description: "Üniversite seviyesinde akademik okuma metinleri",
+    studyGroup: "UNIVERSITE",
+  },
+  {
+    title: "Akademik ve Tez Okumaları",
+    description: "Yoğun akademik okuma ve analiz metinleri",
+    studyGroup: "DOKTORA",
+  },
+  {
+    title: "Genel Hikayeler",
+    description: "Her yaş grubuna uygun genel okuma metinleri",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Romanlar",
+    description: "Akıcı ve uzun soluklu okuma çalışmaları",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Tarih",
+    description: "Tarih konulu bilgilendirici metinler",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Coğrafya",
+    description: "Coğrafya içerikli okuma ve anlama metinleri",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Toplum Makaleleri",
+    description: "Sosyal ve toplumsal konular üzerine yazılar",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Biyografi",
+    description: "Hayat hikâyeleri ve biyografik metinler",
+    studyGroup: "GENEL",
+  },
+  {
+    title: "Yetişkin Okuma Programı",
+    description: "Yetişkinlere özel hız ve odak geliştirme metinleri",
+    studyGroup: "YETISKIN",
+  },
+  {
+    title: "Disleksi Destek Metinleri",
+    description: "Disleksiye uygun özel hazırlanmış okuma içerikleri",
+    studyGroup: "DISLEKSI",
+  },
+  {
+    title: "IELTS Reading",
+    description: "IELTS sınavına yönelik okuma metinleri",
+    studyGroup: "IELTS",
+  },
+  {
+    title: "Demo Metinler",
+    description: "Platformu tanımaya yönelik örnek içerikler",
+    studyGroup: "DEMO",
   },
 ];
 
