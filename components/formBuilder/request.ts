@@ -2,7 +2,9 @@ import { fetchData } from "@/utils/fetchData";
 
 export const getCategoryOptions = async () => {
   try {
-    const resData = await fetchData({ apiPath: "/api/category" });
+    const resData = await fetchData({
+      apiPath: "/api/category",
+    });
     const res = resData?.map((item: { title: string; id: string }) => {
       return { name: item.title, value: item.id };
     });
@@ -147,7 +149,7 @@ export const getArticleByStudyGroup = async ({
   );
   try {
     const resData = await fetchData({
-      apiPath: `/api/articles?where=${query}`,
+      apiPath: `/api/articles?where=${query}&random=true`,
     });
     return resData;
   } catch (error) {
@@ -166,7 +168,7 @@ export const getWordListByLetterCount = async (
   );
   try {
     const wordData = await fetchData({
-      apiPath: `/api/words?where=${query}`,
+      apiPath: `/api/words?where=${query}&onlywords=true`,
     });
     return wordData;
   } catch (error) {
@@ -181,7 +183,7 @@ export const getWordListPerCount = async (letterCount: number) => {
   );
   try {
     const wordData = await fetchData({
-      apiPath: `/api/words?where=${query}`,
+      apiPath: `/api/words?where=${query}&onlywords=true`,
     });
     return wordData;
   } catch (error) {

@@ -108,17 +108,18 @@ model Attempt {
 }
 
 model Article {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String     @db.Text
-  studyGroup  StudyGroup @default(ILKOKUL_2_3)
-  category    Category   @relation(fields: [categoryId], references: [id])
-  hasQuestion Boolean    @default(false)
-  active      Boolean    @default(true)
-  tests       Json?
-  categoryId  Int
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  description  String     @db.Text
+  studyGroup   StudyGroup @default(ILKOKUL_2_3)
+  category     Category   @relation(fields: [categoryId], references: [id])
+  subscriberId Int?
+  hasQuestion  Boolean    @default(false)
+  active       Boolean    @default(true)
+  tests        Json?
+  categoryId   Int
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
 }
 
 model ArticleTest {
@@ -131,24 +132,26 @@ model ArticleTest {
 }
 
 model Category {
-  id          Int        @id @default(autoincrement())
-  title       String
-  description String?
-  studyGroup  StudyGroup @default(ILKOKUL_2_3)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime?  @updatedAt
-  Article     Article[]
+  id           Int        @id @default(autoincrement())
+  title        String     @unique
+  description  String?
+  subscriberId Int?
+  studyGroup   StudyGroup @default(ILKOKUL_2_3)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+  Article      Article[]
 }
 
 model Words {
-  id          Int               @id @default(autoincrement())
-  word        String            @unique
-  similarWord String?
-  studyGroups WordsStudyGroup[]
-  wpc         Int // words per count
-  lpw         Int // letters per word
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime?         @updatedAt
+  id           Int               @id @default(autoincrement())
+  word         String            @unique
+  similarWord  String?
+  studyGroups  WordsStudyGroup[]
+  subscriberId Int?
+  wpc          Int // words per count
+  lpw          Int // letters per word
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime?         @updatedAt
 }
 
 model WordsStudyGroup {

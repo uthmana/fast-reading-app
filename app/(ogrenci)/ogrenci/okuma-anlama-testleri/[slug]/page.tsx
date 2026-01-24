@@ -32,13 +32,13 @@ export default function page() {
     wpm: 0,
   });
   const [understandingData, setUnderstandingData] = useState(
-    {} as { data: []; categories: [] }
+    {} as { data: []; categories: [] },
   );
   const [fastReadingData, setFastReadingData] = useState(
-    {} as { data: []; categories: [] }
+    {} as { data: []; categories: [] },
   );
   const [formattedAttempts, setFormattedAttempts] = useState(
-    [] as Record<string, any>
+    [] as Record<string, any>,
   );
 
   const [controlData, setControlData] = useState({
@@ -85,7 +85,7 @@ export default function page() {
         ) {
           const resData = await fetchData({
             apiPath: `/api/users?username=${encodeURIComponent(
-              session.user.username
+              session.user.username,
             )}`,
           });
 
@@ -102,12 +102,12 @@ export default function page() {
               correct,
               variant,
               category: formatDateTime(createdAt),
-            })
+            }),
           );
           setFormattedAttempts(formatted);
           const buildData = (key: "wpm" | "correct", variant: string) => {
             const filtered = formatted.filter(
-              (i: any) => i.variant === variant
+              (i: any) => i.variant === variant,
             );
             return {
               data: filtered.map((i: any) => i[key]),
@@ -131,7 +131,7 @@ export default function page() {
       correct: number;
       counter: number;
       variant: string;
-    } | null
+    } | null,
   ) => {
     if (!val || !session?.user?.student?.id) {
       setPause(!pause);
@@ -185,14 +185,14 @@ export default function page() {
           });
           if (res && res.introTestTaken < 3) {
             setPause(!pause);
-            window.location.href = `/okuma-anlama-testleri/anlama-testi?intro-test=${
+            window.location.href = `/ogrenci/okuma-anlama-testleri/anlama-testi?intro-test=${
               res.introTestTaken + 1
             }`;
           } else if (res && res.introTestTaken >= 3) {
             alert(
-              "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz."
+              "Tebrikler! Seviye belirleme testini tamamladınız. Artık okuma anlama egzersizlerine başlayabilirsiniz.",
             );
-            router.push(`/dersler`);
+            router.push(`/ogrenci/dersler`);
           }
         }
         return;

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Icon from "../icon/icon";
+import YearNow from "./yearNow";
 
 export default function Footer() {
   return (
@@ -132,8 +133,8 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="mx-auto landing-container px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
-          <span suppressHydrationWarning>
-            © {new Date().getFullYear()} SeriOku. Tüm hakları saklıdır.
+          <span>
+            © <YearNow /> SeriOku. Tüm hakları saklıdır.
           </span>
 
           <div className="flex gap-4">

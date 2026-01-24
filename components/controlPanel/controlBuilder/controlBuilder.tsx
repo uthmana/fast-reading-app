@@ -88,7 +88,7 @@ export default function ControlBuilder({
         ) {
           return {
             ...field,
-            optionId: targetValue, // 🔑 this triggers async request
+            optionId: targetValue,
           };
         }
 
@@ -96,7 +96,6 @@ export default function ControlBuilder({
       });
     });
 
-    // build newData from the *next* state
     setNewData((prev: any) => {
       const next = {
         ...prev,
@@ -141,7 +140,7 @@ export default function ControlBuilder({
         });
       }
     },
-    [setControlData]
+    [setControlData],
   );
 
   const setAsyncOptions = (val: any) => {

@@ -8,6 +8,7 @@ import { getInputTypeValue } from "@/utils/helpers";
 import Icon from "@/components/icon/icon";
 import { useSearchParams } from "next/navigation";
 import { contactInfo } from "@/utils/constants";
+import YearNow from "@/components/landingPage/yearNow";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -144,8 +145,8 @@ export default function LoginPage() {
                 {contactInfo.email}
               </a>
             </div>
-            <div suppressHydrationWarning>
-              © {new Date().getFullYear()} Tüm Hakları saklıdır.
+            <div>
+              © <YearNow /> Tüm Hakları saklıdır.
             </div>
           </div>
         </div>

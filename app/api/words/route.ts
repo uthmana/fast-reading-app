@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Words, WordsStudyGroup } from "@prisma/client";
+import { Words } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 
@@ -7,6 +7,8 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
+    const onlywordsParam = searchParams.get("onlywords");
+
     let where: any | undefined;
 
     if (whereParam) {
@@ -17,13 +19,18 @@ export async function GET(req: NextRequest) {
           include: {
             studyGroups: true,
           },
+          orderBy: { subscriberId: "desc" },
         });
-        const formattedWords = words.map((item) => item.word);
-        return NextResponse.json(formattedWords, { status: 200 });
+
+        if (onlywordsParam === "true") {
+          const wordList = words.map((item) => item.word);
+          return NextResponse.json(wordList, { status: 200 });
+        }
+        return NextResponse.json(words, { status: 200 });
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -32,8 +39,14 @@ export async function GET(req: NextRequest) {
       include: {
         studyGroups: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: { subscriberId: "desc" },
     });
+
+    if (onlywordsParam === "true") {
+      const wordList = words.map((item) => item.word);
+      return NextResponse.json(wordList, { status: 200 });
+    }
+
     return NextResponse.json(words, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -43,13 +56,14 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(req: Request) {
-  const { id, word, similarWord, studyGroups }: Words | any = await req.json();
+  const { id, word, similarWord, studyGroups, subscriberId }: Words | any =
+    await req.json();
   if (!word || !studyGroups) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -65,13 +79,15 @@ export async function POST(req: Request) {
           data: {
             word,
             similarWord,
+            subscriberId,
+            lpw: word?.length,
+            wpc: word?.split(" ")?.length,
             studyGroups: {
+              deleteMany: {},
               create: studyGroups.map((group: any) => ({
                 group: group,
               })),
             },
-            wpc: word?.split(" ")?.length,
-            lpw: word?.length,
           },
         });
         return NextResponse.json(words, { status: 200 });
@@ -82,22 +98,20 @@ export async function POST(req: Request) {
       data: {
         word,
         similarWord,
+        subscriberId,
+        lpw: word?.length,
+        wpc: word?.split(" ")?.length,
         studyGroups: {
           create: studyGroups.map((group: any) => ({
             group: group,
           })),
         },
-        wpc: word?.split(" ")?.length,
-        lpw: word?.length,
       },
     });
     return NextResponse.json(words, { status: 201 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json(
-      { error: "Category already exists" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "word already exists" }, { status: 400 });
   }
 }
 
