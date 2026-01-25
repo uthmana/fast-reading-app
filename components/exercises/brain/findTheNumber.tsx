@@ -164,12 +164,13 @@ export default function FindTheNumber({
     if (!userAnswer) return;
     playSound("punch");
     const correctCount = letters.filter(
-      (l) => l.letter === targetLetter
+      (l) => l.letter === targetLetter,
     ).length;
 
     const { right, wrong } = controls.resultDisplay;
 
     if (parseInt(userAnswer) === correctCount) {
+      playSound("truepunch");
       setControlData({
         ...controls,
         resultDisplay: {
@@ -179,6 +180,7 @@ export default function FindTheNumber({
         },
       });
     } else {
+      playSound("falsepunch");
       setControlData({
         ...controls,
         resultDisplay: {
@@ -253,7 +255,10 @@ export default function FindTheNumber({
   );
 }
 
-function playSound(type: "beep" | "punch", frequency: number = 500) {
+function playSound(
+  type: "beep" | "punch" | "truepunch" | "falsepunch",
+  frequency: number = 500,
+) {
   const ctx = new AudioContext();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
@@ -279,6 +284,33 @@ function playSound(type: "beep" | "punch", frequency: number = 500) {
 
     osc.start();
     osc.stop(ctx.currentTime + 0.12);
+  }
+  // True SFX
+  if (type === "truepunch") {
+    // True SFX: quick upward chirp (positive feedback)
+    osc.type = "sine";
+
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.08);
+
+    gain.gain.setValueAtTime(0.5, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.1);
+  }
+  if (type === "falsepunch") {
+    // False SFX: downward buzz (negative feedback)
+    osc.type = "square";
+
+    osc.frequency.setValueAtTime(300, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.12);
+
+    gain.gain.setValueAtTime(0.4, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
+
+    osc.start();
+    osc.stop(ctx.currentTime + 0.14);
   }
 
   osc.connect(gain);
