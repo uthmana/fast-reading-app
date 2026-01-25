@@ -50,7 +50,7 @@ export default function Whiteboard({
   return (
     <div
       className={`flex flex-col px-5 mb-5  ${
-        isPrimaryStudent ? "font-tttkbDikTemelAbece" : ""
+        isPrimaryStudent ? "!font-tttkbDikTemelAbece font-extrabold " : ""
       }`}
     >
       {/* Whiteboard preview */}

@@ -160,9 +160,9 @@ export default function ControlBuilder({
               inputKey={field.inputKey}
               name={field.name}
               onChange={handleChange}
-              min={field.min}
-              max={field.max}
-              step={field.step}
+              min={field?.min}
+              max={field?.max}
+              step={field?.step}
               required={field.required}
               showRangeIcon={field?.showRangeIcon}
               styleClass={field.styleClass}

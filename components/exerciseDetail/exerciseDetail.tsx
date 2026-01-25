@@ -46,7 +46,9 @@ export default function ExerciseDetail({
       ) : null}
       <div
         className={`px-4 ${
-          isPrimaryStudent ? "font-tttkbDikTemelAbece text-lg" : ""
+          isPrimaryStudent
+            ? "font-tttkbDikTemelAbece font-semibold text-lg"
+            : ""
         } `}
       >
         <h1 className="my-5 text-2xl font-bold capitalize"> {menu?.name} </h1>
