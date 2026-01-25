@@ -2,6 +2,7 @@
 
 import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
+import { useAudioSound } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
 import { MdPauseCircle } from "react-icons/md";
 
@@ -11,6 +12,7 @@ type EyeMuscleProps = {
     text?: string;
     articleId?: string;
     objectIcon: string;
+    type?: number;
   };
   objectSize?: number;
   onFinishTest?: (v: any) => void;
@@ -22,106 +24,161 @@ export default function EyeMuscle({
   onFinishTest,
 }: EyeMuscleProps) {
   const [visible, setVisible] = useState(true);
-  const [side, setSide] = useState<"left" | "right">("left");
-  const [y, setY] = useState(0);
-  const [color, setColor] = useState(getRandomColor());
-  const [phase, setPhase] = useState<
-    "leftDown" | "rightDown" | "leftUp" | "rightUp" | "random"
-  >("leftDown");
+  const [position, setPosition] = useState({ x: "5%", y: 0 });
+  const [stepIndex, setStepIndex] = useState(0);
+
+  const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
 
   const level = controls?.level || 3;
-  const step = 60;
-  const jump = step * 2;
   const duration = speedMap[level];
+  const type = controls?.type || 1;
+
+  const handlePause = () => {
+    if (onFinishTest) onFinishTest(null);
+  };
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let interval: NodeJS.Timeout;
+
+    interval = setInterval(() => {
+      const container = document.getElementById("rhythmic-container");
+      const parentHeight = (container?.clientHeight || 600) - objectSize;
+
+      const leftSide = "5%";
+      const rightSide = "95%";
+      const centerSide = "50%";
+      const topEdge = 0;
+      const bottomEdge = parentHeight;
+
       setVisible(false);
 
-      setTimeout(() => {
-        const parentHeight =
-          (document.getElementById("rhythmic-container")?.clientHeight || 600) -
-          objectSize;
+      setStepIndex((prev) => {
+        const step = prev;
+        let nextX = leftSide;
+        let nextY = topEdge;
+        let totalSteps = 1;
 
-        let nextY = y;
-        let nextSide = side;
-        let nextPhase = phase;
+        switch (type) {
+          case 1: {
+            totalSteps = 4;
+            const coords = [
+              { x: leftSide, y: topEdge },
+              { x: rightSide, y: topEdge },
+              { x: leftSide, y: bottomEdge },
+              { x: rightSide, y: bottomEdge },
+            ];
+            ({ x: nextX, y: nextY } = coords[step % totalSteps]);
+            break;
+          }
 
-        if (phase === "leftDown" || phase === "rightDown") {
-          nextY += jump;
-          if (nextY > parentHeight) {
-            nextY = 0;
-            setColor(getRandomColor());
-            if (phase === "leftDown") {
-              nextPhase = "rightDown";
-              nextSide = "right";
-            } else {
-              nextPhase = "leftUp";
-              nextSide = "left";
-              nextY = parentHeight;
-            }
-          } else {
-            nextSide = side === "left" ? "right" : "left";
+          case 2: {
+            totalSteps = 8;
+            const coords = [
+              { x: leftSide, y: topEdge },
+              { x: leftSide, y: bottomEdge / 2 },
+              { x: leftSide, y: bottomEdge },
+              { x: centerSide, y: bottomEdge },
+              { x: rightSide, y: bottomEdge },
+              { x: rightSide, y: bottomEdge / 2 },
+              { x: rightSide, y: topEdge },
+              { x: centerSide, y: topEdge },
+            ];
+            ({ x: nextX, y: nextY } = coords[step % totalSteps]);
+            break;
           }
-        } else if (phase === "leftUp" || phase === "rightUp") {
-          nextY -= jump;
-          if (nextY < 0) {
-            nextY = parentHeight;
-            setColor(getRandomColor());
-            if (phase === "leftUp") {
-              nextPhase = "rightUp";
-              nextSide = "right";
-            } else {
-              nextPhase = "random";
-            }
-          } else {
-            nextSide = side === "left" ? "right" : "left";
+          case 3: {
+            totalSteps = 18;
+
+            const rows = 9; // 9 points per side
+            const index = stepIndex % totalSteps;
+
+            const isLeftSide = index % 2 === 0;
+            const row = Math.floor(index / 2);
+
+            nextX = isLeftSide ? leftSide : rightSide;
+            nextY = (row / (rows - 1)) * bottomEdge;
+
+            break;
           }
-        } else if (phase === "random") {
-          nextY = Math.floor(Math.random() * (parentHeight / step)) * step;
-          nextSide = Math.random() > 0.5 ? "left" : "right";
-          setColor(getRandomColor());
+
+          case 4: {
+            totalSteps = 34; // 16 columns × 2 steps
+
+            const columns = 17;
+            const stepInColumn = stepIndex % 2; // 0 = top, 1 = bottom
+            const col = Math.floor(stepIndex / 2) % columns;
+
+            nextY = stepInColumn === 0 ? topEdge : bottomEdge;
+            nextX = `${5 + col * (90 / (columns - 1))}%`;
+            break;
+          }
+
+          case 5: {
+            totalSteps = 4;
+            const coords = [
+              { x: leftSide, y: topEdge },
+              { x: leftSide, y: bottomEdge },
+              { x: rightSide, y: bottomEdge },
+              { x: rightSide, y: topEdge },
+            ];
+            ({ x: nextX, y: nextY } = coords[step % totalSteps]);
+            break;
+          }
+
+          case 6: {
+            totalSteps = 6;
+            const coords = [
+              { x: leftSide, y: topEdge },
+              { x: centerSide, y: bottomEdge / 2 },
+              { x: rightSide, y: bottomEdge },
+              { x: rightSide, y: topEdge },
+              { x: centerSide, y: bottomEdge / 2 },
+              { x: leftSide, y: bottomEdge },
+            ];
+            ({ x: nextX, y: nextY } = coords[step % totalSteps]);
+            break;
+          }
+
+          default:
+            nextX = Math.random() > 0.5 ? leftSide : rightSide;
+            nextY = Math.random() * bottomEdge;
         }
 
-        // 🟢 Play sound on every move
-        playBeep(nextSide);
-
-        setY(nextY);
-        setSide(nextSide);
-        setPhase(nextPhase);
+        // atomic update
+        setPosition({ x: nextX, y: nextY });
+        stopSound();
+        playSound();
         setVisible(true);
-      }, duration / 2);
+
+        return step + 1;
+      });
     }, duration);
 
     return () => clearInterval(interval);
-  }, [y, side, phase, duration, objectSize]);
-
-  const handlePause = () => {
-    if (onFinishTest) {
-      onFinishTest(null);
-    }
-  };
+  }, [duration, type, objectSize, playSound]);
 
   return (
     <div
       id="rhythmic-container"
       className="relative w-full h-full flex justify-center items-center"
     >
-      <div
-        className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
-          visible ? "opacity-100" : "opacity-0"
-        }`}
-        style={{
-          width: objectSize,
-          height: objectSize,
-          borderRadius: "50%",
-          // backgroundColor: color,
-          top: y,
-          left: side === "left" ? "2%" : "98%",
-          transform: "translate(-50%, 0)",
-          backgroundImage: `url(/images/objects/icon${controls?.objectIcon}.png)`,
-        }}
-      />
+      {
+        <div
+          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
+            visible ? "opacity-100" : "opacity-0"
+          }`}
+          style={{
+            width: objectSize,
+            height: objectSize,
+            top: position.y,
+            left: position.x,
+            borderRadius: "50%",
+            transform: "translate(-50%, 0)",
+            backgroundImage: `url(/images/objects/icon${controls?.objectIcon}.png)`,
+            transitionProperty: "opacity",
+          }}
+        />
+      }
 
       <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
@@ -130,27 +187,4 @@ export default function EyeMuscle({
       />
     </div>
   );
-}
-
-// 🟣 Simple Web Audio beep for feedback
-function playBeep(side: "left" | "right") {
-  const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-
-  osc.type = "square";
-  osc.frequency.value = side === "left" ? 500 : 500;
-  gain.gain.setValueAtTime(0.2, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-
-  osc.start();
-  osc.stop(ctx.currentTime + 0.05);
-}
-
-function getRandomColor() {
-  const colors = ["#FF6B6B", "#4ECDC4", "#FFD93D", "#1A535C", "#FF9F1C"];
-  return colors[Math.floor(Math.random() * colors.length)];
 }
