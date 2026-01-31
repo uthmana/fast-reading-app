@@ -3,7 +3,7 @@ name: Deploy to Plesk via FTP
 on:
   push:
     branches:
-      - main
+      - develop31.01.20266
 
 jobs:
   build-and-deploy:
