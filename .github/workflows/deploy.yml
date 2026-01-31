@@ -43,7 +43,11 @@ jobs:
           port: 21
           local-dir: ./
           server-dir: ${{ secrets.FTP_TARGET }}
+          dangerous-clean-slate: false
           exclude: |
-            **/.git*
-            **/node_modules/**
-            **/.next/cache/**
+            exclude: |
+                **/.git/**
+                **/.github/**
+                **/node_modules/**
+                **/.next/**
+                **/*.log
