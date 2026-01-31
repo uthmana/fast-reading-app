@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # 🔐 Create .env from GitHub Secrets (BUILD TIME)
+      # 🔐 Create .env from GitHub Secrets (BUILD TIME) config
       - name: Create .env file
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
