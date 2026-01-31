@@ -5,6 +5,8 @@ on:
     branches:
       - develop31.01.20266
 
+  workflow_dispatch:
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
