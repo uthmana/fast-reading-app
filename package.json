@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "db:push": "npx prisma db push",
+    "db:seed": "npx prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -17,6 +21,7 @@
     "@microlink/react-json-view": "^1.27.0",
     "@prisma/client": "^6.16.2",
     "@tanstack/react-table": "^8.21.3",
+    "apexcharts": "^5.3.6",
     "bcryptjs": "^2.4.3",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
