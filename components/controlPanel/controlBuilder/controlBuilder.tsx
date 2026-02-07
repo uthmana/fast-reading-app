@@ -25,14 +25,14 @@ export default function ControlBuilder({
   className = "",
   controlData,
   setControlData,
-  introTest,
+  isTest,
   setIsLoading,
 }: {
   fields: any[];
   className?: string;
   controlData?: any;
   setControlData?: any;
-  introTest?: any;
+  isTest?: boolean;
   setIsLoading?: (val: boolean) => void;
 }) {
   if (!fields || fields.length === 0) return null;
@@ -112,6 +112,7 @@ export default function ControlBuilder({
             [inputKey]: normalizeValue(targetValue),
           };
         }
+
         return {
           ...prev,
           articleSelect: targetValue,
@@ -128,17 +129,17 @@ export default function ControlBuilder({
       if (!data || data.length === 0) return;
       if (inputKey !== "letterCount" && inputKey !== "wordsPerFrame") return;
 
-      setNewData((prev: any) => {
-        if (prev?.wordList === data) return prev;
-        return { ...prev, wordList: data };
-      });
-
       if (setControlData) {
         setControlData((prev: any) => {
           if (prev?.wordList === data) return prev;
           return { ...prev, wordList: data };
         });
       }
+
+      setNewData((prev: any) => {
+        if (prev?.wordList === data) return prev;
+        return { ...prev, wordList: data };
+      });
     },
     [setControlData],
   );
@@ -151,6 +152,12 @@ export default function ControlBuilder({
     <div className={`w-full ${className}`}>
       {formData.map((field: any, index: number) => {
         if (field.type === "range") {
+          const disabled =
+            (field.inputKey === "level" ||
+              field.inputKey === "wordsPerFrame") &&
+            isTest
+              ? true
+              : field.disabled;
           return (
             <TextInput
               key={field.inputKey + index}
@@ -171,6 +178,8 @@ export default function ControlBuilder({
               asyncList={field?.asyncList}
               handleAsyncList={handleAsyncList}
               setIsLoading={setIsLoading}
+              disabled={disabled}
+              wordList={field?.wordList}
               {...field}
             />
           );
@@ -205,7 +214,7 @@ export default function ControlBuilder({
               styleClass={field.styleClass}
               showLabel={field.showLabel}
               required={field.required}
-              disabled={introTest ? true : field.disabled}
+              disabled={isTest ? true : field.disabled}
               optionId={field?.optionId}
               asyncOption={field?.asyncOption}
               asyncOptionById={field?.asyncOptionById}

@@ -8,6 +8,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const whereParam = searchParams.get("where");
     const onlywordsParam = searchParams.get("onlywords");
+    const limitParam = searchParams.get("limit");
 
     let where: any | undefined;
 
@@ -19,6 +20,7 @@ export async function GET(req: NextRequest) {
           include: {
             studyGroups: true,
           },
+          take: limitParam ? parseInt(limitParam, 10) : undefined,
           orderBy: { subscriberId: "desc" },
         });
 
@@ -39,6 +41,7 @@ export async function GET(req: NextRequest) {
       include: {
         studyGroups: true,
       },
+      take: limitParam ? parseInt(limitParam, 10) : undefined,
       orderBy: { subscriberId: "desc" },
     });
 

@@ -2,8 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { MdPauseCircle } from "react-icons/md";
-import Button from "../../button/button";
 import { speedMap } from "@/utils/constants";
 
 type LineLengthViewProps = {
@@ -15,11 +13,13 @@ type LineLengthViewProps = {
     wordList?: string[];
   };
   onFinishTest?: (v: any) => void;
+  pause?: boolean;
 };
 
 export default function LineLengthView({
   controls,
   onFinishTest,
+  pause = false,
 }: LineLengthViewProps) {
   const directionRef = useRef(1);
   const [word, setWord] = useState("...");
@@ -28,7 +28,7 @@ export default function LineLengthView({
   const distance =
     controls?.distance && controls?.distance > 1
       ? controls?.distance * 40
-      : controls?.distance ?? 1 * 2;
+      : (controls?.distance ?? 1 * 2);
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
   const level = controls?.level || 3;
@@ -48,9 +48,6 @@ export default function LineLengthView({
   const pickWord = () => {
     if (!pool?.length) return "...";
     return pool[Math.floor(Math.random() * pool.length)];
-  };
-  const handlePause = () => {
-    onFinishTest?.(null);
   };
 
   useEffect(() => {
@@ -79,6 +76,12 @@ export default function LineLengthView({
 
     return () => clearInterval(intv);
   }, [intervalMs, scroll, controls?.wordList]);
+
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden">
@@ -138,12 +141,6 @@ export default function LineLengthView({
           {word}
         </div>
       </div>
-      {/* Pause Button (same style as your EyeMuscleDevelopment) */}
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

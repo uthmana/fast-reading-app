@@ -1,7 +1,5 @@
 "use client";
 
-import { MdPauseCircle } from "react-icons/md";
-import Button from "@/components/button/button";
 import { useEffect, useState } from "react";
 import { speedMap } from "@/utils/constants";
 
@@ -13,13 +11,14 @@ type ActivevisionAreaTwoProps = {
     objectIcon: string;
     color?: number; // 1–9
   };
-
+  pause?: boolean;
   onFinishTest?: (v: any) => void;
 };
 
 export default function ActivevisionAreaTwo({
   controls,
   onFinishTest,
+  pause = false,
 }: ActivevisionAreaTwoProps) {
   const colors = [
     "#2ecc71",
@@ -51,7 +50,11 @@ export default function ActivevisionAreaTwo({
     return () => clearInterval(interval);
   }, [speed]);
 
-  const handlePause = () => onFinishTest?.(null);
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -63,12 +66,6 @@ export default function ActivevisionAreaTwo({
           backgroundColor: boxColor,
           borderRadius: 4,
         }}
-      />
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
       />
     </div>
   );

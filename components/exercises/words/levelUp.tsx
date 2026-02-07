@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { MdPauseCircle } from "react-icons/md";
-import Button from "@/components/button/button";
 import { calculateReadingSpeed } from "@/utils/helpers";
 import { speedMap } from "@/utils/constants";
 
@@ -17,205 +15,162 @@ type TachistoProps = {
     wordList: string[];
   };
   onFinishTest?: (val: any) => void;
+  pause?: boolean;
 };
 
 export default function LevelUp({
   autoStart = true,
   className = "",
   controls,
-  onComplete,
   onFinishTest,
+  pause = false,
 }: TachistoProps) {
   const [frames, setFrames] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
-  const indexRef = useRef(0);
-
   const [running, setRunning] = useState(false);
-  const [frameDurationMs, setFrameDurationMs] = useState<number>(1000);
-  const [fadeOut, setFadeOut] = useState(false);
-
-  // keep answers both in state (for UI if needed) and ref for sync
-  const [answers, setAnswers] = useState<string[]>([]);
-  const answersRef = useRef<string[]>([]);
-
-  // cancellation/runner refs
-  const runnerRef = useRef<Promise<void> | null>(null);
-  const cancelRef = useRef(false);
-
-  const onCompleteRef = useRef(onComplete);
   const [isTesting, setIsTesting] = useState(autoStart);
+  const [fadeOut, setFadeOut] = useState(false);
+  const [frameDurationMs, setFrameDurationMs] = useState(1000);
+  const [resultMessage, setResultMessage] = useState(null as any);
 
-  const level = controls?.level || 1;
-  const text = controls?.wordList ?? [];
+  /** ================= SNAPSHOTS ================= */
+  const framesRef = useRef<string[]>([]);
+  const answersRef = useRef<string[]>([]);
+  const cancelRef = useRef(false);
+  const levelRef = useRef(1);
+  const wpfRef = useRef(1);
+  const durationRef = useRef(1000);
 
+  /** ================= HELPERS ================= */
+  const sleep = (ms: number) => new Promise<void>((res) => setTimeout(res, ms));
+
+  /** ================= SETUP / RESET ================= */
   useEffect(() => {
-    onCompleteRef.current = onComplete;
-  }, [onComplete]);
+    cancelRef.current = true;
 
-  // 🧩 Setup frames
-  useEffect(() => {
-    if (!text?.length) {
+    if (!controls?.wordList?.length) {
       setFrames([]);
-      setIndex(0);
-      indexRef.current = 0;
       setRunning(false);
+      setIsTesting(false);
       return;
     }
-    setFrames(text);
-    setFrameDurationMs(speedMap[level]);
-    setIndex(0);
-    indexRef.current = 0;
 
-    // reset answers
-    setAnswers([]);
+    framesRef.current = controls.wordList;
     answersRef.current = [];
-  }, [text, level]);
 
-  // ▶️ Auto start
+    levelRef.current = controls.level ?? 1;
+    wpfRef.current = controls.wordsPerFrame;
+    durationRef.current = speedMap[levelRef.current];
+
+    setFrames(controls.wordList);
+    setFrameDurationMs(durationRef.current);
+    setIndex(0);
+  }, [controls]);
+
+  /** ================= AUTOSTART ================= */
   useEffect(() => {
-    if (autoStart && frames.length > 0) {
-      setIndex(0);
-      indexRef.current = 0;
+    if (autoStart && framesRef.current.length) {
+      cancelRef.current = false;
+      setIsTesting(true);
       setRunning(true);
     }
-  }, [autoStart, frames]);
+  }, [autoStart, controls]);
 
-  // Helper sleep
-  const sleep = (ms: number) =>
-    new Promise((res) => {
-      const t = setTimeout(() => {
-        clearTimeout(t);
-        res(undefined);
-      }, ms);
-    });
-
-  // Start/stop runner when `running` toggles
+  /** ================= RUNNER ================= */
   useEffect(() => {
-    // cancel previous runner if exists
+    if (!running) return;
+    setResultMessage(null);
+
     cancelRef.current = false;
 
-    if (!running) {
-      // If we're stopping mid-test, cancel and call onFinishTest with null (or handle as needed)
-      cancelRef.current = true;
-      return;
-    }
-
-    // avoid starting multiple runners
-    if (runnerRef.current) {
-      // shouldn't happen, but be safe
-      cancelRef.current = true;
-    }
-
     const run = async () => {
-      try {
-        const fadeDuration = Math.round(frameDurationMs * 0.3);
+      const frames = framesRef.current;
+      const frameDuration = durationRef.current;
+      const fadeDuration = Math.round(frameDuration * 0.3);
 
-        for (let i = indexRef.current; i < frames.length; i++) {
-          if (cancelRef.current) break;
+      for (let i = 0; i < frames.length; i++) {
+        if (cancelRef.current) return;
 
-          // show frame (index already set)
-          setIndex(i);
-          indexRef.current = i;
+        setIndex(i);
+        setFadeOut(false);
 
-          // show visible (not faded)
-          setFadeOut(false);
-          // wait for visible duration less fade time (so total is frameDurationMs)
-          await sleep(frameDurationMs - fadeDuration);
+        await sleep(frameDuration - fadeDuration);
+        if (cancelRef.current) return;
 
-          if (cancelRef.current) break;
+        setFadeOut(true);
+        await sleep(fadeDuration);
+        if (cancelRef.current) return;
 
-          // start fade out
-          setFadeOut(true);
-          // wait fadeDuration
-          await sleep(fadeDuration);
+        const answer =
+          window.prompt(
+            `Gördüğünüz Kelime(ler) ne idi? (${i + 1}/${frames.length})`,
+          ) ?? "";
 
-          if (cancelRef.current) break;
-
-          // Prompt synchronously (blocks UI until user answers)
-          const userAnswer = window.prompt(
-            `Gördüğünüz Kelime(ler) ne idi?: (${i + 1}/${frames.length})`
-          );
-          const val = userAnswer ?? "";
-
-          // update answers (state + ref)
-          answersRef.current = [...answersRef.current, val];
-          setAnswers([...answersRef.current]); // keep state in sync if you show it
-
-          // move index forward (will display next in next loop iteration)
-          indexRef.current = i + 1;
-          setIndex(i + 1);
-        }
-      } catch (err) {
-        console.error("Runner error:", err);
-      } finally {
-        // runner finished or cancelled
-        runnerRef.current = null;
-
-        // if cancelled, just stop; allow external handler to call onFinishTest if desired
-        if (cancelRef.current) {
-          // stop testing mode
-          setRunning(false);
-          setIsTesting(false);
-          return;
-        }
-
-        // compute results only if not cancelled
-        const finalAnswers = answersRef.current;
-        // compute correct count
-        const correctCount = frames.reduce((count, word, i) => {
-          const a = (finalAnswers[i] ?? "").trim().toLowerCase();
-          const w = (word ?? "").trim().toLowerCase();
-          return a === w ? count + 1 : count;
-        }, 0);
-
-        const result = {
-          total: frames.length,
-          correct: correctCount,
-          incorrect: frames.length - correctCount,
-        };
-
-        setIsTesting(false);
-        setRunning(false);
-
-        onFinishTest?.({
-          wpf: controls?.wordsPerFrame,
-          durationSec: speedMap[level],
-          variant: "FASTVISION",
-          correct: (result.correct / result.total) * 100,
-          wpm: calculateReadingSpeed(
-            (controls?.wordsPerFrame || 1) * result.total,
-            speedMap[level]
-          ),
-        });
+        answersRef.current.push(answer);
       }
+
+      /** ================= RESULTS ================= */
+      const correct = frames.reduce((acc, word, i) => {
+        return answersRef.current[i]?.trim().toLowerCase() ===
+          word.trim().toLowerCase()
+          ? acc + 1
+          : acc;
+      }, 0);
+
+      const result = {
+        total: frames.length,
+        correct: correct,
+        incorrect: frames.length - correct,
+      };
+      setIsTesting(false);
+      setRunning(false);
+      onFinishTest?.({
+        wpf: controls?.wordsPerFrame,
+        durationSec: speedMap[levelRef.current],
+        variant: "FASTVISION",
+        correct: (result.correct / result.total) * 100,
+        wpm: calculateReadingSpeed(
+          (controls?.wordsPerFrame || 1) * result.total,
+          speedMap[levelRef.current],
+        ),
+      });
+      setResultMessage({
+        wpf: controls?.wordsPerFrame,
+        durationSec: speedMap[levelRef.current],
+        variant: "FASTVISION",
+        correct: (result.correct / result.total) * 100,
+        wpm: calculateReadingSpeed(
+          (controls?.wordsPerFrame || 1) * result.total,
+          speedMap[levelRef.current],
+        ),
+      });
     };
 
-    // start runner
-    runnerRef.current = run();
+    run();
 
     return () => {
-      // cancel when dependencies change
       cancelRef.current = true;
     };
-  }, [running, frames, frameDurationMs, controls?.wordsPerFrame, level]);
+  }, [running]);
 
-  // Pause handler: cancel runner and call onFinishTest(null) if desired
-  const handlePause = () => {
-    // cancel active run
-    cancelRef.current = true;
-    setRunning(false);
-    setIsTesting(false);
-    // call callback to indicate paused / aborted
-    onFinishTest?.(null);
-  };
+  useEffect(() => {
+    /** ================= PAUSE ================= */
+    if (pause) {
+      cancelRef.current = true;
+      setRunning(false);
+      setIsTesting(false);
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
+  /** ================= UI ================= */
   return (
     <div
       className={`relative group w-full h-full flex justify-center items-center ${className}`}
     >
-      {isTesting ? (
+      {isTesting && (
         <div
-          className={`text-base font-semibold leading-tight transition-opacity duration-300 ${
+          className={`font-semibold transition-opacity ${
             fadeOut ? "opacity-0" : "opacity-100"
           }`}
           style={{
@@ -224,23 +179,22 @@ export default function LevelUp({
             lineHeight: 1.5,
           }}
         >
-          {frames.length > 0 ? (
-            frames[Math.min(index, frames.length - 1)]
-          ) : (
-            <span className="text-gray-400">Metin yok</span>
-          )}
-        </div>
-      ) : (
-        <div className="w-full h-full flex justify-center items-center text-xl font-semibold">
-          Eğitimi Tamamladınız.
+          {frames[index] ?? ""}
         </div>
       )}
 
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
+      {resultMessage && (
+        <div className="flex flex-col items-center justify-center w-full h-full font-semibold">
+          <h2 className="text-2xl font-bold mb-4">TEBRİKLER.</h2>
+          <p className="font-bold">
+            <span className="text-red-500">{controls?.wordsPerFrame} </span>{" "}
+            kelimelik metinleri{" "}
+            <span className="text-red-500"> {speedMap[levelRef.current]} </span>{" "}
+            ms de doğru görme, anlama oranınız %{" "}
+            <span className="text-red-500">{resultMessage.correct}</span>{" "}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

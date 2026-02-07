@@ -17,7 +17,7 @@ type FastReadingTestProps = {
       correct: number;
       counter: number;
       variant: string;
-    } | null
+    } | null,
   ) => void;
   questions: any;
   control: {
@@ -34,6 +34,7 @@ type FastReadingTestProps = {
     wpm: number;
   }) => void;
   introTest?: string | undefined | null;
+  className?: string;
 };
 
 export default function FastReadingTest({
@@ -44,13 +45,14 @@ export default function FastReadingTest({
   variant = "FASTREADING",
   readingStatus,
   introTest = "",
+  className = "",
 }: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
   const [isTesting, setIsTesting] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState(
-    {} as { countWord: number; wpm: number; correct: number }
+    {} as { countWord: number; wpm: number; correct: number },
   );
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -89,7 +91,7 @@ export default function FastReadingTest({
 
     if (
       confirm(
-        `Hızlı okuma hızınız ${wpm} kelime/dakika olarak kaydedilsin mi ?`
+        `Hızlı okuma hızınız ${wpm} kelime/dakika olarak kaydedilsin mi ?`,
       )
     ) {
       setResult({ countWord, wpm, correct: 0 });
@@ -107,7 +109,7 @@ export default function FastReadingTest({
         acc[item.id] = item.answer;
         return acc;
       },
-      {}
+      {},
     );
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
@@ -137,10 +139,10 @@ export default function FastReadingTest({
   }, [counter, article?.description]);
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className}`}>
       <div className="w-full text-right sticky top-0">
         <Timer
-          className="drop-shadow w-fit ml-auto rounded opacity-[0.2]"
+          className="drop-shadow w-fit ml-auto rounded opacity-0"
           onValue={(v) => setCounter(v)}
           start={isReading}
         />
@@ -165,7 +167,7 @@ export default function FastReadingTest({
                 lineHeight: `${parseInt(control.font) * 1.5}px`,
               }}
               readOnly
-              className="w-full resize-none bg-transparent outline-none"
+              className="w-full  resize-none bg-transparent outline-none"
               value={article?.description}
             />
           ) : (

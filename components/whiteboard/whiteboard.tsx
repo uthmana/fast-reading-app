@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ReactElement, useEffect, useRef } from "react";
+import { useState, ReactElement, useEffect } from "react";
 import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import ControlPanel from "../controlPanel/controlPanel";
@@ -14,12 +14,12 @@ interface WhiteboardProps {
   pause?: boolean;
   isfastTest?: boolean;
   readingStatus?: any;
-  isPrimaryStudent?: boolean;
   controlData?: any;
   setControlData?: any;
   children?: React.ReactNode;
   saveProgress?: () => void;
   lessonData?: { id: string; duration: string; order: string };
+  onPause?: () => void;
 }
 
 export default function Whiteboard({
@@ -28,11 +28,11 @@ export default function Whiteboard({
   isfastTest = false,
   readingStatus,
   lessonData,
-  isPrimaryStudent = false,
   controlData,
   setControlData,
   saveProgress,
   children,
+  onPause,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,15 +48,11 @@ export default function Whiteboard({
   };
 
   return (
-    <div
-      className={`flex flex-col px-5 mb-5  ${
-        isPrimaryStudent ? "!font-tttkbDikTemelAbece font-extrabold " : ""
-      }`}
-    >
+    <div className={`flex flex-col px-5 mb-5`}>
       {/* Whiteboard preview */}
       <WoodenFrame
         className="!min-h-[460px]"
-        innerClassName="!bg-white !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]"
+        innerClassName="bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]"
         font={controlData?.font}
       >
         {lessonData?.duration ? (
@@ -90,6 +86,7 @@ export default function Whiteboard({
           key={controlData}
           setIsLoading={setIsLoading}
           isfastTest={isfastTest}
+          lessonData={lessonData}
           readingStatus={readingStatus}
           controlData={controlData}
           setControlData={setControlData}
@@ -102,7 +99,7 @@ export default function Whiteboard({
           <WoodenFrame
             font={controlData?.font}
             className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
-            innerClassName="absolute z-10 !bg-white  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
+            innerClassName="absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
           >
             {lessonData?.duration ? (
               <CountDown
@@ -116,13 +113,13 @@ export default function Whiteboard({
             {children}
             {isLoading ? <BookLoader /> : null}
             {lessonData?.id ? (
-              <Link
+              <a
                 className="absolute transition-opacity z-20 lg:opacity-0 group-hover:opacity-100 flex gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
                 href={`/ogrenci/dersler/${lessonData?.order}`}
               >
                 <MdArrowBack className="text-white w-6 h-6" />
                 <span className="hidden md:inline-block"> Derslere Dön</span>
-              </Link>
+              </a>
             ) : null}
           </WoodenFrame>
 
@@ -133,7 +130,10 @@ export default function Whiteboard({
               controlData={controlData}
               setControlData={setControlData}
               isfastTest={isfastTest}
+              lessonData={lessonData}
               readingStatus={readingStatus}
+              showPauseButton={true}
+              onPause={onPause}
             />
           </div>
         </div>

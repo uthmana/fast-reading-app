@@ -63,7 +63,7 @@ function TableBuilder({
 
   const renderValue = (
     item: { type: string; lengthName: string; link: string; objectMap?: any },
-    info: any
+    info: any,
   ) => {
     const { type, lengthName, link, objectMap } = item;
     const value = info.getValue();
@@ -136,7 +136,7 @@ function TableBuilder({
       return value
         ?.map(
           (list: any) =>
-            studyGroupOptions.find((item) => item.value === list.group)?.name
+            studyGroupOptions.find((item) => item.value === list.group)?.name,
         )
         ?.join(", ");
     }
@@ -235,7 +235,7 @@ function TableBuilder({
               </div>
             </Dropdown>
           ),
-        })
+        }),
       );
     }
 
@@ -336,7 +336,7 @@ function TableBuilder({
                         <div className="items-center justify-between">
                           {flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                           {{
                             asc: "",
@@ -353,28 +353,29 @@ function TableBuilder({
               {isLoading ? (
                 <TableCellSkeleton columnLength={columnData.length} />
               ) : null}
-              {table
-                .getRowModel()
-                .rows.slice()
-                .map((row) => {
-                  return (
-                    <tr
-                      key={row.id}
-                      className="border-b text-sm hover:bg-gray-200"
-                    >
-                      {row.getVisibleCells().map((cell, indx) => {
-                        return (
-                          <td key={cell.id + indx} className="py-1 pr-2">
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext()
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
+              {!isLoading &&
+                table
+                  .getRowModel()
+                  .rows.slice()
+                  .map((row) => {
+                    return (
+                      <tr
+                        key={row.id}
+                        className="border-b text-sm hover:bg-gray-200"
+                      >
+                        {row.getVisibleCells().map((cell, indx) => {
+                          return (
+                            <td key={cell.id + indx} className="py-1 pr-2">
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
             </tbody>
           </table>
           {!isLoading && data.length === 0 ? <TableEmpty /> : null}

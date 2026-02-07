@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Button from "@/components/button/button";
-import { MdPauseCircle } from "react-icons/md";
 import { speedMap } from "@/utils/constants";
 
 export const COLOR_MAP = [
@@ -23,11 +21,13 @@ type ActivevisionAreaThreeProps = {
     perspectivecolor?: number;
   };
   onFinishTest?: (v: any) => void;
+  pause?: boolean;
 };
 
 export default function ActivevisionAreaThree({
   controls,
   onFinishTest,
+  pause = false,
 }: ActivevisionAreaThreeProps) {
   const borderWidth = 4;
   const level = controls?.level || 3;
@@ -57,7 +57,11 @@ export default function ActivevisionAreaThree({
     return () => clearInterval(t);
   }, [speedMs]);
 
-  const handlePause = () => onFinishTest?.(null);
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -78,13 +82,6 @@ export default function ActivevisionAreaThree({
           }}
         ></div>
       ))}
-
-      {/* Pause Button */}
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 bg-red-600 hover:bg-red-700"
-        onClick={handlePause}
-      />
     </div>
   );
 }

@@ -44,7 +44,7 @@ export default function Hero() {
           <div className="rounded-2xl animate-focus">
             <Image
               src="/images/hero-digital-reading.png"
-              className="aspect-[1/1] rounded-2xl shadow-lg"
+              className="rounded-2xl shadow-lg"
               alt="SeriOku hızlı okuma"
               width={460}
               height={360}

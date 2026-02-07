@@ -1,17 +1,14 @@
 import Button from "@/components/button/button";
 import { letterWords } from "@/utils/constants";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdPauseCircle,
-} from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function FindTheWord({
   controls,
   setControlData,
   words = letterWords,
   onFinishTest,
+  pause = false,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
@@ -22,6 +19,7 @@ export default function FindTheWord({
   };
   setControlData: any;
   words: string[];
+  pause?: boolean;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [displayWords, setDisplayWords] = useState<string[]>([]);
@@ -53,10 +51,6 @@ export default function FindTheWord({
     setIsSame(same);
     setSelectedAnswer(null);
   }, [words, wordCount]);
-
-  const handlePause = () => {
-    onFinishTest?.(null);
-  };
 
   const markWrongAnswer = () => {
     const { right, wrong } = controls.resultDisplay;
@@ -96,9 +90,8 @@ export default function FindTheWord({
 
       setTimeout(() => generateWords(), 250);
     },
-    [controls.resultDisplay, isSame, generateWords]
+    [controls.resultDisplay, isSame, generateWords],
   );
-
   // On mount
   useEffect(() => {
     generateWords();
@@ -128,6 +121,12 @@ export default function FindTheWord({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleAnswer]);
 
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
+
   return (
     <div className="w-full h-full group">
       <div className="w-full h-[calc(100%-60px)] flex  flex-wrap items-center justify-center gap-x-10 gap-y-3">
@@ -156,12 +155,6 @@ export default function FindTheWord({
           onClick={() => handleAnswer(0)}
         />
       </div>
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-2 bottom-0 my-4 bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

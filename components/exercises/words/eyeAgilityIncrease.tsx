@@ -16,11 +16,13 @@ type TachistoProps = {
     wordList: string[];
   };
   onFinishTest?: (val: any) => void;
+  pause?: boolean;
 };
 
 export default function EyeAgilityIncrease({
   autoStart = true,
   className = "",
+  pause = false,
   controls,
   onComplete,
   onFinishTest,
@@ -107,7 +109,11 @@ export default function EyeAgilityIncrease({
     };
   }, [running, frames, frameDurationMs]);
 
-  const handlePause = () => onFinishTest?.(null);
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div
@@ -131,13 +137,6 @@ export default function EyeAgilityIncrease({
           <span className="text-gray-400">Metin yok</span>
         )}
       </div>
-
-      {/* Pause Button */}
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

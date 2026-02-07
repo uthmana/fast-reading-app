@@ -121,3 +121,23 @@ export const useAudioSound = (src: string) => {
 
   return { isPlaying, playSound, stopSound };
 };
+
+export const useDecodeQuery = (q: string | null) => {
+  let queryParamsDecoded: any = null;
+  if (q) {
+    try {
+      queryParamsDecoded = JSON.parse(atob(q));
+    } catch (error) {
+      console.error("Error decoding query parameters:", error);
+      queryParamsDecoded = null;
+    }
+    if (!queryParamsDecoded) return {};
+    return {
+      lessonParams: queryParamsDecoded?.lessonId,
+      exerciseParams: queryParamsDecoded?.exerciseId,
+      durationParams: queryParamsDecoded?.duration,
+      orderParams: queryParamsDecoded?.order,
+    };
+  }
+  return {};
+};

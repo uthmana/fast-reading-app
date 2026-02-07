@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
-import { studyGroupOptions } from "./constants";
+import { lessonControls, speedMap, studyGroupOptions } from "./constants";
 
 type UserWhereInput =
   | { email: string }
@@ -182,7 +182,7 @@ export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
     seconds <= 0
   ) {
     throw new Error(
-      "Invalid input: wordCount and seconds must be positive numbers"
+      "Invalid input: wordCount and seconds must be positive numbers",
     );
   }
 
@@ -193,7 +193,7 @@ export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
 export const calculateQuizScore = (
   questions: { id: string }[],
   answers: Record<string, string>,
-  correctAnswers: Record<string, string>
+  correctAnswers: Record<string, string>,
 ): number => {
   if (!questions?.length || !answers) return 0;
 
@@ -231,4 +231,22 @@ export const formatNumberLocale = (num: number, locale = "tr") => {
     minimumFractionDigits: 0,
   });
   return nFormat.format(num);
+};
+
+export const getTestControls = (
+  lessonId: string | null,
+  studyGroup: string,
+) => {
+  if (!lessonId) return {};
+  const testControls = lessonControls[lessonId]?.find(
+    (lc: { group: string }) => lc.group === studyGroup,
+  );
+  const speedKey = Object.keys(speedMap).find(
+    (key) => speedMap[Number(key)] === testControls?.level,
+  );
+
+  return {
+    level: speedKey,
+    wordsPerFrame: testControls?.wordsPerFrame,
+  };
 };

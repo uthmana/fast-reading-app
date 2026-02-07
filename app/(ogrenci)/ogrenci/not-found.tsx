@@ -4,7 +4,7 @@ export default function NotFound({
   redirectPath?: string;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-full bg-gray-50 text-center p-6">
+    <div className="flex flex-col mx-5 items-center justify-center min-h-full bg-gray-50 text-center p-6">
       <h1 className="text-6xl font-bold text-blue-600 mb-4">404</h1>
       <h2 className="text-2xl font-semibold text-gray-800 mb-2">
         Sayfa Bulunamadı

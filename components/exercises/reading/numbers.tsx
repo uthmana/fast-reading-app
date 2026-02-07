@@ -1,8 +1,7 @@
 "use client";
-import Button from "@/components/button/button";
+
 import { speedMap } from "@/utils/constants";
 import React, { useEffect, useState } from "react";
-import { MdPauseCircle } from "react-icons/md";
 
 interface EyeExerciseProps {
   controls?: {
@@ -14,6 +13,7 @@ interface EyeExerciseProps {
   words: string[];
   wordsPerFrame?: number;
   onFinishTest?: (val: any) => void;
+  pause?: boolean;
 }
 
 export default function Numbers({
@@ -21,6 +21,7 @@ export default function Numbers({
   words = ["234", "765", "142", "198", "456", "654", "223", "987"],
   wordsPerFrame,
   onFinishTest,
+  pause = false,
 }: EyeExerciseProps) {
   const [index, setIndex] = useState(0);
 
@@ -38,13 +39,19 @@ export default function Numbers({
     const interval = setInterval(() => {
       setTimeout(() => {
         setIndex((prev) =>
-          prev + itemsPerFrame >= words.length ? 0 : prev + itemsPerFrame
+          prev + itemsPerFrame >= words.length ? 0 : prev + itemsPerFrame,
         );
       }, fadeDuration);
     }, frameDuration);
 
     return () => clearInterval(interval);
   }, [words, frameDuration, itemsPerFrame]);
+
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   // Positioning classes
   const positions =
@@ -56,12 +63,6 @@ export default function Numbers({
           "left-0 top-1/2 -translate-y-1/2",
           "right-0 top-1/2 -translate-y-1/2",
         ];
-
-  const handlePause = () => {
-    if (onFinishTest) {
-      onFinishTest(null);
-    }
-  };
 
   return (
     <div className="w-full relative h-full flex items-center justify-center">
@@ -81,12 +82,6 @@ export default function Numbers({
           </div>
         ))}
       </div>
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

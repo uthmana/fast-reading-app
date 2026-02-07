@@ -51,7 +51,6 @@ export const getExerciseOptions = async () => {
     return;
   }
 };
-
 export const getTeacherOptions = async () => {
   try {
     const resData = await fetchData({
@@ -87,7 +86,6 @@ export const getTeacherOptionsById = async (id: string) => {
     return;
   }
 };
-
 export const getClassOptions = async () => {
   try {
     const resData = await fetchData({
@@ -175,6 +173,23 @@ export const getWordListByLetterCount = async (
     console.error(error);
   }
 };
+
+export const getWordListPerCountWithLimit = async (letterCount: number) => {
+  const query = encodeURIComponent(
+    JSON.stringify({
+      wpc: letterCount || 1,
+    }),
+  );
+  try {
+    const wordData = await fetchData({
+      apiPath: `/api/words?where=${query}&onlywords=true&limit=20`,
+    });
+    return wordData;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getWordListPerCount = async (letterCount: number) => {
   const query = encodeURIComponent(
     JSON.stringify({
