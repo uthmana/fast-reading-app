@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MdPauseCircle } from "react-icons/md";
-import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
 import { useAudioSound } from "@/utils/hooks";
 
@@ -15,6 +13,7 @@ type MetronomeEyeProps = {
   };
   objectSize?: number;
   pathname?: string;
+  pause?: boolean;
   onFinishTest?: (v: any) => void;
 };
 
@@ -22,6 +21,7 @@ export default function Metronom({
   controls,
   objectSize = 60,
   onFinishTest,
+  pause = false,
 }: MetronomeEyeProps) {
   const level = controls?.level || 3;
   const speedMs = speedMap[level];
@@ -38,7 +38,11 @@ export default function Metronom({
     return () => clearInterval(timer);
   }, [speedMs]);
 
-  const handlePause = () => onFinishTest?.(null);
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -61,13 +65,6 @@ export default function Metronom({
             right: leftSide ? "auto" : "10%",
             backgroundImage: `url(/images/objects/icon${controls?.objectIcon}.png)`,
           }}
-        />
-
-        {/* Pause Button */}
-        <Button
-          icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-          className="max-w-fit absolute right-1 -bottom-1 my-4 bg-red-600 hover:bg-red-700 shadow-lg"
-          onClick={handlePause}
         />
       </div>
     </div>

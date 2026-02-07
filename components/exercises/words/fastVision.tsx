@@ -1,10 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
-import { MdPauseCircle } from "react-icons/md";
 import { speedMap } from "@/utils/constants";
-import Button from "@/components/button/button";
 
 type TachistoProps = {
   autoStart?: boolean;
@@ -17,6 +14,7 @@ type TachistoProps = {
     wordList: string[];
   };
   onFinishTest?: (val: any) => void;
+  pause?: boolean;
 };
 
 export default function Tachistoscope({
@@ -25,6 +23,7 @@ export default function Tachistoscope({
   controls,
   onComplete,
   onFinishTest,
+  pause = false,
 }: TachistoProps) {
   const [frames, setFrames] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
@@ -100,7 +99,11 @@ export default function Tachistoscope({
     };
   }, [running, frames, frameDurationMs]);
 
-  const handlePause = () => onFinishTest?.(null);
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   return (
     <div
@@ -123,11 +126,11 @@ export default function Tachistoscope({
         )}
       </div>
 
-      <Button
+      {/* <Button
         icon={<MdPauseCircle className="w-6 h-6 text-white" />}
         className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
         onClick={handlePause}
-      />
+      /> */}
     </div>
   );
 }

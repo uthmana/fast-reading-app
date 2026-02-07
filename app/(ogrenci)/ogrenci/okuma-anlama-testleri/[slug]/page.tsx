@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { getArticleByStudyGroup } from "@/components/formBuilder/request";
 import { ExerciseDescription } from "@/utils/constants";
+import { useDecodeQuery } from "@/utils/hooks";
 
 export default function page() {
   const { data: session } = useSession();
@@ -19,11 +20,11 @@ export default function page() {
   const searchParams = useSearchParams();
   const queryParams = useParams();
   const pathname = queryParams.slug;
-  const lessonParams = searchParams.get("lessonId");
-  const durationParams = searchParams.get("duration");
-  const exerciseParams = searchParams.get("exerciseId");
-  const orderParams = searchParams.get("order");
   const introTest = searchParams.get("intro-test");
+  const queryParamsEncoded = searchParams.get("q");
+  const { lessonParams, exerciseParams, durationParams, orderParams } =
+    useDecodeQuery(queryParamsEncoded);
+
   const [pause, setPause] = useState(false);
   const [questions, setQuestions] = useState([] as any);
   const [readingStatus, setReadingStatus] = useState({
@@ -63,7 +64,8 @@ export default function page() {
   }, [controlData.selectedData, setQuestions]);
 
   const isPrimaryStudent =
-    session?.user?.student?.studyGroup?.includes("ILKOKUL");
+    session?.user?.student?.studyGroup?.includes("ILKOKUL") ||
+    session?.user?.student?.studyGroup?.includes("DISLEKSI");
 
   useEffect(() => {
     if (!session) return;
@@ -236,7 +238,6 @@ export default function page() {
       <Whiteboard
         pause={pause}
         isfastTest={true}
-        isPrimaryStudent={isPrimaryStudent}
         controlData={controlData}
         setControlData={setControlData}
         readingStatus={readingStatus}
@@ -251,6 +252,12 @@ export default function page() {
           article={controlData.selectedData as any}
           variant="FASTREADING"
           readingStatus={(v) => setReadingStatus(v)}
+          className={
+            isPrimaryStudent
+              ? "!font-tttkbDikTemelAbece font-extrabold "
+              : "font-verdana"
+          }
+          introTest={introTest}
         />
       </Whiteboard>
     );
@@ -317,7 +324,6 @@ export default function page() {
     return (
       <Whiteboard
         pause={pause}
-        isPrimaryStudent={isPrimaryStudent}
         isfastTest={true}
         controlData={controlData}
         setControlData={setControlData}
@@ -334,6 +340,11 @@ export default function page() {
           article={controlData.selectedData as any}
           readingStatus={(v) => setReadingStatus(v)}
           introTest={introTest}
+          className={
+            isPrimaryStudent
+              ? "!font-tttkbDikTemelAbece font-extrabold "
+              : "font-verdana"
+          }
         />
       </Whiteboard>
     );
