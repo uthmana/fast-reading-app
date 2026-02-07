@@ -48,7 +48,15 @@ export default function Lesson({
               {currentLesson?.LessonExercise?.map(
                 (lesson: any, idx: number) => {
                   const isDone = lesson.isDone;
-                  const linkPath = `/ogrenci${lesson.pathName}?lessonId=${currentLesson.id}&exerciseId=${lesson.id}&duration=${lesson.minDuration}&order=${currentLesson.order}`;
+
+                  const payload = {
+                    lessonId: currentLesson.id,
+                    exerciseId: lesson.id,
+                    duration: lesson.minDuration,
+                    order: currentLesson.order,
+                  };
+                  const encoded = btoa(JSON.stringify(payload));
+                  const linkPath = `/ogrenci${lesson.pathName}?q=${encoded}`;
                   const isStudent = session?.user?.role === "STUDENT";
                   const unlocked = isStudent ? !currentLesson.isLocked : true;
                   const linkAllowed = unlocked && !isDone;
@@ -111,7 +119,7 @@ export default function Lesson({
                           onClick={() => {
                             if (!unlocked) {
                               alert(
-                                "Bu egzersiz kilitli. Önce atanan dersi tamamlayın."
+                                "Bu egzersiz kilitli. Önce atanan dersi tamamlayın.",
                               );
                             } else if (isDone) {
                               alert("Bu egzersizi zaten tamamladınız.");
@@ -162,7 +170,7 @@ export default function Lesson({
                       ></div>
                     </li>
                   );
-                }
+                },
               )}
             </ul>
           </div>

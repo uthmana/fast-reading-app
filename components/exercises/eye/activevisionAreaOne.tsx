@@ -2,8 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import Button from "@/components/button/button";
-import { MdPauseCircle } from "react-icons/md";
 import { speedMap } from "@/utils/constants";
 
 type VisualFieldTrainerProps = {
@@ -14,11 +12,13 @@ type VisualFieldTrainerProps = {
   };
   pathname: string;
   onFinishTest?: (v: any) => void;
+  pause?: boolean;
 };
 
 export default function VisualFieldTrainer({
   controls,
   onFinishTest,
+  pause = false,
 }: VisualFieldTrainerProps) {
   // Range-controlled values
   const frame = controls?.frame ?? 8; // default frame 8
@@ -62,10 +62,12 @@ export default function VisualFieldTrainer({
     return () => stopCycling();
   }, [grid, speedMs]);
 
-  const handlePause = () => {
-    stopCycling();
-    onFinishTest?.(null);
-  };
+  useEffect(() => {
+    if (pause) {
+      stopCycling();
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest, stopCycling]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -99,20 +101,13 @@ export default function VisualFieldTrainer({
               >
                 {num}
               </motion.div>
-            ))
+            )),
           )}
         </div>
 
         {/* Center Dot */}
         <div className="absolute w-2 h-2 bg-black rounded-full"></div>
       </div>
-
-      {/* Pause Button (same style as your EyeMuscleDevelopment) */}
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute right-1 -bottom-1 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

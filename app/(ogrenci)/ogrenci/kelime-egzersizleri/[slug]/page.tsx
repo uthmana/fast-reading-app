@@ -4,29 +4,23 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import RenderExercise from "@/components/exercises";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { menuItems } from "@/app/routes";
 import { fetchData } from "@/utils/fetchData";
 import { useSession } from "next-auth/react";
 import { ExerciseDescription } from "@/utils/constants";
-
-const getRandomWords = (arr: string[], count: number) => {
-  const shuffled = [...arr].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
-};
+import { getTestControls } from "@/utils/helpers";
+import { useDecodeQuery } from "@/utils/hooks";
 
 export default function page() {
   const { data: session } = useSession();
   const queryParams = useParams();
   const pathname: any = queryParams.slug;
   const searchParams = useSearchParams();
-  const lessonParams = searchParams.get("lessonId");
-  const durationParams = searchParams.get("duration");
-  const exerciseParams = searchParams.get("exerciseId");
-  const orderParams = searchParams.get("order");
-  const isPrimaryStudent =
-    session?.user?.student?.studyGroup?.includes("ILKOKUL");
+  const queryParamsEncoded = searchParams.get("q");
+  const { lessonParams, exerciseParams, durationParams, orderParams } =
+    useDecodeQuery(queryParamsEncoded);
 
   const [pause, setPause] = useState(false);
 
@@ -40,8 +34,21 @@ export default function page() {
     wordList: [] as string[],
   });
 
+  useEffect(() => {
+    if (!session?.user?.student || (!orderParams && !exerciseParams)) return;
+    const studyGroup = session.user.student.studyGroup || "GENEL";
+    const { level, wordsPerFrame } = getTestControls(orderParams, studyGroup);
+    if (level || wordsPerFrame) {
+      setControlData((prev: any) => ({
+        ...prev,
+        ...(level && { level: Number(level) }),
+        ...(wordsPerFrame && { wordsPerFrame }),
+      }));
+    }
+  }, [session, orderParams, exerciseParams]);
+
   const currentMenu = menuItems.filter((m) =>
-    m.subMenu?.some((s) => s.link.includes(pathname))
+    m.subMenu?.some((s) => s.link.includes(pathname)),
   );
 
   const lessonData = {
@@ -50,7 +57,10 @@ export default function page() {
     order: orderParams,
   } as any;
 
-  if (!currentMenu.length) {
+  if (
+    !currentMenu.length ||
+    (queryParamsEncoded && !lessonParams && !exerciseParams)
+  ) {
     return <NotFound />;
   }
 
@@ -61,7 +71,7 @@ export default function page() {
       correct: number;
       durationSec: number;
       variant: string;
-    } | null
+    } | null,
   ) => {
     if (!val) {
       setPause(!pause);
@@ -106,8 +116,8 @@ export default function page() {
 
   return (
     <Whiteboard
-      isPrimaryStudent={isPrimaryStudent}
       pause={pause}
+      onPause={() => setPause(!pause)}
       controlData={controlData}
       setControlData={setControlData}
       lessonData={lessonData}
@@ -115,6 +125,7 @@ export default function page() {
       description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
     >
       <RenderExercise
+        pause={pause}
         pathname={pathname}
         controls={controlData}
         onFinishTest={onFinishTest}

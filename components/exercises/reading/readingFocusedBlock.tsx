@@ -1,15 +1,14 @@
 "use client";
 
-import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
 import React, { useEffect, useRef, useState } from "react";
-
-import { MdPauseCircle } from "react-icons/md";
 
 export default function ReadingFocusedBlock({
   article,
   onFinishTest,
   controls,
+  className,
+  pause = false,
 }: {
   article: { id: string; title: string; description: string; tests: any };
   onFinishTest: (
@@ -18,7 +17,7 @@ export default function ReadingFocusedBlock({
       correct: number;
       counter: number;
       variant: string;
-    } | null
+    } | null,
   ) => void;
   controls: {
     categorySelect: string;
@@ -27,6 +26,8 @@ export default function ReadingFocusedBlock({
     level: number;
     wordsPerFrame: number;
   };
+  className?: string;
+  pause?: boolean;
 }) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -81,14 +82,16 @@ export default function ReadingFocusedBlock({
     startInterval(activeWordIndex, speedMap[level]);
   }, [level]);
 
-  const handlePause = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
+  useEffect(() => {
+    if (pause) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+      setRunning(false);
+      onFinishTest?.(null);
     }
-    setRunning(false);
-    onFinishTest?.(null);
-  };
+  }, [pause, setRunning, onFinishTest]);
 
   // 🔹 Get the current highlighted frame as a single string
   const highlightedWords = words
@@ -100,7 +103,7 @@ export default function ReadingFocusedBlock({
   const afterText = words.slice(activeWordIndex + wordsPerFrame).join(" ");
 
   return (
-    <div className="w-full">
+    <div className={`w-full ${className}`}>
       <div className="w-full h-full text-left relative">
         {words.length > 0 ? (
           <div
@@ -116,7 +119,7 @@ export default function ReadingFocusedBlock({
             <span className="opacity-0">{beforeText} </span>
 
             {/* Highlighted section (no gaps) */}
-            <span className="bg-blue-800 text-white rounded-sm">
+            <span className="bg-blue-800 p-1 text-white rounded-sm">
               {highlightedWords}
             </span>
 
@@ -128,12 +131,6 @@ export default function ReadingFocusedBlock({
             Önce Kategori ve Makale seçmeniz gerekiyor
           </p>
         )}
-
-        <Button
-          icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-          className="max-w-fit my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-          onClick={handlePause}
-        />
       </div>
     </div>
   );

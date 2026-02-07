@@ -1,17 +1,14 @@
 import Button from "@/components/button/button";
 import { COLORS } from "@/utils/constants";
 import React, { useEffect, useState, useCallback } from "react";
-import {
-  MdKeyboardArrowLeft,
-  MdKeyboardArrowRight,
-  MdPauseCircle,
-} from "react-icons/md";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function FindTheColor({
   onFinishTest,
   setControlData,
   controls,
   colors = COLORS,
+  pause = false,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
@@ -21,6 +18,7 @@ export default function FindTheColor({
   };
   setControlData: any;
   colors: any;
+  pause?: boolean;
 }) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [currentWord, setCurrentWord] = useState<any>(null);
@@ -41,10 +39,6 @@ export default function FindTheColor({
     playSound("beep", 700);
     setDisplayColor(useRealColor ? random.color : randomWrong);
   }, [colors]);
-
-  const handlePause = () => {
-    onFinishTest?.(null);
-  };
 
   const handleAnswer = useCallback(
     (answer: number) => {
@@ -87,7 +81,7 @@ export default function FindTheColor({
 
       generateNewWord();
     },
-    [controls.resultDisplay, currentWord, displayColor, generateNewWord]
+    [controls.resultDisplay, currentWord, displayColor, generateNewWord],
   );
 
   // auto-show next color based on speed
@@ -127,6 +121,12 @@ export default function FindTheColor({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleAnswer]);
 
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
+
   return (
     <div className="w-full h-full group">
       <div className="w-full h-[calc(100%-60px)] flex items-center justify-center">
@@ -161,12 +161,6 @@ export default function FindTheColor({
           onClick={() => handleAnswer(0)}
         />
       </div>
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }
