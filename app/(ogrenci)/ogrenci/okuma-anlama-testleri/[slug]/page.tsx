@@ -59,6 +59,14 @@ export default function page() {
   } as any;
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    setControlData((prev: any) => ({
+      ...prev,
+      font: localStorage.getItem("font") || "16",
+    }));
+  }, []);
+
+  useEffect(() => {
     if (!controlData.selectedData) return;
     setQuestions(controlData.selectedData?.tests);
   }, [controlData.selectedData, setQuestions]);

@@ -40,6 +40,14 @@ export default function page() {
   });
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+    setControlData((prev: any) => ({
+      ...prev,
+      font: localStorage.getItem("font") || "16",
+    }));
+  }, []);
+
+  useEffect(() => {
     if (!session?.user?.student || (!orderParams && !exerciseParams)) return;
     const studyGroup = session.user.student.studyGroup || "GENEL";
     const { level, wordsPerFrame } = getTestControls(orderParams, studyGroup);

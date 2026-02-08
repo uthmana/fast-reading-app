@@ -122,6 +122,10 @@ export default function ControlBuilder({
         };
       });
     }
+    // persist font change in localStorage
+    if (inputKey === "font") {
+      localStorage.setItem("font", targetValue);
+    }
   };
 
   const handleAsyncList = React.useCallback(

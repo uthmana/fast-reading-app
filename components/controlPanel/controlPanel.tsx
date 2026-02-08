@@ -76,7 +76,7 @@ export default function ControlPanel({
       {isControlItems.length > 0 ? (
         <WoodenFrame
           key={isControlItems.length}
-          className="!min-h-[130px]"
+          className="!min-h-[106px]"
           innerClassName="flex items-center bg-[#064d49] bg-[url('/images/green-paint.jpg')]"
         >
           <ControlBuilder

@@ -6,20 +6,25 @@ import { IoMdLock } from "react-icons/io";
 import LessonNavClient from "./lessonNavClient";
 import { menuItems } from "@/app/routes";
 import InfoSideBar from "../sideBar/infoSideBar";
+import Image from "next/image";
+import Button from "../button/button";
+import LessonCongrats from "./lessonCongrats";
 
 export default function Lesson({
   maxOrder = 40,
   session,
-  currentLesson,
+  lessonData,
   progressSummary,
 }: {
   id?: string;
   maxOrder?: number;
   session: { user: { student: any; role: string } };
-  currentLesson: any;
+  lessonData: { lesson: any; isAllCompleted: boolean } | null;
   progressSummary: any;
 }) {
   const videoItems = menuItems.filter((m) => m.youtubeId !== "");
+  const currentLesson = lessonData?.lesson;
+  const isAllCompleted = lessonData?.isAllCompleted ?? false;
 
   return (
     <div className="w-full px-3 items-start flex flex-col lg:flex-row gap-5">
@@ -29,9 +34,10 @@ export default function Lesson({
         pathname={"/ogrenci/dersler"}
       />
 
-      <LessonBoard
-        key={currentLesson}
-        lessons={
+      <LessonBoard key={currentLesson}>
+        {isAllCompleted ? (
+          <LessonCongrats session={session} />
+        ) : (
           <div className="w-full py-2 lg:pt-3 lg:pb-4">
             <div className="flex flex-wrap gap-3 justify-between mb-7">
               <h1 className="font-semibold text-sm lg:text-xl">
@@ -174,8 +180,8 @@ export default function Lesson({
               )}
             </ul>
           </div>
-        }
-      />
+        )}
+      </LessonBoard>
     </div>
   );
 }
