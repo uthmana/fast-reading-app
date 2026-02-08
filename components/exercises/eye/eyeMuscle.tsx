@@ -1,10 +1,8 @@
 "use client";
 
-import Button from "@/components/button/button";
 import { speedMap } from "@/utils/constants";
 import { useAudioSound } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
-import { MdPauseCircle } from "react-icons/md";
 
 type EyeMuscleProps = {
   controls?: {
@@ -16,12 +14,14 @@ type EyeMuscleProps = {
   };
   objectSize?: number;
   onFinishTest?: (v: any) => void;
+  pause?: boolean;
 };
 
 export default function EyeMuscle({
-  objectSize = 60,
+  objectSize = 68,
   controls,
   onFinishTest,
+  pause = false,
 }: EyeMuscleProps) {
   const [visible, setVisible] = useState(true);
   const [position, setPosition] = useState({ x: "5%", y: 0 });
@@ -32,10 +32,6 @@ export default function EyeMuscle({
   const level = controls?.level || 3;
   const duration = speedMap[level];
   const type = controls?.type || 1;
-
-  const handlePause = () => {
-    if (onFinishTest) onFinishTest(null);
-  };
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -157,6 +153,12 @@ export default function EyeMuscle({
     return () => clearInterval(interval);
   }, [duration, type, objectSize, playSound]);
 
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
+
   return (
     <div
       id="rhythmic-container"
@@ -179,12 +181,6 @@ export default function EyeMuscle({
           }}
         />
       }
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit absolute -right-5 -bottom-7 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

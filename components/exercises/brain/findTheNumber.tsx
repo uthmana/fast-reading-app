@@ -2,7 +2,7 @@ import Button from "@/components/button/button";
 import Countdown from "@/components/countDown/countDown";
 import TextInput from "@/components/formInputs/textInput";
 import React, { useEffect, useState, useCallback } from "react";
-import { MdPauseCircle, MdThumbUp } from "react-icons/md";
+import { MdThumbUp } from "react-icons/md";
 
 const TURKISH_LETTERS = [
   "A",
@@ -40,6 +40,7 @@ export default function FindTheNumber({
   onFinishTest,
   setControlData,
   controls,
+  pause = false,
 }: {
   onFinishTest: (v: any) => void;
   pathname: string;
@@ -49,6 +50,7 @@ export default function FindTheNumber({
     resultDisplay: { right: number; wrong: number; net: number };
   };
   setControlData: any;
+  pause?: boolean;
 }) {
   const [letters, setLetters] = useState<
     { letter: string; top: number; left: number }[]
@@ -132,7 +134,12 @@ export default function FindTheNumber({
   }, [controls.difficultyLevel, controls.level]);
 
   // PAUSE
-  const handlePause = () => onFinishTest?.(null);
+
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
 
   // USER INPUT
   const handleChange = (val: { targetValue: any }) => {
@@ -245,12 +252,6 @@ export default function FindTheNumber({
           />
         </form>
       </div>
-
-      <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit transition-opacity lg:opacity-0 group-hover:opacity-100 absolute right-2 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      />
     </div>
   );
 }

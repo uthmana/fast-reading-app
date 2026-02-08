@@ -5,6 +5,8 @@ import WoodenFrame from "../woodenFrame/woodenFrame";
 import ControlBuilder from "./controlBuilder/controlBuilder";
 import { controlFields } from "./controlBuilder/controlFields";
 import ControlReader from "./controlBuilder/controlReader";
+import Button from "../button/button";
+import { MdPauseCircle } from "react-icons/md";
 
 interface ControlPanelProps {
   className?: string;
@@ -13,6 +15,9 @@ interface ControlPanelProps {
   readingStatus?: any;
   controlData?: any;
   setControlData?: any;
+  lessonData?: { id: string; duration: string; order: string };
+  showPauseButton?: boolean;
+  onPause?: () => void;
 }
 
 export default function ControlPanel({
@@ -22,6 +27,9 @@ export default function ControlPanel({
   readingStatus,
   controlData,
   setControlData,
+  lessonData,
+  showPauseButton,
+  onPause,
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug as any;
@@ -35,7 +43,7 @@ export default function ControlPanel({
       (item) =>
         item.inputKey === "articleSelect" ||
         item.inputKey === "categorySelect" ||
-        (item.inputKey === "font" && isTestSlug)
+        (item.inputKey === "font" && isTestSlug),
     ) || [];
 
   const isControlItems =
@@ -43,7 +51,7 @@ export default function ControlPanel({
       (item) =>
         !isTestSlug &&
         item.inputKey !== "articleSelect" &&
-        item.inputKey !== "categorySelect"
+        item.inputKey !== "categorySelect",
     ) || [];
 
   return (
@@ -52,14 +60,14 @@ export default function ControlPanel({
         <WoodenFrame
           key={isArticleControl.length}
           innerClassName="flex items-center bg-[#064d49] bg-[url('/images/green-paint.jpg')]"
-          className="!min-h-[84px]"
+          className="!min-h-[98px]"
         >
           <ControlBuilder
             controlData={controlData}
             setControlData={setControlData}
             className="flex gap-2 text-black"
             fields={isArticleControl}
-            introTest={introTest}
+            isTest={introTest || lessonData?.id != undefined ? true : false}
             setIsLoading={setIsLoading}
           />
         </WoodenFrame>
@@ -68,7 +76,7 @@ export default function ControlPanel({
       {isControlItems.length > 0 ? (
         <WoodenFrame
           key={isControlItems.length}
-          className="!min-h-[130px]"
+          className="!min-h-[106px]"
           innerClassName="flex items-center bg-[#064d49] bg-[url('/images/green-paint.jpg')]"
         >
           <ControlBuilder
@@ -76,9 +84,16 @@ export default function ControlPanel({
             setControlData={setControlData}
             className="flex gap-2 text-white"
             fields={isControlItems}
-            introTest={introTest}
+            isTest={introTest || lessonData?.id != undefined ? true : false}
             setIsLoading={setIsLoading}
           />
+          {showPauseButton && (
+            <Button
+              icon={<MdPauseCircle className="w-6 h-6 text-white" />}
+              className="!w-fit my-4 ml-3 bg-red-600 hover:bg-red-700 shadow-lg"
+              onClick={onPause}
+            />
+          )}
         </WoodenFrame>
       ) : null}
 

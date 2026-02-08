@@ -23,11 +23,10 @@ export async function GET(req: NextRequest) {
           LessonExercise: true,
         },
       });
-
       if (!lesson) {
         return NextResponse.json(
           { error: "Lesson not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -45,15 +44,21 @@ export async function GET(req: NextRequest) {
       if (!lesson) {
         return NextResponse.json(
           { error: "Lesson not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
+      const isAllCompleted = lesson.every(
+        (item: any) => item.isLocked === false,
+      );
       const filteredLesson = lesson.find(
-        (item: any) => item.order === parseInt(order)
+        (item: any) => item.order === parseInt(order),
       );
 
-      return NextResponse.json(filteredLesson, { status: 200 });
+      return NextResponse.json(
+        { isAllCompleted, lesson: filteredLesson },
+        { status: 200 },
+      );
     }
 
     if (order && !studentId) {
@@ -67,12 +72,12 @@ export async function GET(req: NextRequest) {
       if (!lesson) {
         return NextResponse.json(
           { error: "Lesson not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
       const filteredLesson = lesson.find(
-        (item: any) => item.order === parseInt(order)
+        (item: any) => item.order === parseInt(order),
       );
 
       return NextResponse.json(filteredLesson, { status: 200 });
@@ -94,7 +99,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -188,7 +193,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Lesson already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -210,7 +215,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Lesson does not exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
