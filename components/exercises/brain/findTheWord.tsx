@@ -96,7 +96,7 @@ export default function FindTheWord({
 
       setTimeout(() => generateWords(), 250);
     },
-    [controls.resultDisplay, isSame, generateWords]
+    [controls.resultDisplay, isSame, generateWords],
   );
 
   // On mount
