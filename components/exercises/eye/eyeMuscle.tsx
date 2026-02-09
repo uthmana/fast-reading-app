@@ -18,7 +18,7 @@ type EyeMuscleProps = {
 };
 
 export default function EyeMuscle({
-  objectSize = 60,
+  objectSize = 68,
   controls,
   onFinishTest,
   pause = false,

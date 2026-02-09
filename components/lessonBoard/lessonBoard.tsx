@@ -3,11 +3,11 @@
 import wood_img from "/public/images/wood.jpg";
 
 interface LessonBoardProps {
-  lessons: any;
   className?: string;
+  children?: React.ReactNode;
 }
 
-export default function LessonBoard({ lessons, className }: LessonBoardProps) {
+export default function LessonBoard({ className, children }: LessonBoardProps) {
   return (
     <div className={`flex w-full flex-col ${className}`}>
       <div className="relative w-full overflow-hidden rounded-md border border-gray-400 min-h-[640px] mx-auto mb-7 flex items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]">
@@ -18,8 +18,8 @@ export default function LessonBoard({ lessons, className }: LessonBoardProps) {
         />
 
         <div className="absolute top-[3%] flex flex-col  left-[2%] w-[96%] h-[94%] bg-[#064d49] bg-[url('/images/green-paint.jpg')] bg-no-repeat bg-cover bg-center px-5 py-4 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)] ">
-          <div className="flex gap-4 flex-wrap text-white w-full">
-            {lessons}
+          <div className="flex gap-4 flex-wrap text-white w-full h-full">
+            {children}
           </div>
         </div>
       </div>

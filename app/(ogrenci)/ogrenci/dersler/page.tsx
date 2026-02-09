@@ -16,13 +16,13 @@ export default async function page({ params }: { params: { id: string } }) {
   const [currentLesson, progressSummary] = await Promise.all([
     fetch(
       `${process.env.NEXT_PUBLIC_BASE_PATH}/api/lessons?order=${lessonOrder}&studentId=${session?.user?.student?.id}`,
-      { cache: "no-store" }
+      { cache: "no-store" },
     ).then((r) => r.json()),
     fetch(
       `${process.env.NEXT_PUBLIC_BASE_PATH}/api/progressSummary?studentId=${session?.user?.student?.id}`,
       {
         cache: "no-store",
-      }
+      },
     ).then((r) => r.json()),
   ]);
 
@@ -34,7 +34,7 @@ export default async function page({ params }: { params: { id: string } }) {
     <Lesson
       id={id}
       session={session as any}
-      currentLesson={currentLesson}
+      lessonData={currentLesson}
       progressSummary={progressSummary}
     />
   );
