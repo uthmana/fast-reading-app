@@ -27,6 +27,7 @@ type InputProps = {
   labelClassName?: string;
   handleAsyncList?: (inputKey: string, data: any) => void;
   asyncList?: any;
+  wordList?: string[];
   setIsLoading?: (val: boolean) => void;
 };
 
@@ -53,6 +54,7 @@ function TextInput(props: InputProps) {
     colorList,
     valueMap,
     asyncList,
+    wordList,
     handleAsyncList,
     setIsLoading,
     ...rest
@@ -68,7 +70,7 @@ function TextInput(props: InputProps) {
         if (setIsLoading) setIsLoading(true);
         const res = await asyncList(
           parseInt(value?.value?.toString() || "1"),
-          1
+          1,
         );
         handleAsyncList && handleAsyncList(inputKey, res);
         if (setIsLoading) setIsLoading(false);

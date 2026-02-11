@@ -5,7 +5,6 @@ import Link from "next/link";
 import Button from "@/components/button/button";
 import { MdPlayCircle } from "react-icons/md";
 import YouTubeEmbed from "../youtubeEmbed/youbuteEmbed";
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
 type MenuPropsTypes = {
@@ -22,10 +21,6 @@ export default function ExerciseDetail({
   menuItems: MenuPropsTypes[];
 }) {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const isPrimaryStudent =
-    session?.user?.student?.studyGroup?.includes("ILKOKUL");
-
   const menu = menuItems.find((item) => item.link === pathname);
   const startLink = menu?.subMenu?.[1]?.link || "";
 
@@ -44,13 +39,7 @@ export default function ExerciseDetail({
           onLoad={() => console.log("iframe loaded")}
         />
       ) : null}
-      <div
-        className={`px-4 ${
-          isPrimaryStudent
-            ? "font-tttkbDikTemelAbece font-semibold text-lg"
-            : ""
-        } `}
-      >
+      <div className={`px-4 `}>
         <h1 className="my-5 text-2xl font-bold capitalize"> {menu?.name} </h1>
         <p className="mb-8">{menu?.description}</p>
         <Link className="block max-w-[170px]" href={startLink}>

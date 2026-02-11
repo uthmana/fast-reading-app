@@ -50,6 +50,7 @@ const config: Config = {
         oswald: ["var(--font-oswald)", "sans-serif"],
         roboto: ["var(--font-roboto)", "sans-serif"],
         tttkbDikTemelAbece: ["TttkbDikTemelAbece", "sans-serif"],
+        verdana: ["verdana", "sans-serif"],
       },
     },
   },
