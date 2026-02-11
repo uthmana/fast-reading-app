@@ -27,15 +27,14 @@ export default function LineLengthView({
   const [flipping, setFlipping] = useState(false);
   const distance =
     controls?.distance && controls?.distance > 1
-      ? controls?.distance * 30
+      ? controls?.distance * 40
       : (controls?.distance ?? 1 * 2);
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
   const level = controls?.level || 3;
   const rawSpeed = speedMap[level];
   const pool = controls?.wordList;
-  const containerRef = useRef<HTMLDivElement>(null);
-  const wordRef = useRef<HTMLDivElement>(null);
+
   const intervalMs = useMemo(() => {
     let ms =
       typeof rawSpeed === "number"
@@ -56,44 +55,27 @@ export default function LineLengthView({
   }, [controls?.wordList]);
 
   useEffect(() => {
+    setFlipping(true);
+    const t = setTimeout(() => setFlipping(false), 900);
+    return () => clearTimeout(t);
+  }, [letterCount]);
+
+  useEffect(() => {
     const intv = setInterval(() => {
       setWord(pickWord());
 
-      if (!scroll) {
-        directionRef.current = 1; // optional: reset direction
-        setYOffset(0);
-        return;
+      if (scroll) {
+        setYOffset((prev) => {
+          let y = prev + 10 * directionRef.current;
+          if (y > 80) directionRef.current = -1;
+          if (y < -80) directionRef.current = 1;
+          return y;
+        });
       }
-
-      const container = containerRef.current;
-      const wordEl = wordRef.current;
-      if (!container || !wordEl) return;
-
-      const containerH = container.clientHeight;
-      const wordH = wordEl.clientHeight;
-
-      const topLimit = -(containerH / 2) + wordH / 2;
-      const bottomLimit = containerH / 2 - wordH / 2;
-
-      setYOffset((prev) => {
-        let next = prev + 10 * directionRef.current;
-
-        if (next >= bottomLimit) {
-          directionRef.current = -1;
-          next = bottomLimit;
-        }
-
-        if (next <= topLimit) {
-          directionRef.current = 1;
-          next = topLimit;
-        }
-
-        return next;
-      });
     }, intervalMs);
 
     return () => clearInterval(intv);
-  }, [scroll, intervalMs]);
+  }, [intervalMs, scroll, controls?.wordList]);
 
   useEffect(() => {
     if (pause) {
@@ -102,10 +84,7 @@ export default function LineLengthView({
   }, [pause, onFinishTest]);
 
   return (
-    <div
-      ref={containerRef}
-      className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden"
-    >
+    <div className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden">
       {/* CENTER SPLIT LINE */}
       <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
       {flipping && (
@@ -140,7 +119,6 @@ export default function LineLengthView({
       {/* LEFT SIDE WORD */}
       <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-end">
         <div
-          ref={wordRef}
           className="text-2xl font-light text-black"
           style={{
             transform: `translateX(calc(-50% - ${distance}px)) translateY(${yOffset}px)`,

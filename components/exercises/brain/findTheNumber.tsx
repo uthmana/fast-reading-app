@@ -3,6 +3,7 @@ import Countdown from "@/components/countDown/countDown";
 import TextInput from "@/components/formInputs/textInput";
 import React, { useEffect, useState, useCallback } from "react";
 import { MdThumbUp } from "react-icons/md";
+import { playSound } from "../../../utils/playsound";
 
 const TURKISH_LETTERS = [
   "A",
@@ -130,7 +131,8 @@ export default function FindTheNumber({
     setCountValue(speedMap[controls.level || 1] || 15);
     setStart(false);
     setTimeout(() => setStart(true), 50);
-    playSound("beep", 700);
+    //playSound("beep", 700);
+    //playSound("transition");
   }, [controls.difficultyLevel, controls.level]);
 
   // PAUSE
@@ -169,7 +171,7 @@ export default function FindTheNumber({
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (!userAnswer) return;
-    playSound("punch");
+    //playSound("punch");
     const correctCount = letters.filter(
       (l) => l.letter === targetLetter,
     ).length;
@@ -177,7 +179,7 @@ export default function FindTheNumber({
     const { right, wrong } = controls.resultDisplay;
 
     if (parseInt(userAnswer) === correctCount) {
-      playSound("truepunch");
+      playSound("true");
       setControlData({
         ...controls,
         resultDisplay: {
@@ -187,7 +189,7 @@ export default function FindTheNumber({
         },
       });
     } else {
-      playSound("falsepunch");
+      playSound("false");
       setControlData({
         ...controls,
         resultDisplay: {
@@ -256,64 +258,58 @@ export default function FindTheNumber({
   );
 }
 
-function playSound(
-  type: "beep" | "punch" | "truepunch" | "falsepunch",
-  frequency: number = 500,
-) {
-  const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
+// function playSound(
+//   type: "beep" | "punch" | "truepunch" | "falsepunch",
+//   frequency: number = 500,
+// ) {
+//   const ctx = new AudioContext();
+//   const osc = ctx.createOscillator();
+//   const gain = ctx.createGain();
 
-  osc.type = "square";
+//   osc.type = "square";
 
-  if (type === "beep") {
-    // Simple beep
-    osc.frequency.value = frequency;
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  }
+//   if (type === "beep") {
+//     // Simple beep
+//     osc.frequency.value = frequency;
+//     gain.gain.setValueAtTime(0.2, ctx.currentTime);
+//     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+//     osc.start();
+//     osc.stop(ctx.currentTime + 0.05);
+//   }
 
-  if (type === "punch") {
-    // Punch SFX: quick downward pitch drop + stronger attack
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
+//   if (type === "punch") {
+//     // Punch SFX: quick downward pitch drop + stronger attack
+//     osc.frequency.setValueAtTime(800, ctx.currentTime);
+//     osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
 
-    gain.gain.setValueAtTime(0.6, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+//     gain.gain.setValueAtTime(0.6, ctx.currentTime);
+//     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.12);
-  }
-  // True SFX
-  if (type === "truepunch") {
-    // True SFX: quick upward chirp (positive feedback)
-    osc.type = "sine";
+//     osc.start();
+//     osc.stop(ctx.currentTime + 0.12);
+//   }
 
-    osc.frequency.setValueAtTime(600, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.08);
+//   if (type === "truepunch") {
+//     // Simple beep
+//     osc.frequency.value = frequency;
+//     gain.gain.setValueAtTime(0.2, ctx.currentTime);
+//     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+//     osc.start();
+//     osc.stop(ctx.currentTime + 0.05);
+//   }
 
-    gain.gain.setValueAtTime(0.5, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
+//   if (type === "falsepunch") {
+//     // Punch SFX: quick downward pitch drop + stronger attack
+//     osc.frequency.setValueAtTime(800, ctx.currentTime);
+//     osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
 
-    osc.start();
-    osc.stop(ctx.currentTime + 0.1);
-  }
-  if (type === "falsepunch") {
-    // False SFX: downward buzz (negative feedback)
-    osc.type = "square";
+//     gain.gain.setValueAtTime(0.6, ctx.currentTime);
+//     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
 
-    osc.frequency.setValueAtTime(300, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(90, ctx.currentTime + 0.12);
+//     osc.start();
+//     osc.stop(ctx.currentTime + 0.12);
+//   }
 
-    gain.gain.setValueAtTime(0.4, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.14);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.14);
-  }
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-}
+//   osc.connect(gain);
+//   gain.connect(ctx.destination);
+// }

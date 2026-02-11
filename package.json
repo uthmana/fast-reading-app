@@ -10,7 +10,9 @@
     "migrate:dev": "npx prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
     "db:push": "npx prisma db push",
-    "db:seed": "npx prisma db seed"
+    "db:seed": "npx prisma db seed",
+    "build:full": "npx prisma generate && npx prisma migrate deploy && npx prisma db seed && next build",
+    "dev:full": "npx prisma generate && npx prisma migrate dev && npx prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
