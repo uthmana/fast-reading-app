@@ -2,6 +2,7 @@ import Button from "@/components/button/button";
 import { letterWords } from "@/utils/constants";
 import React, { useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { playSound } from "@/utils/playsound";
 
 export default function FindTheWord({
   controls,
@@ -46,7 +47,6 @@ export default function FindTheWord({
         return words[Math.floor(Math.random() * words.length)];
       });
     }
-    playSound("beep", 700);
     setDisplayWords(generated);
     setIsSame(same);
     setSelectedAnswer(null);
@@ -64,16 +64,23 @@ export default function FindTheWord({
     });
   };
 
+  const mapSound = (answerbutton: number, correctvalue: number) => {
+    if (
+      (answerbutton === 1 && correctvalue === 1) ||
+      (answerbutton === 0 && correctvalue === 0)
+    ) {
+      playSound("true");
+    } else {
+      playSound("false");
+    }
+  };
+
   const handleAnswer = useCallback(
     (answer: number) => {
       setSelectedAnswer(answer);
-      if (answer === 1) {
-        playSound("punch");
-      } else {
-        playSound("beep", 1000);
-      }
       const { right, wrong } = controls.resultDisplay;
       const correctValue = isSame ? 1 : 0;
+      mapSound(answer, correctValue);
 
       if (answer === correctValue) {
         setControlData({
@@ -157,36 +164,4 @@ export default function FindTheWord({
       </div>
     </div>
   );
-}
-
-function playSound(type: "beep" | "punch", frequency: number = 500) {
-  const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-
-  osc.type = "square";
-
-  if (type === "beep") {
-    // Simple beep
-    osc.frequency.value = frequency;
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  }
-
-  if (type === "punch") {
-    // Punch SFX: quick downward pitch drop + stronger attack
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
-
-    gain.gain.setValueAtTime(0.6, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.12);
-  }
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
 }

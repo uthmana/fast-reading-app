@@ -152,7 +152,7 @@ export const controlFields: Record<string, any[]> = {
       value: { key: "distance", type: "number", value: 1 },
       name: "Merkeze Uzaklık",
       min: "1",
-      max: "10",
+      max: "60",
       required: false,
       description: "İki kelimenin merkeze uzaklığı",
       styleClass: "!mb-0",

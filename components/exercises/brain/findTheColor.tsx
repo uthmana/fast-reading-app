@@ -1,5 +1,6 @@
 import Button from "@/components/button/button";
 import { COLORS } from "@/utils/constants";
+import { playSound } from "@/utils/playsound";
 import React, { useEffect, useState, useCallback } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
@@ -36,23 +37,29 @@ export default function FindTheColor({
     const randomWrong = colors[Math.floor(Math.random() * colors.length)].color;
 
     setCurrentWord(random);
-    playSound("beep", 700);
+    //playSound("beep", 700);
     setDisplayColor(useRealColor ? random.color : randomWrong);
   }, [colors]);
+
+  const mapSound = (answerbutton: number, correctvalue: number) => {
+    if (
+      (answerbutton === 1 && correctvalue === 1) ||
+      (answerbutton === 0 && correctvalue === 0)
+    ) {
+      playSound("true");
+    } else {
+      playSound("false");
+    }
+  };
 
   const handleAnswer = useCallback(
     (answer: number) => {
       setSelectedAnswer(answer);
       setAnsweredThisRound(true);
-      if (answer === 1) {
-        playSound("punch");
-      } else {
-        playSound("beep", 1000);
-      }
       const isCorrect = displayColor === currentWord?.color;
       const correctAnswerValue = isCorrect ? 1 : 0;
-
       const { right, wrong } = controls.resultDisplay;
+      mapSound(answer, correctAnswerValue);
 
       if (answer === correctAnswerValue) {
         setControlData({
@@ -163,36 +170,4 @@ export default function FindTheColor({
       </div>
     </div>
   );
-}
-
-function playSound(type: "beep" | "punch", frequency: number = 500) {
-  const ctx = new AudioContext();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-
-  osc.type = "square";
-
-  if (type === "beep") {
-    // Simple beep
-    osc.frequency.value = frequency;
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
-    osc.start();
-    osc.stop(ctx.currentTime + 0.05);
-  }
-
-  if (type === "punch") {
-    // Punch SFX: quick downward pitch drop + stronger attack
-    osc.frequency.setValueAtTime(800, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(80, ctx.currentTime + 0.1);
-
-    gain.gain.setValueAtTime(0.6, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
-
-    osc.start();
-    osc.stop(ctx.currentTime + 0.12);
-  }
-
-  osc.connect(gain);
-  gain.connect(ctx.destination);
 }
