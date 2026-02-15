@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, ReactElement, useEffect } from "react";
+import Link from "next/link";
+import { useState, ReactElement, useEffect, use } from "react";
 import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import ControlPanel from "../controlPanel/controlPanel";
-import Link from "next/link";
 import CountDown from "../countDown/countDown";
 import BookLoader from "./bookLoader";
 import WoodenFrame from "../woodenFrame/woodenFrame";
@@ -20,6 +20,7 @@ interface WhiteboardProps {
   saveProgress?: () => void;
   lessonData?: { id: string; duration: string; order: string };
   onPause?: () => void;
+  countDownDuration?: (v: number) => void;
 }
 
 export default function Whiteboard({
@@ -33,15 +34,25 @@ export default function Whiteboard({
   saveProgress,
   children,
   onPause,
+  countDownDuration,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [countDownValue, setCountDownValue] = useState(
+    parseInt(lessonData?.duration || "0"),
+  );
 
   useEffect(() => {
     if (pause !== undefined) {
       setIsPlaying(pause ? !isPlaying : pause);
     }
-  }, [pause]);
+  }, [pause, lessonData?.duration]);
+
+  useEffect(() => {
+    if (countDownDuration) {
+      countDownDuration(countDownValue);
+    }
+  }, [countDownValue, countDownDuration]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -58,8 +69,9 @@ export default function Whiteboard({
         {lessonData?.duration ? (
           <CountDown
             className="absolute right-3 top-3"
-            initial={parseInt(lessonData?.duration)}
+            initial={countDownValue}
             start={isPlaying}
+            onTick={(v) => setCountDownValue(v)}
           />
         ) : null}
 
@@ -104,8 +116,9 @@ export default function Whiteboard({
             {lessonData?.duration ? (
               <CountDown
                 className="absolute right-3 top-3"
-                initial={parseInt(lessonData?.duration)}
+                initial={countDownValue}
                 start={isPlaying}
+                onTick={(v) => setCountDownValue(v)}
                 onFinish={saveProgress}
               />
             ) : null}

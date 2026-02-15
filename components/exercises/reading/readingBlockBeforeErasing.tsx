@@ -35,6 +35,7 @@ export default function ReadingBlockBeforeErasing({
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
   const { font, level, wordsPerFrame } = controls;
+  const finishedRef = useRef(false);
 
   const words = article?.description
     ? article.description.trim().split(/\s+/)
@@ -49,19 +50,24 @@ export default function ReadingBlockBeforeErasing({
         if (next >= words.length) {
           clearInterval(intervalRef.current!);
           intervalRef.current = null;
-          setRunning(false);
-          onFinishTest?.({
-            wpm: 0,
-            correct: 0,
-            counter: words.length,
-            variant: "fast-reading",
-          });
+          finishedRef.current = true;
           return prev;
         }
         return next;
       });
     }, speed);
   };
+
+  useEffect(() => {
+    if (!finishedRef.current) return;
+    setRunning(false);
+    onFinishTest?.({
+      wpm: 0,
+      correct: 0,
+      counter: words.length,
+      variant: "fast-reading",
+    });
+  }, [finishedRef.current]);
 
   useEffect(() => {
     if (!words.length) return;
@@ -89,7 +95,12 @@ export default function ReadingBlockBeforeErasing({
         intervalRef.current = null;
       }
       setRunning(false);
-      onFinishTest?.(null);
+      onFinishTest?.({
+        wpm: 0,
+        correct: 0,
+        counter: words.length,
+        variant: "fast-reading",
+      });
     }
   }, [pause, setRunning, onFinishTest]);
 
