@@ -67,7 +67,8 @@ export default function ControlPanel({
             setControlData={setControlData}
             className="flex gap-2 text-black"
             fields={isArticleControl}
-            isTest={introTest || lessonData?.id != undefined ? true : false}
+            //isTest={introTest || lessonData?.id != undefined ? true : false}
+            isTest={introTest || isTestSlug ? true : false}
             setIsLoading={setIsLoading}
           />
         </WoodenFrame>

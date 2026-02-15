@@ -9,6 +9,7 @@ export default function Countdown({
   className = "",
   text = "sec.",
   showCheckmark = true,
+  onTick,
 }: {
   initial: number;
   start: boolean;
@@ -16,6 +17,7 @@ export default function Countdown({
   className?: string;
   text?: string;
   showCheckmark?: boolean;
+  onTick?: (v: number) => void;
 }) {
   const [time, setTime] = useState(initial);
   const finishedRef = useRef(false);
@@ -42,6 +44,10 @@ export default function Countdown({
       onFinish && onFinish();
     }
   }, [time, onFinish]);
+
+  useEffect(() => {
+    onTick && onTick(time);
+  }, [time]);
 
   return (
     <div
