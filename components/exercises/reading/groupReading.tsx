@@ -33,7 +33,7 @@ export default function GroupReading({
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
-
+  const finishedRef = useRef(false);
   const { font, level, wordsPerFrame } = controls;
 
   const words = article?.description
@@ -49,19 +49,24 @@ export default function GroupReading({
         if (next >= words.length) {
           clearInterval(intervalRef.current!);
           intervalRef.current = null;
-          setRunning(false);
-          onFinishTest?.({
-            wpm: 0,
-            correct: 0,
-            counter: words.length,
-            variant: "fast-reading",
-          });
+          finishedRef.current = true;
           return prev;
         }
         return next;
       });
     }, speed);
   };
+
+  useEffect(() => {
+    if (!finishedRef.current) return;
+    setRunning(false);
+    onFinishTest?.({
+      wpm: 0,
+      correct: 0,
+      counter: words.length,
+      variant: "fast-reading",
+    });
+  }, [finishedRef.current]);
 
   useEffect(() => {
     if (!words.length) return;
@@ -89,7 +94,12 @@ export default function GroupReading({
         intervalRef.current = null;
       }
       setRunning(false);
-      onFinishTest?.(null);
+      onFinishTest?.({
+        wpm: 0,
+        correct: 0,
+        counter: words.length,
+        variant: "fast-reading",
+      });
     }
   }, [pause, setRunning, onFinishTest]);
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { motion } from "framer-motion";
 import { speedMap } from "@/utils/constants";
 
 type LineLengthViewProps = {
@@ -21,13 +20,11 @@ export default function LineLengthView({
   onFinishTest,
   pause = false,
 }: LineLengthViewProps) {
-  const directionRef = useRef(1);
   const [word, setWord] = useState("...");
   const [yOffset, setYOffset] = useState(0);
-  const [flipping, setFlipping] = useState(false);
   const distance =
     controls?.distance && controls?.distance > 1
-      ? controls?.distance * 30
+      ? controls?.distance * 10
       : (controls?.distance ?? 1 * 2);
   const letterCount = controls?.letterCount || 3;
   const scroll = controls?.scroll ?? false;
@@ -56,11 +53,29 @@ export default function LineLengthView({
   }, [controls?.wordList]);
 
   useEffect(() => {
+    if (!scroll) {
+      setYOffset(0);
+      return;
+    }
+
+    const container = containerRef.current;
+    const wordEl = wordRef.current;
+    if (!container || !wordEl) return;
+
+    const containerH = container.clientHeight;
+    const wordH = wordEl.clientHeight;
+
+    const topLimit = -(containerH / 2) + wordH / 2;
+
+    // ✅ Force start from top
+    setYOffset(topLimit);
+  }, [scroll]);
+
+  useEffect(() => {
     const intv = setInterval(() => {
       setWord(pickWord());
 
       if (!scroll) {
-        directionRef.current = 1; // optional: reset direction
         setYOffset(0);
         return;
       }
@@ -75,17 +90,14 @@ export default function LineLengthView({
       const topLimit = -(containerH / 2) + wordH / 2;
       const bottomLimit = containerH / 2 - wordH / 2;
 
+      const step = 10;
+
       setYOffset((prev) => {
-        let next = prev + 10 * directionRef.current;
+        let next = prev + step;
 
+        // If reached bottom → restart from top
         if (next >= bottomLimit) {
-          directionRef.current = -1;
-          next = bottomLimit;
-        }
-
-        if (next <= topLimit) {
-          directionRef.current = 1;
-          next = topLimit;
+          return topLimit;
         }
 
         return next;
@@ -93,7 +105,7 @@ export default function LineLengthView({
     }, intervalMs);
 
     return () => clearInterval(intv);
-  }, [scroll, intervalMs]);
+  }, [intervalMs, scroll, controls?.wordList, letterCount]);
 
   useEffect(() => {
     if (pause) {
@@ -106,37 +118,6 @@ export default function LineLengthView({
       ref={containerRef}
       className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden"
     >
-      {/* CENTER SPLIT LINE */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
-      {flipping && (
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex pointer-events-none z-40">
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 0.9 }}
-            style={{
-              width: 110,
-              height: 260,
-              overflow: "hidden",
-              borderRadius: "6px 0 0 6px",
-            }}
-          ></motion.div>
-
-          {/* RIGHT HALF */}
-          <motion.div
-            initial={{ scaleX: 0, opacity: 0 }}
-            animate={{ scaleX: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
-            transition={{ duration: 0.9 }}
-            style={{
-              width: 110,
-              height: 260,
-              overflow: "hidden",
-              borderRadius: "0 6px 6px 0",
-            }}
-          ></motion.div>
-        </div>
-      )}
-
       {/* LEFT SIDE WORD */}
       <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-end">
         <div
@@ -150,6 +131,9 @@ export default function LineLengthView({
           {word}
         </div>
       </div>
+
+      {/* CENTER SPLIT LINE */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
 
       {/* RIGHT SIDE WORD */}
       <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-left">

@@ -37,7 +37,7 @@ export default function FindTheColor({
     const randomWrong = colors[Math.floor(Math.random() * colors.length)].color;
 
     setCurrentWord(random);
-    //playSound("transition");
+    //playSound("beep", 700);
     setDisplayColor(useRealColor ? random.color : randomWrong);
   }, [colors]);
 
@@ -56,11 +56,9 @@ export default function FindTheColor({
     (answer: number) => {
       setSelectedAnswer(answer);
       setAnsweredThisRound(true);
-
       const isCorrect = displayColor === currentWord?.color;
 
       const correctAnswerValue = isCorrect ? 1 : 0;
-
       const { right, wrong } = controls.resultDisplay;
       mapSound(answer, correctAnswerValue);
       if (answer === correctAnswerValue) {

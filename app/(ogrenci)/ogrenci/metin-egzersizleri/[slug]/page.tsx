@@ -12,6 +12,7 @@ import { useSession } from "next-auth/react";
 import { ExerciseDescription } from "@/utils/constants";
 import { getTestControls } from "@/utils/helpers";
 import { useDecodeQuery } from "@/utils/hooks";
+import ControlPanelGuideSelectNew from "@/components/controlPanelGuide/controlPanelGuideSelectNew";
 
 export default function page() {
   const { data: session } = useSession();
@@ -28,6 +29,10 @@ export default function page() {
     session?.user?.student?.studyGroup?.includes("DISLEKSI");
 
   const [pause, setPause] = useState(false);
+  const [countDownDuration, setCountDownDuration] = useState(0);
+  const [isContinueWithNewExercise, setContinueWithNewExercise] =
+    useState(false);
+
   const [controlData, setControlData] = useState({
     categorySelect: "",
     articleSelect: "",
@@ -85,8 +90,11 @@ export default function page() {
       variant: string;
     } | null,
   ) => {
+    setContinueWithNewExercise(false);
+    if (lessonData?.id && val && val?.counter > 0 && countDownDuration > 0) {
+      setContinueWithNewExercise(true);
+    }
     setPause(!pause);
-    return;
   };
 
   const saveProgress = async () => {
@@ -113,7 +121,14 @@ export default function page() {
       controlData={controlData}
       setControlData={setControlData}
       saveProgress={saveProgress}
-      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      description={
+        isContinueWithNewExercise ? (
+          <ControlPanelGuideSelectNew />
+        ) : (
+          <ControlPanelGuide data={ExerciseDescription[pathname]} />
+        )
+      }
+      countDownDuration={(v: any) => setCountDownDuration(v)}
     >
       <RenderExercise
         pathname={pathname}

@@ -2,7 +2,7 @@ import Button from "@/components/button/button";
 import { letterWords } from "@/utils/constants";
 import React, { useCallback, useEffect, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { playSound } from "../../../utils/playsound";
+import { playSound } from "@/utils/playsound";
 
 export default function FindTheWord({
   controls,
@@ -25,9 +25,10 @@ export default function FindTheWord({
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [displayWords, setDisplayWords] = useState<string[]>([]);
   const [isSame, setIsSame] = useState<boolean>(false);
+
   // Speed = faster with higher level
-  const displayDuration = 4400 / (controls.level || 1); //2200
-  console.log("control ", controls);
+  const displayDuration = 2200 / (controls.level || 1);
+
   // How many words to show based on difficulty level
   const wordCount = Math.min(controls.difficultyLevel + 1, 6);
 
@@ -46,18 +47,13 @@ export default function FindTheWord({
         return words[Math.floor(Math.random() * words.length)];
       });
     }
-    //playSound("beep", 700);
-
-    //playSound("transition");
     setDisplayWords(generated);
     setIsSame(same);
-
     setSelectedAnswer(null);
   }, [words, wordCount]);
 
   const markWrongAnswer = () => {
     const { right, wrong } = controls.resultDisplay;
-    console.log("markWrongAnswer", { right, wrong });
     setControlData({
       ...controls,
       resultDisplay: {
@@ -78,14 +74,14 @@ export default function FindTheWord({
       playSound("false");
     }
   };
+
   const handleAnswer = useCallback(
     (answer: number) => {
       setSelectedAnswer(answer);
-      console.log("Answer:", answer);
       const { right, wrong } = controls.resultDisplay;
       const correctValue = isSame ? 1 : 0;
-      //setIsButtonClicked(true);
       mapSound(answer, correctValue);
+
       if (answer === correctValue) {
         setControlData({
           ...controls,
