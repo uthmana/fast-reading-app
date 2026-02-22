@@ -57,7 +57,6 @@ export default function FindTheColor({
       setSelectedAnswer(answer);
       setAnsweredThisRound(true);
       const isCorrect = displayColor === currentWord?.color;
-
       const correctAnswerValue = isCorrect ? 1 : 0;
       const { right, wrong } = controls.resultDisplay;
       mapSound(answer, correctAnswerValue);
