@@ -38,13 +38,18 @@ export default function ControlBuilder({
   if (!fields || fields.length === 0) return null;
 
   const [formData, setFormData] = useState<any[]>([]);
-  const [newData, setNewData] = useState(controlData);
 
   useEffect(() => {
     let mapped = fields;
     if (controlData) {
       mapped = fields.map((fd: any) => {
         const value = controlData[fd.inputKey];
+
+        const optionId =
+          fd.inputKey === "articleSelect" && controlData?.categorySelect
+            ? controlData?.categorySelect
+            : fd.optionId;
+
         return value !== undefined
           ? {
               ...fd,
@@ -55,6 +60,7 @@ export default function ControlBuilder({
                     ? JSON.stringify(value)
                     : value?.toString(),
               },
+              ...(optionId ? { optionId } : {}),
             }
           : fd;
       });
@@ -96,14 +102,6 @@ export default function ControlBuilder({
       });
     });
 
-    setNewData((prev: any) => {
-      const next = {
-        ...prev,
-        [inputKey]: normalizeValue(targetValue),
-      };
-      return next;
-    });
-
     if (setControlData) {
       setControlData((prev: any) => {
         if (inputKey !== "articleSelect") {
@@ -139,18 +137,9 @@ export default function ControlBuilder({
           return { ...prev, wordList: data };
         });
       }
-
-      setNewData((prev: any) => {
-        if (prev?.wordList === data) return prev;
-        return { ...prev, wordList: data };
-      });
     },
     [setControlData],
   );
-
-  const setAsyncOptions = (val: any) => {
-    //console.log(val);
-  };
 
   return (
     <div className={`w-full ${className}`}>
@@ -212,7 +201,7 @@ export default function ControlBuilder({
               placeholder={field.placeholder}
               options={field.options}
               name={field.name}
-              value={field.articleSelect}
+              value={field.value}
               onChange={handleChange}
               inputKey={field.inputKey}
               styleClass={field.styleClass}
@@ -222,7 +211,6 @@ export default function ControlBuilder({
               optionId={field?.optionId}
               asyncOption={field?.asyncOption}
               asyncOptionById={field?.asyncOptionById}
-              setAsyncOptions={setAsyncOptions}
               setIsLoading={setIsLoading}
             />
           );
