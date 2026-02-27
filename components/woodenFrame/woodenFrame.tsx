@@ -23,7 +23,7 @@ export default function WoodenFrame({
       />
 
       <div
-        className={`absolute  top-2 left-2 w-[calc(100%-16px)] h-[calc(100%-16px)]  bg-no-repeat bg-cover bg-center px-5 py-1 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)] ${innerClassName}`}
+        className={`absolute top-2 left-2 w-[calc(100%-16px)] bg-white h-[calc(100%-16px)]  bg-no-repeat bg-cover bg-center px-5 py-1 z-[2] overflow-y-auto text-gray-800 rounded shadow-[inset_0_4px_10px_rgba(0,0,0,0.25)] ${innerClassName}`}
         style={{
           fontSize: `${font && parseInt(font)}px`,
           lineHeight: `${font && parseInt(font) * 1.5}px`,
