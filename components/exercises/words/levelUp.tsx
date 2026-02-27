@@ -16,6 +16,8 @@ type TachistoProps = {
   };
   onFinishTest?: (val: any) => void;
   pause?: boolean;
+  isLesson?: boolean;
+  saveProgress?: () => void;
 };
 
 export default function LevelUp({
@@ -24,6 +26,8 @@ export default function LevelUp({
   controls,
   onFinishTest,
   pause = false,
+  isLesson = false,
+  saveProgress,
 }: TachistoProps) {
   const [frames, setFrames] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
@@ -117,33 +121,24 @@ export default function LevelUp({
           : acc;
       }, 0);
 
-      const result = {
-        total: frames.length,
-        correct: correct,
-        incorrect: frames.length - correct,
+      if (isLesson) {
+        saveProgress?.();
+      }
+
+      const resultData = {
+        wpf: controls?.wordsPerFrame,
+        durationSec: speedMap[levelRef.current],
+        variant: "FASTVISION",
+        correct: (correct / frames.length) * 100,
+        wpm: calculateReadingSpeed(
+          (controls?.wordsPerFrame || 1) * frames.length,
+          speedMap[levelRef.current],
+        ),
       };
       setIsTesting(false);
       setRunning(false);
-      onFinishTest?.({
-        wpf: controls?.wordsPerFrame,
-        durationSec: speedMap[levelRef.current],
-        variant: "FASTVISION",
-        correct: (result.correct / result.total) * 100,
-        wpm: calculateReadingSpeed(
-          (controls?.wordsPerFrame || 1) * result.total,
-          speedMap[levelRef.current],
-        ),
-      });
-      setResultMessage({
-        wpf: controls?.wordsPerFrame,
-        durationSec: speedMap[levelRef.current],
-        variant: "FASTVISION",
-        correct: (result.correct / result.total) * 100,
-        wpm: calculateReadingSpeed(
-          (controls?.wordsPerFrame || 1) * result.total,
-          speedMap[levelRef.current],
-        ),
-      });
+      onFinishTest?.(resultData);
+      setResultMessage(resultData);
     };
 
     run();
