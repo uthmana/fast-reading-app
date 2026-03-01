@@ -58,16 +58,14 @@ export default function ControlPanel({
     <div className={`flex w-full flex-col ${className}`}>
       {isArticleControl.length > 0 ? (
         <WoodenFrame
-          key={isArticleControl.length}
           innerClassName="flex items-center bg-[#064d49] bg-[url('/images/green-paint.jpg')]"
-          className="!min-h-[98px]"
+          className="!min-h-[78px]"
         >
           <ControlBuilder
             controlData={controlData}
             setControlData={setControlData}
             className="flex gap-2 text-black"
             fields={isArticleControl}
-            //isTest={introTest || lessonData?.id != undefined ? true : false}
             isTest={introTest || isTestSlug ? true : false}
             setIsLoading={setIsLoading}
           />
@@ -76,7 +74,6 @@ export default function ControlPanel({
 
       {isControlItems.length > 0 ? (
         <WoodenFrame
-          key={isControlItems.length}
           className="!min-h-[106px]"
           innerClassName="flex items-center bg-[#064d49] bg-[url('/images/green-paint.jpg')]"
         >

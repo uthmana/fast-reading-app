@@ -63,6 +63,7 @@ export default function page() {
     id: lessonParams,
     duration: durationParams,
     order: orderParams,
+    pathname,
   } as any;
 
   if (
@@ -137,6 +138,8 @@ export default function page() {
         pathname={pathname}
         controls={controlData}
         onFinishTest={onFinishTest}
+        isLesson={!!lessonParams}
+        saveProgress={saveProgress}
       />
     </Whiteboard>
   );
