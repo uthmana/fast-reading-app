@@ -118,6 +118,7 @@ export default function FindTheColor({
 
   // keyboard control
   useEffect(() => {
+    // Commented to be able to push again
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") handleAnswer(1); // correct
       if (e.key === "ArrowRight") handleAnswer(0); // wrong
