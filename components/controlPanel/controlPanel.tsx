@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import WoodenFrame from "../woodenFrame/woodenFrame";
 import ControlBuilder from "./controlBuilder/controlBuilder";
 import { controlFields } from "./controlBuilder/controlFields";
@@ -33,8 +33,7 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug as any;
-  const searchParams = useSearchParams();
-  const introTest = searchParams.get("intro-test");
+
   const isTestSlug =
     pathname === "hizli-okuma-testi" || pathname === "anlama-testi";
 
@@ -66,7 +65,7 @@ export default function ControlPanel({
             setControlData={setControlData}
             className="flex gap-2 text-black"
             fields={isArticleControl}
-            isTest={introTest || isTestSlug ? true : false}
+            isTest={false}
             setIsLoading={setIsLoading}
           />
         </WoodenFrame>
@@ -82,7 +81,7 @@ export default function ControlPanel({
             setControlData={setControlData}
             className="flex gap-2 text-white"
             fields={isControlItems}
-            isTest={introTest || lessonData?.id != undefined ? true : false}
+            isTest={lessonData?.id ? true : false}
             setIsLoading={setIsLoading}
           />
           {showPauseButton && (
