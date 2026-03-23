@@ -58,7 +58,8 @@ export async function GET(req: NextRequest) {
     }
 
     const categories = await prisma.category.findMany({
-      orderBy: { subscriberId: "desc" },
+      // orderBy: { subscriberId: "desc" },
+      orderBy: { title: "asc" },
     });
     return NextResponse.json(categories, { status: 200 });
   } catch (e) {
