@@ -30,8 +30,9 @@ export async function GET(req: NextRequest) {
 
     if (categoryId) {
       const article = await prisma.article.findMany({
-        where: { categoryId: parseInt(categoryId) },
-        orderBy: { subscriberId: "desc" },
+        where: { categoryId: parseInt(categoryId), hasQuestion: true },
+        // orderBy: { subscriberId: "desc"  },
+        orderBy: { title: "asc" },
       });
 
       if (!article) {
