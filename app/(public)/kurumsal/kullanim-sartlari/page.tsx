@@ -1,4 +1,4 @@
-import { contactInfo } from "@/utils/constants";
+import { companyInfo } from "@/utils/constants";
 import React from "react";
 
 export default function TermsOfUsePage() {
@@ -9,17 +9,17 @@ export default function TermsOfUsePage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4">Kullanım Şartları</h1>
           <p className="text-gray-600 text-lg">
-            SeriOku platformunu kullanmadan önce lütfen bu şartları dikkatlice
-            okuyunuz.
+            {companyInfo?.name} platformunu kullanmadan önce lütfen bu şartları
+            dikkatlice okuyunuz.
           </p>
         </div>
 
         {/* Intro */}
         <div className="space-y-4 text-gray-700 mb-10">
           <p>
-            Bu Kullanım Şartları, SeriOku hızlı okuma ve anlama platformuna
-            erişiminiz ve platformu kullanımınız sırasında uymanız gereken
-            kuralları tanımlamaktadır.
+            Bu Kullanım Şartları, {companyInfo?.name} hızlı okuma ve anlama
+            platformuna erişiminiz ve platformu kullanımınız sırasında uymanız
+            gereken kuralları tanımlamaktadır.
           </p>
           <p>
             Platformu kullanarak, aşağıda belirtilen tüm şartları kabul etmiş
@@ -31,10 +31,10 @@ export default function TermsOfUsePage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold mb-4">Hizmetin Kapsamı</h2>
           <p className="text-gray-700">
-            SeriOku; okuma hızı, anlama becerisi ve zihinsel gelişimi
-            destekleyen dijital eğitim içerikleri sunar. Sunulan hizmetler
-            bilgilendirme ve eğitim amaçlıdır; herhangi bir akademik veya
-            mesleki başarı garantisi içermez.
+            {companyInfo?.name}; okuma hızı, anlama becerisi ve zihinsel
+            gelişimi destekleyen dijital eğitim içerikleri sunar. Sunulan
+            hizmetler bilgilendirme ve eğitim amaçlıdır; herhangi bir akademik
+            veya mesleki başarı garantisi içermez.
           </p>
         </div>
 
@@ -50,7 +50,10 @@ export default function TermsOfUsePage() {
               Başka kullanıcıların haklarını ihlal edecek davranışlardan
               kaçınmak
             </li>
-            <li>SeriOku altyapısına zarar verecek girişimlerde bulunmamak</li>
+            <li>
+              {companyInfo?.name} altyapısına zarar verecek girişimlerde
+              bulunmamak
+            </li>
           </ul>
         </div>
 
@@ -58,9 +61,9 @@ export default function TermsOfUsePage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold mb-4">Fikri Mülkiyet Hakları</h2>
           <p className="text-gray-700">
-            SeriOku platformunda yer alan tüm içerikler, yazılımlar, tasarımlar
-            ve materyaller SeriOku’ya aittir veya lisanslı olarak
-            kullanılmaktadır. İzinsiz kopyalanamaz, çoğaltılamaz veya
+            {companyInfo?.name} platformunda yer alan tüm içerikler, yazılımlar,
+            tasarımlar ve materyaller {companyInfo?.name}’a aittir veya lisanslı
+            olarak kullanılmaktadır. İzinsiz kopyalanamaz, çoğaltılamaz veya
             dağıtılamaz.
           </p>
         </div>
@@ -71,9 +74,9 @@ export default function TermsOfUsePage() {
             Sorumluluğun Sınırlandırılması
           </h2>
           <p className="text-gray-700">
-            SeriOku, platformun kesintisiz veya hatasız çalışacağını garanti
-            etmez. Hizmetin kullanımından doğabilecek doğrudan veya dolaylı
-            zararlardan sorumlu tutulamaz.
+            {companyInfo?.name}, platformun kesintisiz veya hatasız çalışacağını
+            garanti etmez. Hizmetin kullanımından doğabilecek doğrudan veya
+            dolaylı zararlardan sorumlu tutulamaz.
           </p>
         </div>
 
@@ -83,9 +86,9 @@ export default function TermsOfUsePage() {
             Hesabın Askıya Alınması
           </h2>
           <p className="text-gray-700">
-            Kullanım şartlarının ihlali durumunda SeriOku, kullanıcı hesabını
-            geçici veya kalıcı olarak askıya alma ya da sonlandırma hakkını
-            saklı tutar.
+            Kullanım şartlarının ihlali durumunda {companyInfo?.name}, kullanıcı
+            hesabını geçici veya kalıcı olarak askıya alma ya da sonlandırma
+            hakkını saklı tutar.
           </p>
         </div>
 
@@ -93,9 +96,9 @@ export default function TermsOfUsePage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold mb-4">Değişiklikler</h2>
           <p className="text-gray-700">
-            SeriOku, kullanım şartlarını önceden bildirimde bulunmaksızın
-            güncelleyebilir. Güncel şartlar platform üzerinden yayımlandığı
-            tarihten itibaren geçerli olur.
+            {companyInfo?.name}, kullanım şartlarını önceden bildirimde
+            bulunmaksızın güncelleyebilir. Güncel şartlar platform üzerinden
+            yayımlandığı tarihten itibaren geçerli olur.
           </p>
         </div>
 
@@ -109,10 +112,10 @@ export default function TermsOfUsePage() {
           <p className="mt-2">
             <strong>E-posta:</strong>{" "}
             <a
-              href={`mailto:${contactInfo.email}`}
+              href={`mailto:${companyInfo.email}`}
               className="text-blue-600 hover:underline"
             >
-              {contactInfo.email}
+              {companyInfo.email}
             </a>
           </p>
         </div>
@@ -120,8 +123,8 @@ export default function TermsOfUsePage() {
         {/* Footer */}
         <div className=" text-gray-600 text-sm">
           <p>
-            SeriOku platformunu kullanmaya devam etmeniz, bu kullanım şartlarını
-            kabul ettiğiniz anlamına gelir.
+            {companyInfo?.name} platformunu kullanmaya devam etmeniz, bu
+            kullanım şartlarını kabul ettiğiniz anlamına gelir.
           </p>
         </div>
       </div>

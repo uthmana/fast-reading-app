@@ -1,6 +1,7 @@
 "use client";
 
 import FormBuilder from "@/components/formBuilder";
+import { companyInfo } from "@/utils/constants";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useState } from "react";
 
@@ -35,7 +36,8 @@ export default function FranchisePage() {
           Okuma Potansiyelinizi Açığa Çıkarın
         </h2>
         <p>
-          SeriOku ile anlayarak daha hızlı okuyun, bilgiyi kalıcı hale getirin.
+          {companyInfo?.name} ile anlayarak daha hızlı okuyun, bilgiyi kalıcı
+          hale getirin.
         </p>
       </div>
       <div className="container  mx-auto px-6 grid gap-12 lg:grid-cols-2">
@@ -43,7 +45,7 @@ export default function FranchisePage() {
           {/* Intro Card */}
           <div className="rounded-lg bg-white px-8 py-5 shadow-sm border border-brand-tertiary-50">
             <h3 className="text-lg font-semibold text-brand-primary-200 mb-3">
-              SeriOku ile Kazanacaklarınız
+              {companyInfo?.name} ile Kazanacaklarınız
             </h3>
             <p className="text-gray-700 text-base">
               Bilimsel hızlı okuma teknikleri ve dijital egzersizlerle okuma
@@ -74,14 +76,16 @@ export default function FranchisePage() {
           {/* Closing Text */}
           <div className="rounded-lg bg-brand-primary-50/10 p-6">
             <p className="text-brand-primary-200 font-medium">
-              Daha hızlı öğren, daha iyi anla ve hedeflerine SeriOku ile ilerle.
+              Daha hızlı öğren, daha iyi anla ve hedeflerine {companyInfo?.name}{" "}
+              ile ilerle.
             </p>
           </div>
         </div>
 
         <div className="space-y-3">
           <h3 className="text-white rounded-lg bg-brand-primary-100 px-6 py-5 shadow-sm tracking-tight border border-brand-tertiary-50 text-lg font-semibold mb-3">
-            SeriOku hakkında detaylı bilgi alın ve eğitime ilk adımı atın
+            {companyInfo?.name} hakkında detaylı bilgi alın ve eğitime ilk adımı
+            atın
           </h3>
 
           <FormBuilder

@@ -2,6 +2,7 @@
 
 import React from "react";
 import BarChart from "../Charts/barChart";
+import { companyInfo } from "@/utils/constants";
 
 export default function ReadingScoreClient({
   formattedAttempts,
@@ -30,7 +31,7 @@ export default function ReadingScoreClient({
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: fastReadingData.categories || [],
               },
@@ -83,7 +84,7 @@ export default function ReadingScoreClient({
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: understandingData.categories || [],
               },

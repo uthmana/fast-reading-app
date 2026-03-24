@@ -7,7 +7,7 @@ import { fetchData } from "@/utils/fetchData";
 import { getInputTypeValue } from "@/utils/helpers";
 import Icon from "@/components/icon/icon";
 import { useSearchParams } from "next/navigation";
-import { contactInfo } from "@/utils/constants";
+import { companyInfo } from "@/utils/constants";
 import YearNow from "@/components/landingPage/yearNow";
 
 type ValuesTypes = {
@@ -100,7 +100,11 @@ export default function LoginClient() {
       <div className="flex-1 h-full flex items-center ">
         <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto p-8">
           <h1 className="text-xl font-bold mb-1 mt-0 text-center">
-            <Icon name="logo" className="h-10 mx-auto" />
+            <Icon
+              name="logo"
+              logoText="Happy-Brains"
+              className="h-10 mx-auto"
+            />
           </h1>
           {isAdmin ? (
             <p className="mb-7 text-base font-medium text-center">
@@ -129,20 +133,20 @@ export default function LoginClient() {
                 href="/"
                 className="text-blue-500 hover:underline opacity-75 hover:opacity-100"
               >
-                🌐 Serioku
+                🌐 {companyInfo?.name}
               </a>
               <a
-                href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
+                href={`tel:${companyInfo?.phone?.replaceAll(" ", "")}`}
                 className="hover:underline opacity-75 hover:opacity-100"
               >
-                {contactInfo.phone}
+                {companyInfo?.phone}
               </a>
               <a
-                href={`mailto:${contactInfo.email}`}
+                href={`mailto:${companyInfo?.email}`}
                 className="hover:underline text-black opacity-75 hover:opacity-100"
               >
                 <span className="!text-gray-500">&#x2709;</span>{" "}
-                {contactInfo.email}
+                {companyInfo?.email}
               </a>
             </div>
             <div>

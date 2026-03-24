@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Icon from "../icon/icon";
 import YearNow from "./yearNow";
+import { companyInfo } from "@/utils/constants";
 
 export default function Footer() {
   return (
@@ -10,11 +11,11 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <h3 className="text-xl font-bold text-white">
-            <Icon name="logo" className="h-10" />
+            <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
           </h3>
           <p className="mt-4 text-sm leading-relaxed">
-            SeriOku, öğrenciler ve eğitmenler için geliştirilmiş modern hızlı
-            okuma ve odaklanma eğitim platformudur.
+            {companyInfo.name}, öğrenciler ve eğitmenler için geliştirilmiş
+            modern hızlı okuma ve odaklanma eğitim platformudur.
           </p>
         </div>
 
@@ -134,7 +135,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto landing-container px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           <span>
-            © <YearNow /> SeriOku. Tüm hakları saklıdır.
+            © <YearNow /> {companyInfo.name}. Tüm hakları saklıdır.
           </span>
 
           <div className="flex gap-4">

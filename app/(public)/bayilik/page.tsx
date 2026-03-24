@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import FormBuilder from "@/components/formBuilder";
 import { useFormHandler } from "@/utils/hooks";
+import { companyInfo } from "@/utils/constants";
 
 export default function FranchisePage() {
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
@@ -35,8 +36,8 @@ export default function FranchisePage() {
           Kârlı Bir İş Fırsatını Kaçırmayın
         </h2>
         <p>
-          SeriOku bayilik modeliyle sürdürülebilir kazanç ve güçlü bir iş
-          fırsatı seni bekliyor.
+          {companyInfo?.name} bayilik modeliyle sürdürülebilir kazanç ve güçlü
+          bir iş fırsatı seni bekliyor.
         </p>
       </div>
       <div className="container  mx-auto px-6 grid gap-12 lg:grid-cols-2">
@@ -48,8 +49,8 @@ export default function FranchisePage() {
             </h3>
             <p className="text-gray-700 text-base">
               Türkiye’nin hızlı okuma ve zihinsel gelişim alanında öne çıkan
-              eğitim platformu <strong>SeriOku</strong> ile kazançlı ve
-              sürdürülebilir bir bayilik modeline adım atın.
+              eğitim platformu <strong>{companyInfo?.name}</strong> ile kazançlı
+              ve sürdürülebilir bir bayilik modeline adım atın.
             </p>
           </div>
 
@@ -83,7 +84,8 @@ export default function FranchisePage() {
 
         <div className="space-y-3">
           <h3 className="text-white rounded-lg bg-brand-primary-100 px-8 py-5 shadow-sm tracking-tight border border-brand-tertiary-50 text-lg font-semibold mb-3">
-            Formu hemen doldurun Bayilik fırsatını kaçırmayın
+            Formu hemen doldurun {companyInfo?.name} Bayilik fırsatını
+            kaçırmayın
           </h3>
 
           <FormBuilder

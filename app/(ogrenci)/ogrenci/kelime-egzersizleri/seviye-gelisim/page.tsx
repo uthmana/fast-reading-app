@@ -1,5 +1,6 @@
 "use client";
 import BarChart from "@/components/Charts/barChart";
+import { companyInfo } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import { formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
@@ -8,10 +9,10 @@ import React, { useEffect, useState } from "react";
 export default function page() {
   const { data: session } = useSession();
   const [fastVisionData, setFastVisionData] = useState(
-    {} as { data: []; categories: [] }
+    {} as { data: []; categories: [] },
   );
   const [formattedAttempts, setFormattedAttempts] = useState(
-    [] as Record<string, any>
+    [] as Record<string, any>,
   );
 
   useEffect(() => {
@@ -20,7 +21,7 @@ export default function page() {
       try {
         const resData = await fetchData({
           apiPath: `/api/users?username=${encodeURIComponent(
-            session.user.username
+            session.user.username,
           )}`,
         });
 
@@ -44,7 +45,7 @@ export default function page() {
             correct,
             variant,
             category: formatDateTime(createdAt),
-          })
+          }),
         );
         setFormattedAttempts(formatted);
         const buildData = (key: "correct" | "wpf", variant: string) => {
@@ -80,7 +81,7 @@ export default function page() {
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: fastVisionData.categories || [],
               },
