@@ -2,6 +2,7 @@ import Header from "@/components/landingPage/header";
 import "../globals.css";
 import Footer from "@/components/landingPage/footer";
 import { Roboto } from "next/font/google";
+import { companyInfo } from "@/utils/constants";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -10,7 +11,7 @@ const roboto = Roboto({
   display: "swap",
 });
 export const metadata = {
-  title: "Serioku | Etkin Hızlı Okuma",
+  title: `${companyInfo?.name} | Etkin Hızlı Okuma`,
   description: "Hızlı okuma pratik platformu giriş",
 };
 

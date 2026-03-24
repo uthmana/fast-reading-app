@@ -1,4 +1,4 @@
-import { contactInfo } from "@/utils/constants";
+import { companyInfo } from "@/utils/constants";
 import React from "react";
 
 export default function PrivacyPage() {
@@ -9,16 +9,17 @@ export default function PrivacyPage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4">Gizlilik Politikası</h1>
           <p className="text-gray-600 text-lg">
-            SeriOku olarak kişisel verilerinizin güvenliğini önemsiyoruz.
+            {companyInfo?.name} olarak kişisel verilerinizin güvenliğini
+            önemsiyoruz.
           </p>
         </div>
 
         {/* Intro */}
         <div className="space-y-4 text-gray-700 mb-10">
           <p>
-            Bu Gizlilik Politikası, SeriOku hızlı okuma ve anlama platformunu
-            kullandığınızda hangi kişisel verilerin toplandığını, bu verilerin
-            nasıl kullanıldığını ve nasıl korunduğunu açıklamaktadır.
+            Bu Gizlilik Politikası, {companyInfo?.name} hızlı okuma ve anlama
+            platformunu kullandığınızda hangi kişisel verilerin toplandığını, bu
+            verilerin nasıl kullanıldığını ve nasıl korunduğunu açıklamaktadır.
           </p>
           <p>
             Platformumuzu kullanarak, bu politikada belirtilen uygulamaları
@@ -59,10 +60,11 @@ export default function PrivacyPage() {
         <div className="mb-10">
           <h2 className="text-xl font-semibold mb-4">Veri Güvenliği</h2>
           <p className="text-gray-700">
-            SeriOku, kişisel verilerinizi yetkisiz erişim, kayıp veya kötüye
-            kullanıma karşı korumak için güncel teknik ve idari güvenlik
-            önlemlerini uygular. Verileriniz, güvenli sunucular üzerinde
-            saklanır ve yalnızca yetkili kişiler tarafından erişilebilir.
+            {companyInfo?.name}, kişisel verilerinizi yetkisiz erişim, kayıp
+            veya kötüye kullanıma karşı korumak için güncel teknik ve idari
+            güvenlik önlemlerini uygular. Verileriniz, güvenli sunucular
+            üzerinde saklanır ve yalnızca yetkili kişiler tarafından
+            erişilebilir.
           </p>
         </div>
 
@@ -106,10 +108,10 @@ export default function PrivacyPage() {
           <p className="mt-2">
             <strong>E-posta:</strong>
             <a
-              href={`mailto:${contactInfo.email}`}
+              href={`mailto:${companyInfo?.email}`}
               className="text-blue-600 hover:underline"
             >
-              {contactInfo.email}
+              {companyInfo?.email}
             </a>
           </p>
         </div>
@@ -118,7 +120,7 @@ export default function PrivacyPage() {
         <div className="text-center text-gray-600 text-sm">
           <p>
             Bu gizlilik politikası gerektiğinde güncellenebilir. Güncel sürüm
-            her zaman SeriOku platformu üzerinden yayımlanır.
+            her zaman {companyInfo?.name} platformu üzerinden yayımlanır.
           </p>
         </div>
       </div>

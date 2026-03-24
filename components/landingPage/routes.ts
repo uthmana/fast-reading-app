@@ -1,3 +1,5 @@
+import { companyInfo } from "@/utils/constants";
+
 // nav.config.ts
 export type NavItem = {
   label: string;
@@ -13,7 +15,10 @@ export const routes: NavItem[] = [
       { label: "Hızlı Okuma Tarihçesi", href: "/blog/hizli-okuma-tarihcesi" },
       { label: "Anlayarak Hızlı Okuma", href: "/blog/anlayarak-hizli-okuma" },
       { label: "Eğitim Şeklimiz", href: "/blog/egitim-sekilimiz" },
-      { label: "Neden SeriOku?", href: "/blog/neden-serioku" },
+      {
+        label: `Neden ${companyInfo?.name}?`,
+        href: `/blog/neden-${companyInfo?.name?.toLowerCase()}`,
+      },
     ],
   },
   {

@@ -3349,7 +3349,10 @@ export const ExerciseDescription: ExerciseDescriptionMap = {
   },
 };
 
-export const contactInfo = {
-  email: "info@serioku.com",
-  phone: "+90 545 643 24 00",
+export const companyInfo = {
+  name: "HappyBrains",
+  email: "info@happybrains.com",
+  phone: "+90 545 643 24 XX",
+  logo: "Happy-Brains",
+  chartColor: "#1D4E89",
 };

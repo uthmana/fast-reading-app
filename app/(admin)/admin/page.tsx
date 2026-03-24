@@ -13,6 +13,7 @@ import { redirect } from "next/navigation";
 export default function DashboardPage() {
   redirect("/admin/classes");
 
+  // DO NOT DELETE BELOW CODE, IT WILL BE USED IN FUTURE FOR DASHBOARD PAGE
   // const [isloading, setIsloading] = useState(false);
   // const [data, setData] = useState({} as any);
 

@@ -1,3 +1,4 @@
+import { companyInfo } from "@/utils/constants";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,11 +27,11 @@ export default function HowItWorks() {
       <div className="landing-container mx-auto px-6">
         {/* Title */}
         <h2 className="text-3xl md:text-4xl mb-4 font-bold text-center text-brand-primary-200">
-          SeriOku Nasıl Çalışır?
+          {companyInfo?.name} Nasıl Çalışır?
         </h2>
 
         <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg">
-          SeriOku, bilimsel okuma tekniklerini dijital egzersizlerle
+          {companyInfo?.name}, bilimsel okuma tekniklerini dijital egzersizlerle
           birleştirerek okuma hızınızı ve anlama becerinizi adım adım
           geliştirir.
         </p>
@@ -40,7 +41,7 @@ export default function HowItWorks() {
           {/* Visual */}
           <Image
             src="/images/online-study.webp"
-            alt="SeriOku eğitim süreci"
+            alt={`${companyInfo?.name} eğitim süreci`}
             width={520}
             height={420}
             className="rounded-2xl mx-auto shadow-lg"
@@ -68,7 +69,8 @@ export default function HowItWorks() {
         {/* CTA (layout-safe) */}
         <div className="mt-16 text-center">
           <p className="mb-6 text-gray-700">
-            Okuma hızınızı ve anlama becerinizi geliştirmeye hazır mısınız?
+            {companyInfo?.name} ile okuma hızınızı ve anlama becerinizi
+            geliştirmeye hazır mısınız?
           </p>
           <Link
             href="/basvur"
