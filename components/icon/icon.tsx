@@ -25,6 +25,7 @@ type IconProps = {
   className?: string;
   fill?: string;
   stroke?: string;
+  logoText?: string; // for future use if we want to add text-based icons
 };
 
 function Icon({
@@ -32,6 +33,7 @@ function Icon({
   className = "w-6 h-6",
   fill = "currentColor",
   stroke = "currentColor",
+  logoText = "",
 }: IconProps) {
   switch (name) {
     case "play":
@@ -370,7 +372,7 @@ function Icon({
           preserveAspectRatio="xMidYMid meet"
           className={className}
         >
-          <g
+          {/* <g
             id="book"
             transform="translate(0,0) scale(1)"
             transformOrigin="left center"
@@ -417,13 +419,13 @@ function Icon({
               fill="#2992D3"
               transform="translate(154.5625,141.875)"
             />
-          </g>
+          </g> */}
 
           <text
-            x="420"
+            x="340"
             y="185"
-            dx="24"
-            dy="-12"
+            dx="0"
+            dy="0"
             textAnchor="middle"
             dominantBaseline="middle"
             fontFamily="Inter, Poppins, Montserrat, Arial, sans-serif"
@@ -431,8 +433,8 @@ function Icon({
             fontWeight="700"
             letterSpacing="0.4"
           >
-            <tspan fill="#03a7eb">Seri</tspan>
-            <tspan fill="#FD8029">Oku</tspan>
+            <tspan fill="#03a7eb"> {logoText?.split("-")[0]}</tspan>
+            <tspan fill="#FD8029">{logoText?.split("-")[1]}</tspan>
           </text>
         </svg>
       );

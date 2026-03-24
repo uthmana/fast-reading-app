@@ -11,7 +11,7 @@ import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { getArticleByStudyGroup } from "@/components/formBuilder/request";
-import { ExerciseDescription } from "@/utils/constants";
+import { companyInfo, ExerciseDescription } from "@/utils/constants";
 import { useDecodeQuery } from "@/utils/hooks";
 
 export default function page() {
@@ -289,7 +289,7 @@ export default function page() {
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: fastReadingData.categories || [],
               },
@@ -376,7 +376,7 @@ export default function page() {
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: understandingData.categories || [],
               },

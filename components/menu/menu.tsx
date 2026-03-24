@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
-import { useSession } from "next-auth/react";
 import { menuItems } from "@/app/routes";
+import { companyInfo } from "@/utils/constants";
 
 interface MenuProps {
   onActiveMenu: (menuName: string | null) => void;
@@ -15,7 +15,6 @@ interface MenuProps {
 export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
-  const { data: session }: any = useSession();
 
   const toggleSubMenu = (menuName: string) => {
     if (typeof window !== "undefined" && window.innerWidth < 1024) {
@@ -37,7 +36,7 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
               className="flex min-w-[200px] gap-3 items-center"
               onClick={() => setMenuOpen(false)}
             >
-              <Icon name="logo" className="h-10" />
+              <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
             </Link>
           </h1>
 

@@ -1,3 +1,5 @@
+import { companyInfo } from "@/utils/constants";
+
 const audience = [
   {
     group: "İlkokul (2–3)",
@@ -47,9 +49,9 @@ export default function Audience() {
       <div className="landing-container mx-auto px-6">
         <h2 className="text-3xl text-center font-bold">Kimler İçin?</h2>
         <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg mt-3">
-          SeriOku eğitim grupları, yaş ve seviyeye göre özel olarak hazırlanır.
-          Her katılımcı, kendi düzeyine uygun içeriklerle okuma hızını ve anlama
-          becerisini geliştirebilir.
+          {companyInfo?.name} eğitim grupları, yaş ve seviyeye göre özel olarak
+          hazırlanır. Her katılımcı, kendi düzeyine uygun içeriklerle okuma
+          hızını ve anlama becerisini geliştirebilir.
         </p>
 
         <div className="mt-10 w-full md:mb-5 mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-stretch">

@@ -1,6 +1,6 @@
 import React from "react";
 import LogOutInput from "../formInputs/logoutInput";
-import { contactInfo } from "@/utils/constants";
+import { companyInfo } from "@/utils/constants";
 
 export default function SecondaryFooter() {
   return (
@@ -11,26 +11,26 @@ export default function SecondaryFooter() {
         iconClassName="!w-4 !h-4"
       />
       <div className="text-center w-full md:flex-1 opacity-75">
-        ©2025Tüm Hakları saklıdır.
+        ©2025 {companyInfo?.name}. Tüm Hakları saklıdır.
       </div>
       <div className="flex gap-2 md:justify-end justify-center whitespace-nowrap items-center w-full md:flex-1 font-normal">
         <a
           href="/"
           className="text-blue-500 hover:underline opacity-75 hover:opacity-100"
         >
-          Serioku
+          {companyInfo?.name}
         </a>
         <a
-          href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
+          href={`tel:${companyInfo?.phone?.replaceAll(" ", "")}`}
           className="hover:underline opacity-75 hover:opacity-100"
         >
-          {contactInfo.phone}
+          {companyInfo?.phone}
         </a>
         <a
-          href={`mailto:${contactInfo.email}`}
+          href={`mailto:${companyInfo?.email}`}
           className="hover:underline opacity-75 hover:opacity-100"
         >
-          {contactInfo.email}
+          {companyInfo?.email}
         </a>
       </div>
     </div>

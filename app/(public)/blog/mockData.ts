@@ -1,22 +1,20 @@
+import { companyInfo } from "@/utils/constants";
+
 export const mockData = {
-  "neden-serioku": {
-    title: "Neden SeriOku?",
+  [`neden-${companyInfo?.name?.toLowerCase()}`]: {
+    title: `Neden ${companyInfo?.name}?`,
     content: [
       {
-        block:
-          "SeriOku, okuma hızını artırmakla yetinmeyen; aynı zamanda anlama, odaklanma ve zihinsel verimliliği birlikte geliştirmeyi hedefleyen modern bir dijital öğrenme platformudur. Bilgi çağında başarılı olmanın anahtarı, daha fazla okumak değil, bilgiyi daha hızlı ve doğru şekilde işleyebilmektir.",
+        block: `${companyInfo?.name}, okuma hızını artırmakla yetinmeyen; aynı zamanda anlama, odaklanma ve zihinsel verimliliği birlikte geliştirmeyi hedefleyen modern bir dijital öğrenme platformudur. Bilgi çağında başarılı olmanın anahtarı, daha fazla okumak değil, bilgiyi daha hızlı ve doğru şekilde işleyebilmektir.`,
       },
       {
-        block:
-          "Araştırmalara göre ortalama bir yetişkin dakikada yaklaşık 200–250 kelime okur. Oysa doğru tekniklerle bu hız, anlam kaybı yaşamadan 2 ila 3 katına çıkarılabilir. SeriOku, kullanıcılarını yüzeysel hız artışlarıyla değil; kalıcı bilişsel gelişimle buluşturur.",
+        block: `Araştırmalara göre ortalama bir yetişkin dakikada yaklaşık 200–250 kelime okur. Oysa doğru tekniklerle bu hız, anlam kaybı yaşamadan 2 ila 3 katına çıkarılabilir. ${companyInfo?.name}, kullanıcılarını yüzeysel hız artışlarıyla değil; kalıcı bilişsel gelişimle buluşturur.`,
       },
       {
-        block:
-          "Geleneksel hızlı okuma yöntemlerinden farklı olarak SeriOku, bilişsel bilimler ve eğitim psikolojisi temelli teknikler kullanır. Göz kası egzersizleri, algı genişletme çalışmaları ve dikkat yönetimi modülleri sayesinde okuma performansı ölçülebilir ve takip edilebilir şekilde geliştirilir.",
+        block: `Geleneksel hızlı okuma yöntemlerinden farklı olarak ${companyInfo?.name}, bilişsel bilimler ve eğitim psikolojisi temelli teknikler kullanır. Göz kası egzersizleri, algı genişletme çalışmaları ve dikkat yönetimi modülleri sayesinde okuma performansı ölçülebilir ve takip edilebilir şekilde geliştirilir.`,
       },
       {
-        block:
-          "Bulut tabanlı altyapısı sayesinde SeriOku, kullanıcılarına her cihazdan erişim, kişiselleştirilmiş öğrenme akışları ve detaylı performans analitiği sunar. Bu yaklaşım, kısa vadeli motivasyon yerine uzun vadeli öğrenme alışkanlıkları kazandırmayı hedefler.",
+        block: `Bulut tabanlı altyapısı sayesinde ${companyInfo?.name}, kullanıcılarına her cihazdan erişim, kişiselleştirilmiş öğrenme akışları ve detaylı performans analitiği sunar. Bu yaklaşım, kısa vadeli motivasyon yerine uzun vadeli öğrenme alışkanlıkları kazandırmayı hedefler.`,
       },
     ],
   },
@@ -53,8 +51,7 @@ export const mockData = {
           "Aksine, yavaş ve dağınık okuma sırasında zihnin dikkatinin kolayca dağıldığı; bunun da anlama oranını düşürdüğü bilinmektedir. Yapılan çalışmalarda, odaklı ve ritmik okumanın anlama seviyesini %15–30 oranında artırabildiği gözlemlenmiştir.",
       },
       {
-        block:
-          "SeriOku, okuma hızını artırırken anlamayı korumayı değil, güçlendirmeyi hedefler. Metin algısı, ana fikir yakalama, gereksiz detayları eleme ve zihinsel filtreleme becerileri birlikte geliştirilir.",
+        block: `${companyInfo?.name}, okuma hızını artırırken anlamayı korumayı değil, güçlendirmeyi hedefler. Metin algısı, ana fikir yakalama, gereksiz detayları eleme ve zihinsel filtreleme becerileri birlikte geliştirilir.`,
       },
       {
         block:
@@ -63,11 +60,10 @@ export const mockData = {
     ],
   },
   "egitim-sekilimiz": {
-    title: "SeriOku Eğitim Modeli Nasıl Çalışır?",
+    title: `${companyInfo?.name} Eğitim Modeli Nasıl Çalışır?`,
     content: [
       {
-        block:
-          "SeriOku’nun eğitim modeli, detaylı bir seviye tespitiyle başlar. Kullanıcının mevcut okuma hızı, anlama oranı, dikkat süresi ve okuma alışkanlıkları analiz edilerek kişiye özel bir öğrenme planı oluşturulur.",
+        block: `${companyInfo?.name}’nın eğitim modeli, detaylı bir seviye tespitiyle başlar. Kullanıcının mevcut okuma hızı, anlama oranı, dikkat süresi ve okuma alışkanlıkları analiz edilerek kişiye özel bir öğrenme planı oluşturulur.`,
       },
       {
         block:

@@ -22,7 +22,7 @@ export default function Sidebar({
     selected = menuItems.find((menu) => menu.link === pathname);
     if (!selected) {
       selected = menuItems.find((menu) =>
-        menu.subMenu?.find((sub) => sub.link.includes(pathname))
+        menu.subMenu?.find((sub) => sub.link.includes(pathname)),
       );
     }
   }
@@ -39,9 +39,9 @@ export default function Sidebar({
             <li key={item.name}>
               <Link
                 href={item.link || "#"}
-                className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-[#0a5854] group  transition ${
+                className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-brand-primary-100 group  transition ${
                   pathname === item.link
-                    ? "bg-gradient-to-r from-brand-primary-50 to-brand-primary-200 shadow-lg"
+                    ? "bg-gradient-to-r from-brand-primary-100 to-brand-primary-200 shadow-lg"
                     : ""
                 }`}
               >
