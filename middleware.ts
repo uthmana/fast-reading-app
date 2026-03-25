@@ -25,7 +25,7 @@ export default withAuth(
     callbacks: {
       authorized: () => true,
     },
-  }
+  },
 );
 export const config = {
   matcher: [
