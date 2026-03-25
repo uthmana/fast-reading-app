@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import NavLinks from "./navLinks";
 import Icon from "../icon/icon";
+import { companyInfo } from "@/utils/constants";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -15,7 +16,7 @@ export default function Header() {
         <div className="mx-auto landing-container px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold">
-            <Icon name="logo" className="h-10" />
+            <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
           </Link>
 
           {/* Desktop Nav */}

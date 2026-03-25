@@ -45,7 +45,7 @@ export default function ExerciseDetail({
         <Link className="block max-w-[170px]" href={startLink}>
           <Button
             text="Hemen Başla"
-            className="bg-brand-primary-50 whitespace-nowrap mb-5 hover:bg-brand-primary-100"
+            className="bg-brand-primary-100 whitespace-nowrap mb-5 hover:bg-brand-primary-150"
             icon={<MdPlayCircle className="w-6 h-6 text-white" />}
           />
         </Link>

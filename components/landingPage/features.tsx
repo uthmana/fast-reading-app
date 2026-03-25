@@ -1,3 +1,4 @@
+import { companyInfo } from "@/utils/constants";
 import Icon from "../icon/icon";
 
 const features = [
@@ -38,12 +39,12 @@ export default function Features() {
     <section id="features" className="bg-brand-tertiary-50 py-20">
       <div className="landing-container mb-5 mx-auto px-6">
         <h2 className="text-3xl font-bold text-center text-brand-primary-200">
-          SeriOku’nun Faydaları
+          {companyInfo?.name}’nın Faydaları
         </h2>
 
         <p className="mt-3 max-w-2xl mx-auto text-center text-gray-700 text-base">
-          SeriOku, okuma hızınızı artırırken anlama, odaklanma ve zaman yönetimi
-          becerilerinizi birlikte geliştirir.
+          {companyInfo?.name}, okuma hızınızı artırırken anlama, odaklanma ve
+          zaman yönetimi becerilerinizi birlikte geliştirir.
         </p>
 
         <div className="mt-14 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">

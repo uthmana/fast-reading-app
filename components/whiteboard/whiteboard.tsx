@@ -94,7 +94,7 @@ export default function Whiteboard({
           </Link>
         ) : null}
         <Button
-          className={`!w-fit !h-10 my-4 z-10  absolute right-8 bottom-2 bg-brand-primary-50 hover:bg-brand-primary-100 shadow-lg  ml-auto`}
+          className={`!w-fit !h-10 my-4 z-10  absolute right-8 bottom-2 bg-brand-primary-100 hover:bg-brand-primary-150 shadow-lg  ml-auto`}
           icon={<MdPlayCircle className="w-6 h-6 text-white" />}
           onClick={handlePlay}
         />

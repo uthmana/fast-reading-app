@@ -12,14 +12,14 @@ import { StudyGroup } from "@prisma/client";
 async function main() {
   // Default admin user
   const user = await prisma.user.upsert({
-    where: { username: "seriokuyonetim" },
+    where: { username: "happybrainsyonetim" },
     update: {},
     create: {
-      email: "yonetim@serioku.com",
+      email: "yonetim@happybrains.com",
       password: "1234",
       role: "ADMIN",
-      name: "Serioku Yönetim",
-      username: "seriokuyonetim",
+      name: "HappyBrains Yönetim",
+      username: "happybrainsyonetim",
       tcId: "99999999999",
     },
   });
@@ -27,11 +27,11 @@ async function main() {
   // Default subscriber
   const subscriber = await prisma.user.create({
     data: {
-      email: "info@serioku.com",
+      email: "info@happybrains.com",
       password: "1234",
       role: "SUBSCRIBER",
-      name: "serioku ",
-      username: "serioku",
+      name: "HappyBrains ",
+      username: "happybrains",
       Subscriber: {
         create: {
           credit: 1000,
@@ -53,7 +53,7 @@ async function main() {
   // Default teacher + class
   const teacher = await prisma.user.create({
     data: {
-      email: "mahmutyilmaz@serioku.com",
+      email: "mahmutyilmaz@happybrains.com",
       password: "1234",
       role: "TEACHER",
       name: "Mahmut Yılmaz",

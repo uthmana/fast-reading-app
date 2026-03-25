@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import TypingText from "./typingText";
+import { companyInfo } from "@/utils/constants";
 
 export default function Hero() {
   return (
@@ -9,7 +10,7 @@ export default function Hero() {
         {/* Text */}
         <div className="mx-auto md:ml-auto">
           <h1 className="text-4xl text-center  text-white md:text-left font-extrabold sm:text-6xl leading-tight">
-            SeriOku ile
+            {companyInfo?.name} ile
             <span className="block text-brand-secondary-150">
               Daha Hızlı Oku, Daha İyi Anla
             </span>
@@ -45,7 +46,7 @@ export default function Hero() {
             <Image
               src="/images/hero-digital-reading.png"
               className="rounded-2xl shadow-lg"
-              alt="SeriOku hızlı okuma"
+              alt={`${companyInfo?.name} hızlı okuma`}
               width={460}
               height={360}
               priority

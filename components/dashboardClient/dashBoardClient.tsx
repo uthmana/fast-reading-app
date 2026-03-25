@@ -16,6 +16,7 @@ import PieChart from "../Charts/pieChart";
 import Widget from "../widget/widget";
 import BarChart from "../Charts/barChart";
 import dynamic from "next/dynamic";
+import { companyInfo } from "@/utils/constants";
 
 const SpeedGauge = dynamic(() => import("@/components/speedGauge/speedGauge"), {
   ssr: false,
@@ -42,7 +43,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
 
   const buildData = (
     key: "wpm" | "correct" | "wpc" | "wpf",
-    variant: string
+    variant: string,
   ) => {
     const filtered = formatted.filter((i: any) => i.variant === variant);
     return {
@@ -59,7 +60,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
       correct,
       variant,
       category: formatDateTime(createdAt),
-    })
+    }),
   );
 
   const fastReadingData = useMemo(() => {
@@ -110,7 +111,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
       <div className="flex flex-wrap gap-4 w-full mb-5 mt-3">
         <Widget
           icon={
-            <MdGroups className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
+            <MdGroups className="w-10 h-10 text-brand-primary-50 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Grubunuz"
           title={user?.Student ? mapStudyGroup(user?.Student?.studyGroup) : " "}
@@ -118,7 +119,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
         />
         <Widget
           icon={
-            <MdHourglassTop className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
+            <MdHourglassTop className="w-10 h-10 text-brand-primary-50 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Başlangıç"
           title={formatDateTime(user?.Student?.startDate)}
@@ -126,7 +127,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
         />
         <Widget
           icon={
-            <MdHourglassBottom className="w-10 h-10 text-brand-secondary-200 transition-transform group-hover:scale-110" />
+            <MdHourglassBottom className="w-10 h-10 text-brand-primary-50 transition-transform group-hover:scale-110" />
           }
           description="Eğitim Bitiş"
           title={formatDateTime(user?.Student?.endDate)}
@@ -206,7 +207,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: fastVisionData.categories || [],
               },
@@ -228,7 +229,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
               chart: {
                 id: "basic-bar",
               },
-              colors: ["#0a715c"],
+              colors: [companyInfo.chartColor],
               xaxis: {
                 categories: fastReadingData.categories || [],
               },
@@ -249,7 +250,8 @@ export default function DashboardClient({ user, progressSummary }: any) {
                 type: "pie",
               },
               labels: ["Yapılan Ders", "Yapılmayan Ders"],
-              colors: ["#0a715c", "#dc3912"],
+              colors: [companyInfo.chartColor, "#dc3912"],
+
               legend: {
                 position: "bottom",
               },
@@ -269,7 +271,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
                 type: "pie",
               },
               labels: ["Anlama Oranı", "Anlama Oranı Dışında"],
-              colors: ["#0a715c", "#dc3912"],
+              colors: [companyInfo.chartColor, "#dc3912"],
               legend: {
                 position: "bottom",
               },

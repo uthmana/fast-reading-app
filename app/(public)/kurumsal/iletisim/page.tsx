@@ -1,4 +1,4 @@
-import { contactInfo } from "@/utils/constants";
+import { companyInfo } from "@/utils/constants";
 import React from "react";
 
 export default function ContactPage() {
@@ -8,18 +8,18 @@ export default function ContactPage() {
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold mb-4">Bizimle İletişime Geçin</h1>
           <p className="text-gray-600 text-lg">
-            SeriOku ile daha hızlı, daha odaklı ve daha verimli okuma
-            yolculuğunuza bugün başlayın.
+            {companyInfo?.name} ile daha hızlı, daha odaklı ve daha verimli
+            okuma yolculuğunuza bugün başlayın.
           </p>
         </div>
 
         {/* Intro */}
         <div className="mb-10 space-y-4 text-gray-700">
           <p>
-            SeriOku; öğrenciler, veliler, eğitmenler ve kurumlar için
-            geliştirilmiş modern bir hızlı okuma ve anlama platformudur. Eğitim
-            programlarımız, bilimsel temellere dayalı tekniklerle okuma hızını
-            ve anlama becerisini birlikte geliştirir.
+            {companyInfo?.name}; öğrenciler, veliler, eğitmenler ve kurumlar
+            için geliştirilmiş modern bir hızlı okuma ve anlama platformudur.
+            Eğitim programlarımız, bilimsel temellere dayalı tekniklerle okuma
+            hızını ve anlama becerisini birlikte geliştirir.
           </p>
           <p>
             Platformumuz, kullanıcıların ihtiyaçlarına göre şekillenen esnek
@@ -35,19 +35,19 @@ export default function ContactPage() {
             <p>
               <strong>E-posta:</strong>
               <a
-                href={`mailto:${contactInfo.email}`}
+                href={`mailto:${companyInfo.email}`}
                 className="text-blue-600 hover:underline"
               >
-                {contactInfo.email}
+                {companyInfo.email}
               </a>
             </p>
             <p>
               <strong>Telefon:</strong>
               <a
-                href={`tel:${contactInfo?.phone?.replaceAll(" ", "")}`}
+                href={`tel:${companyInfo?.phone?.replaceAll(" ", "")}`}
                 className="hover:underline"
               >
-                {contactInfo.phone}
+                {companyInfo.phone}
               </a>
             </p>
             <p>
@@ -98,7 +98,7 @@ export default function ContactPage() {
         <div className="mt-12">
           <p className="text-brand-primary-200 font-medium">
             Daha hızlı okumak, daha iyi anlamak ve öğrenme gücünüzü artırmak
-            için SeriOku yanınızda.
+            için {companyInfo?.name} yanınızda.
           </p>
         </div>
       </div>
