@@ -69,14 +69,19 @@ export default function VisualFieldTrainer({
     }
   }, [pause, onFinishTest, stopCycling]);
 
+  const frameSize = 150 + frame * 50;
+  const isOddGrid = grid % 2 === 1;
+  const centerIndex = Math.floor(grid / 2);
+  const dynamicFontSize = Math.min(24, Math.floor((frameSize / grid) * 0.55));
+
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
       {/* Frame */}
       <div
         className="relative border border-black flex items-center justify-center"
         style={{
-          width: `${150 + frame * 50}px`,
-          height: `${150 + frame * 50}px`,
+          width: `${frameSize}px`,
+          height: `${frameSize}px`,
         }}
       >
         {/* Number Grid */}
@@ -86,22 +91,26 @@ export default function VisualFieldTrainer({
             gridTemplateColumns: `repeat(${grid}, 1fr)`,
             width: "100%",
             height: "100%",
-            fontSize: 24,
+            fontSize: dynamicFontSize,
             fontWeight: 500,
           }}
         >
           {numbers.map((row, r) =>
-            row.map((num, c) => (
-              <motion.div
-                key={`${r}-${c}-${num}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                className="flex items-center justify-center"
-              >
-                {num}
-              </motion.div>
-            )),
+            row.map((num, c) => {
+              const isCenterCell =
+                isOddGrid && r === centerIndex && c === centerIndex;
+              return (
+                <motion.div
+                  key={`${r}-${c}-${num}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="flex items-center justify-center"
+                >
+                  {isCenterCell ? "" : num}
+                </motion.div>
+              );
+            }),
           )}
         </div>
 

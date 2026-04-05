@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { calculateReadingSpeed } from "@/utils/helpers";
 import { speedMap } from "@/utils/constants";
 
-type TachistoProps = {
+type TachistoProps1 = {
   autoStart?: boolean;
   className?: string;
   onComplete?: () => void;
@@ -20,7 +20,7 @@ type TachistoProps = {
   saveProgress?: () => void;
 };
 
-export default function LevelUp({
+export default function LevelUp1({
   autoStart = true,
   className = "",
   controls,
@@ -28,7 +28,7 @@ export default function LevelUp({
   pause = false,
   isLesson = false,
   saveProgress,
-}: TachistoProps) {
+}: TachistoProps1) {
   const [frames, setFrames] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -188,11 +188,7 @@ export default function LevelUp({
             kelimelik metinleri{" "}
             <span className="text-red-500"> {speedMap[levelRef.current]} </span>{" "}
             ms de doğru görme, anlama oranınız %{" "}
-            <span className="text-red-500">
-              {Math.round(
-                (resultMessage?.correct / resultMessage?.totalquestions) * 100,
-              )}
-            </span>{" "}
+            <span className="text-red-500">{resultMessage.correct}</span>{" "}
           </p>
         </div>
       )}

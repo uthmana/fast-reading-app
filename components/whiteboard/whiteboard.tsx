@@ -77,14 +77,17 @@ export default function Whiteboard({
         </WoodenFrame>
 
         {/* Countdown and navigation buttons */}
-        {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt" ? (
+        {/* {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt" ? (
           <CountDown
             className="absolute z-10 right-8 top-6"
             initial={countDownValue}
             start={isPlaying}
             onTick={(v) => setCountDownValue(v)}
           />
-        ) : null}
+        ) : null} */}
+        {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt"
+          ? null
+          : null}
         {lessonData?.id ? (
           <Link
             className="absolute flex items-center justify-center gap-2 bottom-6 z-10 transition hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3"
@@ -124,15 +127,18 @@ export default function Whiteboard({
             {children}
 
             {lessonData?.duration &&
-            lessonData?.pathname !== "seviye-yukselt" ? (
-              <CountDown
-                className="absolute right-3 top-3 !text-base"
-                initial={countDownValue}
-                start={isPlaying}
-                onTick={(v) => setCountDownValue(v)}
-                onFinish={saveProgress}
-              />
-            ) : null}
+            // lessonData?.pathname !== "seviye-yukselt" ? (
+            //   <CountDown
+            //     className="absolute right-3 top-3 !text-base"
+            //     initial={countDownValue}
+            //     start={isPlaying}
+            //     onTick={(v) => setCountDownValue(v)}
+            //     onFinish={saveProgress}
+            //   />
+            // ) : null}
+            lessonData?.pathname !== "seviye-yukselt"
+              ? null
+              : null}
             {lessonData?.id ? (
               <a
                 className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"

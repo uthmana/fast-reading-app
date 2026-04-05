@@ -103,6 +103,7 @@ model Attempt {
   studentId   Int
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
+  totalquestions Int?
   wpm         Float? // words per minute measured
   wpf         Int?     @default(1) // words per frame
   variant     TestType @default(FASTREADING)

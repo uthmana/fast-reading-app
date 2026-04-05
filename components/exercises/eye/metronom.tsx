@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { speedMap } from "@/utils/constants";
-import { useAudioSound } from "@/utils/hooks";
 
 type MetronomeEyeProps = {
   controls?: {
@@ -26,20 +25,34 @@ export default function Metronom({
   const level = controls?.level || 3;
   const speedMs = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
-  const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const playTick = useCallback(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio("/audios/metronome.mp3");
+    }
+    const audio = audioRef.current;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  }, []);
 
   useEffect(() => {
+    if (pause) return;
+
     const timer = setInterval(() => {
-      stopSound();
       setLeftSide((prev) => !prev);
-      playSound();
+      playTick();
     }, speedMs);
 
     return () => clearInterval(timer);
-  }, [speedMs]);
+  }, [speedMs, pause, playTick]);
 
   useEffect(() => {
     if (pause) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
       onFinishTest?.(null);
     }
   }, [pause, onFinishTest]);

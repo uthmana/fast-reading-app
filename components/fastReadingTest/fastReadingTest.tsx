@@ -16,6 +16,7 @@ type FastReadingTestProps = {
       wpm: number;
       correct: number;
       counter: number;
+      totalquestions?: number;
       variant: string;
     } | null,
   ) => void;
@@ -52,7 +53,12 @@ export default function FastReadingTest({
   const [isTesting, setIsTesting] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState(
-    {} as { countWord: number; wpm: number; correct: number },
+    {} as {
+      countWord: number;
+      wpm: number;
+      correct: number;
+      totalquestions: number;
+    },
   );
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -94,10 +100,21 @@ export default function FastReadingTest({
         `Hızlı okuma hızınız ${wpm} kelime/dakika olarak kaydedilsin mi ?`,
       )
     ) {
-      setResult({ countWord, wpm, correct: 0 });
+      setResult({
+        countWord,
+        wpm,
+        correct: 0,
+        totalquestions: questions?.length,
+      });
       setIsTesting(true);
       setShowResult(true);
-      onFinishTest({ wpm, correct: 0, counter, variant });
+      onFinishTest({
+        wpm,
+        correct: 0,
+        counter,
+        totalquestions: questions?.length,
+        variant,
+      });
     } else {
       onFinishTest(null);
     }
@@ -113,19 +130,35 @@ export default function FastReadingTest({
     );
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
-    const correct = calculateQuizScore(questions, value, correctAnswers);
-
+    //const correct = calculateQuizScore(questions, value, correctAnswers);
+    const [correctpecent, correct]: [number, number] = calculateQuizScore(
+      questions,
+      value,
+      correctAnswers,
+    );
     if (introTest) {
-      onFinishTest({ wpm, correct, counter, variant });
+      onFinishTest({
+        wpm,
+        correct,
+        counter,
+        totalquestions: questions.length,
+        variant,
+      });
       setIsTesting(true);
       return;
     }
 
-    if (confirm(`Anlama oranınız ${correct}% olarak kaydedilsin mi ?`)) {
-      setResult({ countWord, wpm, correct });
+    if (confirm(`Anlama oranınız ${correctpecent}% olarak kaydedilsin mi ?`)) {
+      setResult({ countWord, wpm, correct, totalquestions: questions.length });
       setShowResult(true);
       setIsTesting(true);
-      onFinishTest({ wpm, correct, counter, variant });
+      onFinishTest({
+        wpm,
+        correct,
+        counter,
+        totalquestions: questions.length,
+        variant,
+      });
     } else {
       onFinishTest(null);
     }

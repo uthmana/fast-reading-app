@@ -9,7 +9,6 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions as any);
     let subscriberId = (session as any)?.user.subscriberId ?? null;
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const whereParam = searchParams.get("where");
@@ -59,6 +58,7 @@ export async function GET(req: NextRequest) {
 
     const categories = await prisma.category.findMany({
       // orderBy: { subscriberId: "desc" },
+      where: { studyGroup: (session as any)?.user.student.studyGroup },
       orderBy: { title: "asc" },
     });
     return NextResponse.json(categories, { status: 200 });
