@@ -6,8 +6,8 @@ import { speedMap } from "@/utils/constants";
 
 type VisualFieldTrainerProps = {
   controls?: {
-    frame?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-    grid?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    frame?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    grid?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // slider input
   };
   pathname: string;
@@ -21,8 +21,9 @@ export default function VisualFieldTrainer({
   pause = false,
 }: VisualFieldTrainerProps) {
   // Range-controlled values
-  const frame = controls?.frame ?? 8; // default frame 8
-  const grid = controls?.grid ?? 6; // default grid 6
+  console.log("Controls:", controls);
+  const frame = controls?.frame || 1; // default frame 8
+  const grid = controls?.grid || 1; // default grid 6
   const speedMs = speedMap[controls?.level || 2];
 
   const [numbers, setNumbers] = useState<number[][]>([]);
@@ -30,6 +31,7 @@ export default function VisualFieldTrainer({
 
   // Generate NxN random grid
   const generateGrid = (n: number) => {
+    if (n === 1) return [[Math.floor(Math.random() * 99) + 1]];
     const arr: number[][] = [];
     for (let i = 0; i < n; i++) {
       const row: number[] = [];
@@ -69,7 +71,7 @@ export default function VisualFieldTrainer({
     }
   }, [pause, onFinishTest, stopCycling]);
 
-  const frameSize = 150 + frame * 50;
+  const frameSize = frame === 1 ? 190 + frame * 50 : 150 + frame * 50;
   const isOddGrid = grid % 2 === 1;
   const centerIndex = Math.floor(grid / 2);
   const dynamicFontSize = Math.min(24, Math.floor((frameSize / grid) * 0.55));
@@ -98,7 +100,7 @@ export default function VisualFieldTrainer({
           {numbers.map((row, r) =>
             row.map((num, c) => {
               const isCenterCell =
-                isOddGrid && r === centerIndex && c === centerIndex;
+                grid > 1 && isOddGrid && r === centerIndex && c === centerIndex;
               return (
                 <motion.div
                   key={`${r}-${c}-${num}`}

@@ -28,11 +28,13 @@ export default function Metronom({
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const playTick = useCallback(() => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio("/audios/metronome.mp3");
+    // Stop previous audio if still playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
     }
-    const audio = audioRef.current;
-    audio.currentTime = 0;
+    const audio = new Audio("/audios/metronome.mp3");
+    audioRef.current = audio;
     audio.play().catch(() => {});
   }, []);
 

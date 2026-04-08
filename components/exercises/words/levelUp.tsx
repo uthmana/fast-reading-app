@@ -125,6 +125,10 @@ export default function LevelUp({
         saveProgress?.();
       }
 
+      // Play LevelUp sound
+      const audio = new Audio("/audios/LevelUp.mpeg");
+      audio.play().catch(() => {});
+
       const resultData = {
         wpf: controls?.wordsPerFrame,
         durationSec: speedMap[levelRef.current],
