@@ -126,13 +126,14 @@ export default function GroupReading({
             }}
           >
             {/* Before highlighted */}
-            <span className="opacity-100">{beforeText} </span>
+            <span className="opacity-10">{beforeText} </span>
 
             {/* Highlighted section */}
-            <span className="font-bold text-blue-800">{highlightedWords}</span>
-
+            <span className="font-bold text-black  px-1 rounded">
+              {highlightedWords}
+            </span>
             {/* After highlighted */}
-            <span className="opacity-30"> {afterText}</span>
+            <span className="opacity-10"> {afterText}</span>
           </div>
         ) : (
           <p className="font-semibold text-center">

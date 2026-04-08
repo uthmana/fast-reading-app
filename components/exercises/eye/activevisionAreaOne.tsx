@@ -22,9 +22,9 @@ export default function VisualFieldTrainer({
 }: VisualFieldTrainerProps) {
   // Range-controlled values
   console.log("Controls:", controls);
-  const frame = controls?.frame || 1; // default frame 8
-  const grid = controls?.grid || 1; // default grid 6
-  const speedMs = speedMap[controls?.level || 2];
+  const frame = controls?.frame || 2; // default frame 8
+  const grid = controls?.grid || 2; // default grid 6
+  const speedMs = speedMap[controls?.level || 5];
 
   const [numbers, setNumbers] = useState<number[][]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
