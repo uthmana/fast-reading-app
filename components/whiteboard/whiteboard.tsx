@@ -158,7 +158,10 @@ export default function Whiteboard({
               lessonData={lessonData}
               readingStatus={readingStatus}
               showPauseButton={true}
-              onPause={onPause}
+              onPause={() => {
+                saveProgress?.();
+                onPause?.();
+              }}
             />
           </div>
         </div>
