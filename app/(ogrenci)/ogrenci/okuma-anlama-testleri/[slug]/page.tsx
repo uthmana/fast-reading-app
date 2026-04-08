@@ -56,6 +56,7 @@ export default function page() {
     id: lessonParams,
     duration: durationParams,
     order: orderParams,
+    pathname,
   } as any;
 
   useEffect(() => {
@@ -228,6 +229,11 @@ export default function page() {
           studentId: session?.user?.student?.id,
         },
       });
+
+      // Mark lesson exercise as completed (no countdown for these tests)
+      if (lessonParams && exerciseParams) {
+        await saveProgress();
+      }
     } catch (error) {
       console.error(error);
       setPause(true);
