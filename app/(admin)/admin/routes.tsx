@@ -59,7 +59,6 @@ const routes = [
     name: "Veri Aktarımları",
     path: "/admin/datatransfers",
     icon: <MdImportExport className="w-6 h-6" />,
-    roles: ["ADMIN"],
   },
 ];
 export default routes;
