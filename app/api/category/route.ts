@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const id = searchParams.get("id");
     const whereParam = searchParams.get("where");
     const subscriberOptionsParam = searchParams.get("subscriber-options");
-
+    const role = (session as any)?.user.role;
     let where: any | undefined;
 
     if (whereParam) {
@@ -55,10 +55,19 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(categories, { status: 200 });
     }
+    if (role === "ADMIN" || role === "TEACHER") {
+      const categories = await prisma.category.findMany({
+        // orderBy: { subscriberId: "desc" },
+        orderBy: { title: "asc" },
+      });
+      return NextResponse.json(categories, { status: 200 });
+    }
 
     const categories = await prisma.category.findMany({
       // orderBy: { subscriberId: "desc" },
-      where: { studyGroup: (session as any)?.user.student.studyGroup },
+      where: {
+        studyGroup: (session as any)?.user?.student?.studyGroup,
+      },
       orderBy: { title: "asc" },
     });
     return NextResponse.json(categories, { status: 200 });
@@ -81,7 +90,7 @@ export async function POST(req: Request) {
   if (!title) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
-
+  //const subscriberIdval = subscriberId == "" ? null : subscriberId;
   try {
     if (id) {
       const categoryExit = await prisma.category.findUnique({
@@ -94,7 +103,7 @@ export async function POST(req: Request) {
             title,
             description,
             studyGroup,
-            subscriberId,
+            subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
           },
         });
         return NextResponse.json(category, { status: 200 });
@@ -106,7 +115,7 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
-        subscriberId,
+        subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
       },
     });
     return NextResponse.json(category, { status: 201 });
