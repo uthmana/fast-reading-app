@@ -82,21 +82,40 @@ export async function POST(req: NextRequest) {
       case "articles": {
         for (const row of data) {
           try {
-            if (!row.title || !row.description || !row.categoryId) {
+            if (!row.title || !row.description) {
               result.errors.push(
-                `Zorunlu alan eksik (title, description, categoryId): ${row.title || "?"}`,
+                `Zorunlu alan eksik (title, description): ${row.title || "?"}`,
               );
               continue;
             }
 
-            const categoryExists = await prisma.category.findUnique({
-              where: { id: Number(row.categoryId) },
-            });
-            if (!categoryExists) {
+            // Support categoryId as single value or categories as comma-separated/array
+            const rawCategories = row.categories || row.categoryId;
+            const categoryIds: number[] = Array.isArray(rawCategories)
+              ? rawCategories.map(Number)
+              : rawCategories
+                ? String(rawCategories)
+                    .split(",")
+                    .map((id: string) => Number(id.trim()))
+                : [];
+
+            if (categoryIds.length === 0) {
               result.errors.push(
-                `Kategori bulunamadı (ID: ${row.categoryId}): ${row.title}`,
+                `Kategori eksik (categories veya categoryId): ${row.title}`,
               );
               continue;
+            }
+
+            // Validate all category IDs exist
+            for (const catId of categoryIds) {
+              const categoryExists = await prisma.category.findUnique({
+                where: { id: catId },
+              });
+              if (!categoryExists) {
+                result.errors.push(
+                  `Kategori bulunamadı (ID: ${catId}): ${row.title}`,
+                );
+              }
             }
 
             let tests = row.tests;
@@ -134,7 +153,7 @@ export async function POST(req: NextRequest) {
                   ...articleData,
                   categories: {
                     deleteMany: {},
-                    create: [{ categoryId: Number(row.categoryId) }],
+                    create: categoryIds.map((catId) => ({ categoryId: catId })),
                   },
                 },
               });
@@ -144,7 +163,7 @@ export async function POST(req: NextRequest) {
                 data: {
                   ...articleData,
                   categories: {
-                    create: [{ categoryId: Number(row.categoryId) }],
+                    create: categoryIds.map((catId) => ({ categoryId: catId })),
                   },
                 },
               });
