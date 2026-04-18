@@ -19,11 +19,11 @@ export default async function page() {
 
   const resData = await fetch(
     `${baseUrl}/api/users?username=${encodeURIComponent(
-      session.user.username
+      session.user.username,
     )}`,
     {
       cache: "no-store",
-    }
+    },
   ).then((r) => r.json());
 
   const attempts = resData?.Student?.attempts || [];
@@ -34,7 +34,7 @@ export default async function page() {
       correct,
       variant,
       category: formatDateTime(createdAt),
-    })
+    }),
   );
 
   const formattedAttempts = formatted;

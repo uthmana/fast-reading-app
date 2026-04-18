@@ -14,6 +14,7 @@ export const authOptions: any = {
     users: ["view", "create", "edit", "delete"],
     billing: ["view", "create", "edit", "delete"],
     registration: ["view", "create", "edit", "delete"],
+    datatransfers: ["view", "create", "edit", "delete"],
   },
   SUBSCRIBER: {
     classes: ["view", "create", "edit", "delete"],

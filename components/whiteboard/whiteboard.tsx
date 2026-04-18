@@ -77,7 +77,10 @@ export default function Whiteboard({
         </WoodenFrame>
 
         {/* Countdown and navigation buttons */}
-        {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt" ? (
+        {lessonData?.duration &&
+        !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
+          lessonData?.pathname ?? "",
+        ) ? (
           <CountDown
             className="absolute z-10 right-8 top-6"
             initial={countDownValue}
@@ -124,7 +127,9 @@ export default function Whiteboard({
             {children}
 
             {lessonData?.duration &&
-            lessonData?.pathname !== "seviye-yukselt" ? (
+            !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
+              lessonData?.pathname ?? "",
+            ) ? (
               <CountDown
                 className="absolute right-3 top-3 !text-base"
                 initial={countDownValue}
@@ -153,7 +158,10 @@ export default function Whiteboard({
               lessonData={lessonData}
               readingStatus={readingStatus}
               showPauseButton={true}
-              onPause={onPause}
+              onPause={() => {
+                saveProgress?.();
+                onPause?.();
+              }}
             />
           </div>
         </div>

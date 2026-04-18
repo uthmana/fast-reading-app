@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "migrate:baseline": "npx prisma migrate resolve --applied 20260121000018_init && npx prisma migrate resolve --applied 20260131092131_migrated_todocker && npx prisma migrate resolve --applied 20260301174035_added_exercisetags && npx prisma migrate resolve --applied 20260405054001_added_totalquestion_to_attempt && npx prisma migrate resolve --applied 20260405054230_changed_totalquestion_to_totlaquestions_in_attempt",
+    "db:push": "npx prisma db push",
+    "db:seed": "npx prisma db seed",
+    "build:full": "npx prisma generate && npx prisma migrate deploy && npx prisma db seed && next build",
+    "dev:full": "npx prisma generate && npx prisma migrate dev && npx prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -17,7 +24,9 @@
     "@microlink/react-json-view": "^1.27.0",
     "@prisma/client": "^6.16.2",
     "@tanstack/react-table": "^8.21.3",
+    "apexcharts": "^5.3.6",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^17.2.3",
     "file-saver": "^2.0.5",
     "framer-motion": "^12.23.24",
     "next": "^14.2.33",

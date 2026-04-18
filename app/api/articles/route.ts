@@ -13,9 +13,14 @@ export async function GET(req: NextRequest) {
     let where: any | undefined;
 
     if (id) {
-      // Fetch a single user by name
+      // Fetch a single article by id
       const article = await prisma.article.findUnique({
         where: { id: parseInt(id) },
+        include: {
+          categories: {
+            include: { category: { select: { id: true, title: true } } },
+          },
+        },
       });
 
       if (!article) {
@@ -30,8 +35,16 @@ export async function GET(req: NextRequest) {
 
     if (categoryId) {
       const article = await prisma.article.findMany({
-        where: { categoryId: parseInt(categoryId) },
-        orderBy: { subscriberId: "desc" },
+        where: {
+          categories: { some: { categoryId: parseInt(categoryId) } },
+          hasQuestion: true,
+        },
+        include: {
+          categories: {
+            include: { category: { select: { id: true, title: true } } },
+          },
+        },
+        orderBy: { title: "asc" },
       });
 
       if (!article) {
@@ -58,8 +71,8 @@ export async function GET(req: NextRequest) {
             where,
             skip: randomIndex,
             include: {
-              category: {
-                select: { id: true, title: true },
+              categories: {
+                include: { category: { select: { id: true, title: true } } },
               },
             },
             orderBy: { subscriberId: "desc" },
@@ -71,8 +84,8 @@ export async function GET(req: NextRequest) {
           where,
           orderBy: { subscriberId: "desc" },
           include: {
-            category: {
-              select: { id: true, title: true },
+            categories: {
+              include: { category: { select: { id: true, title: true } } },
             },
           },
         });
@@ -88,8 +101,8 @@ export async function GET(req: NextRequest) {
     const articles = await prisma.article.findMany({
       orderBy: { createdAt: "desc" },
       include: {
-        category: {
-          select: { id: true, title: true },
+        categories: {
+          include: { category: { select: { id: true, title: true } } },
         },
       },
     });
@@ -113,14 +126,14 @@ export async function POST(req: Request) {
     title,
     description,
     studyGroup,
-    categoryId,
+    categories,
     hasQuestion,
     active,
     tests,
     subscriberId,
   }: Article | any = await req.json();
 
-  if (!title || !description || !categoryId) {
+  if (!title || !description || !categories?.length) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
@@ -136,12 +149,15 @@ export async function POST(req: Request) {
             title,
             description,
             studyGroup,
-            subscriberId,
+            subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
             hasQuestion: tests?.length > 0 ? true : false,
             active,
             tests: tests,
-            category: {
-              connect: { id: parseInt(categoryId) },
+            categories: {
+              deleteMany: {},
+              create: (categories || []).map((catId: any) => ({
+                categoryId: parseInt(catId),
+              })),
             },
           },
         });
@@ -154,12 +170,14 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
-        subscriberId,
+        subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
         hasQuestion: tests?.length > 0 ? true : false,
         active,
         tests: tests,
-        category: {
-          connect: { id: parseInt(categoryId) },
+        categories: {
+          create: (categories || []).map((catId: any) => ({
+            categoryId: parseInt(catId),
+          })),
         },
       },
     });
@@ -181,6 +199,9 @@ export async function DELETE(req: Request) {
 
   try {
     if (id) {
+      await prisma.articleCategory.deleteMany({
+        where: { articleId: id },
+      });
       await prisma.article.delete({
         where: { id },
       });

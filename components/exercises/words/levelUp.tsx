@@ -125,11 +125,17 @@ export default function LevelUp({
         saveProgress?.();
       }
 
+      // Play LevelUp sound
+      const audio = new Audio("/audios/LevelUp.mpeg");
+      audio.play().catch(() => {});
+
       const resultData = {
         wpf: controls?.wordsPerFrame,
         durationSec: speedMap[levelRef.current],
         variant: "FASTVISION",
-        correct: (correct / frames.length) * 100,
+        correct: correct,
+        //correct: (correct / frames.length) * 100,
+        totalquestions: frames.length,
         wpm: calculateReadingSpeed(
           (controls?.wordsPerFrame || 1) * frames.length,
           speedMap[levelRef.current],
@@ -186,7 +192,11 @@ export default function LevelUp({
             kelimelik metinleri{" "}
             <span className="text-red-500"> {speedMap[levelRef.current]} </span>{" "}
             ms de doğru görme, anlama oranınız %{" "}
-            <span className="text-red-500">{resultMessage.correct}</span>{" "}
+            <span className="text-red-500">
+              {Math.round(
+                (resultMessage?.correct / resultMessage?.totalquestions) * 100,
+              )}
+            </span>{" "}
           </p>
         </div>
       )}

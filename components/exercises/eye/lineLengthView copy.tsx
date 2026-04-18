@@ -1,0 +1,146 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import { speedMap } from "@/utils/constants";
+
+type LineLengthViewProps = {
+  controls?: {
+    distance?: number;
+    letterCount?: number;
+    level?: number;
+    scroll?: boolean;
+    wordList?: string[];
+  };
+  onFinishTest?: (v: any) => void;
+  pause?: boolean;
+};
+
+export default function LineLengthView({
+  controls,
+  onFinishTest,
+  pause = false,
+}: LineLengthViewProps) {
+  const directionRef = useRef(1);
+  const [word, setWord] = useState("...");
+  const [yOffset, setYOffset] = useState(0);
+  const [flipping, setFlipping] = useState(false);
+  const distance =
+    controls?.distance && controls?.distance > 1
+      ? controls?.distance * 40
+      : (controls?.distance ?? 1 * 2);
+  const letterCount = controls?.letterCount || 3;
+  const scroll = controls?.scroll ?? false;
+  const level = controls?.level || 3;
+  const rawSpeed = speedMap[level];
+  const pool = controls?.wordList;
+
+  const intervalMs = useMemo(() => {
+    let ms =
+      typeof rawSpeed === "number"
+        ? rawSpeed
+        : parseInt(String(rawSpeed || 1200), 10);
+    if (isNaN(ms)) ms = 1200;
+    if (ms <= 50) ms *= 1000;
+    return Math.max(300, Math.min(10000, ms));
+  }, [rawSpeed]);
+
+  const pickWord = () => {
+    if (!pool?.length) return "...";
+    return pool[Math.floor(Math.random() * pool.length)];
+  };
+
+  useEffect(() => {
+    setWord(pickWord());
+  }, [controls?.wordList]);
+
+  useEffect(() => {
+    setFlipping(true);
+    const t = setTimeout(() => setFlipping(false), 900);
+    return () => clearTimeout(t);
+  }, [letterCount]);
+
+  useEffect(() => {
+    const intv = setInterval(() => {
+      setWord(pickWord());
+
+      if (scroll) {
+        setYOffset((prev) => {
+          let y = prev + 10 * directionRef.current;
+          if (y > 80) directionRef.current = -1;
+          if (y < -80) directionRef.current = 1;
+          return y;
+        });
+      }
+    }, intervalMs);
+
+    return () => clearInterval(intv);
+  }, [intervalMs, scroll, controls?.wordList]);
+
+  useEffect(() => {
+    if (pause) {
+      onFinishTest?.(null);
+    }
+  }, [pause, onFinishTest]);
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center  select-none overflow-hidden">
+      {/* CENTER SPLIT LINE */}
+      <div className="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gray-600 opacity-70 z-10"></div>
+      {flipping && (
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex pointer-events-none z-40">
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 0.9 }}
+            style={{
+              width: 110,
+              height: 260,
+              overflow: "hidden",
+              borderRadius: "6px 0 0 6px",
+            }}
+          ></motion.div>
+
+          {/* RIGHT HALF */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 0.9 }}
+            style={{
+              width: 110,
+              height: 260,
+              overflow: "hidden",
+              borderRadius: "0 6px 6px 0",
+            }}
+          ></motion.div>
+        </div>
+      )}
+
+      {/* LEFT SIDE WORD */}
+      <div className="absolute left-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-end">
+        <div
+          className="text-2xl font-light text-black"
+          style={{
+            transform: `translateX(calc(-50% - ${distance}px)) translateY(${yOffset}px)`,
+            transition: "transform 0.2s linear",
+          }}
+        >
+          {word}
+        </div>
+      </div>
+
+      {/* RIGHT SIDE WORD */}
+      <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden flex items-center justify-left">
+        <div
+          className="text-2xl font-light text-black"
+          style={{
+            transform: `translateX(calc(50% + ${distance}px)) translateY(${yOffset}px)`,
+            transition: "transform 0.2s linear",
+          }}
+        >
+          {word}
+        </div>
+      </div>
+    </div>
+  );
+}
