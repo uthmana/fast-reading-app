@@ -9,6 +9,7 @@
     "lint": "next lint",
     "migrate:dev": "npx prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
+    "migrate:baseline": "npx prisma migrate resolve --applied 20260121000018_init && npx prisma migrate resolve --applied 20260131092131_migrated_todocker && npx prisma migrate resolve --applied 20260301174035_added_exercisetags && npx prisma migrate resolve --applied 20260405054001_added_totalquestion_to_attempt && npx prisma migrate resolve --applied 20260405054230_changed_totalquestion_to_totlaquestions_in_attempt",
     "db:push": "npx prisma db push",
     "db:seed": "npx prisma db seed",
     "build:full": "npx prisma generate && npx prisma migrate deploy && npx prisma db seed && next build",
