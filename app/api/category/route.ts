@@ -94,11 +94,11 @@ export async function POST(req: Request) {
   try {
     if (id) {
       const categoryExit = await prisma.category.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
       });
       if (categoryExit) {
         const category = await prisma.category.update({
-          where: { id },
+          where: { id: parseInt(id) },
           data: {
             title,
             description,
@@ -119,10 +119,10 @@ export async function POST(req: Request) {
       },
     });
     return NextResponse.json(category, { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return NextResponse.json(
-      { error: "Category already exists" },
+      { error: `Category already exists error: ${err.message}` },
       { status: 400 },
     );
   }

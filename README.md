@@ -12,3 +12,11 @@ pnpm dev
 bun dev
 test
 ```
+
+```bash
+# Migrations are to be generated in the Dev server and taken to the production server
+# In Production run
+npx prisma migrate deploy
+# or
+npm run migrate:deploy
+```

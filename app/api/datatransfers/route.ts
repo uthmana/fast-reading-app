@@ -116,7 +116,7 @@ export async function POST(req: NextRequest) {
                   where: { title: row.title },
                 });
 
-            const articleData = {
+            const articleData: any = {
               title: row.title,
               description: row.description,
               studyGroup: row.studyGroup || "ILKOKUL_2_3",
@@ -125,17 +125,29 @@ export async function POST(req: NextRequest) {
               active: row.active !== false && row.active !== "false",
               tests: tests || null,
               subscriberId: row.subscriberId ? Number(row.subscriberId) : null,
-              category: { connect: { id: Number(row.categoryId) } },
             };
 
             if (existing) {
               await prisma.article.update({
                 where: { id: existing.id },
-                data: articleData,
+                data: {
+                  ...articleData,
+                  categories: {
+                    deleteMany: {},
+                    create: [{ categoryId: Number(row.categoryId) }],
+                  },
+                },
               });
               result.updated++;
             } else {
-              await prisma.article.create({ data: articleData });
+              await prisma.article.create({
+                data: {
+                  ...articleData,
+                  categories: {
+                    create: [{ categoryId: Number(row.categoryId) }],
+                  },
+                },
+              });
               result.created++;
             }
           } catch (err: any) {
