@@ -4,6 +4,7 @@ import {
   getWordListByLetterCount,
   getWordListPerCount,
   getWordListPerCountWithLimit,
+  getArticleOptionsWithQuestionByCategoryId,
 } from "@/components/formBuilder/request";
 import { speedMap } from "@/utils/constants";
 
@@ -742,7 +743,7 @@ export const controlFields: Record<string, any[]> = {
       showLabel: false,
       disabled: false,
       options: [],
-      asyncOptionById: getArticleOptionsByCategoryId,
+      asyncOptionById: getArticleOptionsWithQuestionByCategoryId,
       styleClass: "!mb-0",
     },
     {

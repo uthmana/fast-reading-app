@@ -10,8 +10,9 @@ export async function GET(req: NextRequest) {
     const categoryId = searchParams.get("categoryId");
     const whereParam = searchParams.get("where");
     const randomParam = searchParams.get("random");
+    const hasQuestionParam = searchParams.get("hasQuestion");
     let where: any | undefined;
-
+    console.log(req.url);
     if (id) {
       // Fetch a single article by id
       const article = await prisma.article.findUnique({
@@ -34,11 +35,17 @@ export async function GET(req: NextRequest) {
     }
 
     if (categoryId) {
+      let hasQuestionWhere: any = {};
+      hasQuestionWhere.categories = {
+        some: { categoryId: parseInt(categoryId) },
+      };
+
+      if (hasQuestionParam !== null) {
+        hasQuestionWhere.hasQuestion = hasQuestionParam === "true";
+      }
+
       const article = await prisma.article.findMany({
-        where: {
-          categories: { some: { categoryId: parseInt(categoryId) } },
-          hasQuestion: true,
-        },
+        where: hasQuestionWhere,
         include: {
           categories: {
             include: { category: { select: { id: true, title: true } } },
