@@ -139,13 +139,37 @@ export default function Whiteboard({
               />
             ) : null}
             {lessonData?.id ? (
-              <a
+              //   <a
+              //     className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
+              //     href={`/ogrenci/dersler/${lessonData?.order}`}
+              //     //href={`/ogrenci/dersler/${lessonData?.order}`}
+              //     onClick={async (e) => {
+              //       if (isPlaying) {
+              //         e.preventDefault();
+              //         await saveProgress?.();
+              //         await onPause?.();
+              //         //window.location.href = `/ogrenci/dersler/${lessonData?.order}`;
+              //       }
+              //     }
+              //   }
+              //   >
+              //     <MdArrowBack className="text-white w-6 h-6" />
+              //     <span className="hidden md:inline-block"> Derslere Dön</span>
+              //   </a>
+              // ) : null
+              <Link
                 className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
                 href={`/ogrenci/dersler/${lessonData?.order}`}
+                onClick={async (e) => {
+                  if (isPlaying) {
+                    e.preventDefault();
+                    await saveProgress?.();
+                    await onPause?.();
+                  }
+                }}
               >
-                <MdArrowBack className="text-white w-6 h-6" />
-                <span className="hidden md:inline-block"> Derslere Dön</span>
-              </a>
+                <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+              </Link>
             ) : null}
           </WoodenFrame>
 
