@@ -51,7 +51,12 @@ export default function EyeAgilityIncrease({
       setRunning(false);
       return;
     }
-    setFrames(text);
+    const shuffled = [...text];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    setFrames(shuffled);
     setFrameDurationMs(speedMap[level]);
     setIndex(0);
   }, [text, level]);
@@ -64,23 +69,32 @@ export default function EyeAgilityIncrease({
   }, [autoStart, frames]);
 
   // 🎯 Keep red div inside parent bounds
+  // const randomPosition = () => {
+  //   const container = containerRef.current;
+  //   const element = elementRef.current;
+  //   if (!container || !element) return { top: 50, left: 50 };
+
+  //   const containerRect = container.getBoundingClientRect();
+  //   const elementRect = element.getBoundingClientRect();
+
+  //   const maxTop = containerRect.height - elementRect.height;
+  //   const maxLeft = containerRect.width - elementRect.width;
+
+  //   const randomTop = Math.random() * maxTop;
+  //   const randomLeft = Math.random() * maxLeft;
+
+  //   return { top: randomTop, left: randomLeft };
+  // };
+  // Generate a random position safely within container bounds
   const randomPosition = () => {
     const container = containerRef.current;
-    const element = elementRef.current;
-    if (!container || !element) return { top: 50, left: 50 };
-
-    const containerRect = container.getBoundingClientRect();
-    const elementRect = element.getBoundingClientRect();
-
-    const maxTop = containerRect.height - elementRect.height;
-    const maxLeft = containerRect.width - elementRect.width;
-
-    const randomTop = Math.random() * maxTop;
-    const randomLeft = Math.random() * maxLeft;
-
-    return { top: randomTop, left: randomLeft };
+    if (!container) return { top: 50, left: 50 };
+    const { width, height } = container.getBoundingClientRect();
+    if (width === 0 || height === 0) return { top: 50, left: 50 };
+    const top = height * (0.1 + Math.random() * 0.7);
+    const left = width * (0.1 + Math.random() * 0.7);
+    return { top, left };
   };
-
   useEffect(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);

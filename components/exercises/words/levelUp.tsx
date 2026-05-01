@@ -59,14 +59,19 @@ export default function LevelUp({
       return;
     }
 
-    framesRef.current = controls.wordList;
+    const shuffled = [...controls.wordList];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    framesRef.current = shuffled;
     answersRef.current = [];
 
     levelRef.current = controls.level ?? 1;
     wpfRef.current = controls.wordsPerFrame;
     durationRef.current = speedMap[levelRef.current];
 
-    setFrames(controls.wordList);
+    setFrames(shuffled);
     setFrameDurationMs(durationRef.current);
     setIndex(0);
   }, [controls]);
