@@ -1,10 +1,13 @@
 generator client {
   provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.0.x"]
+  
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
@@ -100,6 +103,7 @@ model Attempt {
   studentId   Int
   student     Student  @relation(fields: [studentId], references: [id])
   correct     Int?
+  totalquestions Int?
   wpm         Float? // words per minute measured
   wpf         Int?     @default(1) // words per frame
   variant     TestType @default(FASTREADING)
@@ -108,18 +112,27 @@ model Attempt {
 }
 
 model Article {
-  id           Int        @id @default(autoincrement())
-  title        String     @unique
-  description  String     @db.Text
-  studyGroup   StudyGroup @default(ILKOKUL_2_3)
-  category     Category   @relation(fields: [categoryId], references: [id])
+  id           Int               @id @default(autoincrement())
+  title        String            @unique
+  description  String            @db.Text
+  studyGroup   StudyGroup        @default(ILKOKUL_2_3)
+  categories   ArticleCategory[]
   subscriberId Int?
-  hasQuestion  Boolean    @default(false)
-  active       Boolean    @default(true)
+  hasQuestion  Boolean           @default(false)
+  active       Boolean           @default(true)
   tests        Json?
-  categoryId   Int
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime?         @updatedAt
+}
+
+model ArticleCategory {
+  id         Int      @id @default(autoincrement())
+  articleId  Int
+  article    Article  @relation(fields: [articleId], references: [id])
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([articleId, categoryId])
 }
 
 model ArticleTest {
@@ -132,14 +145,14 @@ model ArticleTest {
 }
 
 model Category {
-  id           Int        @id @default(autoincrement())
-  title        String     @unique
+  id           Int               @id @default(autoincrement())
+  title        String            @unique
   description  String?
   subscriberId Int?
-  studyGroup   StudyGroup @default(ILKOKUL_2_3)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
-  Article      Article[]
+  studyGroup   StudyGroup        @default(ILKOKUL_2_3)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime?         @updatedAt
+  articles     ArticleCategory[]
 }
 
 model Words {

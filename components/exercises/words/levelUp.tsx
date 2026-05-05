@@ -59,14 +59,19 @@ export default function LevelUp({
       return;
     }
 
-    framesRef.current = controls.wordList;
+    const shuffled = [...controls.wordList];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    framesRef.current = shuffled;
     answersRef.current = [];
 
     levelRef.current = controls.level ?? 1;
     wpfRef.current = controls.wordsPerFrame;
     durationRef.current = speedMap[levelRef.current];
 
-    setFrames(controls.wordList);
+    setFrames(shuffled);
     setFrameDurationMs(durationRef.current);
     setIndex(0);
   }, [controls]);
@@ -125,11 +130,17 @@ export default function LevelUp({
         saveProgress?.();
       }
 
+      // Play LevelUp sound
+      const audio = new Audio("/audios/LevelUp.mpeg");
+      audio.play().catch(() => {});
+
       const resultData = {
         wpf: controls?.wordsPerFrame,
         durationSec: speedMap[levelRef.current],
         variant: "FASTVISION",
-        correct: (correct / frames.length) * 100,
+        correct: correct,
+        //correct: (correct / frames.length) * 100,
+        totalquestions: frames.length,
         wpm: calculateReadingSpeed(
           (controls?.wordsPerFrame || 1) * frames.length,
           speedMap[levelRef.current],
@@ -186,7 +197,11 @@ export default function LevelUp({
             kelimelik metinleri{" "}
             <span className="text-red-500"> {speedMap[levelRef.current]} </span>{" "}
             ms de doğru görme, anlama oranınız %{" "}
-            <span className="text-red-500">{resultMessage.correct}</span>{" "}
+            <span className="text-red-500">
+              {Math.round(
+                (resultMessage?.correct / resultMessage?.totalquestions) * 100,
+              )}
+            </span>{" "}
           </p>
         </div>
       )}

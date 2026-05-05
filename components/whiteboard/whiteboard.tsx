@@ -77,7 +77,10 @@ export default function Whiteboard({
         </WoodenFrame>
 
         {/* Countdown and navigation buttons */}
-        {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt" ? (
+        {lessonData?.duration &&
+        !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
+          lessonData?.pathname ?? "",
+        ) ? (
           <CountDown
             className="absolute z-10 right-8 top-6"
             initial={countDownValue}
@@ -124,7 +127,9 @@ export default function Whiteboard({
             {children}
 
             {lessonData?.duration &&
-            lessonData?.pathname !== "seviye-yukselt" ? (
+            !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
+              lessonData?.pathname ?? "",
+            ) ? (
               <CountDown
                 className="absolute right-3 top-3 !text-base"
                 initial={countDownValue}
@@ -134,13 +139,37 @@ export default function Whiteboard({
               />
             ) : null}
             {lessonData?.id ? (
-              <a
+              //   <a
+              //     className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
+              //     href={`/ogrenci/dersler/${lessonData?.order}`}
+              //     //href={`/ogrenci/dersler/${lessonData?.order}`}
+              //     onClick={async (e) => {
+              //       if (isPlaying) {
+              //         e.preventDefault();
+              //         await saveProgress?.();
+              //         await onPause?.();
+              //         //window.location.href = `/ogrenci/dersler/${lessonData?.order}`;
+              //       }
+              //     }
+              //   }
+              //   >
+              //     <MdArrowBack className="text-white w-6 h-6" />
+              //     <span className="hidden md:inline-block"> Derslere Dön</span>
+              //   </a>
+              // ) : null
+              <Link
                 className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
                 href={`/ogrenci/dersler/${lessonData?.order}`}
+                onClick={async (e) => {
+                  if (isPlaying) {
+                    e.preventDefault();
+                    await saveProgress?.();
+                    await onPause?.();
+                  }
+                }}
               >
-                <MdArrowBack className="text-white w-6 h-6" />
-                <span className="hidden md:inline-block"> Derslere Dön</span>
-              </a>
+                <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+              </Link>
             ) : null}
           </WoodenFrame>
 
@@ -153,7 +182,10 @@ export default function Whiteboard({
               lessonData={lessonData}
               readingStatus={readingStatus}
               showPauseButton={true}
-              onPause={onPause}
+              onPause={() => {
+                saveProgress?.();
+                onPause?.();
+              }}
             />
           </div>
         </div>

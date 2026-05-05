@@ -14,6 +14,22 @@ export const getCategoryOptions = async () => {
     return;
   }
 };
+
+export const getArticleOptionsWithQuestionByCategoryId = async (id: string) => {
+  try {
+    const resData = await fetchData({
+      apiPath: `/api/articles?categoryId=${id}&hasQuestion=true`,
+    });
+    const res = resData?.map((item: { title: string; id: string }) => {
+      return { name: item.title, value: item.id, data: JSON.stringify(item) };
+    });
+    return res;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
+};
+
 export const getArticleOptionsByCategoryId = async (id: string) => {
   try {
     const resData = await fetchData({
