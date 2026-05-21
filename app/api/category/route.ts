@@ -9,12 +9,11 @@ export async function GET(req: NextRequest) {
   try {
     const session = await getServerSession(authOptions as any);
     let subscriberId = (session as any)?.user.subscriberId ?? null;
-
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const whereParam = searchParams.get("where");
     const subscriberOptionsParam = searchParams.get("subscriber-options");
-
+    const role = (session as any)?.user.role;
     let where: any | undefined;
 
     if (whereParam) {
@@ -56,9 +55,20 @@ export async function GET(req: NextRequest) {
       });
       return NextResponse.json(categories, { status: 200 });
     }
+    if (role === "ADMIN" || role === "TEACHER") {
+      const categories = await prisma.category.findMany({
+        // orderBy: { subscriberId: "desc" },
+        orderBy: { title: "asc" },
+      });
+      return NextResponse.json(categories, { status: 200 });
+    }
 
     const categories = await prisma.category.findMany({
-      orderBy: { subscriberId: "desc" },
+      // orderBy: { subscriberId: "desc" },
+      where: {
+        studyGroup: (session as any)?.user?.student?.studyGroup,
+      },
+      orderBy: { title: "asc" },
     });
     return NextResponse.json(categories, { status: 200 });
   } catch (e) {
@@ -80,20 +90,20 @@ export async function POST(req: Request) {
   if (!title) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
-
+  //const subscriberIdval = subscriberId == "" ? null : subscriberId;
   try {
     if (id) {
       const categoryExit = await prisma.category.findUnique({
-        where: { id },
+        where: { id: parseInt(id) },
       });
       if (categoryExit) {
         const category = await prisma.category.update({
-          where: { id },
+          where: { id: parseInt(id) },
           data: {
             title,
             description,
             studyGroup,
-            subscriberId,
+            subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
           },
         });
         return NextResponse.json(category, { status: 200 });
@@ -105,14 +115,14 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
-        subscriberId,
+        subscriberId: subscriberId === "" ? null : parseInt(subscriberId),
       },
     });
     return NextResponse.json(category, { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
     console.log(err);
     return NextResponse.json(
-      { error: "Category already exists" },
+      { error: `Category already exists error: ${err.message}` },
       { status: 400 },
     );
   }

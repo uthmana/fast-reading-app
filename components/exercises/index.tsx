@@ -3,11 +3,9 @@
 import React from "react";
 import NotFound from "@/app/(ogrenci)/ogrenci/not-found";
 import EyeMuscle from "./eye/eyeMuscle";
-import ActivevisionAreaOne from "./eye/activevisionAreaOne";
 import ActivevisionAreaTwo from "./eye/activevisionAreaTwo";
 import ActivevisionAreaThree from "./eye/activevisionAreaThree";
 import LineLengthView from "./eye/lineLengthView";
-import Metronom from "./eye/metronom";
 import FindTheColor from "./brain/findTheColor";
 import FindTheWord from "./brain/findTheWord";
 import FindTheNumber from "./brain/findTheNumber";
@@ -18,6 +16,8 @@ import GroupReading from "./reading/groupReading";
 import EyeAgilityIncrease from "./words/eyeAgilityIncrease";
 import LevelUp from "./words/levelUp";
 import Tachistoscope from "./words/fastVision";
+import ActivevisionAreaOne from "./eye/activevisionAreaOne";
+import Metronom from "./eye/metronom";
 
 export default function RenderExercise(props: any) {
   const pathname: string = props.pathname;

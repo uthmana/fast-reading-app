@@ -33,7 +33,6 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug as any;
-
   const isTestSlug =
     pathname === "hizli-okuma-testi" || pathname === "anlama-testi";
 

@@ -190,7 +190,7 @@ export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
   return Math.round(speed);
 };
 
-export const calculateQuizScore = (
+export const calculateQuizScore1 = (
   questions: { id: string }[],
   answers: Record<string, string>,
   correctAnswers: Record<string, string>,
@@ -209,6 +209,24 @@ export const calculateQuizScore = (
   return Math.round(percentage); // round to nearest whole number
 };
 
+export const calculateQuizScore = (
+  questions: { id: string }[],
+  answers: Record<string, string>,
+  correctAnswers: Record<string, string>,
+): [correctpercent: number, correctcount: number] => {
+  if (!questions?.length || !answers) return [0, 0];
+
+  let correctCount = 0;
+
+  questions.forEach((q) => {
+    if (answers[q.id] && answers[q.id] === correctAnswers[q.id]) {
+      correctCount++;
+    }
+  });
+
+  const percentage = (correctCount / questions.length) * 100;
+  return [Math.round(percentage), correctCount]; // round to nearest whole number
+};
 export const getInputTypeValue = (value: string): UserWhereInput | null => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const usernameRegex = /^[a-zA-Z0-9_]{3,16}$/;

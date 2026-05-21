@@ -31,8 +31,10 @@ export default function ReadingFocusedBlock({
 }) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
+  const [finished, setFinished] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
+  const highlightRef = useRef<HTMLSpanElement | null>(null);
   const finishedRef = useRef(false);
   const { font, level, wordsPerFrame } = controls;
 
@@ -50,6 +52,8 @@ export default function ReadingFocusedBlock({
           clearInterval(intervalRef.current!);
           intervalRef.current = null;
           finishedRef.current = true;
+          setRunning(false);
+          setFinished(true);
           return prev;
         }
         return next;
@@ -58,21 +62,12 @@ export default function ReadingFocusedBlock({
   };
 
   useEffect(() => {
-    if (!finishedRef.current) return;
-    setRunning(false);
-    onFinishTest?.({
-      wpm: 0,
-      correct: 0,
-      counter: words.length,
-      variant: "fast-reading",
-    });
-  }, [finishedRef.current]);
-
-  useEffect(() => {
     if (!words.length) return;
     setActiveWordIndex(0);
+    setFinished(false);
     setRunning(true);
     currentLevelRef.current = level;
+    finishedRef.current = false;
     startInterval(0, speedMap[level]);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -103,6 +98,16 @@ export default function ReadingFocusedBlock({
     }
   }, [pause, setRunning, onFinishTest]);
 
+  // 🔹 Auto-scroll highlighted section into view
+  useEffect(() => {
+    if (highlightRef.current) {
+      highlightRef.current.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+  }, [activeWordIndex]);
+
   // 🔹 Get the current highlighted frame as a single string
   const highlightedWords = words
     .slice(activeWordIndex, activeWordIndex + wordsPerFrame)
@@ -115,7 +120,11 @@ export default function ReadingFocusedBlock({
   return (
     <div className={`w-full ${className}`}>
       <div className="w-full h-full text-left relative">
-        {words.length > 0 ? (
+        {finished ? (
+          <p className="font-semibold text-center text-red-500">
+            Eğitiminiz tamamlanmadı, yeni bir makale seçerek devam edin.
+          </p>
+        ) : words.length > 0 ? (
           <div
             className="w-full transition-all"
             style={{
@@ -129,7 +138,10 @@ export default function ReadingFocusedBlock({
             <span className="opacity-0">{beforeText} </span>
 
             {/* Highlighted section (no gaps) */}
-            <span className="bg-blue-800 p-1 text-white rounded-sm">
+            <span
+              ref={highlightRef}
+              className="bg-blue-800 p-1 text-white rounded-sm"
+            >
               {highlightedWords}
             </span>
 

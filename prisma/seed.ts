@@ -184,7 +184,9 @@ async function main() {
           hasQuestion: articleItem.hasQuestion,
           active: articleItem.active,
           tests: articleItem.tests,
-          category: { connect: { id: category.id } },
+          categories: {
+            create: [{ categoryId: category.id }],
+          },
         },
       });
     }

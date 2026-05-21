@@ -56,6 +56,7 @@ export default function page() {
     id: lessonParams,
     duration: durationParams,
     order: orderParams,
+    pathname,
   } as any;
 
   useEffect(() => {
@@ -107,15 +108,20 @@ export default function page() {
           }
 
           const formatted = attempts.map(
-            ({ wpm, createdAt, correct, variant }: any) => ({
+            ({ wpm, createdAt, correct, variant, totalquestions }: any) => ({
               wpm,
               correct,
               variant,
               category: formatDateTime(createdAt),
+              totalquestions,
             }),
           );
+
           setFormattedAttempts(formatted);
-          const buildData = (key: "wpm" | "correct", variant: string) => {
+          const buildData = (
+            key: "wpm" | "correct" | "totalquestions",
+            variant: string,
+          ) => {
             const filtered = formatted.filter(
               (i: any) => i.variant === variant,
             );
@@ -140,6 +146,7 @@ export default function page() {
       wpm: number;
       correct: number;
       counter: number;
+      totalquestions?: number;
       variant: string;
     } | null,
   ) => {
@@ -148,7 +155,7 @@ export default function page() {
       return;
     }
 
-    const { wpm, correct, counter, variant } = val;
+    const { wpm, correct, counter, totalquestions, variant } = val;
     try {
       // Todo: chech if introTest is anumber
       if (introTest && isNaN(parseInt(introTest))) {
@@ -163,6 +170,7 @@ export default function page() {
           payload: {
             wpm,
             correct,
+            totalquestions,
             durationSec: counter,
             variant,
             studentId: session?.user?.student?.id,
@@ -174,6 +182,7 @@ export default function page() {
           payload: {
             wpm,
             correct,
+            totalquestions,
             durationSec: counter,
             variant: "FASTREADING",
             studentId: session?.user?.student?.id,
@@ -214,11 +223,17 @@ export default function page() {
         payload: {
           wpm,
           correct,
+          totalquestions,
           durationSec: counter,
           variant,
           studentId: session?.user?.student?.id,
         },
       });
+
+      // Mark lesson exercise as completed (no countdown for these tests)
+      if (lessonParams && exerciseParams) {
+        await saveProgress();
+      }
     } catch (error) {
       console.error(error);
       setPause(true);
@@ -240,7 +255,7 @@ export default function page() {
       console.error(error);
     }
   };
-
+  console.log("pathname:", lessonData);
   if (pathname === "hizli-okuma-testi") {
     return (
       <Whiteboard
@@ -414,13 +429,16 @@ export default function page() {
                     {attempt.category}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.correct / 10}
+                    {attempt.correct}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {10 - attempt.correct / 10}
+                    {attempt?.totalquestions - attempt.correct}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    %{attempt.correct}
+                    %
+                    {Math.round(
+                      (attempt.correct / attempt?.totalquestions) * 100,
+                    )}
                   </div>
                 </div>
               ))}

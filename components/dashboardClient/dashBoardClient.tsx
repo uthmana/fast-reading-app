@@ -297,12 +297,12 @@ export default function DashboardClient({ user, progressSummary }: any) {
           </h1>
           <div className="text-justify text-sm space-y-5 pb-8 px-8">
             <p>
-              Mahmut YILMAZ Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
+              happybrains Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
               hakkı ve bu yazılımda yer alan bilgilerin ve yazılımların telif
-              hakları Mahmut YILMAZ'a aittir. Tüm hakları saklıdır. Bu yazılımda
+              hakları happybrains'a aittir. Tüm hakları saklıdır. Bu yazılımda
               yer alan bilgi ve yazılım yeniden üretilemez, çoğaltılamaz,
               kopyalanamaz, aktarılamaz, dağıtılamaz, depolanamaz,
-              değiştirilemez, indirilemez veya Mahmut YILMAZ önceden yazılı bir
+              değiştirilemez, indirilemez veya happybrains önceden yazılı bir
               onay vermeden herhangi bir ticari amaçla, başka şekillerde
               kullanılamaz.
             </p>

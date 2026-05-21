@@ -80,6 +80,7 @@ export default function page() {
       correct: number;
       durationSec: number;
       variant: string;
+      totalquestions: number;
     } | null,
   ) => {
     if (!val) {
@@ -87,7 +88,7 @@ export default function page() {
       return;
     }
 
-    const { wpm, wpf, correct, durationSec, variant } = val;
+    const { wpm, wpf, correct, durationSec, variant, totalquestions } = val;
     try {
       await fetchData({
         apiPath: "/api/attempts",
@@ -98,6 +99,7 @@ export default function page() {
           correct,
           durationSec,
           variant,
+          totalquestions,
           studentId: session?.user?.student?.id,
         },
       });

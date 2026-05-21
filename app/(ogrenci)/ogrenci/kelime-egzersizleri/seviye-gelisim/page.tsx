@@ -36,6 +36,7 @@ export default function page() {
             durationSec,
             createdAt,
             correct,
+            totalquestions,
             variant,
           }: any) => ({
             wpf,
@@ -43,6 +44,7 @@ export default function page() {
             wpm,
             durationSec,
             correct,
+            totalquestions: totalquestions,
             variant,
             category: formatDateTime(createdAt),
           }),
@@ -51,11 +53,15 @@ export default function page() {
         const buildData = (key: "correct" | "wpf", variant: string) => {
           const filtered = formatted.filter((i: any) => i.variant === variant);
           return {
-            data: filtered.map((i: any) => i[key]),
+            data: filtered.map((i: any) =>
+              i.totalquestions
+                ? Math.round((i.correct / i.totalquestions) * 100)
+                : 0,
+            ),
             categories: filtered.map((i: any) => i.category),
           };
         };
-        setFastVisionData(buildData("wpf", "FASTVISION"));
+        setFastVisionData(buildData("correct", "FASTVISION"));
       } catch (error) {
         console.error(error);
       }
@@ -73,7 +79,7 @@ export default function page() {
           <BarChart
             chartData={[
               {
-                name: "Görme Hızı",
+                name: "Başarı %",
                 data: fastVisionData.data || [],
               },
             ]}
@@ -93,9 +99,10 @@ export default function page() {
           <div className="w-full px-3">
             <div className="grid grid-cols-12 sticky pt-8 top-0 bg-white text-black text-sm whitespace-nowrap font-semibold border-b">
               <div className="col-span-3">Tarih</div>
-              <div className="col-span-3">Kelime Adet</div>
+              <div className="col-span-2">Kelime Adet</div>
+              <div className="col-span-3">Doğru Kelimeler</div>
               <div className="col-span-2">Hız (ms)</div>
-              <div className="col-span-4">Seviye Geçme Yüzdesi</div>
+              <div className="col-span-2">Geçme %</div>
             </div>
             {formattedAttempts
               ?.filter((item: any) => item.variant === "FASTVISION")
@@ -105,9 +112,17 @@ export default function page() {
                   className="grid grid-cols-12 py-1 text-sm whitespace-nowrap  border-b hover:bg-gray-200"
                 >
                   <div className="col-span-3"> {attempt.category}</div>
-                  <div className="col-span-3"> {attempt.wpf}</div>
+                  <div className="col-span-2"> {attempt.totalquestions}</div>
+                  <div className="col-span-3"> {attempt.correct}</div>
                   <div className="col-span-2">{attempt.durationSec}</div>
-                  <div className="col-span-4">{attempt.correct}</div>
+                  <div className="col-span-2">
+                    %
+                    {attempt.totalquestions
+                      ? Math.round(
+                          (attempt.correct / attempt.totalquestions) * 100,
+                        )
+                      : 0}
+                  </div>
                 </div>
               ))}
           </div>

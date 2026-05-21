@@ -104,6 +104,12 @@ function TableBuilder({
     if (type === "category") {
       return value.title;
     }
+    if (type === "categoryList") {
+      return value
+        ?.map((item: any) => item.category?.title)
+        ?.filter(Boolean)
+        ?.join(", ");
+    }
     if (type === "json") {
       return (
         <Button

@@ -79,8 +79,13 @@ export default function page() {
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
+      const categories =
+        currentArticle.categories?.map((item: { categoryId: number }) =>
+          item.categoryId.toString(),
+        ) || [];
       setData({
         ...currentArticle,
+        categories,
       });
       setIsShowPopUp(true);
     }
@@ -176,10 +181,14 @@ export default function page() {
     // Save changes to db
     try {
       setIsQuizSubmitting(true);
+      const categories =
+        selectedArticle.categories?.map((item: { categoryId: number }) =>
+          item.categoryId.toString(),
+        ) || [];
       const resData = await fetchData({
         apiPath: "/api/articles",
         method: "POST",
-        payload: { ...selectedArticle, tests: quiz },
+        payload: { ...selectedArticle, categories, tests: quiz },
       });
       requestData();
       setFormTouched(false);

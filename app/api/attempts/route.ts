@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
       if (!attempt) {
         return NextResponse.json(
           { error: "attempt not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -34,14 +34,21 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function POST(req: Request) {
-  const { wpm, correct, wpf, durationSec, studentId, variant }: Attempt =
-    await req.json();
+  const {
+    wpm,
+    correct,
+    wpf,
+    durationSec,
+    totalquestions,
+    studentId,
+    variant,
+  }: Attempt = await req.json();
   if (!studentId) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
@@ -53,6 +60,7 @@ export async function POST(req: Request) {
         wpf,
         correct,
         durationSec,
+        totalquestions,
         studentId: studentId,
         variant,
       },
@@ -62,7 +70,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Attempt already exists" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
