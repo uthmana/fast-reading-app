@@ -3,6 +3,7 @@ import Lesson from "../../../../../components/lesson/lesson";
 import NotFound from "../../not-found";
 import { authOptions } from "@/lib/authOptions";
 import prisma from "@/lib/prisma";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Dersler | Etkin Hızlı Okuma",
@@ -44,15 +45,31 @@ export default async function page({ params }: { params: { id: string } }) {
       }),
     ]);
 
-  const currentLesson = allLessons.find((l) => l.order === lessonOrder);
-  const isAllCompleted = allLessons.every((l) => !l.isLocked);
+  const sortedLessons = [...allLessons].sort((a, b) => a.order - b.order);
+  const currentLesson = sortedLessons.find((l) => l.order === lessonOrder);
+  const isAllCompleted = sortedLessons.every((l) => !l.isLocked);
+
+  // Mevcut dersin tüm egzersizleri tamamlandıysa, bir sonraki derse otomatik geç
+  const currentLessonDone =
+    currentLesson &&
+    currentLesson.LessonExercise.length > 0 &&
+    currentLesson.LessonExercise.every((e) => e.isDone);
+
+  if (currentLessonDone && !isAllCompleted) {
+    const nextLesson = sortedLessons.find(
+      (l) => l.order > lessonOrder && !l.isLocked,
+    );
+    if (nextLesson) {
+      redirect(`/ogrenci/dersler/${nextLesson.order}`);
+    }
+  }
 
   if (!currentLesson) {
     return <NotFound />;
   }
 
   // Compute progress summary
-  const totalExercises = allLessons.flatMap((l) => l.LessonExercise);
+  const totalExercises = sortedLessons.flatMap((l) => l.LessonExercise);
   const completedCount = totalExercises.filter((e) => e.isDone).length;
   const lessonsPercent =
     totalExercises.length > 0

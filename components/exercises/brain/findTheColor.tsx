@@ -198,40 +198,11 @@ export default function FindTheColor({
   const [currentWord, setCurrentWord] = useState<any>(null);
   const [displayColor, setDisplayColor] = useState<string>("black");
   const [answeredThisRound, setAnsweredThisRound] = useState(false);
-  // const audioCtxRef = useRef<AudioContext | null>(null);
-
+  const answeredRef = useRef(false);
   // Calculate display duration: higher level = faster
   const displayDuration = speedMap[controls.level || 1] || 1500;
 
-  // useEffect(() => {
-  //   audioCtxRef.current = new AudioContext();
-  //   return () => {
-  //     audioCtxRef.current?.close();
-  //     audioCtxRef.current = null;
-  //   };
-  // }, []);
   const playFeedback = useFeedbackSound();
-  // const playFeedback = useCallback((isCorrect: boolean) => {
-  //   const ctx = audioCtxRef.current;
-  //   if (!ctx) return;
-  //   const play = () => {
-  //     const osc = ctx.createOscillator();
-  //     const gain = ctx.createGain();
-  //     osc.type = "sine";
-  //     osc.frequency.setValueAtTime(isCorrect ? 1000 : 300, ctx.currentTime);
-  //     gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  //     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-  //     osc.connect(gain);
-  //     gain.connect(ctx.destination);
-  //     osc.start(ctx.currentTime);
-  //     osc.stop(ctx.currentTime + 0.15);
-  //   };
-  //   if (ctx.state === "suspended") {
-  //     ctx.resume().then(play);
-  //   } else {
-  //     play();
-  //   }
-  // }, []);
 
   // Select next random color word
   const generateNewWord = useCallback(() => {
@@ -248,51 +219,34 @@ export default function FindTheColor({
 
   const handleAnswer = useCallback(
     (answer: number) => {
+      if (answeredRef.current) return; // prevent double answer
+      answeredRef.current = true;
       setSelectedAnswer(answer);
-      setAnsweredThisRound(true);
+
       const isCorrect = displayColor === currentWord?.color;
       const correctAnswerValue = isCorrect ? 1 : 0;
       const { right, wrong } = controls.resultDisplay;
       playFeedback(answer === correctAnswerValue);
-      if (answer === correctAnswerValue) {
-        setControlData({
-          ...controls,
-          resultDisplay: {
-            right: right + 1,
-            wrong,
-            net: right - wrong,
-          },
-        });
-      } else {
-        setControlData({
-          ...controls,
-          resultDisplay: {
-            right,
-            wrong: wrong + 1,
-            net: right - wrong,
-          },
-        });
-      }
 
-      // load next word after brief animation
-      setTimeout(() => {
-        setSelectedAnswer(null);
-      }, 300);
-
-      generateNewWord();
+      setControlData({
+        ...controls,
+        resultDisplay: {
+          right: answer === correctAnswerValue ? right + 1 : right,
+          wrong: answer === correctAnswerValue ? wrong : wrong + 1,
+          net:
+            answer === correctAnswerValue
+              ? right + 1 - wrong
+              : right - (wrong + 1),
+        },
+      });
+      // NO generateNewWord() here — interval handles it
     },
-    [controls.resultDisplay, currentWord, displayColor, generateNewWord],
+    [controls.resultDisplay, currentWord, displayColor],
   );
-
-  // auto-show next color based on speed
-  useEffect(() => {
-    generateNewWord();
-  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (!answeredThisRound) {
-        // AUTO WRONG ANSWER
+      if (!answeredRef.current) {
         setControlData((prev: any) => ({
           ...prev,
           resultDisplay: {
@@ -302,14 +256,13 @@ export default function FindTheColor({
           },
         }));
       }
-
-      setAnsweredThisRound(false);
+      answeredRef.current = false;
+      setSelectedAnswer(null);
       generateNewWord();
     }, displayDuration);
 
     return () => clearInterval(timer);
-  }, [displayDuration, answeredThisRound, generateNewWord]);
-
+  }, [displayDuration, generateNewWord]); // no answeredThisRound dep → timer never resets
   // keyboard control
   useEffect(() => {
     // Commented to be able to push again

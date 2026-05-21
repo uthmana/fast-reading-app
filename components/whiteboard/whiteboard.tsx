@@ -131,7 +131,7 @@ export default function Whiteboard({
               lessonData?.pathname ?? "",
             ) ? (
               <CountDown
-                className="absolute right-3 top-3 !text-base"
+                className="fixed absolute  right-3 top-3 z-[70] !text-base "
                 initial={countDownValue}
                 start={isPlaying}
                 onTick={(v) => setCountDownValue(v)}
@@ -158,7 +158,8 @@ export default function Whiteboard({
               //   </a>
               // ) : null
               <Link
-                className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
+                className=" fixed absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-5  hover:bg-blue-600 right-3 rounded-md bg-blue-500 text-white py-2 px-3"
+                // className="fixed right-3 bottom-10  !text-base transition-opacity lg:opacity-0 hover:opacity-100 flex items-center justify-center gap-2 hover:bg-blue-600 rounded-md bg-blue-500 text-white py-2 px-3"
                 href={`/ogrenci/dersler/${lessonData?.order}`}
                 onClick={async (e) => {
                   if (isPlaying) {

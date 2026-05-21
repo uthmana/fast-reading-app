@@ -577,60 +577,9 @@ export default function FindTheNumber({
   const [userAnswer, setUserAnswer] = useState("");
   const [start, setStart] = useState(false);
   const [countValue, setCountValue] = useState(15);
-
-  //const audioCtxRef = useRef<AudioContext | null>(null);
-
-  // useEffect(() => {
-  //   audioCtxRef.current = new AudioContext();
-  //   return () => {
-  //     audioCtxRef.current?.close();
-  //     audioCtxRef.current = null;
-  //   };
-  // }, []);
+  const answeredRef = useRef(false);
   const playFeedback = useFeedbackSound();
-  // const playFeedback = useCallback((isCorrect: boolean) => {
-  //   const ctx = audioCtxRef.current;
-  //   if (!ctx) return;
-  //   if (ctx.state === "suspended") ctx.resume();
 
-  //   const osc = ctx.createOscillator();
-  //   const gain = ctx.createGain();
-
-  //   osc.type = "sine";
-  //   osc.frequency.setValueAtTime(isCorrect ? 1000 : 300, ctx.currentTime);
-  //   gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  //   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-
-  //   osc.connect(gain);
-  //   gain.connect(ctx.destination);
-
-  //   osc.start(ctx.currentTime);
-  //   osc.stop(ctx.currentTime + 0.15);
-  // }, []);
-
-  // const playFeedback = useCallback((isCorrect: boolean) => {
-  //   const ctx = audioCtxRef.current;
-  //   if (!ctx) return;
-
-  //   const play = () => {
-  //     const osc = ctx.createOscillator();
-  //     const gain = ctx.createGain();
-  //     osc.type = "sine";
-  //     osc.frequency.setValueAtTime(isCorrect ? 1000 : 300, ctx.currentTime);
-  //     gain.gain.setValueAtTime(0.3, ctx.currentTime);
-  //     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
-  //     osc.connect(gain);
-  //     gain.connect(ctx.destination);
-  //     osc.start(ctx.currentTime);
-  //     osc.stop(ctx.currentTime + 0.15);
-  //   };
-
-  //   if (ctx.state === "suspended") {
-  //     ctx.resume().then(play);
-  //   } else {
-  //     play();
-  //   }
-  // }, []);
   // Always keep ref in sync — no useEffect needed, runs synchronously on every render
   const controlsRef = useRef(controls);
   controlsRef.current = controls;
@@ -673,16 +622,11 @@ export default function FindTheNumber({
     ].sort(() => Math.random() - 0.5);
 
     setLetters(newLetters);
-    setTargetLetter(Math.random() > 0.5 ? first : second);
+    setTargetLetter(firstCount >= secondCount ? first : second);
     setUserAnswer("");
 
-    // const durationMs = speedMap[level || 1] || 1500;
-    // setCountValue(Math.max(1, Math.round(durationMs / 1000)));
-    const durationSeconds = Math.min(
-      30,
-      Math.max(3, Math.round((speedMap[level || 1] || 1500) / 100)),
-    );
-    setCountValue(durationSeconds);
+    const durationMs = speedMap[level || 1] || 1500;
+    setCountValue(Math.max(1, Math.ceil(durationMs / 100)));
     setStart(false);
     setTimeout(() => setStart(true), 50);
   }, []); // stable — no deps needed
@@ -704,20 +648,23 @@ export default function FindTheNumber({
   };
 
   const handleCountDownFinish = () => {
-    const { right, wrong } = controls.resultDisplay;
-    if (userAnswer === "") {
+    const { right, wrong } = controlsRef.current.resultDisplay;
+    if (!answeredRef.current) {
+      // no answer submitted — count as wrong
       setControlData({
-        ...controls,
+        ...controlsRef.current,
         resultDisplay: { right, wrong: wrong + 1, net: right - (wrong + 1) },
       });
     }
+    answeredRef.current = false; // reset for next round
     generateLetters();
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!userAnswer) return;
+    if (!userAnswer || answeredRef.current) return; // prevent double submit
 
+    answeredRef.current = true;
     const correctCount = letters.filter(
       (l) => l.letter === targetLetter,
     ).length;
@@ -735,7 +682,7 @@ export default function FindTheNumber({
       },
     });
 
-    generateLetters();
+    // NO generateLetters() here — countdown handles it
   };
 
   return (

@@ -1,0 +1,1 @@
+1. Changing the Components whiteboard/whiteboard.tsx such that when its isplaying I am able to get the CountDown stickey at the same time the Derslere Dön to be in a sticky format and shouldnt cover the Content

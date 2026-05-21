@@ -225,7 +225,7 @@ export default function FastReadingTest({
             <>
               {variant === "UNDERSTANDING" ? (
                 <p className="text-lg">
-                  Anlama oranınız {result.correct}% olarak kaydedilmiştir.
+                  {`Anlama oranınız ${Math.round((result.correct / result.totalquestions) * 100)}% olarak kaydedilmiştir.`}
                 </p>
               ) : (
                 <p className="text-lg">
