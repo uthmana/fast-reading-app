@@ -114,7 +114,7 @@ export const articleData = [
     title: "KÜÇÜK BAHÇİVANIN MACERASI",
     description:
       "Bir zamanlar, küçük bir köyde Elif adında sevimli bir kız yaşardı. Elif, doğayı çok sever ve her gün bahçede vakit geçirmekten büyük keyif alırdı. En büyük hayali, kendi bahçesinde rengarenk çiçekler açtırmaktı. Bir sabah, Elif erken kalktı. Hava güneşli ve kuşlar cıvıldıyordu. “Bugün bahçem için yeni tohumlar ekeceğim!” dedi heyecanla. Annesi ona bir torba tohum verdi. “Bunlar papatya, ayçiçeği ve lavanta tohumları,” dedi. Elif, tohumları dikkatlice inceledi ve bahçeye doğru koştu. Bahçeye vardığında, toprak yumuşaktı ve hafif nemliydi. Elif, ellerini yıkadıktan sonra küçük bir kürekle toprağı kazmaya başladı. Tohumları sırasıyla toprağa ekti ve üzerlerini örttü. Ardından, sulama kabını aldı ve bitkilerin üzerine nazikçe su serpti. Elif, her gün sabah erken kalkıp bahçesine gidiyor, bitkilerine sevgiyle bakıyordu. Güneşin sıcak ışıkları altında toprak iyice ısınırken, küçük tohumlar yavaş yavaş filizlenmeye başladı. Elif’in yüzünde büyük bir mutluluk vardı. Günler geçtikçe, papatyalar beyaz yapraklarını açtı, ayçiçekleri güneşe doğru uzandı ve lavantalar hoş kokularıyla bahçeyi doldurdu. Komşular bile Elif’in bahçesinin güzelliğine hayran kaldı. Bir gün, Elif bahçede oyun oynarken küçük bir kuşun yaralandığını gördü. Kuşun kanadı hafifçe kırılmıştı. Elif hemen kuşu nazikçe aldı ve evine götürdü. Annesiyle birlikte kuşun yarasını sardılar ve ona iyi bakmaya başladılar. Haftalar sonra, kuş iyileşti ve özgürlüğüne kavuştu. Elif onu son kez sevgiyle okşadı ve kuş da hafifçe ötüp uçtu gitti. Elif, doğaya yardım etmenin ve onunla ilgilenmenin ne kadar önemli olduğunu bir kez daha anlamıştı. O günden sonra, Elif sadece bahçesine değil, etrafındaki tüm canlılara da daha çok sevgi ve ilgi göstermeye başladı. Arkadaşlarına da bunu anlattı ve birlikte doğayı korumanın yollarını öğrendiler. Elif’in küçük bahçesi, sadece bitkilerin değil, dostluğun ve sevginin de büyüdüğü bir yer olmuştu. O, her gün bahçesinde yeni bir şeyler keşfederek mutlu yaşamaya devam etti.",
-    studyGroup: "ILKOKUL_2_3",
+    studyGroups: ["ILKOKUL_2_3"],
     tests: [
       {
         id: "1",
@@ -234,7 +234,7 @@ export const articleData = [
     title: "KAYBOLAN BALON",
     description:
       "Mert parkta kırmızı balonuyla oynuyordu. Bir anda rüzgâr çıktı ve balon gökyüzüne yükseldi. Mert çok üzüldü ama sonra balonun gökyüzünde özgürce uçtuğunu fark etti. Gülümsedi ve balonuna el salladı.",
-    studyGroup: "ILKOKUL_2_3",
+    studyGroups: ["ILKOKUL_2_3"],
     tests: [
       {
         id: "1",
@@ -279,7 +279,7 @@ export const articleData = [
     title: "SORU SORMANIN ÖNEMİ",
     description:
       "Zeynep anlamadığı konuları sormaktan çekinmezdi. Öğretmeni onun bu davranışını takdir ederdi. Zeynep soru sordukça dersleri daha iyi anlamaya başladı.",
-    studyGroup: "ILKOKUL_4",
+    studyGroups: ["ILKOKUL_4"],
     tests: [
       {
         id: "1",
@@ -324,7 +324,7 @@ export const articleData = [
     title: "HEDEF BELİRLEMENİN GÜCÜ",
     description:
       "Hedefi olan öğrenciler ne yapacaklarını bilir. Küçük hedeflerle başlamak motivasyonu artırır ve başarıyı kalıcı hale getirir.",
-    studyGroup: "ORTAOKUL",
+    studyGroups: ["ORTAOKUL"],
     tests: [
       {
         id: "1",
@@ -369,7 +369,7 @@ export const articleData = [
     title: "ODAKLANARAK OKUMAK",
     description:
       "Odaklanarak yapılan okuma, daha kısa sürede daha fazla bilgi edinmeyi sağlar. Bu da akademik başarıyı doğrudan etkiler.",
-    studyGroup: "LISE",
+    studyGroups: ["LISE"],
     tests: [
       {
         id: "1",
@@ -414,7 +414,7 @@ export const articleData = [
     title: "AKADEMİK OKUMA BECERİSİ",
     description:
       "Üniversite düzeyinde okuma; seçici, hızlı ve analiz odaklı olmalıdır. Bu beceri öğrenilebilir.",
-    studyGroup: "UNIVERSITE",
+    studyGroups: ["UNIVERSITE"],
     tests: [
       {
         id: "1",
@@ -458,7 +458,7 @@ export const articleData = [
     title: "AKADEMİK OKUMADA DERİNLİK",
     description:
       "Doktora düzeyinde okuma, metni eleştirel analiz etmeyi ve akademik çıkarımlar yapmayı gerektirir.",
-    studyGroup: "DOKTORA",
+    studyGroups: ["DOKTORA"],
     tests: [
       {
         id: "1",
@@ -525,7 +525,7 @@ export const articleData = [
     title: "ETKİLİ OKUMANIN TEMELLERİ",
     description:
       "Etkili okuma, metni daha kısa sürede doğru anlamayı hedefler.",
-    studyGroup: "GENEL",
+    studyGroup: ["GENEL"],
     tests: [
       {
         id: "1",
@@ -591,7 +591,7 @@ export const articleData = [
     title: "YOĞUN HAYATTA ETKİLİ OKUMA",
     description:
       "Yetişkinler için hızlı okuma, günlük bilgi akışını daha kısa sürede anlayarak zaman kazandırır.",
-    studyGroup: "YETISKIN",
+    studyGroups: ["YETISKIN"],
     tests: [
       {
         id: "1",
@@ -658,7 +658,7 @@ export const articleData = [
     title: "DİSLEKSİDE OKUMA STRATEJİLERİ",
     description:
       "Disleksiye özel okuma çalışmaları, harf ve kelime algısını güçlendirerek okuma güvenini artırır.",
-    studyGroup: "DISLEKSI",
+    studyGroups: ["DISLEKSI"],
     tests: [
       {
         id: "1",
@@ -725,7 +725,7 @@ export const articleData = [
     title: "TIP METİNLERİNDE HIZ VE DOĞRULUK",
     description:
       "Tıp alanında okuma, yoğun terminolojiye rağmen hızlı ve doğru bilgi işlemeyi gerektirir.",
-    studyGroup: "TIP",
+    studyGroups: ["TIP"],
     tests: [
       {
         id: "1",
@@ -792,7 +792,7 @@ export const articleData = [
     title: "IELTS OKUMA BÖLÜMÜNDE STRATEJİ",
     description:
       "IELTS okuma bölümünde başarı, metni hızlı tarayıp doğru bilgiyi ayırt edebilmekten geçer.",
-    studyGroup: "IELTS",
+    studyGroups: ["IELTS"],
     tests: [
       {
         id: "1",
@@ -858,7 +858,7 @@ export const articleData = [
     title: "LGS'DE HIZLI OKUMA AVANTAJI",
     description:
       "LGS Türkçe sorularında başarı, uzun paragraf sorularını hızlı ve doğru anlamaktan geçer.",
-    studyGroup: "LGS_HAZIRLIK",
+    studyGroups: ["LGS_HAZIRLIK"],
     tests: [
       {
         id: "1",
@@ -925,7 +925,7 @@ export const articleData = [
     title: "TYT-AYT'DE PARAGRAF USTALIĞI",
     description:
       "TYT ve AYT sınavlarında paragraf sorularını hızlı çözmek net sayısını doğrudan artırır.",
-    studyGroup: "TYT_AYT_HAZIRLIK",
+    studyGroups: ["TYT_AYT_HAZIRLIK"],
     tests: [
       {
         id: "1",
@@ -992,7 +992,7 @@ export const articleData = [
     title: "ÜNİVERSİTEDE AKADEMİK OKUMA",
     description:
       "Üniversite öğrencileri için hızlı okuma, yoğun akademik metinleri kısa sürede anlamayı sağlar.",
-    studyGroup: "UNIVERSITE",
+    studyGroups: ["UNIVERSITE"],
     tests: [
       {
         id: "1",
@@ -1059,7 +1059,7 @@ export const articleData = [
     title: "DERİN OKUMA VE ANALİZ",
     description:
       "Doktora seviyesinde okuma, hızlı tarama ile derin analiz becerisini birlikte gerektirir.",
-    studyGroup: "DOKTORA",
+    studyGroups: ["DOKTORA"],
     tests: [
       {
         id: "1",
@@ -1126,7 +1126,7 @@ export const articleData = [
     title: "GÜNLÜK YAŞAMDA HIZLI OKUMA",
     description:
       "Hızlı okuma, haberlerden kitaplara kadar her alanda bilgiyi verimli kullanmayı sağlar.",
-    studyGroup: "GENEL",
+    studyGroups: ["GENEL"],
     tests: [
       {
         id: "1",
@@ -1193,7 +1193,7 @@ export const articleData = [
     title: "HIZLI OKUMA DEMO DENEYİMİ",
     description:
       "Demo içeriklerle hızlı okumanın etkisini kısa sürede deneyimleyin.",
-    studyGroup: "DEMO",
+    studyGroups: ["DEMO"],
     tests: [
       {
         id: "1",

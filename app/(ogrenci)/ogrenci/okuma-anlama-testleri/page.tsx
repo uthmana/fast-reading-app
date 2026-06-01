@@ -19,22 +19,23 @@ export default async function page() {
 
   const resData = await fetch(
     `${baseUrl}/api/users?username=${encodeURIComponent(
-      session.user.username
+      session.user.username,
     )}`,
     {
       cache: "no-store",
-    }
+    },
   ).then((r) => r.json());
 
   const attempts = resData?.Student?.attempts || [];
 
   const formatted = attempts?.map(
-    ({ wpm, createdAt, correct, variant }: any) => ({
+    ({ wpm, createdAt, correct, variant, totalQuiz }: any) => ({
       wpm,
       correct,
       variant,
+      totalQuiz,
       category: formatDateTime(createdAt),
-    })
+    }),
   );
 
   const formattedAttempts = formatted;

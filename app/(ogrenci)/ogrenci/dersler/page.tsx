@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import Lesson from "@/components/lesson/lesson";
 import NotFound from "../not-found";
+import { redirect } from "next/navigation";
 
 export const metadata = {
   title: "Dersler | Etkin Hızlı Okuma",
@@ -11,8 +12,18 @@ export const metadata = {
 export default async function page({ params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
   const { id } = params;
-  const lessonOrder = Number(id ?? 1);
 
+  //Get current lesson order Id
+  if (!id) {
+    const lessonRes = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_PATH}/api/lessons?order=${id}&studentId=${session?.user?.student?.id}`,
+      { cache: "no-store" },
+    );
+    const lessonData = await lessonRes.json();
+    return redirect(`/ogrenci/dersler/${lessonData?.lesson?.order ?? 1}`);
+  }
+
+  const lessonOrder = Number(id ?? 1);
   const [currentLesson, progressSummary] = await Promise.all([
     fetch(
       `${process.env.NEXT_PUBLIC_BASE_PATH}/api/lessons?order=${lessonOrder}&studentId=${session?.user?.student?.id}`,

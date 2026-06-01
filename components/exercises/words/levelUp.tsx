@@ -69,7 +69,7 @@ export default function LevelUp({
     setFrames(controls.wordList);
     setFrameDurationMs(durationRef.current);
     setIndex(0);
-  }, [controls]);
+  }, [autoStart, controls]);
 
   /** ================= AUTOSTART ================= */
   useEffect(() => {

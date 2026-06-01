@@ -67,6 +67,7 @@ export default function ControlPanel({
             fields={isArticleControl}
             isTest={false}
             setIsLoading={setIsLoading}
+            pathName={pathname}
           />
         </WoodenFrame>
       ) : null}

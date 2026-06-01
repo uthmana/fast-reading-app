@@ -89,6 +89,13 @@ export default function page() {
             );
             setIsloading(false);
           }
+
+          if (!res.ok) {
+            const errorData = await res.json();
+            console.error(errorData.error || "Silme işlemi başarısız");
+            alert(`${errorData.error || "Silme işlemi başarısız"}`);
+            setIsloading(false);
+          }
         } catch (error) {
           setIsloading(false);
           console.error(error);

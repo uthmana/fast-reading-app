@@ -21,9 +21,9 @@ export default function VisualFieldTrainer({
   pause = false,
 }: VisualFieldTrainerProps) {
   // Range-controlled values
-  const frame = controls?.frame ?? 8; // default frame 8
-  const grid = controls?.grid ?? 6; // default grid 6
-  const speedMs = speedMap[controls?.level || 2];
+  const frame = controls?.frame ?? 1; // default frame 2
+  const grid = controls?.grid ?? 1; // default grid 2
+  const speedMs = speedMap[controls?.level || 1];
 
   const [numbers, setNumbers] = useState<number[][]>([]);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -106,7 +106,7 @@ export default function VisualFieldTrainer({
         </div>
 
         {/* Center Dot */}
-        <div className="absolute w-2 h-2 bg-black rounded-full"></div>
+        <div className="absolute w-2 h-2 bg-black/10 rounded-full"></div>
       </div>
     </div>
   );

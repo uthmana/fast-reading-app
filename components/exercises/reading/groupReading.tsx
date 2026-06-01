@@ -129,7 +129,7 @@ export default function GroupReading({
             <span className="opacity-15">{beforeText} </span>
 
             {/* Highlighted section (no gaps) */}
-            <span className="bg-blue-800 p-1 text-white rounded-sm">
+            <span className="bg-blue-800/0 p-1 text-black rounded-sm">
               {highlightedWords}
             </span>
 

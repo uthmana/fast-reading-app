@@ -123,10 +123,12 @@ export default function ReadingScoreClient({
                     {attempt.category}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.correct / 10}
+                    {Math.round(attempt.totalQuiz * (attempt.correct / 100))}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {10 - attempt.correct / 10}
+                    {Math.round(
+                      attempt.totalQuiz * (1 - attempt.correct / 100),
+                    )}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
                     %{attempt.correct}

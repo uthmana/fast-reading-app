@@ -72,7 +72,7 @@ export const controlFields: Record<string, any[]> = {
     {
       type: "range",
       inputKey: "grid",
-      value: { key: "grid", type: "number", value: 2 },
+      value: { key: "grid", type: "number", value: 1 },
       name: "Sütun Sayısı",
       min: "1",
       max: "10",

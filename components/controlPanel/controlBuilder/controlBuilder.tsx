@@ -27,17 +27,22 @@ export default function ControlBuilder({
   setControlData,
   isTest,
   setIsLoading,
+  pathName,
 }: {
   fields: any[];
   className?: string;
   controlData?: any;
   setControlData?: any;
   isTest?: boolean;
+  pathName?: string;
   setIsLoading?: (val: boolean) => void;
 }) {
   if (!fields || fields.length === 0) return null;
 
   const [formData, setFormData] = useState<any[]>([]);
+
+  //If anlama-testi get article that has questions
+  const hasQuestion = pathName === "anlama-testi";
 
   useEffect(() => {
     let mapped = fields;
@@ -105,6 +110,20 @@ export default function ControlBuilder({
     if (setControlData) {
       setControlData((prev: any) => {
         if (inputKey !== "articleSelect") {
+          //Adjust frame base on grid size "aktif-gorme-alanini-genisletme-1"
+          if (inputKey === "grid") {
+            const gridValue = parseInt(targetValue);
+            const frameValue = parseInt(
+              formData?.find((item) => item.inputKey === "frame")?.value?.value,
+            );
+            if (frameValue < 5 && gridValue > 4) {
+              return {
+                ...prev,
+                [inputKey]: 5,
+              };
+            }
+          }
+
           return {
             ...prev,
             [inputKey]: normalizeValue(targetValue),
@@ -212,6 +231,7 @@ export default function ControlBuilder({
               asyncOption={field?.asyncOption}
               asyncOptionById={field?.asyncOptionById}
               setIsLoading={setIsLoading}
+              hasQuestion={hasQuestion}
             />
           );
         }

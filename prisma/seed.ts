@@ -170,8 +170,8 @@ async function main() {
     const categories = await tx.category.findMany();
 
     for (const articleItem of articleData) {
-      const category = categories.find(
-        (c) => c.studyGroup === articleItem.studyGroup,
+      const category = categories.find((c) =>
+        articleItem.studyGroups?.includes(c.studyGroup),
       );
 
       if (!category) continue;
@@ -180,7 +180,11 @@ async function main() {
         data: {
           title: articleItem.title,
           description: articleItem.description,
-          studyGroup: articleItem.studyGroup as StudyGroup,
+          studyGroups: {
+            create: articleItem?.studyGroups?.map((sg: any) => ({
+              studyGroup: sg,
+            })),
+          },
           hasQuestion: articleItem.hasQuestion,
           active: articleItem.active,
           tests: articleItem.tests,

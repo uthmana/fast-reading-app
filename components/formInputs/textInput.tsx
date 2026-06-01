@@ -72,7 +72,10 @@ function TextInput(props: InputProps) {
           parseInt(value?.value?.toString() || "1"),
           1,
         );
-        handleAsyncList && handleAsyncList(inputKey, res);
+
+        if (handleAsyncList) {
+          handleAsyncList(inputKey, res);
+        }
         if (setIsLoading) setIsLoading(false);
       } catch (error) {
         console.error(error);

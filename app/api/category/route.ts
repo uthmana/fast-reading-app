@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
     }
 
     const categories = await prisma.category.findMany({
-      orderBy: { subscriberId: "desc" },
+      orderBy: { updatedAt: "desc" },
     });
     return NextResponse.json(categories, { status: 200 });
   } catch (e) {
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
             title,
             description,
             studyGroup,
-            subscriberId,
+            ...(subscriberId ? { subscriberId } : null),
           },
         });
         return NextResponse.json(category, { status: 200 });
@@ -105,7 +105,7 @@ export async function POST(req: Request) {
         title,
         description,
         studyGroup,
-        subscriberId,
+        ...(subscriberId ? { subscriberId } : null),
       },
     });
     return NextResponse.json(category, { status: 201 });
@@ -126,6 +126,22 @@ export async function DELETE(req: Request) {
 
   try {
     if (id) {
+      const DEFAULT_CATEGORY_ID_INT = parseInt(
+        process.env.DEFAULT_CATEGORY_ID || "0",
+      );
+
+      if (id === DEFAULT_CATEGORY_ID_INT) {
+        return NextResponse.json(
+          { error: "Bu kategori silinemez" },
+          { status: 400 },
+        );
+      }
+      await prisma.article.updateMany({
+        where: { categoryId: id },
+        data: {
+          categoryId: DEFAULT_CATEGORY_ID_INT,
+        },
+      });
       await prisma.category.delete({
         where: { id },
       });
@@ -134,7 +150,10 @@ export async function DELETE(req: Request) {
   } catch (err) {
     console.log(err);
     return NextResponse.json(
-      { error: "Category does not exists" },
+      {
+        error:
+          "Bu kategori diğer makalelerde kullanılmaktadır. Önce bu makalelerdeki ilişkilendirmeleri kaldırın.",
+      },
       { status: 400 },
     );
   }

@@ -2,15 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { Article } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
+    const session: any = await getServerSession(authOptions as any);
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const categoryId = searchParams.get("categoryId");
+    const hasQuestion = searchParams.get("hasQuestion");
     const whereParam = searchParams.get("where");
     const randomParam = searchParams.get("random");
     let where: any | undefined;
+
+    const studyGroup = session?.user?.student?.studyGroup;
 
     if (id) {
       // Fetch a single user by name
@@ -30,7 +36,17 @@ export async function GET(req: NextRequest) {
 
     if (categoryId) {
       const article = await prisma.article.findMany({
-        where: { categoryId: parseInt(categoryId) },
+        where: {
+          categoryId: parseInt(categoryId),
+          ...(hasQuestion === "true" ? { hasQuestion: true } : {}),
+          ...(studyGroup && {
+            studyGroups: {
+              some: {
+                studyGroup: studyGroup,
+              },
+            },
+          }),
+        },
         orderBy: { subscriberId: "desc" },
       });
 
@@ -88,6 +104,7 @@ export async function GET(req: NextRequest) {
     const articles = await prisma.article.findMany({
       orderBy: { createdAt: "desc" },
       include: {
+        studyGroups: true,
         category: {
           select: { id: true, title: true },
         },
@@ -112,7 +129,7 @@ export async function POST(req: Request) {
     id,
     title,
     description,
-    studyGroup,
+    studyGroups,
     categoryId,
     hasQuestion,
     active,
@@ -135,8 +152,13 @@ export async function POST(req: Request) {
           data: {
             title,
             description,
-            studyGroup,
-            subscriberId,
+            studyGroups: {
+              deleteMany: {},
+              create: studyGroups?.map((sg: any) => ({
+                studyGroup: typeof sg === "string" ? sg : sg.studyGroup,
+              })),
+            },
+            ...(subscriberId ? { subscriberId } : null),
             hasQuestion: tests?.length > 0 ? true : false,
             active,
             tests: tests,
@@ -153,8 +175,12 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        studyGroup,
-        subscriberId,
+        studyGroups: {
+          create: studyGroups?.map((sg: any) => ({
+            studyGroup: typeof sg === "string" ? sg : sg.studyGroup,
+          })),
+        },
+        ...(subscriberId ? { subscriberId } : null),
         hasQuestion: tests?.length > 0 ? true : false,
         active,
         tests: tests,

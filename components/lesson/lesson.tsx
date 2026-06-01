@@ -6,8 +6,6 @@ import { IoMdLock } from "react-icons/io";
 import LessonNavClient from "./lessonNavClient";
 import { menuItems } from "@/app/routes";
 import InfoSideBar from "../sideBar/infoSideBar";
-import Image from "next/image";
-import Button from "../button/button";
 import LessonCongrats from "./lessonCongrats";
 
 export default function Lesson({
@@ -22,7 +20,7 @@ export default function Lesson({
   lessonData: { lesson: any; isAllCompleted: boolean } | null;
   progressSummary: any;
 }) {
-  const videoItems = menuItems.filter((m) => m.youtubeId !== "");
+  const videoItems = menuItems?.filter((m) => m.youtubeId !== "");
   const currentLesson = lessonData?.lesson;
   const isAllCompleted = lessonData?.isAllCompleted ?? false;
 
@@ -44,7 +42,6 @@ export default function Lesson({
                 {currentLesson?.order || 1}. Ders aşağıdaki egzersizleri
                 yapınız.
               </h1>
-
               <LessonNavClient
                 order={currentLesson?.order}
                 maxOrder={maxOrder}
@@ -53,13 +50,12 @@ export default function Lesson({
             <ul className="space-y-[2px]">
               {currentLesson?.LessonExercise?.map(
                 (lesson: any, idx: number) => {
-                  const isDone = lesson.isDone;
-
+                  const isDone = lesson?.isDone;
                   const payload = {
-                    lessonId: currentLesson.id,
-                    exerciseId: lesson.id,
-                    duration: lesson.minDuration,
-                    order: currentLesson.order,
+                    lessonId: currentLesson?.id,
+                    exerciseId: lesson?.id,
+                    duration: lesson?.minDuration,
+                    order: currentLesson?.order,
                   };
                   const encoded = btoa(JSON.stringify(payload));
                   const linkPath = `/ogrenci${lesson.pathName}?q=${encoded}`;
@@ -108,7 +104,7 @@ export default function Lesson({
                                 "inset 0 1px 1px rgba(0,0,0,0.4), 0 1px 1px rgba(0,0,0,0.3)",
                             }}
                           >
-                            {idx + 1}. {lesson.title}
+                            {idx + 1}. {lesson?.title}
                           </span>
                           <span className="text-sm italic flex">
                             ( En Az {lesson.minDuration / 60}{" "}

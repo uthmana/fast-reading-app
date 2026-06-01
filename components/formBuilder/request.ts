@@ -5,23 +5,30 @@ export const getCategoryOptions = async () => {
     const resData = await fetchData({
       apiPath: "/api/category",
     });
-    const res = resData?.map((item: { title: string; id: string }) => {
-      return { name: item.title, value: item.id };
-    });
+    const res = resData
+      ?.map((item: { title: string; id: string }) => {
+        return { name: item.title, value: item.id };
+      })
+      ?.sort((a: any, b: any) => a.name.localeCompare(b.name, "tr"));
     return res;
   } catch (error) {
     console.error(error);
     return;
   }
 };
-export const getArticleOptionsByCategoryId = async (id: string) => {
+export const getArticleOptionsByCategoryId = async (
+  id: string,
+  hasQuestion: boolean | null,
+) => {
   try {
     const resData = await fetchData({
-      apiPath: `/api/articles?categoryId=${id}`,
+      apiPath: `/api/articles?categoryId=${id}&hasQuestion=${hasQuestion}`,
     });
-    const res = resData?.map((item: { title: string; id: string }) => {
-      return { name: item.title, value: item.id, data: JSON.stringify(item) };
-    });
+    const res = resData
+      ?.map((item: { title: string; id: string }) => {
+        return { name: item.title, value: item.id, data: JSON.stringify(item) };
+      })
+      ?.sort((a: any, b: any) => a.name.localeCompare(b.name, "tr"));
     return res;
   } catch (error) {
     console.error(error);
@@ -133,15 +140,15 @@ export const getSubscriberOptions = async () => {
   }
 };
 export const getArticleByStudyGroup = async ({
-  studyGroup,
+  studyGroups,
   hasQuestion,
 }: {
-  studyGroup: string;
+  studyGroups: {};
   hasQuestion: boolean;
 }) => {
   const query = encodeURIComponent(
     JSON.stringify({
-      studyGroup,
+      studyGroups,
       hasQuestion,
     }),
   );

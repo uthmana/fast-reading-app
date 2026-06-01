@@ -17,6 +17,7 @@ type FastReadingTestProps = {
       correct: number;
       counter: number;
       variant: string;
+      totalQuiz?: number;
     } | null,
   ) => void;
   questions: any;
@@ -125,7 +126,13 @@ export default function FastReadingTest({
       setResult({ countWord, wpm, correct });
       setShowResult(true);
       setIsTesting(true);
-      onFinishTest({ wpm, correct, counter, variant });
+      onFinishTest({
+        wpm,
+        correct,
+        counter,
+        variant,
+        totalQuiz: questions?.length,
+      });
     } else {
       onFinishTest(null);
     }
@@ -149,15 +156,6 @@ export default function FastReadingTest({
       </div>
       {!isTesting ? (
         <div className="w-full h-full text-left relative">
-          {/* <h1
-            style={{
-              fontSize: `${parseInt(control.font)}px`,
-              lineHeight: `${parseInt(control.font) * 1.3}px`,
-            }}
-          >
-            {article?.title}
-          </h1> */}
-
           {article?.description ? (
             <textarea
               id="textareaRef"

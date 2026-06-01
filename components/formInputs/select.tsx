@@ -19,11 +19,12 @@ type SelectPropTypes = {
   inputKey: string;
   styleClass?: string;
   asyncOption?: () => any;
-  asyncOptionById?: (categoryId: string) => any;
+  asyncOptionById?: (categoryId: string, hasQuestion: boolean) => any;
   multipleSelect?: boolean;
   optionId?: string;
   setAsyncOptions?: (data: any) => any;
   setIsLoading?: (val: boolean) => any;
+  hasQuestion?: boolean;
 };
 
 function Select({
@@ -43,6 +44,7 @@ function Select({
   optionId,
   setAsyncOptions,
   setIsLoading,
+  hasQuestion = false,
   ...rest
 }: SelectPropTypes) {
   const [localOptions, setLocalOptions] = useState(options as any);
@@ -69,7 +71,7 @@ function Select({
       const getOptions = async () => {
         setisLodingOption(true);
         if (setIsLoading) setIsLoading(true);
-        const res = await asyncOptionById(optionId);
+        const res = await asyncOptionById(optionId, hasQuestion);
         setLocalOptions(res);
         if (setAsyncOptions) {
           setAsyncOptions({ options: res, inputKey });
