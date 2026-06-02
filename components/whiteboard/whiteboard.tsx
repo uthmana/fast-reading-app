@@ -90,10 +90,11 @@ export default function Whiteboard({
         ) : null}
         {lessonData?.id ? (
           <Link
-            className="absolute flex items-center justify-center gap-2 bottom-6 z-10 transition hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3"
+            className="absolute flex items-center justify-center gap-2 bottom-6 z-10 transition-opacity duration-200 hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3 opacity-45 hover:opacity-100"
             href={`/ogrenci/dersler/${lessonData?.order}`}
           >
-            <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
+            <MdArrowBack className="text-white w-6 h-6 items-center justify-center bg-blue-500" />{" "}
+            Derslere Dön
           </Link>
         ) : null}
         <Button
@@ -118,48 +119,34 @@ export default function Whiteboard({
       {/* Fullscreen reading overlay */}
       {isPlaying && (
         <div className="fixed inset-0 bg-black/90  flex flex-col items-center justify-center z-[60]">
-          <WoodenFrame
-            font={controlData?.font}
-            className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
-            innerClassName="absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
-          >
-            {isLoading ? <BookLoader /> : null}
-            {children}
+          {/* CountDown — fixed to viewport top-right, no hover effect */}
+          {lessonData?.duration &&
+          !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
+            lessonData?.pathname ?? "",
+          ) ? (
+            <CountDown
+              className="fixed right-4 top-4 z-[70] !text-base opacity-45"
+              initial={countDownValue}
+              start={isPlaying}
+              onTick={(v) => setCountDownValue(v)}
+              onFinish={saveProgress}
+            />
+          ) : null}
 
-            {lessonData?.duration &&
-            !["seviye-yukselt", "hizli-okuma-testi", "anlama-testi"].includes(
-              lessonData?.pathname ?? "",
-            ) ? (
-              <CountDown
-                className="fixed absolute  right-3 top-3 z-[70] !text-base "
-                initial={countDownValue}
-                start={isPlaying}
-                onTick={(v) => setCountDownValue(v)}
-                onFinish={saveProgress}
-              />
-            ) : null}
+          <div className="relative w-full mb-1 h-[calc(100%-32px)]">
+            <WoodenFrame
+              font={controlData?.font}
+              className={`group w-full h-full mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
+              innerClassName="absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
+            >
+              {isLoading ? <BookLoader /> : null}
+              {children}
+            </WoodenFrame>
+
+            {/* Derslere Dön — pinned to bottom-right of WoodenFrame */}
             {lessonData?.id ? (
-              //   <a
-              //     className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
-              //     href={`/ogrenci/dersler/${lessonData?.order}`}
-              //     //href={`/ogrenci/dersler/${lessonData?.order}`}
-              //     onClick={async (e) => {
-              //       if (isPlaying) {
-              //         e.preventDefault();
-              //         await saveProgress?.();
-              //         await onPause?.();
-              //         //window.location.href = `/ogrenci/dersler/${lessonData?.order}`;
-              //       }
-              //     }
-              //   }
-              //   >
-              //     <MdArrowBack className="text-white w-6 h-6" />
-              //     <span className="hidden md:inline-block"> Derslere Dön</span>
-              //   </a>
-              // ) : null
               <Link
-                className=" fixed absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-5  hover:bg-blue-600 right-3 rounded-md bg-blue-500 text-white py-2 px-3"
-                // className="fixed right-3 bottom-10  !text-base transition-opacity lg:opacity-0 hover:opacity-100 flex items-center justify-center gap-2 hover:bg-blue-600 rounded-md bg-blue-500 text-white py-2 px-3"
+                className="absolute flex items-center justify-center gap-2 bottom-4 right-4 z-[70] transition-opacity duration-200 hover:bg-blue-600 rounded-md bg-blue-500 text-white py-2 px-3 opacity-45 hover:opacity-100"
                 href={`/ogrenci/dersler/${lessonData?.order}`}
                 onClick={async (e) => {
                   if (isPlaying) {
@@ -172,7 +159,7 @@ export default function Whiteboard({
                 <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
               </Link>
             ) : null}
-          </WoodenFrame>
+          </div>
 
           <div className={`w-full`}>
             <ControlPanel
