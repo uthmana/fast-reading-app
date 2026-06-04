@@ -1,13 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState, ReactElement, useEffect } from "react";
+import {
+  useState,
+  ReactElement,
+  useEffect,
+  cloneElement,
+  isValidElement,
+  useRef,
+} from "react";
 import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import ControlPanel from "../controlPanel/controlPanel";
 import CountDown from "../countDown/countDown";
 import BookLoader from "./bookLoader";
 import WoodenFrame from "../woodenFrame/woodenFrame";
+import React from "react";
 
 interface WhiteboardProps {
   description: ReactElement;
@@ -42,10 +50,30 @@ export default function Whiteboard({
   countDownDuration,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [countDownValue, setCountDownValue] = useState(
     parseInt(lessonData?.duration || "0"),
   );
+  const [showLoader, setShowLoader] = useState(false);
+  const isFetchingRef = useRef(false);
+  const gifDoneRef = useRef(false);
+
+  const setIsLoading = React.useCallback((fetching: boolean) => {
+    if (fetching) {
+      isFetchingRef.current = true;
+      gifDoneRef.current = false;
+      setShowLoader(true);
+    } else {
+      isFetchingRef.current = false;
+      if (gifDoneRef.current) setShowLoader(false); // GIF already done → hide now
+      // else: wait for handleLoaderComplete
+    }
+  }, []);
+
+  const handleLoaderComplete = React.useCallback(() => {
+    gifDoneRef.current = true;
+    if (!isFetchingRef.current) setShowLoader(false); // fetch already done → hide now
+    // else: wait for setIsLoading(false)
+  }, []);
 
   useEffect(() => {
     if (pause !== undefined) {
@@ -59,10 +87,18 @@ export default function Whiteboard({
     }
   }, [countDownValue, countDownDuration]);
 
+  // const handlePlay = () => {
+  //   setIsPlaying(true);
+  // };
   const handlePlay = () => {
     setIsPlaying(true);
+    // Always show BookLoader when entering fullscreen
+    isFetchingRef.current = true; // pretend a fetch is in progress
+    gifDoneRef.current = false;
+    setShowLoader(true);
+    // Release the "fetch" side immediately — GIF side will clear showLoader when done
+    isFetchingRef.current = false;
   };
-
   return (
     <div className={`flex flex-col px-5 mb-5`}>
       {/* Whiteboard preview */}
@@ -72,7 +108,7 @@ export default function Whiteboard({
           innerClassName="bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]"
           font={controlData?.font}
         >
-          {isLoading ? <BookLoader /> : null}
+          {showLoader ? <BookLoader onComplete={handleLoaderComplete} /> : null}
           <div className="py-8">{description}</div>
         </WoodenFrame>
 
@@ -139,8 +175,15 @@ export default function Whiteboard({
               className={`group w-full h-full mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
               innerClassName="absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
             >
-              {isLoading ? <BookLoader /> : null}
-              {children}
+              {showLoader ? (
+                <BookLoader onComplete={handleLoaderComplete} />
+              ) : isValidElement(children) ? (
+                cloneElement(children as ReactElement<any>, {
+                  isLoading: false,
+                })
+              ) : (
+                children
+              )}
             </WoodenFrame>
 
             {/* Derslere Dön — pinned to bottom-right of WoodenFrame */}

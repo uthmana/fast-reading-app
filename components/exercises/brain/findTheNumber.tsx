@@ -682,7 +682,6 @@ export default function FindTheNumber({
         net: isCorrect ? right + 1 - wrong : right - (wrong + 1),
       },
     });
-
     generateLetters();
   };
   return (
@@ -737,56 +736,3 @@ export default function FindTheNumber({
     </div>
   );
 }
-/*  
-return (
-    <div className="w-full h-full relative group">
-      <div className="w-full h-[calc(100%-50px)] relative">
-        {letters.map((l, i) => (
-          <span
-            key={i}
-            className="absolute text-3xl font-bold"
-            style={{ top: `${l.top}%`, left: `${l.left}%` }}
-          >
-            {l.letter}
-          </span>
-        ))}
-      </div>
-
-      <div className="flex flex-col items-center w-full mt-4 gap-1">
-        <div>
-          <b className="text-xl">{targetLetter}</b> Kaç tane?
-        </div>
-
-        <div className="flex gap-1 items-center">
-          <Countdown
-            key={start as any}
-            className="!py-1 h-10 !px-2"
-            text=""
-            initial={countValue}
-            start={start}
-            showCheckmark={false}
-            onFinish={handleCountDownFinish}
-          />
-
-          <form onSubmit={handleSubmit} className="flex items-center">
-            <TextInput
-              type="number"
-              value={{ value: userAnswer } as any}
-              inputKey="numberTest"
-              onChange={handleChange}
-              showLabel={false}
-            />
-            <Button
-              icon={<MdThumbUp className="w-4 h-4 text-white" />}
-              iconPosition="right"
-              text="Doğrula"
-              className="max-w-fit rounded-none h-10 border mb-2 !px-2 text-sm bg-green-600 hover:bg-green-700"
-              type="submit"
-            />
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-}
-*/
