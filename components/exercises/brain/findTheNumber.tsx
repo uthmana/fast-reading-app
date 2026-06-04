@@ -586,6 +586,7 @@ export default function FindTheNumber({
 
   // Stable callback — no deps, reads fresh controls via ref
   const generateLetters = useCallback(() => {
+    answeredRef.current = false;
     const { level, difficultyLevel } = controlsRef.current;
     const difficulty = difficultyLevel || 1;
     const [minLetters, maxLetters] = letterCountMap[difficulty] || [10, 14];
@@ -682,7 +683,7 @@ export default function FindTheNumber({
       },
     });
 
-    // NO generateLetters() here — countdown handles it
+    generateLetters();
   };
   return (
     <div className="w-full h-full relative group flex flex-col">
