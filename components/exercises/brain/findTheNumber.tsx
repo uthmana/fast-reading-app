@@ -684,8 +684,60 @@ export default function FindTheNumber({
 
     // NO generateLetters() here — countdown handles it
   };
-
   return (
+    <div className="w-full h-full relative group flex flex-col">
+      <div className="flex-1 min-h-0 relative overflow-hidden">
+        {letters.map((l, i) => (
+          <span
+            key={i}
+            className="absolute text-3xl font-bold"
+            style={{ top: `${l.top}%`, left: `${l.left}%` }}
+          >
+            {l.letter}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex flex-col items-center w-full py-2 gap-1">
+        <div>
+          <b className="text-xxl"> {targetLetter}</b> Kaç tane?
+        </div>
+
+        <div className="flex gap-1 items-center">
+          <Countdown
+            key={start as any}
+            className="!py-0 h-8 !px-2"
+            text=""
+            initial={countValue}
+            start={start}
+            showCheckmark={false}
+            onFinish={handleCountDownFinish}
+          />
+
+          <form onSubmit={handleSubmit} className="flex items-center">
+            <TextInput
+              type="number"
+              value={{ value: userAnswer } as any}
+              inputKey="numberTest"
+              onChange={handleChange}
+              showLabel={false}
+              styleClass="!mb-0 w-20"
+            />
+            <Button
+              icon={<MdThumbUp className="w-4 h-4 text-white" />}
+              iconPosition="right"
+              text="Doğrula"
+              className="max-w-fit rounded-none h-8 border !px-2 text-sm bg-green-600 hover:bg-green-700"
+              type="submit"
+            />
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+/*  
+return (
     <div className="w-full h-full relative group">
       <div className="w-full h-[calc(100%-50px)] relative">
         {letters.map((l, i) => (
@@ -699,7 +751,7 @@ export default function FindTheNumber({
         ))}
       </div>
 
-      <div className="flex flex-col items-center w-full mt-4 gap-2">
+      <div className="flex flex-col items-center w-full mt-4 gap-1">
         <div>
           <b className="text-xl">{targetLetter}</b> Kaç tane?
         </div>
@@ -736,3 +788,4 @@ export default function FindTheNumber({
     </div>
   );
 }
+*/
