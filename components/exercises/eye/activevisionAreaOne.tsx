@@ -11,12 +11,14 @@ type VisualFieldTrainerProps = {
     level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // slider input
   };
   pathname: string;
+  setControlData?: any;
   onFinishTest?: (v: any) => void;
   pause?: boolean;
 };
 
 export default function VisualFieldTrainer({
   controls,
+  setControlData,
   onFinishTest,
   pause = false,
 }: VisualFieldTrainerProps) {
@@ -71,6 +73,15 @@ export default function VisualFieldTrainer({
     }
   }, [pause, onFinishTest, stopCycling]);
 
+  //Making sure that the frame size is always bigger than the grid size
+  useEffect(() => {
+    if (grid > frame) {
+      setControlData?.({
+        ...controls,
+        grid: frame,
+      });
+    }
+  }, [frame, grid, controls, setControlData]);
   const frameSize = frame === 1 ? 190 + frame * 50 : 150 + frame * 50;
   const isOddGrid = grid % 2 === 1;
   const centerIndex = Math.floor(grid / 2);
