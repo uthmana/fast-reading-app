@@ -699,37 +699,39 @@ export default function FindTheNumber({
         ))}
       </div>
 
-      <div className="flex relative gap-1 justify-center w-full mt-4">
-        <div className="absolute -top-7">
+      <div className="flex flex-col items-center w-full mt-4 gap-2">
+        <div>
           <b className="text-xl">{targetLetter}</b> Kaç tane?
         </div>
 
-        <Countdown
-          key={start as any}
-          className="!py-1 h-10 !px-2"
-          text=""
-          initial={countValue}
-          start={start}
-          showCheckmark={false}
-          onFinish={handleCountDownFinish}
-        />
+        <div className="flex gap-1 items-center">
+          <Countdown
+            key={start as any}
+            className="!py-1 h-10 !px-2"
+            text=""
+            initial={countValue}
+            start={start}
+            showCheckmark={false}
+            onFinish={handleCountDownFinish}
+          />
 
-        <form onSubmit={handleSubmit} className="flex items-center">
-          <TextInput
-            type="number"
-            value={{ value: userAnswer } as any}
-            inputKey="numberTest"
-            onChange={handleChange}
-            showLabel={false}
-          />
-          <Button
-            icon={<MdThumbUp className="w-4 h-4 text-white" />}
-            iconPosition="right"
-            text="Doğrula"
-            className="max-w-fit rounded-none h-10 border mb-2 !px-2 text-sm bg-green-600 hover:bg-green-700"
-            type="submit"
-          />
-        </form>
+          <form onSubmit={handleSubmit} className="flex items-center">
+            <TextInput
+              type="number"
+              value={{ value: userAnswer } as any}
+              inputKey="numberTest"
+              onChange={handleChange}
+              showLabel={false}
+            />
+            <Button
+              icon={<MdThumbUp className="w-4 h-4 text-white" />}
+              iconPosition="right"
+              text="Doğrula"
+              className="max-w-fit rounded-none h-10 border mb-2 !px-2 text-sm bg-green-600 hover:bg-green-700"
+              type="submit"
+            />
+          </form>
+        </div>
       </div>
     </div>
   );
