@@ -87,9 +87,6 @@ export default function Whiteboard({
     }
   }, [countDownValue, countDownDuration]);
 
-  // const handlePlay = () => {
-  //   setIsPlaying(true);
-  // };
   const handlePlay = () => {
     setIsPlaying(true);
     // Always show BookLoader when entering fullscreen
@@ -194,7 +191,9 @@ export default function Whiteboard({
                 onClick={async (e) => {
                   if (isPlaying) {
                     e.preventDefault();
-                    await saveProgress?.();
+                    if (countDownValue <= 0) {
+                      await saveProgress?.();
+                    }
                     await onPause?.();
                   }
                 }}
