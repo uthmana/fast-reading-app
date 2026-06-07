@@ -127,9 +127,21 @@ export default function page() {
             );
             if (variant === "UNDERSTANDING") {
               return {
-                data: filtered.map((i: any) =>
-                  Math.round((i[key] / (i?.totalquestions || 1)) * 100),
-                ),
+                data: filtered.map((i: any) => {
+                  const totalQuestions = i?.totalquestions || 1;
+                  const current = i[key];
+
+                  // Return 0 if totalquestions is invalid or current exceeds totalquestions
+                  if (
+                    !Number.isFinite(totalQuestions) ||
+                    totalQuestions === 0 ||
+                    current > totalQuestions
+                  ) {
+                    return 0;
+                  }
+
+                  return Math.round((current / totalQuestions) * 100);
+                }),
                 categories: filtered.map((i: any) => i.category),
               };
             }
