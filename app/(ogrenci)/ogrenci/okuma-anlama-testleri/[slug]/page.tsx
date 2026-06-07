@@ -125,6 +125,14 @@ export default function page() {
             const filtered = formatted.filter(
               (i: any) => i.variant === variant,
             );
+            if (variant === "UNDERSTANDING") {
+              return {
+                data: filtered.map((i: any) =>
+                  Math.round((i[key] / (i?.totalquestions || 1)) * 100),
+                ),
+                categories: filtered.map((i: any) => i.category),
+              };
+            }
             return {
               data: filtered.map((i: any) => i[key]),
               categories: filtered.map((i: any) => i.category),
