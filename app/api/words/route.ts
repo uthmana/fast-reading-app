@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage, shuffleArray } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -9,18 +9,37 @@ export async function GET(req: NextRequest) {
     const whereParam = searchParams.get("where");
     const onlywordsParam = searchParams.get("onlywords");
     const limitParam = searchParams.get("limit");
+    const randomParam = searchParams.get("random");
+    const limit = limitParam ? parseInt(limitParam, 10) : undefined;
 
     let where: any | undefined;
 
     if (whereParam) {
       try {
         where = JSON.parse(whereParam);
+
+        if (randomParam === "true") {
+          const words = await prisma.words.findMany({
+            where,
+            include: {
+              studyGroups: true,
+            },
+          });
+          const limited = shuffleArray(words).slice(0, limit ?? words.length);
+
+          if (onlywordsParam === "true") {
+            const wordList = limited.map((item) => item.word);
+            return NextResponse.json(wordList, { status: 200 });
+          }
+          return NextResponse.json(limited, { status: 200 });
+        }
+
         const words = await prisma.words.findMany({
           where,
           include: {
             studyGroups: true,
           },
-          take: limitParam ? parseInt(limitParam, 10) : undefined,
+          take: limit,
           orderBy: { subscriberId: "desc" },
         });
 
@@ -37,11 +56,26 @@ export async function GET(req: NextRequest) {
       }
     }
 
+    if (randomParam === "true") {
+      const words = await prisma.words.findMany({
+        include: {
+          studyGroups: true,
+        },
+      });
+      const limited = shuffleArray(words).slice(0, limit ?? words.length);
+
+      if (onlywordsParam === "true") {
+        const wordList = limited.map((item) => item.word);
+        return NextResponse.json(wordList, { status: 200 });
+      }
+      return NextResponse.json(limited, { status: 200 });
+    }
+
     const words = await prisma.words.findMany({
       include: {
         studyGroups: true,
       },
-      take: limitParam ? parseInt(limitParam, 10) : undefined,
+      take: limit,
       orderBy: { subscriberId: "desc" },
     });
 

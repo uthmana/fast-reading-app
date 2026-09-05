@@ -75,6 +75,9 @@ export default function page() {
     if (actionType === "add") {
       setData({
         subscriberId: userData?.subscriberId || "",
+        studyGroups: [],
+        categories: [],
+        active: true,
       });
       setIsShowPopUp(true);
     }
@@ -83,9 +86,14 @@ export default function page() {
         currentArticle.categories?.map((item: { categoryId: number }) =>
           item.categoryId.toString(),
         ) || [];
+      const studyGroups =
+        currentArticle.studyGroups?.map(
+          (item: { group: string }) => item.group,
+        ) || [];
       setData({
         ...currentArticle,
         categories,
+        studyGroups,
       });
       setIsShowPopUp(true);
     }
@@ -185,10 +193,14 @@ export default function page() {
         selectedArticle.categories?.map((item: { categoryId: number }) =>
           item.categoryId.toString(),
         ) || [];
+      const studyGroups =
+        selectedArticle.studyGroups?.map(
+          (item: { group: string }) => item.group,
+        ) || [];
       const resData = await fetchData({
         apiPath: "/api/articles",
         method: "POST",
-        payload: { ...selectedArticle, categories, tests: quiz },
+        payload: { ...selectedArticle, categories, studyGroups, tests: quiz },
       });
       requestData();
       setFormTouched(false);

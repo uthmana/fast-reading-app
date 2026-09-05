@@ -26,7 +26,7 @@ export const columnsData = {
   ],
   articlesColumn: [
     { id: "id", name: "#", type: "string" },
-    { id: "studyGroup", name: "Eğitim Grubu", type: "studyGroup" },
+    { id: "studyGroups", name: "Eğitim Grubu", type: "list" },
     { id: "categories", name: "Kategori", type: "categoryList" },
     { id: "title", name: "Başlık", type: "string" },
     { id: "hasQuestion", name: "Soru", type: "boolean" },

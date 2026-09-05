@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import WoodenFrame from "../woodenFrame/woodenFrame";
 import ControlBuilder from "./controlBuilder/controlBuilder";
 import { controlFields } from "./controlBuilder/controlFields";
@@ -33,6 +34,8 @@ export default function ControlPanel({
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug as any;
+  const { data: session } = useSession();
+  const studyGroup = session?.user?.student?.studyGroup;
   const isTestSlug =
     pathname === "hizli-okuma-testi" || pathname === "anlama-testi";
 
@@ -66,6 +69,7 @@ export default function ControlPanel({
             fields={isArticleControl}
             isTest={false}
             setIsLoading={setIsLoading}
+            studyGroup={studyGroup}
           />
         </WoodenFrame>
       ) : null}

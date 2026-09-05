@@ -27,6 +27,7 @@ export default function ControlBuilder({
   setControlData,
   isTest,
   setIsLoading,
+  studyGroup,
 }: {
   fields: any[];
   className?: string;
@@ -34,6 +35,7 @@ export default function ControlBuilder({
   setControlData?: any;
   isTest?: boolean;
   setIsLoading?: (val: boolean) => void;
+  studyGroup?: string;
 }) {
   if (!fields || fields.length === 0) return null;
 
@@ -211,6 +213,9 @@ export default function ControlBuilder({
               optionId={field?.optionId}
               asyncOption={field?.asyncOption}
               asyncOptionById={field?.asyncOptionById}
+              asyncExtra={
+                field.inputKey === "articleSelect" ? studyGroup : undefined
+              }
               setIsLoading={setIsLoading}
             />
           );

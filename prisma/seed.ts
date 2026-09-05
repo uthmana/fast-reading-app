@@ -180,7 +180,9 @@ async function main() {
         data: {
           title: articleItem.title,
           description: articleItem.description,
-          studyGroup: articleItem.studyGroup as StudyGroup,
+          studyGroups: {
+            create: [{ group: articleItem.studyGroup as StudyGroup }],
+          },
           hasQuestion: articleItem.hasQuestion,
           active: articleItem.active,
           tests: articleItem.tests,

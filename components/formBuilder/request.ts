@@ -1,4 +1,26 @@
 import { fetchData } from "@/utils/fetchData";
+import { studyGroupOptions } from "@/utils/constants";
+
+export const getStudyGroupOptions = async () => {
+  try {
+    // Fetch study groups from API
+    const resData = await fetchData({
+      apiPath: "/api/article-studygroups?allGroups=true",
+    });
+    
+    // If API returns data, use it; otherwise fall back to constants
+    if (resData && resData.length > 0) {
+      return resData;
+    }
+    
+    // Fallback to constants if no data from API
+    return studyGroupOptions;
+  } catch (error) {
+    console.error(error);
+    // Fall back to constants on error
+    return studyGroupOptions;
+  }
+};
 
 export const getCategoryOptions = async () => {
   try {
@@ -15,10 +37,16 @@ export const getCategoryOptions = async () => {
   }
 };
 
-export const getArticleOptionsWithQuestionByCategoryId = async (id: string) => {
+export const getArticleOptionsWithQuestionByCategoryId = async (
+  id: string,
+  studyGroup?: string,
+) => {
   try {
+    const studyGroupQuery = studyGroup
+      ? `&studyGroup=${encodeURIComponent(studyGroup)}`
+      : "";
     const resData = await fetchData({
-      apiPath: `/api/articles?categoryId=${id}&hasQuestion=true`,
+      apiPath: `/api/articles?categoryId=${id}&hasQuestion=true${studyGroupQuery}`,
     });
     const res = resData?.map((item: { title: string; id: string }) => {
       return { name: item.title, value: item.id, data: JSON.stringify(item) };
@@ -30,10 +58,16 @@ export const getArticleOptionsWithQuestionByCategoryId = async (id: string) => {
   }
 };
 
-export const getArticleOptionsByCategoryId = async (id: string) => {
+export const getArticleOptionsByCategoryId = async (
+  id: string,
+  studyGroup?: string,
+) => {
   try {
+    const studyGroupQuery = studyGroup
+      ? `&studyGroup=${encodeURIComponent(studyGroup)}`
+      : "";
     const resData = await fetchData({
-      apiPath: `/api/articles?categoryId=${id}`,
+      apiPath: `/api/articles?categoryId=${id}${studyGroupQuery}`,
     });
     const res = resData?.map((item: { title: string; id: string }) => {
       return { name: item.title, value: item.id, data: JSON.stringify(item) };
@@ -198,7 +232,7 @@ export const getWordListPerCountWithLimit = async (letterCount: number) => {
   );
   try {
     const wordData = await fetchData({
-      apiPath: `/api/words?where=${query}&onlywords=true&limit=20`,
+      apiPath: `/api/words?where=${query}&onlywords=true&limit=20&random=true`,
     });
     return wordData;
   } catch (error) {

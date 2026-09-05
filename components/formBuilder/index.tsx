@@ -39,7 +39,7 @@ export default function FormBuilder({
   submitBtnProps,
 }: FormBuilderProps) {
   let fieldsData = formFields[id] || undefined;
-
+  console.log("data", fieldsData);
   if (!fieldsData && !data) {
     return null;
   }

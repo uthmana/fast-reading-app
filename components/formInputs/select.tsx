@@ -19,9 +19,10 @@ type SelectPropTypes = {
   inputKey: string;
   styleClass?: string;
   asyncOption?: () => any;
-  asyncOptionById?: (categoryId: string) => any;
+  asyncOptionById?: (categoryId: string, extra?: any) => any;
   multipleSelect?: boolean;
   optionId?: string;
+  asyncExtra?: any;
   setAsyncOptions?: (data: any) => any;
   setIsLoading?: (val: boolean) => any;
 };
@@ -41,6 +42,7 @@ function Select({
   multipleSelect = false,
   asyncOptionById,
   optionId,
+  asyncExtra,
   setAsyncOptions,
   setIsLoading,
   ...rest
@@ -69,7 +71,7 @@ function Select({
       const getOptions = async () => {
         setisLodingOption(true);
         if (setIsLoading) setIsLoading(true);
-        const res = await asyncOptionById(optionId);
+        const res = await asyncOptionById(optionId, asyncExtra);
         setLocalOptions(res);
         if (setAsyncOptions) {
           setAsyncOptions({ options: res, inputKey });
@@ -79,7 +81,7 @@ function Select({
       };
       getOptions();
     }
-  }, [optionId, disabled, asyncOptionById, setAsyncOptions]);
+  }, [optionId, disabled, asyncOptionById, asyncExtra, setAsyncOptions]);
 
   return (
     <div className={`w-full mb-2 text-sm ${styleClass}`}>
