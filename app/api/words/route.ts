@@ -20,7 +20,6 @@ export async function GET(req: NextRequest) {
     if (whereParam) {
       try {
         where = JSON.parse(whereParam);
-        console.log("whereParam:", typeof whereParam);
         const words = await prisma.words.findMany({
           where: {
             ...where,

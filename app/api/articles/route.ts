@@ -77,6 +77,7 @@ export async function GET(req: NextRequest) {
               category: {
                 select: { id: true, title: true },
               },
+              studyGroups: true,
             },
             orderBy: { subscriberId: "desc" },
           });
@@ -90,6 +91,7 @@ export async function GET(req: NextRequest) {
             category: {
               select: { id: true, title: true },
             },
+            studyGroups: true,
           },
         });
         return NextResponse.json(articles, { status: 200 });

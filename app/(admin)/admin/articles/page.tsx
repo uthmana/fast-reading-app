@@ -79,7 +79,7 @@ export default function page() {
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
-      const studyGroups = currentArticle.studyGroups.map(
+      const studyGroups = currentArticle?.studyGroups?.map(
         (item: { id: number; studyGroup: string; articleId: number }) => {
           return item.studyGroup;
         },
