@@ -175,19 +175,48 @@ async function main() {
         },
       });
 
-      await tx.article.create({
-        data: {
+      await tx.article.upsert({
+        where: {
           title: item.title,
+        },
+
+        update: {
           description: item.description,
-          subscriberId: subscriberId,
+          subscriberId: item.subscriberId ?? null,
           hasQuestion: item.hasQuestion,
           active: item.active,
           tests: item.tests?.map(({ id, ...test }) => test) ?? [],
+
           category: {
             connect: {
               id: category.id,
             },
           },
+
+          studyGroups: {
+            deleteMany: {},
+            create: [
+              {
+                studyGroup: item.studyGroup as StudyGroup,
+              },
+            ],
+          },
+        },
+
+        create: {
+          title: item.title,
+          description: item.description,
+          subscriberId: item.subscriberId ?? null,
+          hasQuestion: item.hasQuestion,
+          active: item.active,
+          tests: item.tests?.map(({ id, ...test }) => test) ?? [],
+
+          category: {
+            connect: {
+              id: category.id,
+            },
+          },
+
           studyGroups: {
             create: [
               {
