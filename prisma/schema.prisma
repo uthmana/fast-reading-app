@@ -144,14 +144,22 @@ model ArticleTest {
 }
 
 model Category {
-  id           Int        @id @default(autoincrement())
-  title        String     @unique
+  id           Int                  @id @default(autoincrement())
+  title        String               @unique
   description  String?
   subscriberId Int?
-  studyGroup   StudyGroup @default(ILKOKUL_2_3)
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime?            @updatedAt
   Article      Article[]
+  studyGroups  CategoryStudyGroup[]
+}
+
+model CategoryStudyGroup {
+  categoryId Int
+  studyGroup StudyGroup
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([categoryId, studyGroup])
 }
 
 model Words {

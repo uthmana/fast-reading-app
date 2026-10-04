@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Category } from "@prisma/client";
+import { Category, StudyGroup } from "@prisma/client";
 import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
@@ -59,7 +59,11 @@ export async function GET(req: NextRequest) {
 
     const categories = await prisma.category.findMany({
       orderBy: { updatedAt: "desc" },
+      include: {
+        studyGroups: true,
+      },
     });
+    console.log("categories", categories);
     return NextResponse.json(categories, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -75,27 +79,38 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: Request) {
-  const { id, title, description, studyGroup, subscriberId }: Category | any =
+  const { id, title, description, studyGroups, subscriberId } =
     await req.json();
+
   if (!title) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
 
   try {
     if (id) {
-      const categoryExit = await prisma.category.findUnique({
+      const categoryExists = await prisma.category.findUnique({
         where: { id },
       });
-      if (categoryExit) {
+
+      if (categoryExists) {
         const category = await prisma.category.update({
           where: { id },
           data: {
             title,
             description,
-            studyGroup,
-            ...(subscriberId ? { subscriberId } : null),
+            ...(subscriberId ? { subscriberId } : {}),
+            studyGroups: {
+              deleteMany: {},
+              create: (studyGroups ?? []).map((studyGroup: StudyGroup) => ({
+                studyGroup,
+              })),
+            },
+          },
+          include: {
+            studyGroups: true,
           },
         });
+
         return NextResponse.json(category, { status: 200 });
       }
     }
@@ -104,13 +119,22 @@ export async function POST(req: Request) {
       data: {
         title,
         description,
-        studyGroup,
-        ...(subscriberId ? { subscriberId } : null),
+        ...(subscriberId ? { subscriberId } : {}),
+        studyGroups: {
+          create: (studyGroups ?? []).map((studyGroup: StudyGroup) => ({
+            studyGroup,
+          })),
+        },
+      },
+      include: {
+        studyGroups: true,
       },
     });
+
     return NextResponse.json(category, { status: 201 });
   } catch (err) {
     console.log(err);
+
     return NextResponse.json(
       { error: "Category already exists" },
       { status: 400 },

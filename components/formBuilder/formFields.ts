@@ -602,12 +602,13 @@ export default {
       required: true,
     },
     {
-      key: "studyGroup",
+      key: "studyGroups",
       name: "Eğitim Grubu",
       placeholder: "Seçiniz",
       type: "select",
       options: studyGroupOptions,
-      value: { key: "studyGroup", type: "string", value: "" },
+      multipleSelect: true,
+      value: { key: "studyGroups", type: "multipleSelect", value: [] },
       required: true,
     },
     {
