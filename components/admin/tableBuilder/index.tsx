@@ -141,8 +141,20 @@ function TableBuilder({
         ?.join(", ");
     }
     if (type === "studyGroup") {
-      return studyGroupOptions.find((item) => item.value === value)?.name;
+      if (!Array.isArray(value)) {
+        return studyGroupOptions.find((item) => item.value === value)?.name;
+      }
+
+      const groups = value.map(
+        (item: { studyGroup: string }) => item.studyGroup,
+      );
+
+      return studyGroupOptions
+        .filter((item) => groups.includes(item.value))
+        .map((item) => item.name)
+        .join(", ");
     }
+
     if (objectMap) {
       return objectMap[value] || value;
     }
