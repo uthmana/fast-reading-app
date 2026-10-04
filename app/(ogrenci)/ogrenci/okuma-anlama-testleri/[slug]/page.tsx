@@ -5,7 +5,7 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
-import { formatDateTime } from "@/utils/helpers";
+import { countWords, formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -69,6 +69,12 @@ export default function page() {
 
   useEffect(() => {
     if (!controlData.selectedData) return;
+    if (controlData?.selectedData?.description) {
+      const countWord = countWords(
+        controlData?.selectedData?.description || "",
+      );
+      setReadingStatus({ counter: 0, totalWords: countWord, wpm: 0 });
+    }
     setQuestions(controlData.selectedData?.tests);
   }, [controlData.selectedData, setQuestions]);
 

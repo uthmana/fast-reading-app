@@ -167,12 +167,7 @@ export const exportToExcel = (tableData: any, fileName = "table-data.xlsx") => {
 
 export const countWords = (text: string) => {
   if (!text || typeof text !== "string") return 0;
-  const words = text
-    .trim()
-    .replace(/\s+/g, " ")
-    .match(/\b\w+\b/g);
-
-  return words ? words.length : 0;
+  return text.trim().split(/\s+/).length;
 };
 
 export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
