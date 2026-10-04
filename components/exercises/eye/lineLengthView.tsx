@@ -21,6 +21,10 @@ export default function LineLengthView({
   pause = false,
 }: LineLengthViewProps) {
   const [word, setWord] = useState("...");
+
+  const [leftWord, setLeftWord] = useState("...");
+  const [rightWord, setRightWord] = useState("...");
+
   const [yOffset, setYOffset] = useState(0);
   const distance =
     controls?.distance && controls?.distance > 1
@@ -48,8 +52,30 @@ export default function LineLengthView({
     return pool[Math.floor(Math.random() * pool.length)];
   };
 
+  const pickDifferentWords = () => {
+    if (!pool?.length) {
+      return ["...", "..."];
+    }
+
+    if (pool.length === 1) {
+      return [pool[0], pool[0]];
+    }
+
+    const leftIndex = Math.floor(Math.random() * pool.length);
+
+    let rightIndex = Math.floor(Math.random() * pool.length);
+
+    while (rightIndex === leftIndex) {
+      rightIndex = Math.floor(Math.random() * pool.length);
+    }
+
+    return [pool[leftIndex], pool[rightIndex]];
+  };
+
   useEffect(() => {
-    setWord(pickWord());
+    const [left, right] = pickDifferentWords();
+    setLeftWord(left);
+    setRightWord(right);
   }, [controls?.wordList]);
 
   useEffect(() => {
@@ -73,7 +99,10 @@ export default function LineLengthView({
 
   useEffect(() => {
     const intv = setInterval(() => {
-      setWord(pickWord());
+      const [left, right] = pickDifferentWords();
+
+      setLeftWord(left);
+      setRightWord(right);
 
       if (!scroll) {
         setYOffset(0);
@@ -128,7 +157,7 @@ export default function LineLengthView({
             transition: "transform 0.2s linear",
           }}
         >
-          {word}
+          {leftWord}
         </div>
       </div>
 
@@ -144,7 +173,7 @@ export default function LineLengthView({
             transition: "transform 0.2s linear",
           }}
         >
-          {word}
+          {rightWord}
         </div>
       </div>
     </div>
