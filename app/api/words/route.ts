@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
 import { extractPrismaErrorMessage, shuffleArray } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,13 +12,26 @@ export async function GET(req: NextRequest) {
     const onlywordsParam = searchParams.get("onlywords");
     const limitParam = searchParams.get("limit");
 
+    const session: any = await getServerSession(authOptions as any);
+    const studyGroup = session?.user?.student?.studyGroup;
+
     let where: any | undefined;
 
     if (whereParam) {
       try {
         where = JSON.parse(whereParam);
+        console.log("whereParam:", typeof whereParam);
         const words = await prisma.words.findMany({
-          where,
+          where: {
+            ...where,
+            ...(studyGroup && {
+              studyGroups: {
+                some: {
+                  group: studyGroup,
+                },
+              },
+            }),
+          },
           include: {
             studyGroups: true,
           },
@@ -38,6 +53,15 @@ export async function GET(req: NextRequest) {
     }
 
     const words = await prisma.words.findMany({
+      where: {
+        ...(studyGroup && {
+          studyGroups: {
+            some: {
+              group: studyGroup,
+            },
+          },
+        }),
+      },
       include: {
         studyGroups: true,
       },
