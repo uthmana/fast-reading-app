@@ -231,18 +231,13 @@ export async function POST(req: Request) {
       return NextResponse.json([], { status: 201 });
     }
 
+    // Check if subscriber has enough credit before creating a new student
+    let exitSub = null;
     if (subscriberId) {
-      const exitSub = await prisma.subscriber.findUnique({
+      exitSub = await prisma.subscriber.findUnique({
         where: { id: parseInt(subscriberId) },
       });
-      if (exitSub?.credit && exitSub?.credit > 0) {
-        const subscriber = await prisma.subscriber.update({
-          where: { id: parseInt(subscriberId) },
-          data: {
-            credit: exitSub?.credit - 1,
-          },
-        });
-      } else {
+      if (!exitSub?.credit || exitSub?.credit <= 0) {
         return NextResponse.json(
           { error: "Krediniz yükseltmemiz gerekiyor" },
           { status: 400 },
@@ -283,6 +278,16 @@ export async function POST(req: Request) {
       },
     });
 
+    // Deduct credit from subscriber if subscriberId is provided
+    await prisma.subscriber.update({
+      where: { id: parseInt(subscriberId) },
+      data: {
+        ...(exitSub && exitSub.credit > 0
+          ? { credit: exitSub.credit - 1 }
+          : {}),
+      },
+    });
+
     // If a student was created, automatically assign the first lesson's
     // exercises to them (create Progress rows with done: false). Other
     // lessons remain locked until unlocked by completing the current lesson.
@@ -311,6 +316,7 @@ export async function POST(req: Request) {
       }
     }
 
+    // If a registration number is provided, mark the registration as processed from the registration form. This is used to track which registrations have been converted into actual student accounts.
     if (regno) {
       await prisma.registration.update({
         where: { id: parseInt(regno) },

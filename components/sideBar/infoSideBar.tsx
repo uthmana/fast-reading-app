@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import dynamic from "next/dynamic";
+import { companyInfo } from "@/utils/constants";
 const SpeedGauge = dynamic(() => import("@/components/speedGauge/speedGauge"), {
   ssr: false,
 });
@@ -27,7 +28,7 @@ export default function InfoSideBar({
             ticksHeight={"136"}
             valueTextFontSize="22px"
             className="text-center mx-auto"
-            needleColor="#0a715c"
+            needleColor={companyInfo.chartColor}
             value={progressSummary?.lessons?.correct || 0}
             segmentsList={[
               { start: 0, end: 20, color: "#052921" },

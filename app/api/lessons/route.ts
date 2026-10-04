@@ -33,6 +33,32 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(lesson, { status: 200 });
     }
 
+    if (order === "undefined" && studentId) {
+      const lesson = await prisma.lesson.findMany({
+        where: { studentId },
+        include: {
+          LessonExercise: true,
+        },
+        orderBy: { order: "asc" },
+      });
+
+      if (!lesson) {
+        return NextResponse.json(
+          { error: "Lesson not found" },
+          { status: 404 },
+        );
+      }
+
+      const filteredLesson = lesson.findLast(
+        (item: any) => item.isLocked === false,
+      );
+
+      return NextResponse.json(
+        { isAllCompleted: true, lesson: filteredLesson },
+        { status: 200 },
+      );
+    }
+
     if (order && studentId) {
       const lesson = await prisma.lesson.findMany({
         where: { studentId },
@@ -80,7 +106,10 @@ export async function GET(req: NextRequest) {
         (item: any) => item.order === parseInt(order),
       );
 
-      return NextResponse.json(filteredLesson, { status: 200 });
+      return NextResponse.json(
+        { isAllCompleted: false, lesson: filteredLesson },
+        { status: 200 },
+      );
     }
 
     const lessons = await prisma.lesson.findMany({

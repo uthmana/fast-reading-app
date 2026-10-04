@@ -26,8 +26,9 @@ export const columnsData = {
   ],
   articlesColumn: [
     { id: "id", name: "#", type: "string" },
-    { id: "category", name: "kategori", type: "category" },
     { id: "title", name: "Başlık", type: "string" },
+    { id: "category", name: "kategori", type: "category" },
+    { id: "studyGroups", name: "Eğitim Grubu", type: "studyGroup" },
     { id: "hasQuestion", name: "Soru", type: "boolean" },
     { id: "tests", name: "Test", type: "json" },
     { id: "active", name: "Durum", type: "boolean" },
@@ -35,7 +36,7 @@ export const columnsData = {
   categoryColumn: [
     { id: "id", name: "#", type: "string" },
     { id: "title", name: "Kategori Adı", type: "string" },
-    { id: "studyGroup", name: "Eğitim Grubu", type: "studyGroup" },
+    { id: "studyGroups", name: "Eğitim Grubu", type: "studyGroup" },
     // { id: "description", name: "Açıklama", type: "string" },
   ],
   lessonColumn: [

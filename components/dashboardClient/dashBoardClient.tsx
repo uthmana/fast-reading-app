@@ -154,6 +154,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
             title="Dersler %${value}"
             max={100}
             value={progressSummary?.lessons?.correct}
+            needleColor={companyInfo.chartColor}
           />
           <SpeedGauge
             className="flex-1"
@@ -174,12 +175,14 @@ export default function DashboardClient({ user, progressSummary }: any) {
               { start: 750, end: 1000, color: "#0cc042" },
               { start: 1000, end: 1500, color: "#0cc042" },
             ]}
+            needleColor={companyInfo.chartColor}
           />
           <SpeedGauge
             className="flex-1"
             title="Anlama Hızınız %${value}"
             max={100}
             value={progressSummary?.fastUnderstandingProgress?.correct}
+            needleColor={companyInfo.chartColor}
           />
         </div>
         <div className="flex flex-wrap gap-1 w-full justify-center font-medium items-center text-xs">
@@ -297,12 +300,12 @@ export default function DashboardClient({ user, progressSummary }: any) {
           </h1>
           <div className="text-justify text-sm space-y-5 pb-8 px-8">
             <p>
-              Mahmut YILMAZ Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
+              HappyBrains Etkin Hızlı Okuma (MY&EHO) yazılımına ilişkin telif
               hakkı ve bu yazılımda yer alan bilgilerin ve yazılımların telif
-              hakları Mahmut YILMAZ'a aittir. Tüm hakları saklıdır. Bu yazılımda
+              hakları HappyBrains'a aittir. Tüm hakları saklıdır. Bu yazılımda
               yer alan bilgi ve yazılım yeniden üretilemez, çoğaltılamaz,
               kopyalanamaz, aktarılamaz, dağıtılamaz, depolanamaz,
-              değiştirilemez, indirilemez veya Mahmut YILMAZ önceden yazılı bir
+              değiştirilemez, indirilemez veya HappyBrains önceden yazılı bir
               onay vermeden herhangi bir ticari amaçla, başka şekillerde
               kullanılamaz.
             </p>

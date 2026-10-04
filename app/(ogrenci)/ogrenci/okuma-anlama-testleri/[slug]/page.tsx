@@ -5,7 +5,7 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
-import { formatDateTime } from "@/utils/helpers";
+import { countWords, formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -56,6 +56,7 @@ export default function page() {
     id: lessonParams,
     duration: durationParams,
     order: orderParams,
+    pathname: pathname,
   } as any;
 
   useEffect(() => {
@@ -68,6 +69,12 @@ export default function page() {
 
   useEffect(() => {
     if (!controlData.selectedData) return;
+    if (controlData?.selectedData?.description) {
+      const countWord = countWords(
+        controlData?.selectedData?.description || "",
+      );
+      setReadingStatus({ counter: 0, totalWords: countWord, wpm: 0 });
+    }
     setQuestions(controlData.selectedData?.tests);
   }, [controlData.selectedData, setQuestions]);
 
@@ -81,8 +88,12 @@ export default function page() {
       try {
         if (introTest) {
           const testArticle = await getArticleByStudyGroup({
-            studyGroup: session?.user?.student?.studyGroup,
             hasQuestion: true,
+            studyGroups: {
+              some: {
+                studyGroup: session?.user?.student?.studyGroup,
+              },
+            },
           });
           setControlData({ ...controlData, selectedData: testArticle });
           setQuestions(testArticle?.tests);
@@ -107,10 +118,11 @@ export default function page() {
           }
 
           const formatted = attempts.map(
-            ({ wpm, createdAt, correct, variant }: any) => ({
+            ({ wpm, createdAt, correct, variant, totalQuiz }: any) => ({
               wpm,
               correct,
               variant,
+              totalQuiz,
               category: formatDateTime(createdAt),
             }),
           );
@@ -141,6 +153,7 @@ export default function page() {
       correct: number;
       counter: number;
       variant: string;
+      totalQuiz?: number;
     } | null,
   ) => {
     if (!val || !session?.user?.student?.id) {
@@ -148,7 +161,7 @@ export default function page() {
       return;
     }
 
-    const { wpm, correct, counter, variant } = val;
+    const { wpm, correct, counter, variant, totalQuiz } = val;
     try {
       // Todo: chech if introTest is anumber
       if (introTest && isNaN(parseInt(introTest))) {
@@ -166,6 +179,7 @@ export default function page() {
             durationSec: counter,
             variant,
             studentId: session?.user?.student?.id,
+            totalQuiz,
           },
         });
         await fetchData({
@@ -217,6 +231,7 @@ export default function page() {
           durationSec: counter,
           variant,
           studentId: session?.user?.student?.id,
+          totalQuiz,
         },
       });
     } catch (error) {
@@ -259,7 +274,8 @@ export default function page() {
           onFinishTest={onFinishTest}
           article={controlData.selectedData as any}
           variant="FASTREADING"
-          readingStatus={(v) => setReadingStatus(v)}
+          readingStatus={readingStatus}
+          setReadingStatus={(v) => setReadingStatus(v)}
           className={
             isPrimaryStudent
               ? "!font-tttkbDikTemelAbece font-extrabold "
@@ -346,7 +362,8 @@ export default function page() {
           questions={questions}
           onFinishTest={onFinishTest}
           article={controlData.selectedData as any}
-          readingStatus={(v) => setReadingStatus(v)}
+          readingStatus={readingStatus}
+          setReadingStatus={(v) => setReadingStatus(v)}
           introTest={introTest}
           className={
             isPrimaryStudent
@@ -414,10 +431,12 @@ export default function page() {
                     {attempt.category}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.correct / 10}
+                    {Math.round(attempt.totalQuiz * (attempt.correct / 100))}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
-                    {10 - attempt.correct / 10}
+                    {Math.round(
+                      attempt.totalQuiz * (1 - attempt.correct / 100),
+                    )}
                   </div>
                   <div className="group-hover:bg-gray-200 p-1">
                     %{attempt.correct}

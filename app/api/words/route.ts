@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage, shuffleArray } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,23 +12,35 @@ export async function GET(req: NextRequest) {
     const onlywordsParam = searchParams.get("onlywords");
     const limitParam = searchParams.get("limit");
 
+    const session: any = await getServerSession(authOptions as any);
+    const studyGroup = session?.user?.student?.studyGroup;
+
     let where: any | undefined;
 
     if (whereParam) {
       try {
         where = JSON.parse(whereParam);
         const words = await prisma.words.findMany({
-          where,
+          where: {
+            ...where,
+            ...(studyGroup && {
+              studyGroups: {
+                some: {
+                  group: studyGroup,
+                },
+              },
+            }),
+          },
           include: {
             studyGroups: true,
           },
           take: limitParam ? parseInt(limitParam, 10) : undefined,
-          orderBy: { subscriberId: "desc" },
+          orderBy: { updatedAt: "desc" },
         });
 
         if (onlywordsParam === "true") {
           const wordList = words.map((item) => item.word);
-          return NextResponse.json(wordList, { status: 200 });
+          return NextResponse.json(shuffleArray(wordList), { status: 200 });
         }
         return NextResponse.json(words, { status: 200 });
       } catch (err) {
@@ -38,16 +52,25 @@ export async function GET(req: NextRequest) {
     }
 
     const words = await prisma.words.findMany({
+      where: {
+        ...(studyGroup && {
+          studyGroups: {
+            some: {
+              group: studyGroup,
+            },
+          },
+        }),
+      },
       include: {
         studyGroups: true,
       },
       take: limitParam ? parseInt(limitParam, 10) : undefined,
-      orderBy: { subscriberId: "desc" },
+      orderBy: { updatedAt: "desc" },
     });
 
     if (onlywordsParam === "true") {
       const wordList = words.map((item) => item.word);
-      return NextResponse.json(wordList, { status: 200 });
+      return NextResponse.json(shuffleArray(wordList), { status: 200 });
     }
 
     return NextResponse.json(words, { status: 200 });
@@ -82,7 +105,7 @@ export async function POST(req: Request) {
           data: {
             word,
             similarWord,
-            subscriberId,
+            ...(subscriberId ? { subscriberId } : null),
             lpw: word?.length,
             wpc: word?.split(" ")?.length,
             studyGroups: {
@@ -101,7 +124,7 @@ export async function POST(req: Request) {
       data: {
         word,
         similarWord,
-        subscriberId,
+        ...(subscriberId ? { subscriberId } : null),
         lpw: word?.length,
         wpc: word?.split(" ")?.length,
         studyGroups: {
@@ -114,7 +137,7 @@ export async function POST(req: Request) {
     return NextResponse.json(words, { status: 201 });
   } catch (err) {
     console.log(err);
-    return NextResponse.json({ error: "word already exists" }, { status: 400 });
+    return NextResponse.json({ error: "Kelime zaten mevcut" }, { status: 400 });
   }
 }
 

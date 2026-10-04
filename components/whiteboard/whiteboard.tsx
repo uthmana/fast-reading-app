@@ -54,6 +54,15 @@ export default function Whiteboard({
   }, [pause, lessonData?.duration]);
 
   useEffect(() => {
+    if (
+      lessonData?.pathname === "hizli-okuma-testi" ||
+      lessonData?.pathname === "anlama-testi"
+    ) {
+      setCountDownValue(5);
+    }
+  }, [lessonData?.pathname]);
+
+  useEffect(() => {
     if (countDownDuration) {
       countDownDuration(countDownValue);
     }
@@ -87,8 +96,8 @@ export default function Whiteboard({
         ) : null}
         {lessonData?.id ? (
           <Link
-            className="absolute flex items-center justify-center gap-2 bottom-6 z-10 transition hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3"
-            href={`/ogrenci/dersler/${lessonData?.order}`}
+            className="absolute flex items-center justify-center opacity-45 gap-2 bottom-6 z-10 transition hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3"
+            href={`/ogrenci/dersler`}
           >
             <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
           </Link>
@@ -135,8 +144,8 @@ export default function Whiteboard({
             ) : null}
             {lessonData?.id ? (
               <a
-                className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-100 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
-                href={`/ogrenci/dersler/${lessonData?.order}`}
+                className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-45 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
+                href={`/ogrenci/dersler`}
               >
                 <MdArrowBack className="text-white w-6 h-6" />
                 <span className="hidden md:inline-block"> Derslere Dön</span>

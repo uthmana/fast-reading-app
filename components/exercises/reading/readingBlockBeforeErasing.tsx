@@ -70,7 +70,10 @@ export default function ReadingBlockBeforeErasing({
   }, [finishedRef.current]);
 
   useEffect(() => {
-    if (!words.length) return;
+    if (!words.length) {
+      onFinishTest?.(null);
+      return;
+    }
     setActiveWordIndex(0);
     setRunning(true);
     currentLevelRef.current = level;
@@ -127,15 +130,21 @@ export default function ReadingBlockBeforeErasing({
             }}
           >
             {/* Before highlighted */}
-            <span className="opacity-100">{beforeText} </span>
+            <span>{beforeText} </span>
 
             {/* Highlighted section (no gaps) */}
-            <span className="bg-blue-800 p-1 text-white rounded-sm">
+            <span
+              className="text-white rounded-sm"
+              style={{
+                backgroundColor: "#1e40af",
+                boxShadow: "0 0 0 2px #1e40af",
+              }}
+            >
               {highlightedWords}
             </span>
 
             {/* After highlighted */}
-            <span className="opacity-100"> {afterText}</span>
+            <span> {afterText}</span>
           </div>
         ) : (
           <p className="font-semibold text-center">
