@@ -1,13 +1,12 @@
 import prisma from "@/lib/prisma";
 import {
   allWords,
-  articleCategory,
-  articleData,
   exerciseData,
   lessonData,
   studyGroupOptions,
 } from "./mockData";
 import { StudyGroup } from "@prisma/client";
+import { mockArticles } from "./mockArticles";
 
 async function main() {
   // Default admin user
@@ -158,45 +157,48 @@ async function main() {
 
   // Create categories and articles
   await prisma.$transaction(async (tx) => {
-    await tx.category.createMany({
-      data: articleCategory.map((item) => ({
-        title: item.title,
-        description: item.description,
-        studyGroup: item.studyGroup as StudyGroup,
-      })),
-      skipDuplicates: true,
-    });
-
-    const categories = await tx.category.findMany();
-
-    for (const articleItem of articleData) {
-      const category = categories.find((c) =>
-        articleItem.studyGroups?.includes(c.studyGroup),
-      );
-
-      if (!category) continue;
+    for (const item of mockArticles) {
+      const category = await tx.category.upsert({
+        where: {
+          title: item.category.title,
+        },
+        update: {},
+        create: {
+          title: item.category.title,
+          studyGroups: {
+            create: [
+              {
+                studyGroup: item.studyGroup as StudyGroup,
+              },
+            ],
+          },
+        },
+      });
 
       await tx.article.create({
         data: {
-          title: articleItem.title,
-          description: articleItem.description,
-          studyGroups: {
-            create: articleItem?.studyGroups?.map((sg: any) => ({
-              studyGroup: sg,
-            })),
+          title: item.title,
+          description: item.description,
+          subscriberId: subscriberId,
+          hasQuestion: item.hasQuestion,
+          active: item.active,
+          tests: item.tests?.map(({ id, ...test }) => test) ?? [],
+          category: {
+            connect: {
+              id: category.id,
+            },
           },
-          hasQuestion: articleItem.hasQuestion,
-          active: articleItem.active,
-          tests: articleItem.tests,
-          category: { connect: { id: category.id } },
+          studyGroups: {
+            create: [
+              {
+                studyGroup: item.studyGroup as StudyGroup,
+              },
+            ],
+          },
         },
       });
     }
   });
-
-  const createdExercises = await prisma.$transaction(
-    exerciseData.map((item) => prisma.exercise.create({ data: item })),
-  );
 
   const studyGroups = studyGroupOptions.map((s) => s.value);
   const uniqueWords = [...new Set(allWords)];
@@ -217,6 +219,10 @@ async function main() {
       })
       .catch(() => null);
   }
+
+  const createdExercises = await prisma.$transaction(
+    exerciseData.map((item) => prisma.exercise.create({ data: item })),
+  );
 
   console.log({
     user,
