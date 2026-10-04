@@ -274,7 +274,8 @@ export default function page() {
           onFinishTest={onFinishTest}
           article={controlData.selectedData as any}
           variant="FASTREADING"
-          readingStatus={(v) => setReadingStatus(v)}
+          readingStatus={readingStatus}
+          setReadingStatus={(v) => setReadingStatus(v)}
           className={
             isPrimaryStudent
               ? "!font-tttkbDikTemelAbece font-extrabold "
@@ -361,7 +362,8 @@ export default function page() {
           questions={questions}
           onFinishTest={onFinishTest}
           article={controlData.selectedData as any}
-          readingStatus={(v) => setReadingStatus(v)}
+          readingStatus={readingStatus}
+          setReadingStatus={(v) => setReadingStatus(v)}
           introTest={introTest}
           className={
             isPrimaryStudent

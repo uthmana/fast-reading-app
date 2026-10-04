@@ -29,7 +29,12 @@ type FastReadingTestProps = {
     wordsPerFrame: number;
   };
   variant?: string;
-  readingStatus?: (v: {
+  readingStatus?: {
+    counter: number;
+    totalWords: number;
+    wpm: number;
+  };
+  setReadingStatus?: (v: {
     counter: number;
     totalWords: number;
     wpm: number;
@@ -38,12 +43,15 @@ type FastReadingTestProps = {
   className?: string;
 };
 
+const MAXIMUM_READING_SPEED = 2000; // Maximum reading speed in words per minute
+
 export default function FastReadingTest({
   article,
   onFinishTest,
   questions = [],
   control,
   variant = "FASTREADING",
+  setReadingStatus,
   readingStatus,
   introTest = "",
   className = "",
@@ -77,6 +85,12 @@ export default function FastReadingTest({
     }
     setIsReading(false);
     setShowResult(false);
+
+    if (readingStatus && readingStatus?.wpm >= MAXIMUM_READING_SPEED) {
+      alert("Erken durdurdunuz ölçüm yapılamadı.");
+      onFinishTest(null);
+      return;
+    }
 
     if (variant === "UNDERSTANDING") {
       if (!questions?.length) {
@@ -139,10 +153,10 @@ export default function FastReadingTest({
   };
 
   useEffect(() => {
-    if (!readingStatus) return;
+    if (!setReadingStatus) return;
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord || 1, counter || 1);
-    readingStatus({ counter: counter || 1, totalWords: countWord, wpm });
+    setReadingStatus({ counter: counter || 1, totalWords: countWord, wpm });
   }, [counter, article?.description]);
 
   return (
