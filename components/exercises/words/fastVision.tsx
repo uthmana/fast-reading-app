@@ -29,7 +29,9 @@ export default function Tachistoscope({
   const [index, setIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const [frameDurationMs, setFrameDurationMs] = useState<number>(1000);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [opacity, setOpacity] = useState(1);
+  const [transitioning, setTransitioning] = useState(false);
+
   const intervalRef = useRef<number | null>(null);
   const onCompleteRef = useRef(onComplete);
 
@@ -71,13 +73,12 @@ export default function Tachistoscope({
     }
     if (!running || frames.length === 0) return;
 
-    const fadeDuration = frameDurationMs * 0.3;
-
     intervalRef.current = window.setInterval(() => {
-      setFadeOut(true);
+      if (transitioning) return;
+      setTransitioning(true);
+      setOpacity(0);
 
-      setTimeout(() => {
-        setFadeOut(false);
+      window.setTimeout(() => {
         setIndex((prev) => {
           const next = prev + 1;
           if (next >= frames.length) {
@@ -88,7 +89,9 @@ export default function Tachistoscope({
           }
           return next;
         });
-      }, fadeDuration);
+        setOpacity(1);
+        setTransitioning(false);
+      }, speedMap[level] ?? 500);
     }, frameDurationMs);
 
     return () => {
@@ -97,7 +100,7 @@ export default function Tachistoscope({
         intervalRef.current = null;
       }
     };
-  }, [running, frames, frameDurationMs]);
+  }, [running, frames, frameDurationMs, transitioning, level]);
 
   useEffect(() => {
     if (pause) {
@@ -110,13 +113,12 @@ export default function Tachistoscope({
       className={`relative group w-full h-full flex justify-center items-center ${className}`}
     >
       <div
-        className={`text-base font-semibold leading-tight transition-opacity duration-300 ${
-          fadeOut ? "opacity-0" : "opacity-100"
-        }`}
+        className={`text-base font-semibold leading-tight`}
         style={{
-          transitionDuration: `${frameDurationMs * 0.3}ms`,
-          fontSize: `${controls && controls.font}px`,
           lineHeight: 1.5,
+          fontSize: `${controls?.font}px`,
+          opacity,
+          // transition: `opacity 250ms ease-in-out`,
         }}
       >
         {frames.length > 0 ? (
@@ -125,12 +127,6 @@ export default function Tachistoscope({
           <span className="text-gray-400">Metin yükleniyor.....</span>
         )}
       </div>
-
-      {/* <Button
-        icon={<MdPauseCircle className="w-6 h-6 text-white" />}
-        className="max-w-fit lg:opacity-0 group-hover:opacity-100 absolute right-0 bottom-0 my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
-        onClick={handlePause}
-      /> */}
     </div>
   );
 }

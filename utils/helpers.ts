@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
 import { lessonControls, speedMap, studyGroupOptions } from "./constants";
+import { fetchData } from "./fetchData";
 
 type UserWhereInput =
   | { email: string }
@@ -228,11 +229,37 @@ export const formatNumberLocale = (num: number, locale = "tr") => {
   return nFormat.format(num);
 };
 
-export const getTestControls = (
+export const getTestControls = async (
   lessonId: string | null,
   studyGroup: string,
+  exerciseParams?: number,
 ) => {
   if (!lessonId) return {};
+
+  if (exerciseParams) {
+    const query = encodeURIComponent(
+      JSON.stringify({
+        id: exerciseParams,
+      }),
+    );
+    const resData = await fetchData({
+      apiPath: `/api/lessonExerciseConfig?where=${query}`,
+    });
+    const configData = resData[0]?.config;
+    if (configData && configData.lenght > 0) {
+      const currentControl = configData.find(
+        (item: { group: string }) => item.group === studyGroup,
+      );
+      const speedKey = Object.keys(speedMap).find(
+        (key) => speedMap[Number(key)] === currentControl?.level,
+      );
+      return {
+        ...currentControl,
+        level: speedKey,
+      };
+    }
+  }
+
   const testControls = lessonControls[lessonId]?.find(
     (lc: { group: string }) => lc.group === studyGroup,
   );
@@ -241,8 +268,8 @@ export const getTestControls = (
   );
 
   return {
+    ...testControls,
     level: speedKey,
-    wordsPerFrame: testControls?.wordsPerFrame,
   };
 };
 
