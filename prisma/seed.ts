@@ -156,9 +156,13 @@ async function main() {
   );
 
   // Create categories and articles
-  await prisma.$transaction(async (tx) => {
-    for (const item of mockArticles) {
-      const category = await tx.category.upsert({
+  const categoryCache = new Map<string, number>();
+
+  for (const item of mockArticles) {
+    let categoryId = categoryCache.get(item.category.title);
+
+    if (!categoryId) {
+      const category = await prisma.category.upsert({
         where: {
           title: item.category.title,
         },
@@ -175,59 +179,52 @@ async function main() {
         },
       });
 
-      await tx.article.upsert({
-        where: {
-          title: item.title,
-        },
-
-        update: {
-          description: item.description,
-          subscriberId: item.subscriberId ?? null,
-          hasQuestion: item.hasQuestion,
-          active: item.active,
-          tests: item.tests?.map(({ id, ...test }) => test) ?? [],
-
-          category: {
-            connect: {
-              id: category.id,
-            },
-          },
-
-          studyGroups: {
-            deleteMany: {},
-            create: [
-              {
-                studyGroup: item.studyGroup as StudyGroup,
-              },
-            ],
-          },
-        },
-
-        create: {
-          title: item.title,
-          description: item.description,
-          subscriberId: item.subscriberId ?? null,
-          hasQuestion: item.hasQuestion,
-          active: item.active,
-          tests: item.tests?.map(({ id, ...test }) => test) ?? [],
-
-          category: {
-            connect: {
-              id: category.id,
-            },
-          },
-
-          studyGroups: {
-            create: [
-              {
-                studyGroup: item.studyGroup as StudyGroup,
-              },
-            ],
-          },
-        },
-      });
+      categoryId = category.id;
+      categoryCache.set(item.category.title, categoryId);
     }
-  });
+
+    await prisma.article.upsert({
+      where: {
+        title: item.title,
+      },
+      update: {
+        description: item.description,
+        subscriberId: item.subscriberId ?? null,
+        hasQuestion: item.hasQuestion,
+        active: item.active,
+        tests: item.tests?.map(({ id, ...test }) => test) ?? [],
+
+        categoryId,
+
+        studyGroups: {
+          deleteMany: {},
+          create: [
+            {
+              studyGroup: item.studyGroup as StudyGroup,
+            },
+          ],
+        },
+      },
+      create: {
+        title: item.title,
+        description: item.description,
+        subscriberId: item.subscriberId ?? null,
+        hasQuestion: item.hasQuestion,
+        active: item.active,
+        tests: item.tests?.map(({ id, ...test }) => test) ?? [],
+
+        categoryId,
+
+        studyGroups: {
+          create: [
+            {
+              studyGroup: item.studyGroup as StudyGroup,
+            },
+          ],
+        },
+      },
+    });
+  }
 
   const studyGroups = studyGroupOptions.map((s) => s.value);
   const uniqueWords = [...new Set(allWords)];

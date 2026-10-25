@@ -93,7 +93,7 @@ export default function Header() {
 
           <div className="pt-6  space-y-3 border-t border-white/10">
             <Link
-              href="/ogrenci/giris"
+              href="/login?giris=ogrenci"
               onClick={() => setOpen(false)}
               className="block w-full rounded-lg bg-brand-secondary-150 px-4 py-3 text-center font-semibold text-brand-primary-200 hover:bg-brand-secondary-200 transition"
             >
@@ -101,7 +101,7 @@ export default function Header() {
             </Link>
 
             <Link
-              href="/egitmen/giris"
+              href="/login?giris=egitmen"
               onClick={() => setOpen(false)}
               className="block w-full rounded-lg border border-brand-secondary-150 px-4 py-3 text-center font-semibold text-brand-secondary-150 hover:bg-brand-secondary-50 transition"
             >

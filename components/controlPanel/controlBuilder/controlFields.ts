@@ -89,7 +89,6 @@ export const controlFields: Record<string, any[]> = {
       name: "Hız",
       min: "1",
       max: "27",
-
       required: false,
       valueMap: speedMap,
       description: "Nesnenin hareket hızı",

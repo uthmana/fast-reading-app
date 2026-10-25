@@ -44,13 +44,21 @@ export default function page() {
   useEffect(() => {
     if (!session?.user?.student || (!orderParams && !exerciseParams)) return;
     const studyGroup = session.user.student.studyGroup || "GENEL";
-    const { level } = getTestControls(orderParams, studyGroup);
-    if (level) {
-      setControlData((prev: any) => ({
-        ...prev,
-        ...(level && { level: Number(level) }),
-      }));
-    }
+    const fetchTestControls = async () => {
+      const testControls = await getTestControls(
+        orderParams,
+        studyGroup,
+        exerciseParams,
+      );
+      if (testControls) {
+        setControlData((prev: any) => ({
+          ...prev,
+          ...testControls,
+        }));
+      }
+    };
+
+    fetchTestControls();
   }, [session, orderParams, exerciseParams]);
 
   const currentMenu = menuItems.filter((m) =>

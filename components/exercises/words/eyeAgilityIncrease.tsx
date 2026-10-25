@@ -1,9 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { MdPauseCircle } from "react-icons/md";
 import { speedMap } from "@/utils/constants";
-import Button from "@/components/button/button";
 
 type TachistoProps = {
   autoStart?: boolean;
@@ -36,6 +34,9 @@ export default function EyeAgilityIncrease({
   const elementRef = useRef<HTMLDivElement | null>(null);
   const intervalRef = useRef<number | null>(null);
   const onCompleteRef = useRef(onComplete);
+
+  const [opacity, setOpacity] = useState(1);
+  const [transitioning, setTransitioning] = useState(false);
 
   const level = controls?.level || 1;
   const text = controls?.wordList;
@@ -86,28 +87,41 @@ export default function EyeAgilityIncrease({
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+
     if (!running || frames.length === 0) return;
 
     intervalRef.current = window.setInterval(() => {
-      setIndex((prev) => {
-        const next = prev + 1;
-        if (next >= frames.length) {
-          clearInterval(intervalRef.current!);
-          setRunning(false);
-          onCompleteRef.current?.();
-          return frames.length - 1;
-        }
-        return next;
-      });
+      if (transitioning) return;
 
-      // 🌀 Move randomly within bounds
-      setPosition(randomPosition());
+      setTransitioning(true);
+      setOpacity(0);
+
+      window.setTimeout(() => {
+        setIndex((prev) => {
+          const next = prev + 1;
+
+          if (next >= frames.length) {
+            setRunning(false);
+            onCompleteRef.current?.();
+            return frames.length - 1;
+          }
+
+          return next;
+        });
+
+        setPosition(randomPosition());
+        setOpacity(1);
+        setTransitioning(false);
+      }, speedMap[level] ?? 500);
     }, frameDurationMs);
 
     return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [running, frames, frameDurationMs]);
+  }, [running, frames, frameDurationMs, transitioning]);
 
   useEffect(() => {
     if (pause) {
@@ -123,12 +137,13 @@ export default function EyeAgilityIncrease({
       {/* Moving text block */}
       <div
         ref={elementRef}
-        className="absolute py-[6px] px-3 whitespace-nowrap flex justify-center items-center"
+        className="absolute py-[6px] font-semibold px-3 whitespace-nowrap flex justify-center items-center"
         style={{
           top: position.top,
           left: position.left,
           fontSize: `${controls?.font}px`,
           lineHeight: 1.5,
+          opacity,
         }}
       >
         {frames.length > 0 ? (
