@@ -26,10 +26,10 @@ export default function page() {
   const [controlData, setControlData] = useState({
     font: "16",
     level: 1,
-    type: 3,
-    wordsPerFrame: 2,
+    type: 1,
+    wordsPerFrame: 1,
     objectIcon: 1,
-    letterCount: 3,
+    letterCount: 1,
     distance: 1,
     wordList: [] as string[],
   });
@@ -45,14 +45,21 @@ export default function page() {
   useEffect(() => {
     if (!session?.user?.student || (!orderParams && !exerciseParams)) return;
     const studyGroup = session.user.student.studyGroup || "GENEL";
-    const { level, wordsPerFrame } = getTestControls(orderParams, studyGroup);
-    if (level || wordsPerFrame) {
-      setControlData((prev: any) => ({
-        ...prev,
-        ...(level && { level: Number(level) }),
-        ...(wordsPerFrame && { wordsPerFrame }),
-      }));
-    }
+    const fetchTestControls = async () => {
+      const testControls = await getTestControls(
+        orderParams,
+        studyGroup,
+        exerciseParams,
+      );
+      if (testControls) {
+        setControlData((prev: any) => ({
+          ...prev,
+          ...testControls,
+        }));
+      }
+    };
+
+    fetchTestControls();
   }, [session, orderParams, exerciseParams]);
 
   const currentMenu = menuItems.filter((m) =>

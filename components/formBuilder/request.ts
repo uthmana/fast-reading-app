@@ -3,7 +3,7 @@ import { fetchData } from "@/utils/fetchData";
 export const getCategoryOptions = async () => {
   try {
     const resData = await fetchData({
-      apiPath: "/api/category",
+      apiPath: "/api/category?studygroup=true",
     });
     const res = resData
       ?.map((item: { title: string; id: string }) => {

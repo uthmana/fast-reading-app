@@ -7,13 +7,15 @@ import { authOptions } from "@/lib/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions as any);
+    const session: any = await getServerSession(authOptions as any);
     let subscriberId = (session as any)?.user.subscriberId ?? null;
 
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
     const whereParam = searchParams.get("where");
     const subscriberOptionsParam = searchParams.get("subscriber-options");
+    const isByStudygroup = searchParams.get("studygroup");
+    const studyGroup = session?.user?.student?.studyGroup;
 
     let where: any | undefined;
 
@@ -29,6 +31,24 @@ export async function GET(req: NextRequest) {
       const categories = await prisma.category.findMany({
         where,
         orderBy: { subscriberId: "desc" },
+      });
+      return NextResponse.json(categories, { status: 200 });
+    }
+
+    if (isByStudygroup === "true" && studyGroup) {
+      const categories = await prisma.category.findMany({
+        where: {
+          studyGroups: {
+            some: {
+              studyGroup: {
+                in: [studyGroup],
+              },
+            },
+          },
+        },
+        include: {
+          studyGroups: true,
+        },
       });
       return NextResponse.json(categories, { status: 200 });
     }
@@ -63,7 +83,6 @@ export async function GET(req: NextRequest) {
         studyGroups: true,
       },
     });
-    console.log("categories", categories);
     return NextResponse.json(categories, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);

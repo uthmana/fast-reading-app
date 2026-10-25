@@ -44,6 +44,18 @@ export default function ControlBuilder({
   //If anlama-testi get article that has questions
   const hasQuestion = pathName === "anlama-testi";
 
+  const lessonDisabledFields = [
+    "level",
+    "wordsPerFrame",
+    "type",
+    "frame",
+    "grid",
+    "distance",
+    "letterCount",
+    "scroll",
+    "difficultyLevel",
+  ];
+
   useEffect(() => {
     let mapped = fields;
     if (controlData) {
@@ -165,9 +177,7 @@ export default function ControlBuilder({
       {formData.map((field: any, index: number) => {
         if (field.type === "range") {
           const disabled =
-            (field.inputKey === "level" ||
-              field.inputKey === "wordsPerFrame") &&
-            isTest
+            lessonDisabledFields.includes(field.inputKey) && isTest
               ? true
               : field.disabled;
           return (
