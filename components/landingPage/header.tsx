@@ -16,7 +16,11 @@ export default function Header() {
         <div className="mx-auto landing-container px-6 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold">
-            <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
+            <Icon
+              name="logo"
+              logoText={companyInfo.logo}
+              className="h-10 w-auto shrink-0"
+            />
           </Link>
 
           {/* Desktop Nav */}

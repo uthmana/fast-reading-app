@@ -99,12 +99,10 @@ export default function LoginClient() {
     >
       <div className="flex-1 h-full flex items-center ">
         <div className="w-[90%] bg-white backdrop-blur-sm border border-white/30  rounded-lg lg:bg-none max-w-[460px] mx-auto p-8">
-          <h1 className="text-xl font-bold mb-1 mt-0 text-center">
-            <Icon
-              name="logo"
-              logoText="Happy-Brains"
-              className="h-10 mx-auto"
-            />
+          <h1 className=" flex justify-center text-xl font-bold mb-1 mt-0">
+            <span className="w-40">
+              <Icon name="logo" logoText="Happy-Brains" className="h-10" />
+            </span>
           </h1>
           {isAdmin ? (
             <p className="mb-7 text-base font-medium text-center">
