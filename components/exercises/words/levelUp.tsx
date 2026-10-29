@@ -8,8 +8,8 @@ type TachistoProps = {
   autoStart?: boolean;
   className?: string;
   onComplete?: () => void;
-  controls?: {
-    level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+  controls: {
+    level: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     wordsPerFrame: number;
     font: string;
     wordList: string[];
@@ -29,134 +29,117 @@ export default function LevelUp({
   isLesson = false,
   saveProgress,
 }: TachistoProps) {
-  const [frames, setFrames] = useState<string[]>([]);
   const [index, setIndex] = useState(0);
-  const [running, setRunning] = useState(false);
   const [isTesting, setIsTesting] = useState(autoStart);
-  const [fadeOut, setFadeOut] = useState(false);
-  const [frameDurationMs, setFrameDurationMs] = useState(1000);
-  const [resultMessage, setResultMessage] = useState(null as any);
+  const [resultMessage, setResultMessage] = useState<any>(null);
+  const [opacity, setOpacity] = useState(1);
+  const [displayWords, setDisplayWords] = useState<string[]>([]);
 
-  /** ================= SNAPSHOTS ================= */
-  const framesRef = useRef<string[]>([]);
-  const answersRef = useRef<string[]>([]);
-  const cancelRef = useRef(false);
-  const levelRef = useRef(1);
-  const wpfRef = useRef(1);
-  const durationRef = useRef(1000);
+  const runIdRef = useRef(0);
+  const answersRef = useRef<{ answer: string; index: number }[]>([]);
 
-  /** ================= HELPERS ================= */
-  const sleep = (ms: number) => new Promise<void>((res) => setTimeout(res, ms));
+  const { level, wordList, font, wordsPerFrame } = controls;
+  const levelMapped = speedMap[level];
 
-  /** ================= SETUP / RESET ================= */
+  const sleep = (ms: number) =>
+    new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+  /** ================= RESULTS ================= */
+  const calculateResult = (
+    words: string[],
+    answers: { answer: string; index: number }[],
+  ) => {
+    const correct = words.reduce((acc, word, i) => {
+      const userAnswer = answers.find((item) => item.index === i)?.answer ?? "";
+
+      return userAnswer.trim().toLowerCase() === word.trim().toLowerCase()
+        ? acc + 1
+        : acc;
+    }, 0);
+
+    if (isLesson) {
+      saveProgress?.();
+    }
+
+    const resultData = {
+      wpf: wordsPerFrame,
+      durationSec: levelMapped,
+      variant: "FASTVISION",
+      correct: words.length ? Math.round((correct / words.length) * 100) : 0,
+      wpm: calculateReadingSpeed(
+        (wordsPerFrame || 1) * words.length,
+        levelMapped,
+      ),
+    };
+
+    setIsTesting(false);
+    onFinishTest?.(resultData);
+    setResultMessage(resultData);
+  };
+
+  /** ================= TEST SETUP ================= */
   useEffect(() => {
-    cancelRef.current = true;
+    const runId = ++runIdRef.current;
+    const words = [...(wordList ?? [])];
 
-    if (!controls?.wordList?.length) {
-      setFrames([]);
-      setRunning(false);
+    setDisplayWords(words);
+    setIndex(0);
+    setOpacity(1);
+    setResultMessage(null);
+    answersRef.current = [];
+
+    if (pause || !autoStart || !words.length) {
       setIsTesting(false);
       return;
     }
 
-    framesRef.current = controls.wordList;
-    answersRef.current = [];
-
-    levelRef.current = controls.level ?? 1;
-    wpfRef.current = controls.wordsPerFrame;
-    durationRef.current = speedMap[levelRef.current];
-
-    setFrames(controls.wordList);
-    setFrameDurationMs(durationRef.current);
-    setIndex(0);
-  }, [autoStart, controls]);
-
-  /** ================= AUTOSTART ================= */
-  useEffect(() => {
-    if (autoStart && framesRef.current.length) {
-      cancelRef.current = false;
-      setIsTesting(true);
-      setRunning(true);
-    }
-  }, [autoStart, controls]);
-
-  /** ================= RUNNER ================= */
-  useEffect(() => {
-    if (!running) return;
-    setResultMessage(null);
-
-    cancelRef.current = false;
+    setIsTesting(true);
 
     const run = async () => {
-      const frames = framesRef.current;
-      const frameDuration = durationRef.current;
-      const fadeDuration = Math.round(frameDuration * 0.3);
-
-      for (let i = 0; i < frames.length; i++) {
-        if (cancelRef.current) return;
+      for (let i = 0; i < words.length; i++) {
+        if (runIdRef.current !== runId) return;
 
         setIndex(i);
-        setFadeOut(false);
+        setOpacity(1);
 
-        await sleep(frameDuration - fadeDuration);
-        if (cancelRef.current) return;
+        await sleep(levelMapped);
+        if (runIdRef.current !== runId) return;
 
-        setFadeOut(true);
-        await sleep(fadeDuration);
-        if (cancelRef.current) return;
+        setOpacity(0);
+
+        await sleep(500);
+        if (runIdRef.current !== runId) return;
 
         const answer =
           window.prompt(
-            `Gördüğünüz Kelime(ler) ne idi? (${i + 1}/${frames.length})`,
+            `Gördüğünüz Kelime(ler) ne idi? (${i + 1}/${words.length})`,
           ) ?? "";
 
-        answersRef.current.push(answer);
+        answersRef.current.push({ answer, index: i });
+        await sleep(500);
       }
 
-      /** ================= RESULTS ================= */
-      const correct = frames.reduce((acc, word, i) => {
-        return answersRef.current[i]?.trim().toLowerCase() ===
-          word.trim().toLowerCase()
-          ? acc + 1
-          : acc;
-      }, 0);
+      if (runIdRef.current !== runId) return;
 
-      if (isLesson) {
-        saveProgress?.();
-      }
-
-      const resultData = {
-        wpf: controls?.wordsPerFrame,
-        durationSec: speedMap[levelRef.current],
-        variant: "FASTVISION",
-        correct: (correct / frames.length) * 100,
-        wpm: calculateReadingSpeed(
-          (controls?.wordsPerFrame || 1) * frames.length,
-          speedMap[levelRef.current],
-        ),
-      };
-      setIsTesting(false);
-      setRunning(false);
-      onFinishTest?.(resultData);
-      setResultMessage(resultData);
+      calculateResult(words, answersRef.current);
     };
 
-    run();
+    void run();
 
     return () => {
-      cancelRef.current = true;
+      // Invalidate this run so it cannot continue after a dependency change.
+      runIdRef.current++;
     };
-  }, [running]);
-
-  useEffect(() => {
-    /** ================= PAUSE ================= */
-    if (pause) {
-      cancelRef.current = true;
-      setRunning(false);
-      setIsTesting(false);
-      onFinishTest?.(null);
-    }
-  }, [pause, onFinishTest]);
+  }, [
+    wordList,
+    levelMapped,
+    wordsPerFrame,
+    pause,
+    autoStart,
+    isLesson,
+    saveProgress,
+    onFinishTest,
+  ]);
 
   /** ================= UI ================= */
   return (
@@ -165,16 +148,14 @@ export default function LevelUp({
     >
       {isTesting && (
         <div
-          className={`font-semibold transition-opacity ${
-            fadeOut ? "opacity-0" : "opacity-100"
-          }`}
+          className="font-semibold"
           style={{
-            transitionDuration: `${frameDurationMs * 0.3}ms`,
-            fontSize: `${controls?.font}px`,
+            fontSize: `${font}px`,
             lineHeight: 1.5,
+            opacity,
           }}
         >
-          {frames[index] ?? ""}
+          {displayWords[index] ?? ""}
         </div>
       )}
 
@@ -182,11 +163,11 @@ export default function LevelUp({
         <div className="flex flex-col items-center justify-center w-full h-full font-semibold">
           <h2 className="text-2xl font-bold mb-4">TEBRİKLER.</h2>
           <p className="font-bold">
-            <span className="text-red-500">{controls?.wordsPerFrame} </span>{" "}
+            <span className="text-red-500">{wordsPerFrame} </span>
             kelimelik metinleri{" "}
-            <span className="text-red-500"> {speedMap[levelRef.current]} </span>{" "}
-            ms de doğru görme, anlama oranınız %{" "}
-            <span className="text-red-500">{resultMessage.correct}</span>{" "}
+            <span className="text-red-500">{levelMapped}</span> ms de doğru
+            görme, anlama oranınız %{" "}
+            <span className="text-red-500">{resultMessage.correct}</span>
           </p>
         </div>
       )}
