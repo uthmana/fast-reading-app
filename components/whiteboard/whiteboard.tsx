@@ -118,6 +118,7 @@ export default function Whiteboard({
           readingStatus={readingStatus}
           controlData={controlData}
           setControlData={setControlData}
+          noInitialDataRequest={true}
         />
       </div>
 
