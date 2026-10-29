@@ -28,6 +28,7 @@ export default function ControlBuilder({
   isTest,
   setIsLoading,
   pathName,
+  noInitialDataRequest,
 }: {
   fields: any[];
   className?: string;
@@ -36,6 +37,7 @@ export default function ControlBuilder({
   isTest?: boolean;
   pathName?: string;
   setIsLoading?: (val: boolean) => void;
+  noInitialDataRequest?: boolean;
 }) {
   if (!fields || fields.length === 0) return null;
 
@@ -158,16 +160,22 @@ export default function ControlBuilder({
   };
 
   const handleAsyncList = React.useCallback(
-    (inputKey: string, data: any[]) => {
-      if (!data || data.length === 0) return;
+    (inputKey: string, data: string[]) => {
+      if (!data?.length) return;
       if (inputKey !== "letterCount" && inputKey !== "wordsPerFrame") return;
 
-      if (setControlData) {
-        setControlData((prev: any) => {
-          if (prev?.wordList === data) return prev;
-          return { ...prev, wordList: data };
-        });
-      }
+      setControlData?.((prev: any) => {
+        const current = prev?.wordList;
+
+        const isSame =
+          Array.isArray(current) &&
+          current.length === data.length &&
+          current.every((word: string, index: number) => word === data[index]);
+
+        if (isSame) return prev;
+
+        return { ...prev, wordList: [...data] };
+      });
     },
     [setControlData],
   );
@@ -182,6 +190,7 @@ export default function ControlBuilder({
               : field.disabled;
           return (
             <TextInput
+              {...field}
               key={field.inputKey + index}
               placeholder={field.description}
               type={field.type}
@@ -197,12 +206,11 @@ export default function ControlBuilder({
               styleClass={field.styleClass}
               description={field?.description}
               colorList={field?.colorList}
-              asyncList={field?.asyncList}
+              asyncList={noInitialDataRequest ? null : field?.asyncList}
               handleAsyncList={handleAsyncList}
               setIsLoading={setIsLoading}
               disabled={disabled}
               wordList={field?.wordList}
-              {...field}
             />
           );
         }

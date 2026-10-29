@@ -146,8 +146,9 @@ async function main() {
             connect: { id: studentId },
           },
           LessonExercise: {
-            create: item.LessonExercise.map((exercise) => ({
+            create: item.LessonExercise.map((exercise: any) => ({
               ...exercise,
+              ...(exercise.config != null ? { config: exercise.config } : {}),
             })),
           },
         },

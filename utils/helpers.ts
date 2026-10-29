@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
-import { lessonControls, speedMap, studyGroupOptions } from "./constants";
+import { speedMap, studyGroupOptions } from "./constants";
 import { fetchData } from "./fetchData";
 
 type UserWhereInput =
@@ -245,8 +245,9 @@ export const getTestControls = async (
     const resData = await fetchData({
       apiPath: `/api/lessonExerciseConfig?where=${query}`,
     });
+
     const configData = resData[0]?.config;
-    if (configData && configData.lenght > 0) {
+    if (configData) {
       const currentControl = configData.find(
         (item: { group: string }) => item.group === studyGroup,
       );
@@ -256,21 +257,10 @@ export const getTestControls = async (
       return {
         ...currentControl,
         level: speedKey,
+        ...(currentControl?.distance ? { distance: currentControl * 12 } : {}),
       };
     }
   }
-
-  const testControls = lessonControls[lessonId]?.find(
-    (lc: { group: string }) => lc.group === studyGroup,
-  );
-  const speedKey = Object.keys(speedMap).find(
-    (key) => speedMap[Number(key)] === testControls?.level,
-  );
-
-  return {
-    ...testControls,
-    level: speedKey,
-  };
 };
 
 export function shuffleArray<T>(array: T[]): T[] {

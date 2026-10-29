@@ -61,10 +61,11 @@ function TextInput(props: InputProps) {
   } = props;
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const debounceDelay = 500; // ms
+  const debounceDelay = 1000; // ms
+  const asyncListInputKeys = ["wordsPerFrame", "letterCount"];
 
   useEffect(() => {
-    if (!asyncList) return;
+    if (!asyncList || !asyncListInputKeys.includes(inputKey)) return;
     const getWordList = async () => {
       try {
         if (setIsLoading) setIsLoading(true);

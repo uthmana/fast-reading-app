@@ -18,6 +18,7 @@ interface ControlPanelProps {
   lessonData?: { id: string; duration: string; order: string };
   showPauseButton?: boolean;
   onPause?: () => void;
+  noInitialDataRequest?: boolean;
 }
 
 export default function ControlPanel({
@@ -30,6 +31,7 @@ export default function ControlPanel({
   lessonData,
   showPauseButton,
   onPause,
+  noInitialDataRequest,
 }: ControlPanelProps) {
   const queryParams = useParams();
   const pathname = queryParams.slug as any;
@@ -84,6 +86,7 @@ export default function ControlPanel({
             fields={isControlItems}
             isTest={lessonData?.id ? true : false}
             setIsLoading={setIsLoading}
+            noInitialDataRequest={noInitialDataRequest}
           />
           {showPauseButton && (
             <Button
