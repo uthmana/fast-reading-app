@@ -3,7 +3,7 @@ name: Deploy to Plesk via FTP
 on:
     push:
         branches:
-            - develop31.01.20266
+            - develop17.01.2026
 
     workflow_dispatch:
 
