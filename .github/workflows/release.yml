@@ -1,0 +1,151 @@
+name: Release (database, then deploy)
+
+# Manual run (workflow_dispatch): push schema -> seed articles -> deploy the app.
+# Each job waits for the one before it, so the new code never goes live before the database is ready.
+# Dry run is on by default: it previews the schema and validates the articles, and does not deploy.
+#
+# Commit to the branch below: deploy only. The database jobs are manual-only, so a commit never
+# changes the production schema. The deploy still waits for approval on the production environment.
+on:
+  push:
+    branches:
+      - develop17.01.2026
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Preview only. Nothing is written and nothing is deployed."
+        type: boolean
+        default: true
+      accept_data_loss:
+        description: "push: allow schema changes that drop data (review the preview first)"
+        type: boolean
+        default: false
+      seed_source:
+        description: "seed-articles: where the articles come from"
+        type: choice
+        options:
+          - mock
+          - json
+          - excel
+          - api
+        default: mock
+      seed_file:
+        description: "seed-articles: file path in the repo for json or excel sources"
+        type: string
+        required: false
+        default: ""
+
+concurrency:
+  group: release-production
+  cancel-in-progress: false
+
+jobs:
+  push-schema:
+    # Database steps are manual only, never on a commit
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    # Required reviewers on this environment are set in GitHub: Settings > Environments > production
+    environment: production
+    env:
+      DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+      SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
+      ACTION: push
+      DRY_RUN: ${{ inputs.dry_run }}
+      ACCEPT_DATA_LOSS: ${{ inputs.accept_data_loss }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Push schema to production
+        run: bash scripts/sync-prod-db.sh
+
+  seed-articles:
+    needs: push-schema
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+      SHADOW_DATABASE_URL: ${{ secrets.SHADOW_DATABASE_URL }}
+      SEED_API_TOKEN: ${{ secrets.SEED_API_TOKEN }}
+      ACTION: seed-articles
+      DRY_RUN: ${{ inputs.dry_run }}
+      SEED_SOURCE: ${{ inputs.seed_source }}
+      SEED_FILE: ${{ inputs.seed_file }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Seed articles
+        run: bash scripts/sync-prod-db.sh
+
+  deploy:
+    # Runs after the database jobs. On a commit they are skipped, so only the failure checks apply.
+    # On a manual run it runs only for a real (non-dry) run.
+    needs: [push-schema, seed-articles]
+    if: ${{ !failure() && !cancelled() && (github.event_name == 'push' || !inputs.dry_run) }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # 🔐 Create .env from GitHub Secrets (BUILD TIME) config
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
+
+      - name: Build Next.js app
+        run: npm run build
+
+      - name: Deploy to Plesk via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          port: 21
+          local-dir: ./
+          server-dir: ${{ secrets.FTP_TARGET }}
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git/**
+            **/.github/**
+            **/node_modules/**
+            **/.next/**
+            **/*.log
