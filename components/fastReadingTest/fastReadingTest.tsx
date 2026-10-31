@@ -41,6 +41,8 @@ type FastReadingTestProps = {
   }) => void;
   introTest?: string | undefined | null;
   className?: string;
+  saveProgress?: () => void;
+  isLesson?: boolean;
 };
 
 const MAXIMUM_READING_SPEED = 2000; // Maximum reading speed in words per minute
@@ -55,6 +57,8 @@ export default function FastReadingTest({
   readingStatus,
   introTest = "",
   className = "",
+  saveProgress,
+  isLesson,
 }: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -112,6 +116,9 @@ export default function FastReadingTest({
       setResult({ countWord, wpm, correct: 0 });
       setIsTesting(true);
       setShowResult(true);
+      if (isLesson) {
+        saveProgress?.();
+      }
       onFinishTest({ wpm, correct: 0, counter, variant });
     } else {
       onFinishTest(null);
@@ -119,16 +126,13 @@ export default function FastReadingTest({
   };
 
   const handleQuizFinished = (value: any) => {
-    const correctAnswers = article?.tests?.reduce(
-      (acc: Record<string, any>, item: any) => {
-        acc[item.id] = item.answer;
-        return acc;
-      },
-      {},
+    const correctAnswers = article?.tests?.map(
+      (item: { answer: string }, index: number) => ({ [index]: item.answer }),
     );
+
     const countWord = countWords(article?.description || "");
     const wpm = calculateReadingSpeed(countWord, counter);
-    const correct = calculateQuizScore(questions, value, correctAnswers);
+    const correct = calculateQuizScore(value, correctAnswers);
 
     if (introTest) {
       onFinishTest({ wpm, correct, counter, variant });
@@ -140,6 +144,10 @@ export default function FastReadingTest({
       setResult({ countWord, wpm, correct });
       setShowResult(true);
       setIsTesting(true);
+      if (isLesson) {
+        saveProgress?.();
+      }
+
       onFinishTest({
         wpm,
         correct,

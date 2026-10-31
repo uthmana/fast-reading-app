@@ -1,15 +1,10 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
+import { useAutoScrollIntoView } from "@/utils/hooks";
 import React, { useEffect, useRef, useState } from "react";
 
-export default function ReadingBlockByErasing({
-  article,
-  onFinishTest,
-  controls,
-  className = "",
-  pause = false,
-}: {
+type ReadingBlockByErasingType = {
   article: { id: string; title: string; description: string; tests: any };
   onFinishTest: (
     v: {
@@ -28,14 +23,29 @@ export default function ReadingBlockByErasing({
   };
   className?: string;
   pause?: boolean;
-}) {
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+};
+export default function ReadingBlockByErasing({
+  article,
+  onFinishTest,
+  controls,
+  className = "",
+  pause = false,
+  scrollContainerRef,
+}: ReadingBlockByErasingType) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
   const finishedRef = useRef(false);
-
+  const activeItemRef = useRef<HTMLDivElement>(null);
   const { font, level, wordsPerFrame } = controls;
+
+  useAutoScrollIntoView({
+    elementRef: activeItemRef,
+    containerRef: scrollContainerRef,
+    dependencies: [activeWordIndex],
+  });
 
   const words = article?.description
     ? article.description.trim().split(/\s+/)
@@ -134,6 +144,7 @@ export default function ReadingBlockByErasing({
 
             {/* Highlighted section (no gaps) */}
             <span
+              ref={activeItemRef}
               className="text-white rounded-sm"
               style={{
                 backgroundColor: "#1e40af",

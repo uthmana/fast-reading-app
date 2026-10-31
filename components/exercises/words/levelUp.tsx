@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { calculateReadingSpeed } from "@/utils/helpers";
-import { speedMap } from "@/utils/constants";
+import { frameTransitionDuration, speedMap } from "@/utils/constants";
+import { useAudioSound } from "@/utils/hooks";
 
 type TachistoProps = {
   autoStart?: boolean;
@@ -40,6 +41,7 @@ export default function LevelUp({
 
   const { level, wordList, font, wordsPerFrame } = controls;
   const levelMapped = speedMap[level];
+  const { playSound } = useAudioSound("/audios/LevelUp.mpeg");
 
   const sleep = (ms: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -75,6 +77,9 @@ export default function LevelUp({
     setIsTesting(false);
     onFinishTest?.(resultData);
     setResultMessage(resultData);
+    if (isLesson) {
+      playSound();
+    }
   };
 
   /** ================= TEST SETUP ================= */
@@ -101,13 +106,12 @@ export default function LevelUp({
 
         setIndex(i);
         setOpacity(1);
-
         await sleep(levelMapped);
+
         if (runIdRef.current !== runId) return;
 
         setOpacity(0);
-
-        await sleep(500);
+        await sleep(frameTransitionDuration);
         if (runIdRef.current !== runId) return;
 
         const answer =
@@ -116,7 +120,7 @@ export default function LevelUp({
           ) ?? "";
 
         answersRef.current.push({ answer, index: i });
-        await sleep(500);
+        await sleep(frameTransitionDuration);
       }
 
       if (runIdRef.current !== runId) return;

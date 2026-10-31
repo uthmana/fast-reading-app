@@ -40,7 +40,7 @@ export default function page() {
     selectedArticle: null,
     font: "16",
     level: 1,
-    wordsPerFrame: 2,
+    wordsPerFrame: 1,
     objectIcon: 1,
   });
 
@@ -123,6 +123,7 @@ export default function page() {
   return (
     <Whiteboard
       pause={pause}
+      pathname={location.href}
       onPause={() => setPause(!pause)}
       lessonData={lessonData}
       controlData={controlData}

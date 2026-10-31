@@ -23,8 +23,11 @@ export default function EyeMuscle({
   onFinishTest,
   pause = false,
 }: EyeMuscleProps) {
-  const [visible, setVisible] = useState(true);
-  const [position, setPosition] = useState({ x: "5%", y: 0 });
+  const [visible, setVisible] = useState(false);
+  const [position, setPosition] = useState<{
+    x: string | number;
+    y: string | number;
+  }>({ x: 0, y: 0 });
   const [stepIndex, setStepIndex] = useState(0);
 
   const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
@@ -39,18 +42,20 @@ export default function EyeMuscle({
     interval = setInterval(() => {
       const container = document.getElementById("rhythmic-container");
       const parentHeight = (container?.clientHeight || 600) - objectSize;
+      const parentWidth = (container?.clientWidth || 600) - 38;
 
-      const leftSide = "5%";
-      const rightSide = "95%";
-      const centerSide = "50%";
-      const topEdge = 0;
+      const leftSide = 38;
+      const rightSide = parentWidth;
+      const centerSide = parentWidth / 2 + 38;
+      const topEdge = -8;
       const bottomEdge = parentHeight;
 
       setVisible(false);
+      stopSound();
 
       setStepIndex((prev) => {
         const step = prev;
-        let nextX = leftSide;
+        let nextX: string | number = leftSide;
         let nextY = topEdge;
         let totalSteps = 1;
 
@@ -66,7 +71,6 @@ export default function EyeMuscle({
             ({ x: nextX, y: nextY } = coords[step % totalSteps]);
             break;
           }
-
           case 2: {
             totalSteps = 8;
             const coords = [
@@ -96,7 +100,6 @@ export default function EyeMuscle({
 
             break;
           }
-
           case 4: {
             totalSteps = 34; // 16 columns × 2 steps
 
@@ -108,7 +111,6 @@ export default function EyeMuscle({
             nextX = `${5 + col * (90 / (columns - 1))}%`;
             break;
           }
-
           case 5: {
             totalSteps = 4;
             const coords = [
@@ -120,7 +122,6 @@ export default function EyeMuscle({
             ({ x: nextX, y: nextY } = coords[step % totalSteps]);
             break;
           }
-
           case 6: {
             totalSteps = 6;
             const coords = [
@@ -134,7 +135,6 @@ export default function EyeMuscle({
             ({ x: nextX, y: nextY } = coords[step % totalSteps]);
             break;
           }
-
           default:
             nextX = Math.random() > 0.5 ? leftSide : rightSide;
             nextY = Math.random() * bottomEdge;
@@ -142,12 +142,12 @@ export default function EyeMuscle({
 
         // atomic update
         setPosition({ x: nextX, y: nextY });
-        stopSound();
-        playSound();
+
         setVisible(true);
 
         return step + 1;
       });
+      playSound();
     }, duration);
 
     return () => clearInterval(interval);

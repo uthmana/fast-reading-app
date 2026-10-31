@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { speedMap } from "@/utils/constants";
+import { frameTransitionDuration, speedMap } from "@/utils/constants";
 
 type TachistoProps = {
   autoStart?: boolean;
@@ -91,7 +91,7 @@ export default function Tachistoscope({
         });
         setOpacity(1);
         setTransitioning(false);
-      }, speedMap[level] ?? 500);
+      }, frameTransitionDuration ?? 500);
     }, frameDurationMs);
 
     return () => {

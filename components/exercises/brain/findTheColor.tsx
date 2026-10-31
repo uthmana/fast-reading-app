@@ -1,8 +1,8 @@
 import Button from "@/components/button/button";
-import { COLORS } from "@/utils/constants";
-import { playSound } from "@/utils/playsound";
-import React, { useEffect, useState, useCallback } from "react";
+import { COLORS, speedMap } from "@/utils/constants";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
+import { useFeedbackSound } from "./hooks";
 
 export default function FindTheColor({
   onFinishTest,
@@ -24,9 +24,9 @@ export default function FindTheColor({
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [currentWord, setCurrentWord] = useState<any>(null);
   const [displayColor, setDisplayColor] = useState<string>("black");
-  const [answeredThisRound, setAnsweredThisRound] = useState(false);
-  // Calculate display duration: higher level = faster
-  const displayDuration = 2000 / (controls.level || 1);
+  const answeredRef = useRef(false);
+  const displayDuration = speedMap[controls.level || 1] ?? 1500;
+  const playFeedback = useFeedbackSound();
 
   // Select next random color word
   const generateNewWord = useCallback(() => {
@@ -40,55 +40,36 @@ export default function FindTheColor({
     //playSound("beep", 700);
     setDisplayColor(useRealColor ? random.color : randomWrong);
   }, [colors]);
-
-  const mapSound = (answerbutton: number, correctvalue: number) => {
-    if (
-      (answerbutton === 1 && correctvalue === 1) ||
-      (answerbutton === 0 && correctvalue === 0)
-    ) {
-      playSound("true");
-    } else {
-      playSound("false");
-    }
-  };
-
   const handleAnswer = useCallback(
     (answer: number) => {
+      if (answeredRef.current) return;
+      answeredRef.current = true;
       setSelectedAnswer(answer);
-      setAnsweredThisRound(true);
+
       const isCorrect = displayColor === currentWord?.color;
       const correctAnswerValue = isCorrect ? 1 : 0;
-      const { right, wrong } = controls.resultDisplay;
-      mapSound(answer, correctAnswerValue);
+      playFeedback(answer === correctAnswerValue);
 
-      if (answer === correctAnswerValue) {
-        setControlData({
-          ...controls,
-          resultDisplay: {
-            right: right + 1,
-            wrong,
-            net: right - wrong,
-          },
-        });
-      } else {
-        setControlData({
-          ...controls,
-          resultDisplay: {
-            right,
-            wrong: wrong + 1,
-            net: right - wrong,
-          },
-        });
-      }
-
-      // load next word after brief animation
-      setTimeout(() => {
-        setSelectedAnswer(null);
-      }, 300);
-
-      generateNewWord();
+      setControlData((prev: any) => ({
+        // ← functional update: never stale
+        ...prev,
+        resultDisplay: {
+          right:
+            answer === correctAnswerValue
+              ? prev.resultDisplay.right + 1
+              : prev.resultDisplay.right,
+          wrong:
+            answer === correctAnswerValue
+              ? prev.resultDisplay.wrong
+              : prev.resultDisplay.wrong + 1,
+          net:
+            answer === correctAnswerValue
+              ? prev.resultDisplay.right + 1 - prev.resultDisplay.wrong
+              : prev.resultDisplay.right - (prev.resultDisplay.wrong + 1),
+        },
+      }));
     },
-    [controls.resultDisplay, currentWord, displayColor, generateNewWord],
+    [currentWord, displayColor, playFeedback], // controls.resultDisplay no longer needed
   );
 
   // auto-show next color based on speed
@@ -98,8 +79,7 @@ export default function FindTheColor({
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (!answeredThisRound) {
-        // AUTO WRONG ANSWER
+      if (!answeredRef.current) {
         setControlData((prev: any) => ({
           ...prev,
           resultDisplay: {
@@ -109,13 +89,13 @@ export default function FindTheColor({
           },
         }));
       }
-
-      setAnsweredThisRound(false);
+      answeredRef.current = false;
+      setSelectedAnswer(null);
       generateNewWord();
     }, displayDuration);
 
     return () => clearInterval(timer);
-  }, [displayDuration, answeredThisRound, generateNewWord]);
+  }, [displayDuration, generateNewWord]); // no answeredThisRound dep → timer ne
 
   // keyboard control
   useEffect(() => {
@@ -136,7 +116,7 @@ export default function FindTheColor({
 
   return (
     <div className="w-full h-full group">
-      <div className="w-full h-[calc(100%-60px)] flex items-center justify-center">
+      <div className="w-full h-[calc(100%-50px)] flex items-center justify-center">
         {currentWord && (
           <span
             style={{
@@ -150,20 +130,20 @@ export default function FindTheColor({
         )}
       </div>
 
-      <div className="flex gap-2 mx-auto max-w-[60%]">
+      <div className="flex gap-4 sm:gap-12 mx-auto justify-center">
         <Button
-          icon={<MdKeyboardArrowLeft className="w-7 h-7 text-white" />}
+          icon={<MdKeyboardArrowLeft className="w-8 h-8 text-white" />}
           text="Doğru"
-          className={`my-4 ml-auto max-w-[200px] outline-none transition-transform bg-green-600 hover:bg-green-700 shadow-lg 
+          className={`w-[140px] sm:w-[200px] flex items-start justify-center outline-none transition-transform bg-green-600 hover:bg-green-700 shadow-lg 
             ${selectedAnswer === 1 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(1)}
         />
 
         <Button
-          icon={<MdKeyboardArrowRight className="w-7 h-7 text-white" />}
+          icon={<MdKeyboardArrowRight className="w-8 h-8 text-white" />}
           text="Yanlış"
           iconPosition="right"
-          className={`my-4 ml-auto outline-none max-w-[200px] transition-transform bg-red-600 hover:bg-red-700 shadow-lg
+          className={`flex items-center justify-center outline-none w-[140px] sm:w-[200px] transition-transform bg-red-600 hover:bg-red-700 shadow-lg
             ${selectedAnswer === 0 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(0)}
         />

@@ -1,17 +1,16 @@
 "use client";
 
-import BarChart from "@/components/Charts/barChart";
 import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
-import { countWords, formatDateTime } from "@/utils/helpers";
+import { countWords } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NotFound from "../../not-found";
 import { getArticleByStudyGroup } from "@/components/formBuilder/request";
-import { companyInfo, ExerciseDescription } from "@/utils/constants";
+import { ExerciseDescription } from "@/utils/constants";
 import { useDecodeQuery } from "@/utils/hooks";
 
 export default function page() {
@@ -32,15 +31,6 @@ export default function page() {
     totalWords: 0,
     wpm: 0,
   });
-  const [understandingData, setUnderstandingData] = useState(
-    {} as { data: []; categories: [] },
-  );
-  const [fastReadingData, setFastReadingData] = useState(
-    {} as { data: []; categories: [] },
-  );
-  const [formattedAttempts, setFormattedAttempts] = useState(
-    [] as Record<string, any>,
-  );
 
   const [controlData, setControlData] = useState({
     categorySelect: "",
@@ -98,47 +88,6 @@ export default function page() {
           setControlData({ ...controlData, selectedData: testArticle });
           setQuestions(testArticle?.tests);
           return;
-        }
-
-        if (
-          pathname === "hizli-okuma-testi-gelisim" ||
-          pathname === "anlama-testi-gelisim"
-        ) {
-          const resData = await fetchData({
-            apiPath: `/api/users?username=${encodeURIComponent(
-              session.user.username,
-            )}`,
-          });
-
-          const attempts = resData?.Student?.attempts || [];
-          if (!attempts.length) {
-            setFastReadingData({ data: [], categories: [] });
-            setUnderstandingData({ data: [], categories: [] });
-            return;
-          }
-
-          const formatted = attempts.map(
-            ({ wpm, createdAt, correct, variant, totalQuiz }: any) => ({
-              wpm,
-              correct,
-              variant,
-              totalQuiz,
-              category: formatDateTime(createdAt),
-            }),
-          );
-          setFormattedAttempts(formatted);
-          const buildData = (key: "wpm" | "correct", variant: string) => {
-            const filtered = formatted.filter(
-              (i: any) => i.variant === variant,
-            );
-            return {
-              data: filtered.map((i: any) => i[key]),
-              categories: filtered.map((i: any) => i.category),
-            };
-          };
-
-          setFastReadingData(buildData("wpm", "FASTREADING"));
-          setUnderstandingData(buildData("correct", "UNDERSTANDING"));
         }
       } catch (error) {
         console.error(error);
@@ -266,6 +215,7 @@ export default function page() {
         readingStatus={readingStatus}
         lessonData={lessonData}
         saveProgress={saveProgress}
+        pathname={location.href}
         description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
       >
         <FastReadingTest
@@ -282,68 +232,12 @@ export default function page() {
               : "font-verdana"
           }
           introTest={introTest}
+          saveProgress={saveProgress}
+          isLesson={!!lessonParams}
         />
       </Whiteboard>
     );
   }
-
-  if (pathname === "hizli-okuma-testi-gelisim") {
-    return (
-      <div className="flex w-full mb-5 flex-col px-6 gap-4">
-        <div className="w-full bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
-          <h2 className="mb-4 font-oswald font-normal text-lg">
-            Okuma Hızı Gelişimi
-          </h2>
-          <BarChart
-            chartData={[
-              {
-                name: "Okuma Hızı",
-                data: fastReadingData.data || [],
-              },
-            ]}
-            chartOptions={{
-              chart: {
-                id: "basic-bar",
-              },
-              colors: [companyInfo.chartColor],
-              xaxis: {
-                categories: fastReadingData.categories || [],
-              },
-            }}
-          />
-        </div>
-
-        <div className="flex-1 max-h-[400px] bg-white overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
-          <h2 className="mb-4 font-oswald font-normal text-lg">
-            Okuma Hızı Gelişimi
-          </h2>
-          <div className="w-full mb-5">
-            <div className="grid grid-cols-2 py-1  group text-black font-semibold border-b">
-              <div className="">Tarih</div>
-              <div className="">Hız(ms)</div>
-            </div>
-
-            {formattedAttempts
-              ?.filter((item: any) => item.variant === "FASTREADING")
-              .map((attempt: any, index: number) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-2 text-sm group border-b"
-                >
-                  <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.category}
-                  </div>
-                  <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.wpm}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (pathname === "anlama-testi") {
     return (
       <Whiteboard
@@ -354,6 +248,7 @@ export default function page() {
         readingStatus={readingStatus}
         lessonData={lessonData}
         saveProgress={saveProgress}
+        pathname={location.href}
         description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
       >
         <FastReadingTest
@@ -370,82 +265,10 @@ export default function page() {
               ? "!font-tttkbDikTemelAbece font-extrabold "
               : "font-verdana"
           }
+          saveProgress={saveProgress}
+          isLesson={!!lessonParams}
         />
       </Whiteboard>
-    );
-  }
-
-  if (pathname === "anlama-testi-gelisim") {
-    return (
-      <div className="flex w-full flex-col mb-5 px-6 gap-4">
-        <div className="flex-1 bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
-          <h2 className="mb-4 font-oswald font-normal text-lg">
-            Anlama Gelişimi
-          </h2>
-          <BarChart
-            chartData={[
-              {
-                name: "Anlama",
-                data: understandingData.data || [],
-              },
-            ]}
-            chartOptions={{
-              chart: {
-                id: "basic-bar",
-              },
-              colors: [companyInfo.chartColor],
-              xaxis: {
-                categories: understandingData.categories || [],
-              },
-              dataLabels: {
-                enabled: true,
-                formatter: (val: number) => `%${val}`,
-                style: {
-                  fontSize: "12px",
-                },
-              },
-            }}
-          />
-        </div>
-
-        <div className="flex-1 bg-white max-h-[400px] overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
-          <h2 className="mb-4 font-oswald font-normal text-lg">
-            Anlama Gelişimi
-          </h2>
-          <div className="w-full mb-5">
-            <div className="grid grid-cols-4 py-1 group text-black font-semibold border-b">
-              <div className="">Tarih</div>
-              <div className="">Doğru Cevap</div>
-              <div className="">Yanlış Cevap</div>
-              <div className="">Anlama Yüzdesi</div>
-            </div>
-
-            {formattedAttempts
-              ?.filter((item: any) => item.variant === "UNDERSTANDING")
-              .map((attempt: any, index: number) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-4 text-sm group border-b"
-                >
-                  <div className="group-hover:bg-gray-200 p-1">
-                    {attempt.category}
-                  </div>
-                  <div className="group-hover:bg-gray-200 p-1">
-                    {Math.round(attempt.totalQuiz * (attempt.correct / 100))}
-                  </div>
-                  <div className="group-hover:bg-gray-200 p-1">
-                    {Math.round(
-                      attempt.totalQuiz * (1 - attempt.correct / 100),
-                    )}
-                  </div>
-                  <div className="group-hover:bg-gray-200 p-1">
-                    %{attempt.correct}
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      </div>
     );
   }
 

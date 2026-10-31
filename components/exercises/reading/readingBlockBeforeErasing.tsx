@@ -1,15 +1,10 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
+import { useAutoScrollIntoView } from "@/utils/hooks";
 import React, { useEffect, useRef, useState } from "react";
 
-export default function ReadingBlockBeforeErasing({
-  article,
-  onFinishTest,
-  controls,
-  className = "",
-  pause = false,
-}: {
+type ReadingBlockBeforeErasingType = {
   article: { id: string; title: string; description: string; tests: any };
   onFinishTest: (
     v: {
@@ -29,13 +24,30 @@ export default function ReadingBlockBeforeErasing({
   };
   className?: string;
   pause?: boolean;
-}) {
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+};
+
+export default function ReadingBlockBeforeErasing({
+  article,
+  onFinishTest,
+  controls,
+  className = "",
+  pause = false,
+  scrollContainerRef,
+}: ReadingBlockBeforeErasingType) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
   const { font, level, wordsPerFrame } = controls;
   const finishedRef = useRef(false);
+  const activeItemRef = useRef<HTMLDivElement>(null);
+
+  useAutoScrollIntoView({
+    elementRef: activeItemRef,
+    containerRef: scrollContainerRef,
+    dependencies: [activeWordIndex],
+  });
 
   const words = article?.description
     ? article.description.trim().split(/\s+/)
@@ -70,10 +82,6 @@ export default function ReadingBlockBeforeErasing({
   }, [finishedRef.current]);
 
   useEffect(() => {
-    if (!words.length) {
-      onFinishTest?.(null);
-      return;
-    }
     setActiveWordIndex(0);
     setRunning(true);
     currentLevelRef.current = level;
@@ -134,6 +142,7 @@ export default function ReadingBlockBeforeErasing({
 
             {/* Highlighted section (no gaps) */}
             <span
+              ref={activeItemRef}
               className="text-white rounded-sm"
               style={{
                 backgroundColor: "#1e40af",

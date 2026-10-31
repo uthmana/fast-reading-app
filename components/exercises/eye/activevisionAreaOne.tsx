@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion } from "framer-motion";
-import { speedMap } from "@/utils/constants";
+import { frameTransitionDuration, speedMap } from "@/utils/constants";
 
 type VisualFieldTrainerProps = {
   controls?: {
     frame?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     grid?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
-    level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10; // slider input
+    level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   };
   pathname: string;
   onFinishTest?: (v: any) => void;
@@ -20,54 +19,49 @@ export default function VisualFieldTrainer({
   onFinishTest,
   pause = false,
 }: VisualFieldTrainerProps) {
-  // Range-controlled values
-  const frame = controls?.frame ?? 1; // default frame 2
-  const grid = controls?.grid ?? 1; // default grid 2
+  const frame = controls?.frame ?? 1;
+  const grid = controls?.grid ?? 1;
   const speedMs = speedMap[controls?.level || 1];
-
   const [numbers, setNumbers] = useState<number[][]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Generate NxN random grid
-  const generateGrid = (n: number) => {
-    const arr: number[][] = [];
-    for (let i = 0; i < n; i++) {
-      const row: number[] = [];
-      for (let j = 0; j < n; j++) {
-        row.push(Math.floor(Math.random() * 99) + 1);
-      }
-      arr.push(row);
-    }
-    return arr;
+  // Generate random NxN grid
+  const generateGrid = (n: number): number[][] => {
+    return Array.from({ length: n }, () =>
+      Array.from({ length: n }, () => Math.floor(Math.random() * 99) + 1),
+    );
   };
 
-  // Start number refresh cycle
-  const startCycling = () => {
-    setNumbers(generateGrid(grid));
+  useEffect(() => {
+    // Always clear any existing interval
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
 
+    // Don't start cycling when paused
+    if (pause) return;
+
+    // Generate the initial grid
+    setNumbers(generateGrid(grid));
+    // Start cycling
     timerRef.current = setInterval(() => {
       setNumbers(generateGrid(grid));
     }, speedMs);
-  };
 
-  // Stop cycle
-  const stopCycling = () => {
-    if (timerRef.current) clearInterval(timerRef.current);
-  };
-
-  // Restart when grid or speed changes
-  useEffect(() => {
-    stopCycling();
-    startCycling();
-    return () => stopCycling();
-  }, [grid, speedMs]);
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [grid, speedMs, pause]);
 
   useEffect(() => {
     if (pause) {
-      stopCycling();
       onFinishTest?.(null);
     }
-  }, [pause, onFinishTest, stopCycling]);
+  }, [pause, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
@@ -84,29 +78,30 @@ export default function VisualFieldTrainer({
           className="grid text-center select-none"
           style={{
             gridTemplateColumns: `repeat(${grid}, 1fr)`,
+            gridTemplateRows: `repeat(${grid}, 1fr)`,
             width: "100%",
             height: "100%",
             fontSize: 24,
             fontWeight: 500,
+            fontVariantNumeric: "tabular-nums",
           }}
         >
           {numbers.map((row, r) =>
             row.map((num, c) => (
-              <motion.div
-                key={`${r}-${c}-${num}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
+              <div
+                key={`${r}-${c}`}
                 className="flex items-center justify-center"
               >
                 {num}
-              </motion.div>
+              </div>
             )),
           )}
         </div>
 
         {/* Center Dot */}
-        <div className="absolute w-2 h-2 bg-black/10 rounded-full"></div>
+        {grid % 2 ? null : (
+          <div className="absolute w-2 h-2 bg-black/70 rounded-full pointer-events-none" />
+        )}
       </div>
     </div>
   );

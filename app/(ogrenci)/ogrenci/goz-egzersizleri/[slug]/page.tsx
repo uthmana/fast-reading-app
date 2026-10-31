@@ -119,6 +119,7 @@ export default function page() {
       lessonData={lessonData}
       saveProgress={saveProgress}
       description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      exerciseWrapperClassName="!p-0"
     >
       <RenderExercise
         pause={pause}
