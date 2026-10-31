@@ -1,0 +1,5 @@
+npm run db:seed:articles                                  # mock articles
+npm run db:seed:articles -- --source json --file .\data\articles.json
+npm run db:seed:articles -- --source excel --file .\data\articles.xlsx --sheet Sheet1
+npm run db:seed:articles -- --source api --url https://example.com/articles   # uses SEED_API_TOKEN if set
+npm run db:seed:articles -- --source excel --file .\data\articles.xlsx --dry-run   # validate only
