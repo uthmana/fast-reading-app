@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model User {
@@ -118,7 +119,7 @@ model Article {
   hasQuestion  Boolean             @default(false)
   active       Boolean             @default(true)
   tests        Json?
-  categoryId   Int
+  categoryId   Int                 @default(1)
   createdAt    DateTime            @default(now())
   updatedAt    DateTime?           @updatedAt
 }
@@ -129,7 +130,7 @@ model ArticleStudyGroup {
   articleId Int
   article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
-  studyGroup StudyGroup
+  studyGroup StudyGroup @map("group")
 
   @@unique([articleId, studyGroup])
 }

@@ -5,15 +5,29 @@ import {
   lessonData,
   studyGroupOptions,
 } from "./mockData";
-import { StudyGroup } from "@prisma/client";
+import { seedArticles } from "./seed/articles";
+import { mockArticlesSource } from "./seed/sources";
 import { mockArticles } from "./mockArticles";
 
 async function main() {
+  // Articles are upserted on every run, so they are seeded before the early exit below
+  await seedArticles(prisma, mockArticlesSource);
+
+  // Skip if this database has already been seeded (safe to re-run on deploy)
+  const alreadySeeded = await prisma.user.findFirst({
+    where: {
+      OR: [{ username: "happybrainsyonetim" }, { tcId: "99999999999" }],
+    },
+  });
+
+  if (alreadySeeded) {
+    console.log("Seed data already exists, skipping.");
+    return;
+  }
+
   // Default admin user
-  const user = await prisma.user.upsert({
-    where: { username: "happybrainsyonetim" },
-    update: {},
-    create: {
+  const user = await prisma.user.create({
+    data: {
       email: "yonetim@happybrains.com",
       password: "1234",
       role: "ADMIN",

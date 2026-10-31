@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:seed": "prisma db seed",
+    "db:seed:articles": "tsx prisma/seed/articles-cli.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
