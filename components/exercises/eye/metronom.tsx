@@ -27,7 +27,7 @@ export default function Metronom({
   const speedMs = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
   const [visible, setVisible] = useState(false);
-  const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
+  const { playSound, stopSound } = useAudioSound("/audios/metronom.mp3");
 
   useEffect(() => {
     const timer = setInterval(() => {
