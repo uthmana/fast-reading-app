@@ -29,14 +29,18 @@ export default function Menu({ onActiveMenu, pathname }: MenuProps) {
   return (
     <header className="w-full sticky top-0 z-10 container lg:bg-none lg:bg-black/0 lg:border-b-0 text-white border-b bg-brand-primary-200">
       <div className="w-full mx-auto flex items-center justify-between lg:px-0 lg:py-4 px-4 py-3">
-        <div className="w-full flex items-center justify-between gap-8">
+        <div className="w-full flex items-center justify-between gap-4 sm:gap-8">
           <h1 className="capitalize text-white text-base">
             <Link
               href="/ogrenci"
-              className="flex min-w-[200px] gap-3 items-center"
+              className="flex gap-3 items-center"
               onClick={() => setMenuOpen(false)}
             >
-              <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
+              <Icon
+                name="logo"
+                logoText={companyInfo.logo}
+                className="h-7 sm:h-10"
+              />
             </Link>
           </h1>
 

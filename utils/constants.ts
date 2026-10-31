@@ -5878,6 +5878,7 @@ export const lessonData = [
     ],
   },
 ];
+export const frameTransitionDuration = 1000;
 
 type ExerciseDescription = {
   description: string;

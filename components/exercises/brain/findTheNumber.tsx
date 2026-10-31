@@ -1,9 +1,12 @@
+"use client";
+
 import Button from "@/components/button/button";
 import Countdown from "@/components/countDown/countDown";
 import TextInput from "@/components/formInputs/textInput";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { MdThumbUp } from "react-icons/md";
-import { playSound } from "@/utils/playsound";
+import { speedMap } from "@/utils/constants";
+import { useFeedbackSound } from "./hooks";
 
 const TURKISH_LETTERS = [
   "A",
@@ -37,22 +40,21 @@ const TURKISH_LETTERS = [
   "Z",
 ];
 
+const letterCountMap: Record<number, [number, number]> = {
+  1: [4, 6],
+  2: [6, 9],
+  3: [9, 13],
+  4: [13, 18],
+  5: [18, 24],
+  6: [24, 30],
+};
+
 export default function FindTheNumber({
   onFinishTest,
   setControlData,
   controls,
   pause = false,
-}: {
-  onFinishTest: (v: any) => void;
-  pathname: string;
-  controls: {
-    level: number;
-    difficultyLevel: number;
-    resultDisplay: { right: number; wrong: number; net: number };
-  };
-  setControlData: any;
-  pause?: boolean;
-}) {
+}: any) {
   const [letters, setLetters] = useState<
     { letter: string; top: number; left: number }[]
   >([]);
@@ -60,154 +62,116 @@ export default function FindTheNumber({
   const [userAnswer, setUserAnswer] = useState("");
   const [start, setStart] = useState(false);
   const [countValue, setCountValue] = useState(15);
+  const answeredRef = useRef(false);
+  const playFeedback = useFeedbackSound();
 
-  // --- SPEED MAP ---
-  const speedMap: Record<number, number> = {
-    10: 3,
-    9: 6,
-    8: 9,
-    7: 12,
-    6: 15,
-    5: 18,
-    4: 21,
-    3: 24,
-    2: 27,
-    1: 15,
-  };
+  // Always keep ref in sync — no useEffect needed, runs synchronously on every render
+  const controlsRef = useRef(controls);
+  controlsRef.current = controls;
 
-  // --- FIXED DIFFICULTY LETTER COUNT MAP (YOUR RULES) ---
-  const letterCountMap: Record<number, [number, number]> = {
-    1: [5, 7],
-    2: [7, 10],
-    3: [10, 14],
-  };
-
-  // --- GENERATE LETTERS ---
+  // Stable callback — no deps, reads fresh controls via ref
   const generateLetters = useCallback(() => {
-    const difficulty = controls.difficultyLevel || 1;
-    const [minLetters, maxLetters] = letterCountMap[difficulty] || [14, 20];
-
+    answeredRef.current = false;
+    const { level, difficultyLevel } = controlsRef.current;
+    const difficulty = difficultyLevel || 1;
+    const [minLetters, maxLetters] = letterCountMap[difficulty] || [10, 14];
     const totalLetters =
       Math.floor(Math.random() * (maxLetters - minLetters + 1)) + minLetters;
 
-    // pick 2 different letters
     const first =
       TURKISH_LETTERS[Math.floor(Math.random() * TURKISH_LETTERS.length)];
-
     let second =
       TURKISH_LETTERS[Math.floor(Math.random() * TURKISH_LETTERS.length)];
-    while (second === first)
+    while (second === first) {
       second =
         TURKISH_LETTERS[Math.floor(Math.random() * TURKISH_LETTERS.length)];
+    }
 
-    // randomly split totals into two letter groups
     const firstCount = Math.floor(Math.random() * (totalLetters - 1)) + 1;
     const secondCount = totalLetters - firstCount;
 
     const newLetters = [
       ...Array(firstCount)
-        .fill(first)
-        .map((l) => ({
-          letter: l,
+        .fill(null)
+        .map(() => ({
+          letter: first,
           top: Math.random() * 80,
           left: Math.random() * 90,
         })),
       ...Array(secondCount)
-        .fill(second)
-        .map((l) => ({
-          letter: l,
+        .fill(null)
+        .map(() => ({
+          letter: second,
           top: Math.random() * 80,
           left: Math.random() * 90,
         })),
-    ];
+    ].sort(() => Math.random() - 0.5);
 
     setLetters(newLetters);
-
-    // choose which letter user should count
-    setTargetLetter(Math.random() > 0.5 ? first : second);
+    setTargetLetter(firstCount >= secondCount ? first : second);
     setUserAnswer("");
 
-    // restart countdown
-    setCountValue(speedMap[controls.level || 1] || 15);
+    const durationMs = speedMap[level || 1] || 1500;
+    setCountValue(Math.max(1, Math.ceil(durationMs / 100)));
     setStart(false);
     setTimeout(() => setStart(true), 50);
-  }, [controls.difficultyLevel, controls.level]);
+  }, []); // stable — no deps needed
 
-  // PAUSE
+  // Fires on mount AND whenever level/difficulty changes
+  useEffect(() => {
+    generateLetters();
+  }, [controls.level, controls.difficultyLevel, generateLetters]);
 
+  // Pause
   useEffect(() => {
     if (pause) {
       onFinishTest?.(null);
     }
   }, [pause, onFinishTest]);
 
-  // USER INPUT
   const handleChange = (val: { targetValue: any }) => {
     setUserAnswer(val.targetValue);
   };
 
-  // TIMER FINISHED
   const handleCountDownFinish = () => {
-    const { right, wrong } = controls.resultDisplay;
-
-    // no answer → wrong
-    if (userAnswer === "") {
+    const { right, wrong } = controlsRef.current.resultDisplay;
+    if (!answeredRef.current) {
+      // no answer submitted — count as wrong
       setControlData({
-        ...controls,
-        resultDisplay: {
-          right,
-          wrong: wrong + 1,
-          net: right - (wrong + 1),
-        },
+        ...controlsRef.current,
+        resultDisplay: { right, wrong: wrong + 1, net: right - (wrong + 1) },
       });
     }
-
-    generateLetters(); // next round
+    answeredRef.current = false; // reset for next round
+    generateLetters();
   };
 
-  // SUBMIT
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!userAnswer) return;
+    if (!userAnswer || answeredRef.current) return; // prevent double submit
+
+    answeredRef.current = true;
     const correctCount = letters.filter(
       (l) => l.letter === targetLetter,
     ).length;
-
+    const isCorrect = parseInt(userAnswer) === correctCount;
     const { right, wrong } = controls.resultDisplay;
 
-    if (parseInt(userAnswer) === correctCount) {
-      playSound("true");
-      setControlData({
-        ...controls,
-        resultDisplay: {
-          right: right + 1,
-          wrong,
-          net: right + 1 - wrong,
-        },
-      });
-    } else {
-      playSound("false");
-      setControlData({
-        ...controls,
-        resultDisplay: {
-          right,
-          wrong: wrong + 1,
-          net: right - (wrong + 1),
-        },
-      });
-    }
+    playFeedback(isCorrect);
 
+    setControlData({
+      ...controls,
+      resultDisplay: {
+        right: isCorrect ? right + 1 : right,
+        wrong: isCorrect ? wrong : wrong + 1,
+        net: isCorrect ? right + 1 - wrong : right - (wrong + 1),
+      },
+    });
     generateLetters();
   };
-
-  // INITIAL GENERATION
-  useEffect(() => {
-    generateLetters();
-  }, [generateLetters]);
-
   return (
-    <div className="w-full h-full relative group">
-      <div className="w-full h-[calc(100%-50px)] relative">
+    <div className="w-full h-full relative group flex flex-col overflow-hidden">
+      <div className="flex-1 min-h-0 relative overflow-hidden">
         {letters.map((l, i) => (
           <span
             key={i}
@@ -219,37 +183,40 @@ export default function FindTheNumber({
         ))}
       </div>
 
-      <div className="flex relative gap-1 justify-center w-full mt-4">
-        <div className="absolute -top-7">
-          <b className="text-xl">{targetLetter}</b> Kaç tane?
+      <div className="flex flex-col items-center w-full py-2 gap-1">
+        <div>
+          <b className="text-xxl"> {targetLetter}</b> Kaç tane?
         </div>
 
-        <Countdown
-          key={start as any}
-          className="!py-1 h-10 !px-2"
-          text=""
-          initial={countValue}
-          start={start}
-          showCheckmark={false}
-          onFinish={handleCountDownFinish}
-        />
+        <div className="flex gap-1 items-center">
+          <Countdown
+            key={start as any}
+            className="!py-0 h-8 !px-2"
+            text=""
+            initial={countValue}
+            start={start}
+            showCheckmark={false}
+            onFinish={handleCountDownFinish}
+          />
 
-        <form onSubmit={handleSubmit} className="flex items-center">
-          <TextInput
-            type="number"
-            value={{ value: userAnswer } as any}
-            inputKey="numberTest"
-            onChange={handleChange}
-            showLabel={false}
-          />
-          <Button
-            icon={<MdThumbUp className="w-4 h-4 text-white" />}
-            iconPosition="right"
-            text="Doğrula"
-            className="max-w-fit rounded-none h-10 border mb-2 !px-2 text-sm bg-green-600 hover:bg-green-700"
-            type="submit"
-          />
-        </form>
+          <form onSubmit={handleSubmit} className="flex items-center">
+            <TextInput
+              type="number"
+              value={{ value: userAnswer } as any}
+              inputKey="numberTest"
+              onChange={handleChange}
+              showLabel={false}
+              styleClass="!mb-0 w-20"
+            />
+            <Button
+              icon={<MdThumbUp className="w-4 h-4 text-white" />}
+              iconPosition="right"
+              text="Doğrula"
+              className="max-w-fit rounded-none h-8 border !px-2 text-sm bg-green-600 hover:bg-green-700"
+              type="submit"
+            />
+          </form>
+        </div>
       </div>
     </div>
   );

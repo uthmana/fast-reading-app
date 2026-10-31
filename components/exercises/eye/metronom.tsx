@@ -26,12 +26,15 @@ export default function Metronom({
   const level = controls?.level || 3;
   const speedMs = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
+  const [visible, setVisible] = useState(false);
   const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
 
   useEffect(() => {
     const timer = setInterval(() => {
       stopSound();
+      setVisible(false);
       setLeftSide((prev) => !prev);
+      setVisible(true);
       playSound();
     }, speedMs);
 
@@ -53,8 +56,10 @@ export default function Metronom({
         className="relative w-full h-full flex justify-center items-center"
       >
         <div
-          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain 
-           "opacity-100" `}
+          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
+            visible ? "opacity-100" : "opacity-0"
+          }
+           `}
           style={{
             width: objectSize,
             height: objectSize,
