@@ -186,23 +186,21 @@ export const calculateReadingSpeed = (wordCount: number, seconds: number) => {
   return Math.round(speed);
 };
 
+type CorrectAnswer = Record<string, string>;
+
 export const calculateQuizScore = (
-  questions: { id: string }[],
-  answers: Record<string, string>,
-  correctAnswers: Record<string, string>,
+  values: Record<string, string>,
+  correctAnswers: CorrectAnswer[],
 ): number => {
-  if (!questions?.length || !answers) return 0;
+  if (correctAnswers.length === 0) return 0;
 
-  let correctCount = 0;
+  const correctCount = correctAnswers.reduce((count, answer) => {
+    const [key, correctValue] = Object.entries(answer)[0];
 
-  questions.forEach((q) => {
-    if (answers[q.id] && answers[q.id] === correctAnswers[q.id]) {
-      correctCount++;
-    }
-  });
+    return count + (values[key] === correctValue ? 1 : 0);
+  }, 0);
 
-  const percentage = (correctCount / questions.length) * 100;
-  return Math.round(percentage); // round to nearest whole number
+  return Math.round((correctCount / correctAnswers.length) * 100);
 };
 
 export const getInputTypeValue = (value: string): UserWhereInput | null => {

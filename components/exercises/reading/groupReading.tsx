@@ -1,15 +1,10 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
-import React, { useEffect, useRef, useState } from "react";
+import { useAutoScrollIntoView } from "@/utils/hooks";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
-export default function GroupReading({
-  article,
-  onFinishTest,
-  controls,
-  className = "",
-  pause = false,
-}: {
+type GroupReadingType = {
   article: { id: string; title: string; description: string; tests: any };
   onFinishTest: (
     v: {
@@ -28,13 +23,31 @@ export default function GroupReading({
   };
   className?: string;
   pause?: boolean;
-}) {
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+};
+
+export default function GroupReading({
+  article,
+  onFinishTest,
+  controls,
+  className = "",
+  pause = false,
+  scrollContainerRef,
+}: GroupReadingType) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
   const intervalRef = useRef<number | null>(null);
   const currentLevelRef = useRef<number>(controls.level);
   const finishedRef = useRef(false);
   const { font, level, wordsPerFrame } = controls;
+  const highlightedRef = useRef<HTMLSpanElement>(null);
+
+  useAutoScrollIntoView({
+    elementRef: highlightedRef,
+    containerRef: scrollContainerRef,
+    dependencies: [activeWordIndex],
+    disabled: pause,
+  });
 
   const words = article?.description
     ? article.description.trim().split(/\s+/)
@@ -103,6 +116,37 @@ export default function GroupReading({
     }
   }, [pause, setRunning, onFinishTest]);
 
+  useLayoutEffect(() => {
+    const element = highlightedRef.current;
+    const container = scrollContainerRef?.current;
+
+    if (!element || !container || pause) return;
+
+    const elementRect = element.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    // Actual visible boundaries of the scrollable container.
+    const visibleTop = containerRect.top + container.clientTop;
+    const visibleBottom = visibleTop + container.clientHeight;
+
+    // Scroll only if the highlighted text is below the visible area.
+    if (elementRect.bottom > visibleBottom) {
+      const overflow = elementRect.bottom - visibleBottom;
+
+      const targetScroll = Math.min(
+        container.scrollTop + overflow,
+        container.scrollHeight - container.clientHeight,
+      );
+
+      if (targetScroll > container.scrollTop) {
+        container.scrollTo({
+          top: targetScroll,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [activeWordIndex, pause, scrollContainerRef]);
+
   // 🔹 Get the current highlighted frame as a single string
   const highlightedWords = words
     .slice(activeWordIndex, activeWordIndex + wordsPerFrame)
@@ -129,7 +173,10 @@ export default function GroupReading({
             <span className="opacity-15">{beforeText} </span>
 
             {/* Highlighted section (no gaps) */}
-            <span className="bg-blue-800/0  text-black rounded-sm">
+            <span
+              ref={highlightedRef}
+              className="bg-blue-800/0  text-black rounded-sm"
+            >
               {highlightedWords}
             </span>
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { RefObject } from "react";
 import wood_img from "/public/images/wood.jpg";
 
 export default function WoodenFrame({
@@ -6,11 +6,13 @@ export default function WoodenFrame({
   innerClassName = "",
   children,
   font,
+  innerRef,
 }: {
   className?: string;
   innerClassName?: string;
   children?: React.ReactNode;
   font?: string;
+  innerRef?: RefObject<HTMLDivElement>;
 }) {
   return (
     <div
@@ -28,8 +30,13 @@ export default function WoodenFrame({
           fontSize: `${font && parseInt(font)}px`,
           lineHeight: `${font && parseInt(font) * 1.5}px`,
         }}
+        ref={innerRef}
       >
-        {children}
+        {React.isValidElement(children)
+          ? React.cloneElement(children, {
+              scrollContainerRef: innerRef,
+            } as any)
+          : children}
       </div>
     </div>
   );

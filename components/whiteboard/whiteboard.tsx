@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState, ReactElement, useEffect } from "react";
+import { useState, ReactElement, useEffect, useRef } from "react";
 import { MdArrowBack, MdPlayCircle } from "react-icons/md";
 import Button from "@/components/button/button";
 import ControlPanel from "../controlPanel/controlPanel";
 import CountDown from "../countDown/countDown";
 import BookLoader from "./bookLoader";
 import WoodenFrame from "../woodenFrame/woodenFrame";
+import React from "react";
 
 interface WhiteboardProps {
   description: ReactElement;
@@ -26,6 +27,8 @@ interface WhiteboardProps {
   };
   onPause?: () => void;
   countDownDuration?: (v: number) => void;
+  pathname?: string;
+  exerciseWrapperClassName?: string;
 }
 
 export default function Whiteboard({
@@ -40,12 +43,22 @@ export default function Whiteboard({
   children,
   onPause,
   countDownDuration,
+  pathname,
+  exerciseWrapperClassName,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countDownValue, setCountDownValue] = useState(
     parseInt(lessonData?.duration || "0"),
   );
+
+  const readingContainerRef = useRef<HTMLDivElement>(null);
+
+  const exerciseTestsPaths = [
+    "hizli-okuma-testi",
+    "anlama-testi",
+    "seviye-yukselt",
+  ];
 
   useEffect(() => {
     if (pause !== undefined) {
@@ -69,6 +82,14 @@ export default function Whiteboard({
   }, [countDownValue, countDownDuration]);
 
   const handlePlay = () => {
+    if (
+      (pathname?.includes("/metin-egzersizleri") ||
+        pathname?.includes("/okuma-anlama-testleri")) &&
+      !controlData.articleSelect
+    ) {
+      alert("Önce Kategori ve Makale seçmeniz gerekiyor");
+      return;
+    }
     setIsPlaying(true);
   };
 
@@ -78,7 +99,7 @@ export default function Whiteboard({
       <div className="relative w-full">
         <WoodenFrame
           className="!min-h-[460px]"
-          innerClassName="bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]"
+          innerClassName={`bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]  ${isLoading ? "!overflow-hidden" : ""}`}
           font={controlData?.font}
         >
           {isLoading ? <BookLoader /> : null}
@@ -86,7 +107,8 @@ export default function Whiteboard({
         </WoodenFrame>
 
         {/* Countdown and navigation buttons */}
-        {lessonData?.duration && lessonData?.pathname !== "seviye-yukselt" ? (
+        {lessonData?.duration &&
+        !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
           <CountDown
             className="absolute z-10 right-8 top-6"
             initial={countDownValue}
@@ -127,14 +149,19 @@ export default function Whiteboard({
         <div className="fixed inset-0 bg-black/90  flex flex-col items-center justify-center z-[60]">
           <WoodenFrame
             font={controlData?.font}
-            className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)]`}
-            innerClassName="absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto "
+            className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] `}
+            innerClassName={`absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto ${isLoading ? "!overflow-hidden" : ""} ${exerciseWrapperClassName}`}
+            innerRef={readingContainerRef}
           >
             {isLoading ? <BookLoader /> : null}
-            {children}
+            {React.isValidElement(children)
+              ? React.cloneElement(children, {
+                  scrollContainerRef: readingContainerRef,
+                } as any)
+              : children}
 
             {lessonData?.duration &&
-            lessonData?.pathname !== "seviye-yukselt" ? (
+            !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
               <CountDown
                 className="absolute right-3 top-3 !text-base"
                 initial={countDownValue}

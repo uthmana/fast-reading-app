@@ -1,8 +1,8 @@
 import Button from "@/components/button/button";
-import { letterWords } from "@/utils/constants";
-import React, { useCallback, useEffect, useState } from "react";
+import { letterWords, speedMap } from "@/utils/constants";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { playSound } from "@/utils/playsound";
+import { useFeedbackSound } from "./hooks";
 
 export default function FindTheWord({
   controls,
@@ -25,9 +25,10 @@ export default function FindTheWord({
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [displayWords, setDisplayWords] = useState<string[]>([]);
   const [isSame, setIsSame] = useState<boolean>(false);
-
+  const playFeedback = useFeedbackSound();
+  const answeredRef = useRef(false);
   // Speed = faster with higher level
-  const displayDuration = 2200 / (controls.level || 1);
+  const displayDuration = speedMap[controls.level || 1] || 1500;
 
   // How many words to show based on difficulty level
   const wordCount = Math.min(controls.difficultyLevel + 1, 6);
@@ -52,52 +53,45 @@ export default function FindTheWord({
     setSelectedAnswer(null);
   }, [words, wordCount]);
 
-  const markWrongAnswer = () => {
-    const { right, wrong } = controls.resultDisplay;
-    setControlData({
-      ...controls,
-      resultDisplay: {
-        right,
-        wrong: wrong + 1,
-        net: right - (wrong + 1),
-      },
-    });
-  };
-
-  const mapSound = (answerbutton: number, correctvalue: number) => {
-    if (
-      (answerbutton === 1 && correctvalue === 1) ||
-      (answerbutton === 0 && correctvalue === 0)
-    ) {
-      playSound("true");
-    } else {
-      playSound("false");
-    }
-  };
+  // const markWrongAnswer = () => {
+  //   const { right, wrong } = controls.resultDisplay;
+  //   setControlData({
+  //     ...controls,
+  //     resultDisplay: {
+  //       right,
+  //       wrong: wrong + 1,
+  //       net: right - (wrong + 1),
+  //     },
+  //   });
+  // };
 
   const handleAnswer = useCallback(
     (answer: number) => {
+      if (answeredRef.current) return; // prevent double answer
+      answeredRef.current = true;
       setSelectedAnswer(answer);
-      const { right, wrong } = controls.resultDisplay;
       const correctValue = isSame ? 1 : 0;
-      mapSound(answer, correctValue);
+      playFeedback(answer === correctValue);
 
-      if (answer === correctValue) {
-        setControlData({
-          ...controls,
-          resultDisplay: {
-            right: right + 1,
-            wrong,
-            net: right + 1 - wrong,
-          },
-        });
-      } else {
-        markWrongAnswer();
-      }
-
-      setTimeout(() => generateWords(), 250);
+      setControlData((prev: any) => ({
+        ...prev,
+        resultDisplay: {
+          right:
+            answer === correctValue
+              ? prev.resultDisplay.right + 1
+              : prev.resultDisplay.right,
+          wrong:
+            answer === correctValue
+              ? prev.resultDisplay.wrong
+              : prev.resultDisplay.wrong + 1,
+          net:
+            answer === correctValue
+              ? prev.resultDisplay.right + 1 - prev.resultDisplay.wrong
+              : prev.resultDisplay.right - (prev.resultDisplay.wrong + 1),
+        },
+      }));
     },
-    [controls.resultDisplay, isSame, generateWords],
+    [isSame, playFeedback],
   );
   // On mount
   useEffect(() => {
@@ -107,15 +101,23 @@ export default function FindTheWord({
   // Auto update words
   useEffect(() => {
     const interval = setInterval(() => {
-      // If user did NOT answer → mark as wrong
-      if (selectedAnswer === null) {
-        markWrongAnswer();
+      if (!answeredRef.current) {
+        setControlData((prev: any) => ({
+          ...prev,
+          resultDisplay: {
+            right: prev.resultDisplay.right,
+            wrong: prev.resultDisplay.wrong + 1,
+            net: prev.resultDisplay.right - (prev.resultDisplay.wrong + 1),
+          },
+        }));
       }
+      answeredRef.current = false;
+      setSelectedAnswer(null);
       generateWords();
     }, displayDuration);
 
     return () => clearInterval(interval);
-  }, [displayDuration, selectedAnswer, generateWords]);
+  }, [displayDuration, generateWords]); // ← selectedAnswer removed
 
   // Keyboard support
   useEffect(() => {
@@ -136,7 +138,7 @@ export default function FindTheWord({
 
   return (
     <div className="w-full h-full group">
-      <div className="w-full h-[calc(100%-60px)] flex  flex-wrap items-center justify-center gap-x-10 gap-y-3">
+      <div className="w-full h-[calc(100%-50px)] flex  flex-wrap items-center justify-center gap-x-10 gap-y-3">
         {displayWords.map((w, i) => (
           <span key={i} className="text-3xl font-bold">
             {w}
@@ -144,21 +146,21 @@ export default function FindTheWord({
         ))}
       </div>
 
-      <div className="flex gap-4 mx-auto max-w-[80%]">
+      <div className="flex gap-4 sm:gap-12 mx-auto justify-center">
         <Button
-          icon={<MdKeyboardArrowLeft className="w-7 h-7 text-white" />}
-          text="Aynı"
-          className={`my-4 ml-auto bg-green-600 hover:bg-green-700 shadow-lg 
-            ${selectedAnswer === 1 ? "scale-105" : "scale-95"}`}
+          icon={<MdKeyboardArrowLeft className="w-8 h-8 text-white" />}
+          text="Doğru"
+          className={`w-[140px] sm:w-[200px] flex items-start justify-center outline-none transition-transform bg-green-600 hover:bg-green-700 shadow-lg 
+                  ${selectedAnswer === 1 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(1)}
         />
 
         <Button
-          icon={<MdKeyboardArrowRight className="w-7 h-7 text-white" />}
+          icon={<MdKeyboardArrowRight className="w-8 h-8 text-white" />}
+          text="Yanlış"
           iconPosition="right"
-          text="Farklı"
-          className={`my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg
-            ${selectedAnswer === 0 ? "scale-105" : "scale-95"}`}
+          className={`flex items-center justify-center outline-none w-[140px] sm:w-[200px] transition-transform bg-red-600 hover:bg-red-700 shadow-lg
+                  ${selectedAnswer === 0 ? "scale-105" : "scale-95"}`}
           onClick={() => handleAnswer(0)}
         />
       </div>

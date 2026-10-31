@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Button from "../button/button";
-import { MdPauseCircle } from "react-icons/md";
 
 type Option = {
   id: string;
@@ -34,16 +33,17 @@ export default function Quiz({ questions, onFinish }: QuizProps) {
 
     const updatedAnswers = {
       ...answers,
-      [currentQuestion.id]: selectedOption,
+      [currentIndex]: selectedOption,
     };
-    setAnswers(updatedAnswers);
+
+    setAnswers((prev) => ({ ...prev, ...updatedAnswers }));
 
     if (currentIndex < questions.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setSelectedOption(null);
     } else {
       setIsFinished(true);
-      if (onFinish) onFinish(updatedAnswers);
+      onFinish?.(updatedAnswers);
     }
   };
 
@@ -56,7 +56,9 @@ export default function Quiz({ questions, onFinish }: QuizProps) {
       <h2 className="text-xl font-semibold mb-4">
         Soru {currentIndex + 1} / {questions.length}
       </h2>
-      <p className="text-gray-800 text-lg mb-6">{currentQuestion.question}</p>
+      <p className="text-gray-800 text-lg font-semibold mb-6">
+        {currentQuestion.question}
+      </p>
 
       <form className="space-y-3 mb-6">
         {currentQuestion.options.map((option) => (
