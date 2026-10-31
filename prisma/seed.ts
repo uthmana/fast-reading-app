@@ -173,7 +173,9 @@ async function main() {
   // Create categories and articles
   const categoryCache = new Map<string, number>();
 
-  for (const item of mockArticles) {
+  for (const item of mockArticles as Array<
+    (typeof mockArticles)[number] & { studyGroup?: string }
+  >) {
     let categoryId = categoryCache.get(item.category.title);
 
     if (!categoryId) {
@@ -187,7 +189,7 @@ async function main() {
           studyGroups: {
             create: [
               {
-                studyGroup: item.studyGroup as StudyGroup,
+                studyGroup: (item.studyGroup ?? "ILKOKUL_2_3") as StudyGroup,
               },
             ],
           },
@@ -215,7 +217,7 @@ async function main() {
           deleteMany: {},
           create: [
             {
-              studyGroup: item.studyGroup as StudyGroup,
+              studyGroup: (item.studyGroup ?? "ILKOKUL_2_3") as StudyGroup,
             },
           ],
         },
@@ -233,7 +235,7 @@ async function main() {
         studyGroups: {
           create: [
             {
-              studyGroup: item.studyGroup as StudyGroup,
+              studyGroup: (item.studyGroup ?? "ILKOKUL_2_3") as StudyGroup,
             },
           ],
         },
