@@ -41,7 +41,7 @@ export default function LevelUp({
 
   const { level, wordList, font, wordsPerFrame } = controls;
   const levelMapped = speedMap[level];
-  const { playSound } = useAudioSound("/audios/LevelUp.mpeg");
+  const { playSound } = useAudioSound("/audios/LevelUp.mp3");
 
   const sleep = (ms: number) =>
     new Promise<void>((resolve) => setTimeout(resolve, ms));

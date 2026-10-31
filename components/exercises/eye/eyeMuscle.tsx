@@ -30,7 +30,7 @@ export default function EyeMuscle({
   }>({ x: 0, y: 0 });
   const [stepIndex, setStepIndex] = useState(0);
 
-  const { playSound, stopSound } = useAudioSound("/audios/metronome.mp3");
+  const { playSound, stopSound } = useAudioSound("/audios/metronom.mp3");
 
   const level = controls?.level || 3;
   const duration = speedMap[level];
