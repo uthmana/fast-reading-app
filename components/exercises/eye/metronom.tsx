@@ -23,26 +23,34 @@ export default function Metronom({
   onFinishTest,
   pause = false,
 }: MetronomeEyeProps) {
-  const level = controls?.level || 3;
-  const speedMs = speedMap[level];
+  const level = controls?.level || 1;
+  const duration = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
   const [visible, setVisible] = useState(false);
-  const { playSound, stopSound } = useAudioSound("/audios/metronom.mp3");
+  const { playSound, audioRef, stopSound } = useAudioSound(
+    "/audios/metronom.mp3",
+  );
 
   useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.playbackRate = duration < 250 ? 1.25 : 1;
+    }
     const timer = setInterval(() => {
-      stopSound();
       setVisible(false);
-      setLeftSide((prev) => !prev);
+      stopSound();
+      setLeftSide((prev) => {
+        return !prev;
+      });
       setVisible(true);
       playSound();
-    }, speedMs);
+    }, duration);
 
     return () => clearInterval(timer);
-  }, [speedMs]);
+  }, [duration, playSound, stopSound]);
 
   useEffect(() => {
     if (pause) {
+      stopSound();
       onFinishTest?.(null);
     }
   }, [pause, onFinishTest]);
@@ -58,8 +66,7 @@ export default function Metronom({
         <div
           className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
             visible ? "opacity-100" : "opacity-0"
-          }
-           `}
+          }`}
           style={{
             width: objectSize,
             height: objectSize,
@@ -69,6 +76,7 @@ export default function Metronom({
             left: leftSide ? "10%" : "auto",
             right: leftSide ? "auto" : "10%",
             backgroundImage: `url(/images/objects/icon${controls?.objectIcon}.png)`,
+            transitionProperty: "opacity",
           }}
         />
       </div>
