@@ -119,7 +119,7 @@ export const useAudioSound = (src: string) => {
     }
   };
 
-  return { isPlaying, playSound, stopSound };
+  return { isPlaying, audioRef, playSound, stopSound };
 };
 
 export const useDecodeQuery = (q: string | null) => {
