@@ -13,13 +13,13 @@ export default function Header() {
     <>
       {/* Header */}
       <header className="sticky top-0 font-roboto z-50 bg-brand-primary-150 text-white">
-        <div className="mx-auto landing-container px-6 py-4 flex items-center justify-between">
+        <div className="mx-auto landing-container p-3 sm:px-6 sm:py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold">
             <Icon
               name="logo"
               logoText={companyInfo.logo}
-              className="h-10 w-auto shrink-0"
+              className="h-7 sm:h-10"
             />
           </Link>
 

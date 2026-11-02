@@ -30,16 +30,20 @@ export default function EyeMuscle({
   }>({ x: 0, y: 0 });
   const [stepIndex, setStepIndex] = useState(0);
 
-  const { playSound, stopSound } = useAudioSound("/audios/metronom.mp3");
+  const { playSound, audioRef, stopSound } = useAudioSound(
+    "/audios/metronom.mp3",
+  );
 
-  const level = controls?.level || 3;
+  const level = controls?.level || 1;
   const duration = speedMap[level];
   const type = controls?.type || 1;
 
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+    if (audioRef.current) {
+      audioRef.current.playbackRate = duration < 250 ? 1.25 : 1;
+    }
 
-    interval = setInterval(() => {
+    const timer = setInterval(() => {
       const container = document.getElementById("rhythmic-container");
       const parentHeight = (container?.clientHeight || 600) - objectSize;
       const parentWidth = (container?.clientWidth || 600) - 38;
@@ -150,8 +154,8 @@ export default function EyeMuscle({
       playSound();
     }, duration);
 
-    return () => clearInterval(interval);
-  }, [duration, type, objectSize, playSound]);
+    return () => clearInterval(timer);
+  }, [duration, type, objectSize, playSound, stopSound]);
 
   useEffect(() => {
     if (pause) {

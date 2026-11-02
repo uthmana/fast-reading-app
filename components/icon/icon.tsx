@@ -367,7 +367,7 @@ function Icon({
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 280 40"
+          viewBox="0 0 160 40"
           preserveAspectRatio="xMinYMid meet"
           role="img"
           aria-labelledby="happybrains-logo-title"
