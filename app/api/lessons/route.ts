@@ -32,8 +32,7 @@ export async function GET(req: NextRequest) {
 
       return NextResponse.json(lesson, { status: 200 });
     }
-
-    if (order === "undefined" && studentId) {
+    if (order === "undefined" && !studentId) {
       const lesson = await prisma.lesson.findMany({
         where: { studentId },
         include: {
@@ -49,16 +48,68 @@ export async function GET(req: NextRequest) {
         );
       }
 
+      const filteredLesson = lesson.find(
+        (item: any) => item.order === parseInt("1"),
+      );
+
+      return NextResponse.json(
+        { isAllCompleted: false, lesson: filteredLesson },
+        { status: 200 },
+      );
+    }
+    if (order === "undefined" && studentId) {
+      const lesson = await prisma.lesson.findMany({
+        where: { studentId },
+        include: {
+          LessonExercise: true,
+        },
+        orderBy: { order: "asc" },
+      });
+
+      if (!lesson) {
+        return NextResponse.json(
+          { error: "Lesson not found" },
+          { status: 404 },
+        );
+      }
+      const isAllCompleted = lesson.every(
+        (item: any) => item.isLocked === false,
+      );
+
+      //Find student current lesson
       const filteredLesson = lesson.findLast(
         (item: any) => item.isLocked === false,
       );
 
       return NextResponse.json(
-        { isAllCompleted: true, lesson: filteredLesson },
+        { isAllCompleted, lesson: filteredLesson },
         { status: 200 },
       );
     }
+    if (order && !studentId) {
+      const lesson = await prisma.lesson.findMany({
+        where: { studentId, order: parseInt(order) },
+        include: {
+          LessonExercise: true,
+        },
+      });
 
+      if (!lesson) {
+        return NextResponse.json(
+          { error: "Lesson not found" },
+          { status: 404 },
+        );
+      }
+
+      const filteredLesson = lesson.find(
+        (item: any) => item.order === parseInt(order),
+      );
+
+      return NextResponse.json(
+        { isAllCompleted: false, lesson: filteredLesson },
+        { status: 200 },
+      );
+    }
     if (order && studentId) {
       const lesson = await prisma.lesson.findMany({
         where: { studentId },
@@ -87,31 +138,6 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    if (order && !studentId) {
-      const lesson = await prisma.lesson.findMany({
-        where: { studentId: null, order: parseInt(order) },
-        include: {
-          LessonExercise: true,
-        },
-      });
-
-      if (!lesson) {
-        return NextResponse.json(
-          { error: "Lesson not found" },
-          { status: 404 },
-        );
-      }
-
-      const filteredLesson = lesson.find(
-        (item: any) => item.order === parseInt(order),
-      );
-
-      return NextResponse.json(
-        { isAllCompleted: false, lesson: filteredLesson },
-        { status: 200 },
-      );
-    }
-
     const lessons = await prisma.lesson.findMany({
       where: { studentId },
       orderBy: { createdAt: "asc" },
@@ -119,6 +145,7 @@ export async function GET(req: NextRequest) {
         LessonExercise: true,
       },
     });
+
     return NextResponse.json(lessons, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
@@ -145,77 +172,9 @@ export async function POST(req: Request) {
       const lessonExit = await prisma.lesson.findUnique({ where: { id } });
 
       if (lessonExit) {
-        // Replace existing LessonExercise links with the provided Exercise list
-        // We'll delete existing join rows and create new ones in order
-
-        // await prisma.lesson.update({
-        //   where: { id },
-        //   data: { title, order },
-        // });
-
-        // await prisma.lessonExercise.deleteMany({ where: { lessonId: id } });
-        // const lessonExerciseData = Exercise.map(
-        //   (exerciseId: number, idx: number) => ({
-        //     lessonId: id,
-        //     exerciseId: exerciseId as number,
-        //     order: idx + 1,
-        //   })
-        // );
-
-        // if (lessonExerciseData.length > 0) {
-        //   await prisma.lessonExercise.createMany({
-        //     data: lessonExerciseData,
-        //   } as any);
-        // }
-
-        // const updated = await prisma.lesson.findUnique({
-        //   where: { id },
-        //   include: { LessonExercise: { include: { exercise: true } } },
-        // });
-
-        // const mapped = {
-        //   ...updated,
-        //   Exercise: (updated?.LessonExercise || []).map((le) => ({
-        //     ...le.exercise,
-        //     lessonExerciseId: le.id,
-        //     order: le.order,
-        //   })),
-        // };
-
         return NextResponse.json(lessonExit, { status: 200 });
       }
     }
-
-    // Create new lesson and link exercises via LessonExercise
-    // const created = await prisma.lesson.create({ data: { title, order } });
-
-    // if (Exercise && Exercise.length > 0) {
-    //   const lessonExerciseData = Exercise.map(
-    //     (exerciseId: number, idx: number) => ({
-    //       lessonId: created.id,
-    //       exerciseId: exerciseId,
-    //       order: idx + 1,
-    //     })
-    //   );
-
-    //   await prisma.lessonExercise.createMany({
-    //     data: lessonExerciseData,
-    //   } as any);
-    // }
-
-    // const createdWithExercises = await prisma.lesson.findUnique({
-    //   where: { id: created.id },
-    //   include: { LessonExercise: { include: { exercise: true } } },
-    // });
-
-    // const mappedCreated = {
-    //   ...createdWithExercises,
-    //   Exercise: (createdWithExercises?.LessonExercise || []).map((le) => ({
-    //     ...le.exercise,
-    //     lessonExerciseId: le.id,
-    //     order: le.order,
-    //   })),
-    // };
 
     return NextResponse.json([], { status: 201 });
   } catch (err) {
