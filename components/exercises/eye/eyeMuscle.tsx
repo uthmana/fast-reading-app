@@ -29,7 +29,6 @@ export default function EyeMuscle({
     y: string | number;
   }>({ x: 0, y: 0 });
   const [stepIndex, setStepIndex] = useState(0);
-
   const { playSound, audioRef, stopSound } = useAudioSound(
     "/audios/metronom.mp3",
   );
@@ -159,6 +158,7 @@ export default function EyeMuscle({
 
   useEffect(() => {
     if (pause) {
+      stopSound();
       onFinishTest?.(null);
     }
   }, [pause, onFinishTest]);
@@ -170,7 +170,7 @@ export default function EyeMuscle({
     >
       {
         <div
-          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
+          className={`absolute transition-opacity duration-200 bg-no-repeat bg-contain ${
             visible ? "opacity-100" : "opacity-0"
           }`}
           style={{
