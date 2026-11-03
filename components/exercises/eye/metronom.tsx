@@ -64,7 +64,7 @@ export default function Metronom({
         className="relative w-full h-full flex justify-center items-center"
       >
         <div
-          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
+          className={`absolute transition-opacity duration-200 bg-no-repeat bg-contain ${
             visible ? "opacity-100" : "opacity-0"
           }`}
           style={{
