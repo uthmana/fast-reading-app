@@ -115,7 +115,7 @@ export default function FindTheColor({
   }, [pause, onFinishTest]);
 
   return (
-    <div className="w-full h-full group">
+    <div className="w-full h-full py-5 group">
       <div className="w-full h-[calc(100%-50px)] flex items-center justify-center">
         {currentWord && (
           <span

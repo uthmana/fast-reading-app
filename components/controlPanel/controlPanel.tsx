@@ -15,7 +15,7 @@ interface ControlPanelProps {
   readingStatus?: any;
   controlData?: any;
   setControlData?: any;
-  lessonData?: { id: string; duration: string; order: string };
+  lessonData?: { id: string; minDuration: string; order: string };
   showPauseButton?: boolean;
   onPause?: () => void;
   noInitialDataRequest?: boolean;

@@ -127,7 +127,7 @@ export default function ReadingBlockByErasing({
   const afterText = words.slice(activeWordIndex + wordsPerFrame).join(" ");
 
   return (
-    <div className={`w-full ${className}`}>
+    <div className={`w-full px-4 py-5 ${className}`}>
       <div className="w-full h-full text-left relative">
         {words.length > 0 ? (
           <div

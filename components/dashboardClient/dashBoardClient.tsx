@@ -355,7 +355,7 @@ export default function DashboardClient({ user, progressSummary }: any) {
             </p>
             <p>Hazırsanız, BAŞLA butonuna basarak hemen başlayabilirsiniz.</p>
             <Link
-              href={`/ogrenci/okuma-anlama-testleri/anlama-testi?intro-test=${(
+              href={`/ogrenci/okuma-anlama-testleri/anlama-testi?introtest=${(
                 user?.Student.introTestTaken + 1
               ).toString()}`}
               className="block"

@@ -18,6 +18,7 @@ import GroupReading from "./reading/groupReading";
 import EyeAgilityIncrease from "./words/eyeAgilityIncrease";
 import LevelUp from "./words/levelUp";
 import Tachistoscope from "./words/fastVision";
+import FastReadingTest from "../fastReadingTest/fastReadingTest";
 
 export default function RenderExercise(props: any) {
   const pathname: string = props.pathname;
@@ -63,6 +64,12 @@ export default function RenderExercise(props: any) {
       return <ReadingFocusedBlock {...props} />;
     case "grup-okuma":
       return <GroupReading {...props} />;
+
+    //Reading and Comprehension Test
+    case "hizli-okuma-testi":
+    case "anlama-testi":
+      return <FastReadingTest {...props} />;
+
     default:
       return <NotFound />;
   }
