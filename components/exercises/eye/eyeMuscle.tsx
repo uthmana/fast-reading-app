@@ -38,10 +38,6 @@ export default function EyeMuscle({
   const type = controls?.type || 1;
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = duration < 250 ? 1.25 : 1;
-    }
-
     const timer = setInterval(() => {
       const container = document.getElementById("rhythmic-container");
       const parentHeight = (container?.clientHeight || 600) - objectSize;
@@ -52,6 +48,10 @@ export default function EyeMuscle({
       const centerSide = parentWidth / 2 + 38;
       const topEdge = -8;
       const bottomEdge = parentHeight;
+
+      if (audioRef.current) {
+        audioRef.current.playbackRate = duration < 300 ? 1.25 : 1;
+      }
 
       setVisible(false);
       stopSound();

@@ -1,130 +1,60 @@
-"use client";
-
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import { getLessonExerciseData } from "@/utils/getLessonExerciseData";
+import { redirect } from "next/navigation";
 import { menuItems } from "@/app/routes";
-import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide";
-import RenderExercise from "@/components/exercises";
-import Whiteboard from "@/components/whiteboard/whiteboard";
-import { useParams, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import NotFound from "../../not-found";
-import { fetchData } from "@/utils/fetchData";
-import { useSession } from "next-auth/react";
-import { ExerciseDescription } from "@/utils/constants";
-import { getTestControls } from "@/utils/helpers";
-import { useDecodeQuery } from "@/utils/hooks";
+import type { Metadata } from "next";
+import LessonExerciseClient from "@/components/lessonExerciseClient/LessonExerciseClient";
 
-export default function page() {
-  const { data: session } = useSession();
-  const queryParams = useParams();
-  const pathname: any = queryParams.slug;
-  const searchParams = useSearchParams();
-  const queryParamsEncoded = searchParams.get("q");
-  const { lessonParams, exerciseParams, durationParams, orderParams } =
-    useDecodeQuery(queryParamsEncoded);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
 
-  const [pause, setPause] = useState(false);
-  const [controlData, setControlData] = useState({
-    level: 1,
-    difficultyLevel: 1,
-    resultDisplay: {
-      right: 0,
-      wrong: 0,
-      net: 0,
-    },
-  });
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    setControlData((prev: any) => ({
-      ...prev,
-      font: localStorage.getItem("font") || "16",
-    }));
-  }, []);
-
-  useEffect(() => {
-    if (!session?.user?.student || (!orderParams && !exerciseParams)) return;
-    const studyGroup = session.user.student.studyGroup || "GENEL";
-    const fetchTestControls = async () => {
-      const testControls = await getTestControls(
-        orderParams,
-        studyGroup,
-        exerciseParams,
-      );
-      if (testControls) {
-        setControlData((prev: any) => ({
-          ...prev,
-          ...testControls,
-        }));
-      }
-    };
-
-    fetchTestControls();
-  }, [session, orderParams, exerciseParams]);
-
-  const currentMenu = menuItems.filter((m) =>
-    m.subMenu?.some((s) => s.link.includes(pathname)),
+  const currentMenu = menuItems.find((menu) =>
+    menu.subMenu?.some((item) => item.link.endsWith(`/${slug}`)),
   );
 
-  const lessonData = {
-    id: lessonParams,
-    duration: durationParams,
-    order: orderParams,
-  } as any;
+  const currentSubMenu = currentMenu?.subMenu?.find((item) =>
+    item.link.endsWith(`/${slug}`),
+  );
 
-  if (
-    !currentMenu.length ||
-    (queryParamsEncoded && !lessonParams && !exerciseParams)
-  ) {
-    return <NotFound />;
+  return {
+    title: currentSubMenu
+      ? `${currentSubMenu?.name} | ${currentMenu?.name}`
+      : "Dersler | Etkin Hızlı Okuma",
+    description: currentMenu?.description ?? "Hızlı okuma pratik platformu",
+  };
+}
+
+export default async function Page({
+  searchParams,
+  params,
+}: {
+  searchParams: Promise<{ q?: string }>;
+  params: { slug: string };
+}) {
+  const { q } = await searchParams;
+  const session = await getServerSession(authOptions);
+  const studyGroup = session?.user?.student?.studyGroup;
+
+  const { lessonConfigData, exerciseControls } = await getLessonExerciseData({
+    lessonExerciseId: q ?? "",
+    studyGroup,
+  });
+
+  if (lessonConfigData?.isDone) {
+    redirect("/ogrenci/dersler");
   }
 
-  const onFinishTest = async (
-    val: {
-      wpm: number;
-      correct: number;
-      counter: number;
-      variant: string;
-    } | null,
-  ) => {
-    if (!val) {
-      setPause(!pause);
-      return;
-    }
-  };
-
-  const saveProgress = async () => {
-    try {
-      if (!session?.user?.student?.id) return;
-      await fetchData({
-        apiPath: "/api/lessonExercises",
-        method: "PUT",
-        payload: {
-          id: parseInt(exerciseParams || ""),
-          lessonId: parseInt(lessonParams || ""),
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <Whiteboard
-      pause={pause}
-      onPause={() => setPause(!pause)}
-      lessonData={lessonData}
-      controlData={controlData}
-      setControlData={setControlData}
-      saveProgress={saveProgress}
-      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
-    >
-      <RenderExercise
-        pause={pause}
-        pathname={pathname}
-        controls={controlData}
-        setControlData={setControlData}
-        onFinishTest={onFinishTest}
-      />
-    </Whiteboard>
+    <LessonExerciseClient
+      session={session}
+      pathname={params.slug}
+      lessonConfigData={{ ...lessonConfigData, pahtname: params.slug, session }}
+      exerciseControls={exerciseControls}
+    />
   );
 }

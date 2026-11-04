@@ -65,7 +65,7 @@ export default function Numbers({
         ];
 
   return (
-    <div className="w-full relative h-full flex items-center justify-center">
+    <div className="w-full px-4 py-5 relative h-full flex items-center justify-center">
       <div
         className={`relative h-[100px] mx-auto flex items-center justify-center overflow-visible ${
           isThreeLetterAndBellow ? "w-[120px]" : "w-[176px]"

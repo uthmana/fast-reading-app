@@ -51,14 +51,7 @@ export default function Lesson({
               {currentLesson?.LessonExercise?.map(
                 (lesson: any, idx: number) => {
                   const isDone = lesson?.isDone;
-                  const payload = {
-                    lessonId: currentLesson?.id,
-                    exerciseId: lesson?.id,
-                    duration: lesson?.minDuration,
-                    order: currentLesson?.order,
-                  };
-                  const encoded = btoa(JSON.stringify(payload));
-                  const linkPath = `/ogrenci${lesson.pathName}?q=${encoded}`;
+                  const linkPath = `/ogrenci${lesson.pathName}?q=${lesson.id}`;
                   const isStudent = session?.user?.role === "STUDENT";
                   const unlocked = isStudent ? !currentLesson.isLocked : true;
                   const linkAllowed = unlocked && !isDone;

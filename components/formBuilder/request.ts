@@ -161,6 +161,7 @@ export const getArticleByStudyGroup = async ({
     console.error(error);
   }
 };
+
 export const getWordListByLetterCount = async (
   letterCount: number,
   wpc: number,

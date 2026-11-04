@@ -23,10 +23,10 @@ export default function LessonLoader() {
             </div>
           </div>
           <ul className="space-y-[2px]">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((lesson: any, idx: number) => {
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((idx: number) => {
               return (
                 <li
-                  key={lesson.pathName + idx}
+                  key={idx}
                   className={`group relative overflow-hidden rounded-lg border-current
                     animate-pulse
                     bg-gray-200

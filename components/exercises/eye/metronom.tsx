@@ -32,10 +32,10 @@ export default function Metronom({
   );
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = duration < 250 ? 1.25 : 1;
-    }
     const timer = setInterval(() => {
+      if (audioRef.current) {
+        audioRef.current.playbackRate = duration < 300 ? 1.25 : 1;
+      }
       setVisible(false);
       stopSound();
       setLeftSide((prev) => {
