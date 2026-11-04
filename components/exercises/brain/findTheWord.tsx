@@ -137,7 +137,7 @@ export default function FindTheWord({
   }, [pause, onFinishTest]);
 
   return (
-    <div className="w-full h-full group">
+    <div className="w-full h-full py-5 group">
       <div className="w-full h-[calc(100%-50px)] flex  flex-wrap items-center justify-center gap-x-10 gap-y-3">
         {displayWords.map((w, i) => (
           <span key={i} className="text-3xl font-bold">

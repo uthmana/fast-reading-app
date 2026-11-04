@@ -3,6 +3,7 @@ import * as XLSX from "xlsx";
 import saveAs from "file-saver";
 import { speedMap, studyGroupOptions } from "./constants";
 import { fetchData } from "./fetchData";
+import { menuItems } from "@/app/routes";
 
 type UserWhereInput =
   | { email: string }
@@ -271,4 +272,11 @@ export function shuffleArray<T>(array: T[]): T[] {
   }
 
   return shuffled;
+}
+
+export function isValidPathname(pathname: string) {
+  const currentMenu = menuItems.filter((m) =>
+    m.subMenu?.some((s) => s.link.includes(pathname)),
+  );
+  return currentMenu.length > 0;
 }

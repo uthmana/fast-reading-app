@@ -168,8 +168,8 @@ export default function FastReadingTest({
   }, [counter, article?.description]);
 
   return (
-    <div className={`w-full ${className}`}>
-      <div className="w-full text-right sticky top-0">
+    <div className={`w-full px-4 py-5 ${className}`}>
+      <div className="w-full text-right top-0 absolute left-0">
         <Timer
           className="drop-shadow w-fit ml-auto rounded opacity-0"
           onValue={(v) => setCounter(v)}

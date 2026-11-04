@@ -21,14 +21,14 @@ interface WhiteboardProps {
   saveProgress?: () => void;
   lessonData?: {
     id: string;
-    duration: string;
+    minDuration: string;
     order: string;
     pathname?: string;
   };
   onPause?: () => void;
   countDownDuration?: (v: number) => void;
   pathname?: string;
-  exerciseWrapperClassName?: string;
+  fullPath?: string;
 }
 
 export default function Whiteboard({
@@ -43,15 +43,13 @@ export default function Whiteboard({
   children,
   onPause,
   countDownDuration,
-  pathname,
-  exerciseWrapperClassName,
+  fullPath,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [countDownValue, setCountDownValue] = useState(
-    parseInt(lessonData?.duration || "0"),
+    parseInt(lessonData?.minDuration || "0"),
   );
-
   const readingContainerRef = useRef<HTMLDivElement>(null);
 
   const exerciseTestsPaths = [
@@ -64,7 +62,7 @@ export default function Whiteboard({
     if (pause !== undefined) {
       setIsPlaying(pause ? !isPlaying : pause);
     }
-  }, [pause, lessonData?.duration]);
+  }, [pause, lessonData?.minDuration]);
 
   useEffect(() => {
     if (
@@ -83,8 +81,8 @@ export default function Whiteboard({
 
   const handlePlay = () => {
     if (
-      (pathname?.includes("/metin-egzersizleri") ||
-        pathname?.includes("/okuma-anlama-testleri")) &&
+      (fullPath?.includes("/metin-egzersizleri") ||
+        fullPath?.includes("/okuma-anlama-testleri")) &&
       !controlData.articleSelect
     ) {
       alert("Önce Kategori ve Makale seçmeniz gerekiyor");
@@ -107,7 +105,8 @@ export default function Whiteboard({
         </WoodenFrame>
 
         {/* Countdown and navigation buttons */}
-        {lessonData?.duration &&
+
+        {lessonData?.minDuration &&
         !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
           <CountDown
             className="absolute z-10 right-8 top-6"
@@ -150,7 +149,7 @@ export default function Whiteboard({
           <WoodenFrame
             font={controlData?.font}
             className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] `}
-            innerClassName={`absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] px-6 py-4 bg-white text-base rounded overflow-y-auto ${isLoading ? "!overflow-hidden" : ""} ${exerciseWrapperClassName}`}
+            innerClassName={`absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] !p-0 bg-white text-base rounded overflow-y-auto ${isLoading ? "!overflow-hidden" : ""}`}
             innerRef={readingContainerRef}
           >
             {isLoading ? <BookLoader /> : null}
@@ -160,7 +159,7 @@ export default function Whiteboard({
                 } as any)
               : children}
 
-            {lessonData?.duration &&
+            {lessonData?.minDuration &&
             !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
               <CountDown
                 className="absolute right-3 top-3 !text-base"

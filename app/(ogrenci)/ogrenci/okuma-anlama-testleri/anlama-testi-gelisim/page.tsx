@@ -60,15 +60,15 @@ export default function page() {
   }, [session]);
 
   return (
-    <div className="flex w-full mb-5 flex-col px-6 gap-4">
-      <div className="w-full bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
+    <div className="flex w-full flex-col mb-5 px-6 gap-4">
+      <div className="flex-1 bg-white max-h-[400px] border border-brand-tertiary-50 py-5 px-4 rounded shadow">
         <h2 className="mb-4 font-oswald font-normal text-lg">
-          Anlama Oranı Gelişimi
+          Anlama Gelişimi
         </h2>
         <BarChart
           chartData={[
             {
-              name: "Anlama Oranı",
+              name: "Anlama",
               data: understandingData.data || [],
             },
           ]}
@@ -80,31 +80,48 @@ export default function page() {
             xaxis: {
               categories: understandingData.categories || [],
             },
+            dataLabels: {
+              enabled: true,
+              formatter: (val: number) => `%${val}`,
+              style: {
+                fontSize: "12px",
+              },
+            },
           }}
         />
       </div>
 
-      <div className="flex-1 max-h-[400px] bg-white overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
+      <div className="flex-1 bg-white max-h-[400px] overflow-y-auto border border-brand-tertiary-50 py-5 px-4 rounded shadow">
         <h2 className="mb-4 font-oswald font-normal text-lg">
-          Okuma Hızı Gelişimi
+          Anlama Gelişimi
         </h2>
         <div className="w-full mb-5">
-          <div className="grid grid-cols-2 py-1  group text-black font-semibold border-b">
+          <div className="grid grid-cols-4 py-1 group text-black font-semibold border-b">
             <div className="">Tarih</div>
-            <div className="">Hız(ms)</div>
+            <div className="">Doğru Cevap</div>
+            <div className="">Yanlış Cevap</div>
+            <div className="">Anlama Yüzdesi</div>
           </div>
 
           {formattedAttempts
-            ?.filter((item: any) => item.variant === "FASTREADING")
+            ?.filter((item: any) => item.variant === "UNDERSTANDING")
             .map((attempt: any, index: number) => (
               <div
                 key={index}
-                className="grid grid-cols-2 text-sm group border-b"
+                className="grid grid-cols-4 text-sm group border-b"
               >
                 <div className="group-hover:bg-gray-200 p-1">
                   {attempt.category}
                 </div>
-                <div className="group-hover:bg-gray-200 p-1">{attempt.wpm}</div>
+                <div className="group-hover:bg-gray-200 p-1">
+                  {attempt.correct / 10}
+                </div>
+                <div className="group-hover:bg-gray-200 p-1">
+                  {10 - attempt.correct / 10}
+                </div>
+                <div className="group-hover:bg-gray-200 p-1">
+                  %{attempt.correct}
+                </div>
               </div>
             ))}
         </div>
