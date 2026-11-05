@@ -280,3 +280,14 @@ export function isValidPathname(pathname: string) {
   );
   return currentMenu.length > 0;
 }
+
+export const getFullPathFromSlug = (slug: string): string | null => {
+  const menuItem = menuItems.find((menu) =>
+    menu.subMenu?.some((subMenu) => subMenu.link.endsWith(`/${slug}`)),
+  );
+
+  return (
+    menuItem?.subMenu?.find((subMenu) => subMenu.link.endsWith(`/${slug}`))
+      ?.link ?? null
+  );
+};
