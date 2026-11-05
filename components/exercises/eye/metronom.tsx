@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { speedMap } from "@/utils/constants";
-import { useAudioSound } from "@/utils/hooks";
+import { useMetronome } from "@/utils/hooks";
 
 type MetronomeEyeProps = {
   controls?: {
@@ -27,33 +27,49 @@ export default function Metronom({
   const duration = speedMap[level];
   const [leftSide, setLeftSide] = useState(true);
   const [visible, setVisible] = useState(false);
-  const { playSound, audioRef, stopSound } = useAudioSound(
-    "/audios/metronom.mp3",
-  );
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (audioRef.current) {
-        audioRef.current.playbackRate = duration < 300 ? 1.25 : 1;
-      }
-      setVisible(false);
-      stopSound();
-      setLeftSide((prev) => {
-        return !prev;
-      });
-      setVisible(true);
-      playSound();
-    }, duration);
+  const { initialize, playTick } = useMetronome({
+    frequency: 1400,
+    volume: 0.8,
+    duration: 0.035,
+  });
 
-    return () => clearInterval(timer);
-  }, [duration, playSound, stopSound]);
-
+  // Start and stop metronome.
   useEffect(() => {
     if (pause) {
-      stopSound();
+      setVisible(false);
       onFinishTest?.(null);
+      return;
     }
-  }, [pause, onFinishTest]);
+
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let cancelled = false;
+
+    const start = async () => {
+      try {
+        await initialize();
+
+        if (cancelled) return;
+
+        timer = setInterval(() => {
+          setVisible(false);
+          setLeftSide((prev) => !prev);
+          setVisible(true);
+
+          void playTick();
+        }, duration);
+      } catch (error) {
+        console.error("Failed to initialize metronome:", error);
+      }
+    };
+
+    void start();
+
+    return () => {
+      cancelled = true;
+      if (timer) clearInterval(timer);
+    };
+  }, [duration, pause, initialize, playTick, onFinishTest]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center">
@@ -64,7 +80,7 @@ export default function Metronom({
         className="relative w-full h-full flex justify-center items-center"
       >
         <div
-          className={`absolute transition-opacity duration-200 bg-no-repeat bg-contain ${
+          className={`absolute transition-opacity duration-300 bg-no-repeat bg-contain ${
             visible ? "opacity-100" : "opacity-0"
           }`}
           style={{
