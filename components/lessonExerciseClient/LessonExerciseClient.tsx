@@ -15,19 +15,20 @@ type LessonExerciseClientType = {
   exerciseControls?: any;
   session?: any;
   pathname?: string;
+  fullPath?: string;
 };
 
 export default function LessonExerciseClient({
-  lessonConfigData,
-  exerciseControls,
   session,
   pathname = "",
+  fullPath,
+  lessonConfigData,
+  exerciseControls,
 }: LessonExerciseClientType) {
   const [pause, setPause] = useState(false);
   const [isContinueWithNewExercise, setContinueWithNewExercise] =
     useState(false);
   const [countDownDuration, setCountDownDuration] = useState(0);
-
   const [controlData, setControlData] = useState({
     font: "16",
     level: 1,
@@ -53,6 +54,18 @@ export default function LessonExerciseClient({
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL") ||
     session?.user?.student?.studyGroup?.includes("DISLEKSI");
+
+  const isArticleSelectReq =
+    fullPath?.includes("/metin-egzersizleri") ||
+    fullPath?.includes("/okuma-anlama-testleri");
+
+  const isLeveUp = pathname === "seviye-yukselt";
+  const isTextReading = pathname?.includes("-okuma");
+
+  const isLesson =
+    lessonConfigData.id &&
+    lessonConfigData.lessonId &&
+    session?.user?.student?.id;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -81,8 +94,8 @@ export default function LessonExerciseClient({
       return;
     }
 
-    //For Kelime Exercise
-    if (pathname === "seviye-yukselt") {
+    //For Kelime Exercise Seviye Yükselt
+    if (isLeveUp) {
       const { wpm, wpf, correct, durationSec, variant } = val;
       try {
         await fetchData({
@@ -105,7 +118,7 @@ export default function LessonExerciseClient({
     }
 
     //For Metin Exercise
-    if (pathname?.includes("-okuma")) {
+    if (isTextReading) {
       setContinueWithNewExercise(false);
       if (
         lessonConfigData?.id &&
@@ -120,18 +133,19 @@ export default function LessonExerciseClient({
   };
 
   const saveProgress = async () => {
-    try {
-      if (!session?.user?.student?.id) return;
-      await fetchData({
-        apiPath: "/api/lessonExercises",
-        method: "PUT",
-        payload: {
-          id: parseInt(lessonConfigData.id || ""),
-          lessonId: parseInt(lessonConfigData.lessonId || ""),
-        },
-      });
-    } catch (error) {
-      console.error(error);
+    if (isLesson) {
+      try {
+        await fetchData({
+          apiPath: "/api/lessonExercises",
+          method: "PUT",
+          payload: {
+            id: parseInt(lessonConfigData.id || ""),
+            lessonId: parseInt(lessonConfigData.lessonId || ""),
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -143,9 +157,8 @@ export default function LessonExerciseClient({
       setControlData={setControlData}
       lessonData={{ ...lessonConfigData, pathname }}
       saveProgress={saveProgress}
-      pathname={pathname}
-      fullPath={location.href}
       countDownDuration={(v: any) => setCountDownDuration(v)}
+      isArticleSelectReq={isArticleSelectReq}
       description={
         isContinueWithNewExercise ? (
           <ControlPanelGuideSelectNew />
@@ -160,7 +173,7 @@ export default function LessonExerciseClient({
         controls={controlData}
         setControlData={setControlData}
         onFinishTest={onFinishTest}
-        isLesson={!!lessonConfigData}
+        isLesson={isLesson}
         saveProgress={saveProgress}
         article={controlData.selectedData as any}
         className={

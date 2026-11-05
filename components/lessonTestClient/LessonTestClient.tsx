@@ -17,6 +17,7 @@ type LessonTestClientType = {
   pathname?: string;
   introTest?: string;
   testArticle?: { title?: string; description: string; tests?: any } | null;
+  fullPath?: string;
 };
 
 export default function LessonTestClient({
@@ -26,6 +27,7 @@ export default function LessonTestClient({
   testArticle,
   lessonConfigData,
   exerciseControls,
+  fullPath,
 }: LessonTestClientType) {
   const router = useRouter();
   const [pause, setPause] = useState(false);
@@ -50,6 +52,15 @@ export default function LessonTestClient({
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL") ||
     session?.user?.student?.studyGroup?.includes("DISLEKSI");
+
+  const isArticleSelectReq =
+    fullPath?.includes("/metin-egzersizleri") ||
+    fullPath?.includes("/okuma-anlama-testleri");
+
+  const isLesson =
+    lessonConfigData.id &&
+    lessonConfigData.lessonId &&
+    session?.user?.student?.id;
 
   const testVariant = {
     "hizli-okuma-testi": "FASTREADING",
@@ -76,6 +87,10 @@ export default function LessonTestClient({
     }
     setQuestions(controlData.selectedData?.tests);
   }, [controlData.selectedData, setQuestions]);
+
+  if (!isValidPathname(pathname)) {
+    return <NotFound />;
+  }
 
   const onFinishTest = async (
     val: {
@@ -170,24 +185,21 @@ export default function LessonTestClient({
   };
 
   const saveProgress = async () => {
-    try {
-      if (!session?.user?.student?.id) return;
-      await fetchData({
-        apiPath: "/api/lessonExercises",
-        method: "PUT",
-        payload: {
-          id: parseInt(lessonConfigData.id || ""),
-          lessonId: parseInt(lessonConfigData.lessonId || ""),
-        },
-      });
-    } catch (error) {
-      console.error(error);
+    if (isLesson) {
+      try {
+        await fetchData({
+          apiPath: "/api/lessonExercises",
+          method: "PUT",
+          payload: {
+            id: parseInt(lessonConfigData.id || ""),
+            lessonId: parseInt(lessonConfigData.lessonId || ""),
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
-
-  if (!isValidPathname(pathname)) {
-    return <NotFound />;
-  }
 
   return (
     <Whiteboard
@@ -197,9 +209,8 @@ export default function LessonTestClient({
       setControlData={setControlData}
       readingStatus={readingStatus}
       lessonData={{ ...lessonConfigData, pathname }}
+      isArticleSelectReq={isArticleSelectReq}
       saveProgress={saveProgress}
-      pathname={pathname}
-      fullPath={location.href}
       description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
     >
       <FastReadingTest
@@ -212,7 +223,7 @@ export default function LessonTestClient({
         setReadingStatus={(v) => setReadingStatus(v)}
         introTest={introTest}
         saveProgress={saveProgress}
-        isLesson={!!lessonConfigData}
+        isLesson={isLesson}
         className={
           isPrimaryStudent
             ? " !font-tttkbDikTemelAbece font-extrabold "

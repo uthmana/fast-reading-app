@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { menuItems } from "@/app/routes";
 import type { Metadata } from "next";
 import LessonExerciseClient from "@/components/lessonExerciseClient/LessonExerciseClient";
+import { getFullPathFromSlug } from "@/utils/helpers";
 
 export async function generateMetadata({
   params,
@@ -39,7 +40,7 @@ export default async function Page({
   const { q } = await searchParams;
   const session = await getServerSession(authOptions);
   const studyGroup = session?.user?.student?.studyGroup;
-
+  const fullPath = getFullPathFromSlug(params.slug);
   const { lessonConfigData, exerciseControls } = await getLessonExerciseData({
     lessonExerciseId: q ?? "",
     studyGroup,
@@ -53,6 +54,7 @@ export default async function Page({
     <LessonExerciseClient
       session={session}
       pathname={params.slug}
+      fullPath={fullPath ?? ""}
       lessonConfigData={{ ...lessonConfigData, pahtname: params.slug, session }}
       exerciseControls={exerciseControls}
     />

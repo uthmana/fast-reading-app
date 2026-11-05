@@ -27,8 +27,7 @@ interface WhiteboardProps {
   };
   onPause?: () => void;
   countDownDuration?: (v: number) => void;
-  pathname?: string;
-  fullPath?: string;
+  isArticleSelectReq?: boolean;
 }
 
 export default function Whiteboard({
@@ -43,7 +42,7 @@ export default function Whiteboard({
   children,
   onPause,
   countDownDuration,
-  fullPath,
+  isArticleSelectReq,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,12 +78,15 @@ export default function Whiteboard({
     }
   }, [countDownValue, countDownDuration]);
 
+  useEffect(() => {
+    document.documentElement.style.overflow = isPlaying ? "hidden" : "";
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [isPlaying]);
+
   const handlePlay = () => {
-    if (
-      (fullPath?.includes("/metin-egzersizleri") ||
-        fullPath?.includes("/okuma-anlama-testleri")) &&
-      !controlData.articleSelect
-    ) {
+    if (isArticleSelectReq && !controlData.articleSelect) {
       alert("Önce Kategori ve Makale seçmeniz gerekiyor");
       return;
     }
