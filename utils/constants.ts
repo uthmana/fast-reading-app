@@ -6004,4 +6004,5 @@ export const companyInfo = {
   phone: "+90 545 643 24 XX",
   logo: "Happy-Brains",
   chartColor: "#1D4E89",
+  website: "https://happybrains.com.tr",
 };

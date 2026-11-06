@@ -3,11 +3,7 @@ import Image from "next/image";
 import Button from "../button/button";
 import Link from "next/link";
 
-export default function LessonCongrats({
-  session,
-}: {
-  session: { user: { student: any; role: string } };
-}) {
+export default function LessonCongrats({ serial }: { serial: string }) {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <Image
@@ -20,10 +16,7 @@ export default function LessonCongrats({
       <h1 className="font-bold text-2xl lg:text-4xl ">Tebrikler</h1>
       <h2 className="font-bold text-xl lg:text-2xl">Eğitimi tamamladınız!</h2>
 
-      <Link
-        href={`/sertifika?ogrenci=${session.user.student.id}&grp=${session.user.student.studyGroup}`}
-        className="mt-6"
-      >
+      <Link href={`/sertifika?serial=${serial}`} className="mt-6">
         <Button text="Sertifikayı Aç (PDF'si Yazdır)" />
       </Link>
     </div>
