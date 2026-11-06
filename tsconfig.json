@@ -23,6 +23,14 @@
     },
     "typeRoots": ["./types", "./node_modules/@types"]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types/**/*.d.ts", ".next/types/**/*.ts", "components/readindScoreClient", "components/dashboardClient"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "types/**/*.d.ts",
+    ".next/types/**/*.ts",
+    "components/readindScoreClient",
+    "components/dashboardClient"
+  ],
   "exclude": ["node_modules"]
 }
