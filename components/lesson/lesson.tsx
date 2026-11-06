@@ -7,6 +7,7 @@ import LessonNavClient from "./lessonNavClient";
 import { menuItems } from "@/app/routes";
 import InfoSideBar from "../sideBar/infoSideBar";
 import LessonCongrats from "./lessonCongrats";
+import { generateCertificateSerial } from "@/app/(sertifika)/sertifika/helpers";
 
 export default function Lesson({
   maxOrder = 40,
@@ -17,12 +18,16 @@ export default function Lesson({
   id?: string;
   maxOrder?: number;
   session: { user: { student: any; role: string } };
-  lessonData: { lesson: any; isAllCompleted: boolean } | null;
+  lessonData: { lesson: any; isAllCompleted: boolean; serial?: string } | null;
   progressSummary: any;
 }) {
   const videoItems = menuItems?.filter((m) => m.youtubeId !== "");
   const currentLesson = lessonData?.lesson;
   const isAllCompleted = lessonData?.isAllCompleted ?? false;
+  const student = session.user.student;
+  const serial = isAllCompleted
+    ? generateCertificateSerial(student.id, student.startDate)
+    : "";
 
   return (
     <div className="w-full px-3 items-start flex flex-col lg:flex-row gap-5">
@@ -34,7 +39,7 @@ export default function Lesson({
 
       <LessonBoard key={currentLesson}>
         {isAllCompleted ? (
-          <LessonCongrats session={session} />
+          <LessonCongrats serial={serial} />
         ) : (
           <div className="w-full py-2 lg:pt-3 lg:pb-4">
             <div className="flex flex-wrap gap-3 justify-between mb-7">

@@ -379,9 +379,9 @@ function Icon({
             x="0"
             y="30"
             fontFamily="Inter, Poppins, Montserrat, Arial, sans-serif"
-            fontSize="27"
-            fontWeight="750"
-            letterSpacing="-0.8"
+            fontSize="24"
+            fontWeight="600"
+            letterSpacing="0"
           >
             <tspan fill="#03A7EB">{logoText?.split("-")[0]}</tspan>
             <tspan fill="#FD8029">{logoText?.split("-")[1]}</tspan>
