@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { speedMap } from "./constants";
+import { speedMap } from "../../utils/constants";
 
 type Props = {
   studyGroup: string;

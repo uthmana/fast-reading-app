@@ -53,18 +53,6 @@ export default function FindTheWord({
     setSelectedAnswer(null);
   }, [words, wordCount]);
 
-  // const markWrongAnswer = () => {
-  //   const { right, wrong } = controls.resultDisplay;
-  //   setControlData({
-  //     ...controls,
-  //     resultDisplay: {
-  //       right,
-  //       wrong: wrong + 1,
-  //       net: right - (wrong + 1),
-  //     },
-  //   });
-  // };
-
   const handleAnswer = useCallback(
     (answer: number) => {
       if (answeredRef.current) return; // prevent double answer

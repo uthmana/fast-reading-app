@@ -1,14 +1,8 @@
 "use client";
 
-import { menuItems } from "@/app/routes";
 import Link from "next/link";
 import Icon from "../icon/icon";
-
-type MenuItem = {
-  name: string;
-  link: string;
-  type?: string;
-};
+import { useMenu } from "@/providers/menuProvider";
 
 export default function Sidebar({
   activeMenu,
@@ -17,6 +11,7 @@ export default function Sidebar({
   activeMenu: string | null;
   pathname: string;
 }) {
+  const { menuItems } = useMenu();
   let selected = menuItems.find((m) => m.name === activeMenu);
   if (!activeMenu) {
     selected = menuItems.find((menu) => menu.link === pathname);
@@ -34,7 +29,7 @@ export default function Sidebar({
   return (
     <aside className="hidden min-h-96 lg:block w-64 pl-4">
       <ul className="space-y-[1px]">
-        {selected?.subMenu?.map((item: MenuItem) => {
+        {selected?.subMenu?.map((item) => {
           return (
             <li key={item.name}>
               <Link

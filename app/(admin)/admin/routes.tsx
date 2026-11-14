@@ -36,6 +36,7 @@ const routes = [
       { name: "Kategoriler", path: "/admin/category" },
       { name: "Makaleler", path: "/admin/articles" },
       { name: "Kelimeler", path: "/admin/words" },
+      { name: "Videolar", path: "/admin/videos" },
     ],
   },
   {
