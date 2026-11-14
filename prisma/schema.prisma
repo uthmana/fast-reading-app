@@ -221,6 +221,44 @@ model Registration {
   updatedAt   DateTime?        @updatedAt
 }
 
+model MenuItem {
+  id          String  @id @default(cuid())
+  name        String
+  link        String  @unique
+  icon        String?
+  description String? @db.Text
+  youtubeId   String? @default("")
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
+
+  subMenu MenuSubItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([order])
+  @@map("menu_items")
+}
+
+model MenuSubItem {
+  id       String  @id @default(cuid())
+  name     String
+  link     String
+  type     String?
+  order    Int     @default(0)
+  isActive Boolean @default(true)
+
+  menuItemId String
+  menuItem   MenuItem @relation(fields: [menuItemId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([menuItemId, link])
+  @@index([menuItemId, order])
+  @@map("menu_sub_items")
+}
+
 enum Role {
   ADMIN
   SUBSCRIBER

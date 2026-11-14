@@ -59,7 +59,6 @@ export default function AudioPlayer({
     else newIndex = currentIndex < playlists.length - 1 ? currentIndex + 1 : 0;
 
     setCurrentIndex(newIndex);
-    // setIsPlaying(false);
   };
 
   return (

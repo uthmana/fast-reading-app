@@ -1,6 +1,6 @@
 "use client";
 
-import { menuItems } from "@/app/routes";
+import { useMenu } from "@/providers/menuProvider";
 import { usePathname } from "next/navigation";
 import { MdInfo } from "react-icons/md";
 
@@ -17,8 +17,9 @@ export default function ControlPanelGuide({
     }
   | any) {
   const pathname = usePathname();
+  const { menuItems } = useMenu();
   const menu = menuItems.find((item) =>
-    item.subMenu.find((sub) => sub.link === pathname)
+    item.subMenu.find((sub) => sub.link === pathname),
   );
 
   const title =

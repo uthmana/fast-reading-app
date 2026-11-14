@@ -1,7 +1,7 @@
 "use client";
 
 import LessonBoard from "../lessonBoard/lessonBoard";
-import InfoSideBar from "../sideBar/infoSideBar";
+import InfoSideBar from "../../sideBar/infoSideBar";
 
 export default function LessonLoader() {
   return (

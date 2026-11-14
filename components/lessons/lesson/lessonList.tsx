@@ -4,12 +4,12 @@ import Link from "next/link";
 import LessonBoard from "../lessonBoard/lessonBoard";
 import { IoMdLock } from "react-icons/io";
 import LessonNavClient from "./lessonNavClient";
-import { menuItems } from "@/app/routes";
-import InfoSideBar from "../sideBar/infoSideBar";
+import InfoSideBar from "../../sideBar/infoSideBar";
 import LessonCongrats from "./lessonCongrats";
 import { generateCertificateSerial } from "@/app/(sertifika)/sertifika/helpers";
+import { useMenu } from "@/providers/menuProvider";
 
-export default function Lesson({
+export default function LessonList({
   maxOrder = 40,
   session,
   lessonData,
@@ -21,6 +21,7 @@ export default function Lesson({
   lessonData: { lesson: any; isAllCompleted: boolean; serial?: string } | null;
   progressSummary: any;
 }) {
+  const { menuItems } = useMenu();
   const videoItems = menuItems?.filter((m) => m.youtubeId !== "");
   const currentLesson = lessonData?.lesson;
   const isAllCompleted = lessonData?.isAllCompleted ?? false;

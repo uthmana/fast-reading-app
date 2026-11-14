@@ -1,6 +1,5 @@
 import React from "react";
 import ExerciseDetail from "@/components/exerciseDetail/exerciseDetail";
-import { menuItems } from "@/app/routes";
 
 export const metadata = {
   title: "Göz Egzersiz | Etkin Hızlı Okuma",
@@ -8,5 +7,5 @@ export const metadata = {
 };
 
 export default async function page() {
-  return <ExerciseDetail menuItems={menuItems} />;
+  return <ExerciseDetail pathName="/ogrenci/goz-egzersizleri" />;
 }

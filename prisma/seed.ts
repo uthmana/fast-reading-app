@@ -3,12 +3,71 @@ import {
   allWords,
   exerciseData,
   lessonData,
+  menuItems,
   studyGroupOptions,
 } from "./mockData";
 import { StudyGroup } from "@prisma/client";
 import { mockArticles } from "./mockArticles";
 
 async function main() {
+  // Seed data for menu items and submenus
+  const allMenuItems = await prisma.$transaction(
+    async (tx) => {
+      for (const [menuIndex, item] of menuItems.entries()) {
+        const menu = await tx.menuItem.upsert({
+          where: {
+            link: item.link,
+          },
+          update: {
+            name: item.name,
+            icon: item.icon,
+            description: item.description,
+            youtubeId: item.youtubeId,
+            order: menuIndex,
+            isActive: true,
+          },
+          create: {
+            name: item.name,
+            link: item.link,
+            icon: item.icon,
+            description: item.description,
+            youtubeId: item.youtubeId,
+            order: menuIndex,
+            isActive: true,
+          },
+        });
+
+        for (const [subIndex, subItem] of item.subMenu.entries()) {
+          await tx.menuSubItem.upsert({
+            where: {
+              menuItemId_link: {
+                menuItemId: menu.id,
+                link: subItem.link,
+              },
+            },
+            update: {
+              name: subItem.name,
+              type: subItem.type ?? null,
+              order: subIndex,
+              isActive: true,
+            },
+            create: {
+              name: subItem.name,
+              link: subItem.link,
+              type: subItem.type ?? null,
+              order: subIndex,
+              menuItemId: menu.id,
+            },
+          });
+        }
+      }
+    },
+    {
+      maxWait: 10000,
+      timeout: 30000,
+    },
+  );
+
   // Default admin user
   const user = await prisma.user.upsert({
     where: { username: "happybrainsyonetim" },
@@ -256,6 +315,7 @@ async function main() {
     subscriber,
     teacher,
     student,
+    allMenuItems,
     studentLessons,
     createdExercises,
     defaultLessons,

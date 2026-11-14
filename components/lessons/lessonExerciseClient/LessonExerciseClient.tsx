@@ -6,25 +6,25 @@ import Whiteboard from "@/components/whiteboard/whiteboard";
 import { useEffect, useState } from "react";
 import { fetchData } from "@/utils/fetchData";
 import { ExerciseDescription } from "@/utils/constants";
-import { isValidPathname } from "@/utils/helpers";
+import { getFullPathFromSlug, isValidPathname } from "@/utils/helpers";
 import ControlPanelGuideSelectNew from "@/components/controlPanelGuide/controlPanelGuideSelectNew";
 import NotFound from "@/app/(ogrenci)/ogrenci/not-found";
+import { useMenu } from "@/providers/menuProvider";
 
 type LessonExerciseClientType = {
   lessonConfigData?: any;
   exerciseControls?: any;
   session?: any;
   pathname?: string;
-  fullPath?: string;
 };
 
 export default function LessonExerciseClient({
   session,
   pathname = "",
-  fullPath,
   lessonConfigData,
   exerciseControls,
 }: LessonExerciseClientType) {
+  const { menuItems } = useMenu();
   const [pause, setPause] = useState(false);
   const [isContinueWithNewExercise, setContinueWithNewExercise] =
     useState(false);
@@ -51,6 +51,8 @@ export default function LessonExerciseClient({
     ...exerciseControls,
   });
 
+  const fullPath = getFullPathFromSlug(pathname, menuItems);
+
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL") ||
     session?.user?.student?.studyGroup?.includes("DISLEKSI");
@@ -75,7 +77,7 @@ export default function LessonExerciseClient({
     }));
   }, []);
 
-  if (!isValidPathname(pathname)) {
+  if (!isValidPathname(pathname, menuItems)) {
     return <NotFound />;
   }
 

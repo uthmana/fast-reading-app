@@ -1,11 +1,10 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { getLessonExerciseData } from "@/utils/getLessonExerciseData";
+import { getLessonExerciseData } from "@/lib/api/getLessonExerciseData";
 import { redirect } from "next/navigation";
-import { menuItems } from "@/app/routes";
 import type { Metadata } from "next";
-import LessonExerciseClient from "@/components/lessonExerciseClient/LessonExerciseClient";
-import { getFullPathFromSlug } from "@/utils/helpers";
+import LessonExerciseClient from "@/components/lessons/lessonExerciseClient/LessonExerciseClient";
+import getMenuItems from "@/lib/api/getMenuItems";
 
 export async function generateMetadata({
   params,
@@ -14,6 +13,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
 
+  const menuItems = await getMenuItems();
   const currentMenu = menuItems.find((menu) =>
     menu.subMenu?.some((item) => item.link.endsWith(`/${slug}`)),
   );
@@ -40,7 +40,6 @@ export default async function Page({
   const { q } = await searchParams;
   const session = await getServerSession(authOptions);
   const studyGroup = session?.user?.student?.studyGroup;
-  const fullPath = getFullPathFromSlug(params.slug);
 
   const { lessonConfigData, exerciseControls } = await getLessonExerciseData({
     lessonExerciseId: q ?? "",
@@ -55,7 +54,6 @@ export default async function Page({
     <LessonExerciseClient
       session={session}
       pathname={params.slug}
-      fullPath={fullPath ?? ""}
       lessonConfigData={{ ...lessonConfigData, pahtname: params.slug, session }}
       exerciseControls={exerciseControls}
     />

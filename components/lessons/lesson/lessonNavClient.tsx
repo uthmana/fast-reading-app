@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import Button from "../button/button";
-import Icon from "../icon/icon";
+import Button from "../../button/button";
+import Icon from "../../icon/icon";
 
 interface Props {
   order: number;
