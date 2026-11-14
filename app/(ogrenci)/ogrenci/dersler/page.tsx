@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import LessonLoader from "@/components/lesson/lessonLoader";
+import LessonLoader from "@/components/lessons/lesson/lessonLoader";
 import LessonsClient from "./lessonsClient";
 
 export const metadata = {

@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import LogOutInput from "../formInputs/logoutInput";
 import Icon from "../icon/icon";
-import { menuItems } from "@/app/routes";
 import { companyInfo } from "@/utils/constants";
+import { useMenu } from "@/providers/menuProvider";
 
 interface MenuProps {
   onActiveMenu: (menuName: string | null) => void;
@@ -13,6 +13,7 @@ interface MenuProps {
 }
 
 export default function Menu({ onActiveMenu, pathname }: MenuProps) {
+  const { menuItems } = useMenu();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 

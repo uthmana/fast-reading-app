@@ -66,44 +66,6 @@ export const useFormHandler = () => {
   return { isSubmitting, resError, response, handleFormSubmit };
 };
 
-export const useDrage = () => {
-  const [isDown, setIsDown] = useState(false);
-  const [startX, setStartX] = useState<number | null>(null);
-  const [scrollLeft, setScrollLeft] = useState(0);
-
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDown(true);
-    setStartX(e.pageX - e.currentTarget.offsetLeft);
-    setScrollLeft(e.currentTarget.scrollLeft);
-    e.currentTarget.classList.add("dragging-active");
-  };
-
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDown(false);
-    e.currentTarget.classList.remove("dragging-active");
-  };
-
-  const handleMouseUp = (e: React.MouseEvent<HTMLDivElement>) => {
-    setIsDown(false);
-    e.currentTarget.classList.remove("dragging-active");
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDown || startX === null) return;
-    e.preventDefault();
-    const x = e.pageX - e.currentTarget.offsetLeft;
-    const walk = (x - startX) * 3; // scroll speed factor
-    e.currentTarget.scrollLeft = scrollLeft - walk;
-  };
-
-  return {
-    handleMouseDown,
-    handleMouseLeave,
-    handleMouseUp,
-    handleMouseMove,
-  };
-};
-
 export const useAudioSound = (src: string) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -128,26 +90,6 @@ export const useAudioSound = (src: string) => {
   };
 
   return { isPlaying, audioRef, playSound, stopSound };
-};
-
-export const useDecodeQuery = (q: string | null) => {
-  let queryParamsDecoded: any = null;
-  if (q) {
-    try {
-      queryParamsDecoded = JSON.parse(atob(q));
-    } catch (error) {
-      console.error("Error decoding query parameters:", error);
-      queryParamsDecoded = null;
-    }
-    if (!queryParamsDecoded) return {};
-    return {
-      lessonParams: queryParamsDecoded?.lessonId,
-      exerciseParams: queryParamsDecoded?.exerciseId,
-      durationParams: queryParamsDecoded?.duration,
-      orderParams: queryParamsDecoded?.order,
-    };
-  }
-  return {};
 };
 
 type UseAutoScrollIntoViewProps = {

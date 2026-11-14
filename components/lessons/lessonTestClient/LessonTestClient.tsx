@@ -4,11 +4,16 @@ import ControlPanelGuide from "@/components/controlPanelGuide/controlPanelGuide"
 import FastReadingTest from "@/components/fastReadingTest/fastReadingTest";
 import Whiteboard from "@/components/whiteboard/whiteboard";
 import { fetchData } from "@/utils/fetchData";
-import { countWords, isValidPathname } from "@/utils/helpers";
+import {
+  countWords,
+  getFullPathFromSlug,
+  isValidPathname,
+} from "@/utils/helpers";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ExerciseDescription } from "@/utils/constants";
 import NotFound from "@/app/(ogrenci)/ogrenci/not-found";
+import { useMenu } from "@/providers/menuProvider";
 
 type LessonTestClientType = {
   lessonConfigData?: any;
@@ -17,7 +22,6 @@ type LessonTestClientType = {
   pathname?: string;
   introTest?: string;
   testArticle?: { title?: string; description: string; tests?: any } | null;
-  fullPath?: string;
 };
 
 export default function LessonTestClient({
@@ -27,9 +31,9 @@ export default function LessonTestClient({
   testArticle,
   lessonConfigData,
   exerciseControls,
-  fullPath,
 }: LessonTestClientType) {
   const router = useRouter();
+  const { menuItems } = useMenu();
   const [pause, setPause] = useState(false);
   const [questions, setQuestions] = useState(testArticle?.tests ?? ([] as any));
   const [readingStatus, setReadingStatus] = useState({
@@ -52,6 +56,8 @@ export default function LessonTestClient({
   const isPrimaryStudent =
     session?.user?.student?.studyGroup?.includes("ILKOKUL") ||
     session?.user?.student?.studyGroup?.includes("DISLEKSI");
+
+  const fullPath = getFullPathFromSlug(pathname, menuItems);
 
   const isArticleSelectReq =
     fullPath?.includes("/metin-egzersizleri") ||
@@ -88,7 +94,7 @@ export default function LessonTestClient({
     setQuestions(controlData.selectedData?.tests);
   }, [controlData.selectedData, setQuestions]);
 
-  if (!isValidPathname(pathname)) {
+  if (!isValidPathname(pathname, menuItems)) {
     return <NotFound />;
   }
 

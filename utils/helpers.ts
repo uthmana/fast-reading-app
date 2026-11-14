@@ -3,7 +3,7 @@ import * as XLSX from "xlsx";
 import saveAs from "file-saver";
 import { speedMap, studyGroupOptions } from "./constants";
 import { fetchData } from "./fetchData";
-import { menuItems } from "@/app/routes";
+import { MenuPropsTypes } from "@/types/menu";
 
 type UserWhereInput =
   | { email: string }
@@ -274,14 +274,20 @@ export function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-export function isValidPathname(pathname: string) {
+export function isValidPathname(
+  pathname: string,
+  menuItems: MenuPropsTypes[],
+): boolean {
   const currentMenu = menuItems.filter((m) =>
     m.subMenu?.some((s) => s.link.includes(pathname)),
   );
   return currentMenu.length > 0;
 }
 
-export const getFullPathFromSlug = (slug: string): string | null => {
+export const getFullPathFromSlug = (
+  slug: string,
+  menuItems: MenuPropsTypes[],
+): string | null => {
   const menuItem = menuItems.find((menu) =>
     menu.subMenu?.some((subMenu) => subMenu.link.endsWith(`/${slug}`)),
   );

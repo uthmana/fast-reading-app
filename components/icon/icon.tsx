@@ -21,7 +21,8 @@ type IconProps = {
     | "fast-reading"
     | "brain"
     | "addUser"
-    | "logo";
+    | "logo"
+    | "edit";
   className?: string;
   fill?: string;
   stroke?: string;
@@ -386,6 +387,20 @@ function Icon({
             <tspan fill="#03A7EB">{logoText?.split("-")[0]}</tspan>
             <tspan fill="#FD8029">{logoText?.split("-")[1]}</tspan>
           </text>
+        </svg>
+      );
+    case "edit":
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill={fill}
+          viewBox="0 0 24 24"
+          stroke={stroke}
+          strokeWidth="2"
+          className={className}
+        >
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
         </svg>
       );
     default:
