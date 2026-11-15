@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
-import DashboardClient from "@/components/dashboardClient/dashBoardClient";
+import HomeClient from "@/components/ogrenci/homeClient/HomeClient";
 
 export const metadata = {
   title: "Ana sayfa | Etkin Hızlı Okuma",
@@ -20,20 +20,20 @@ export default async function Page() {
   const [user, progressSummary] = await Promise.all([
     fetch(
       `${baseUrl}/api/users?username=${encodeURIComponent(
-        session.user.username
+        session.user.username,
       )}`,
       {
         cache: "no-store",
-      }
+      },
     ).then((r) => r.json()),
 
     fetch(
       `${baseUrl}/api/progressSummary?studentId=${session?.user?.student?.id}`,
       {
         cache: "no-store",
-      }
+      },
     ).then((r) => r.json()),
   ]);
 
-  return <DashboardClient user={user} progressSummary={progressSummary} />;
+  return <HomeClient user={user} progressSummary={progressSummary} />;
 }

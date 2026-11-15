@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { signOut } from "next-auth/react";
-import Dropdown from "../dropdown/dropdown";
+import Dropdown from "../components/dropdown/dropdown";
 import { MdAccountCircle } from "react-icons/md";
 import Link from "next/link";
 

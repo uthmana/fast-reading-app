@@ -1,13 +1,13 @@
 "use client";
 
 import TableBuilder from "@/components/admin/tableBuilder";
-import FormBuilder from "@/components/formBuilder";
-import Popup from "@/components/popup/popup";
+import Popup from "@/components/common/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "../authHandler/authOptions";
+import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import FormBuilder from "@/components/admin/formBuilder";
 
 export default function page() {
   const router = useRouter();

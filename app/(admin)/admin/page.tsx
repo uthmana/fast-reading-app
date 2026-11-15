@@ -1,13 +1,13 @@
 "use client";
-import MiniCalendar from "@/components/admin/miniCalendar/miniCalendar";
-import TableBuilder from "@/components/admin/tableBuilder";
-import BarChart from "@/components/Charts/barChart";
-import { DashboardSkeleton } from "@/components/skeleton/skeleton";
-import Widget from "@/components/widget/widget";
-import { fetchData } from "@/utils/fetchData";
-import { formatDateTime } from "@/utils/helpers";
-import { useEffect, useState } from "react";
-import { MdArticle, MdGroups, MdPerson4, MdQuiz } from "react-icons/md";
+// import MiniCalendar from "@/components/admin/components/miniCalendar/miniCalendar";
+// import TableBuilder from "@/components/admin/tableBuilder";
+// import BarChart from "@/components/common/Charts/barChart";
+// import { DashboardSkeleton } from "@/components/skeleton/skeleton";
+// import Widget from "@/components/common/widget/widget";
+// import { fetchData } from "@/utils/fetchData";
+// import { formatDateTime } from "@/utils/helpers";
+// import { useEffect, useState } from "react";
+// import { MdArticle, MdGroups, MdPerson4, MdQuiz } from "react-icons/md";
 import { redirect } from "next/navigation";
 
 export default function DashboardPage() {

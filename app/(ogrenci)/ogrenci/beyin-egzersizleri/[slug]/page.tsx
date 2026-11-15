@@ -3,8 +3,8 @@ import { authOptions } from "@/lib/authOptions";
 import { getLessonExerciseData } from "@/lib/api/getLessonExerciseData";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import LessonExerciseClient from "@/components/lessons/lessonExerciseClient/LessonExerciseClient";
 import getMenuItems from "@/lib/api/getMenuItems";
+import LessonExerciseClient from "@/components/ogrenci/lessons/lessonExerciseClient/LessonExerciseClient";
 
 export async function generateMetadata({
   params,

@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/authOptions";
 import NotFound from "../not-found";
-import Lesson from "@/components/lessons/lesson/lessonList";
+import Lesson from "@/components/ogrenci/lessons/lesson/lessonList";
 
 const MAXIMUM_LESSON_COUNT = 40;
 

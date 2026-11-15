@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import FormBuilder from "@/components/formBuilder";
 import { useFormHandler } from "@/utils/hooks";
 import { companyInfo } from "@/utils/constants";
+import FormBuilder from "@/components/form/formBuilder";
 
 export default function FranchisePage() {
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();

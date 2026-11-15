@@ -1,8 +1,7 @@
 "use client";
 
 import TableBuilder from "@/components/admin/tableBuilder";
-import FormBuilder from "@/components/formBuilder";
-import Popup from "@/components/popup/popup";
+import Popup from "@/components/common/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useEffect, useState } from "react";
@@ -21,14 +20,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableItem from "@/components/admin/sortableItem/sortableItem";
-import Button from "@/components/button/button";
+import SortableItem from "@/components/admin/components/sortableItem/sortableItem";
+import Button from "@/components/common/button/button";
 import dynamic from "next/dynamic";
-import { useAuthHandler } from "../authHandler/authOptions";
+import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import FormBuilder from "@/components/admin/formBuilder";
 
 const DndContextWithNoSSR = dynamic(
   () => import("@dnd-kit/core").then((mod) => mod.DndContext),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function page() {
@@ -87,7 +87,7 @@ export default function page() {
             payload: { id: currentLesson.id },
           });
           setLessons(
-            [...lessons].filter((val: any) => val.id !== currentLesson.id)
+            [...lessons].filter((val: any) => val.id !== currentLesson.id),
           );
           setIsloading(false);
         } catch (error) {
@@ -101,7 +101,7 @@ export default function page() {
       const formattedLessonExercise = currentLesson?.LessonExercise?.map(
         ({ exercise, ...rest }: any) => {
           return { ...rest, title: exercise.title };
-        }
+        },
       );
       setItems(formattedLessonExercise);
       setIsShowExercisePopUp(true);
@@ -120,7 +120,7 @@ export default function page() {
     const { isValid, event, formData } = values;
 
     const formattedExercise = formData?.Exercise.map((item: string) =>
-      parseInt(item)
+      parseInt(item),
     );
     const nwFormData = {
       isValid,
@@ -143,7 +143,7 @@ export default function page() {
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const removeItem = (id: number) => {
@@ -177,7 +177,7 @@ export default function page() {
     if (activeIndex !== overIndex) {
       setItems((prev: any) => {
         const updated = arrayMove(prev, activeIndex, overIndex).map(
-          (ex: any, i: number) => ({ ...ex, order: i + 1 })
+          (ex: any, i: number) => ({ ...ex, order: i + 1 }),
         );
 
         return updated;

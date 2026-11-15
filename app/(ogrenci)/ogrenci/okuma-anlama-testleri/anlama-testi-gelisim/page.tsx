@@ -1,4 +1,4 @@
-import ReadingScoreClient from "@/components/readindScoreClient/readingScoreClient";
+import ReadingScoreClient from "@/components/ogrenci/readingScoreClient/readingScoreClient";
 import { authOptions } from "@/lib/authOptions";
 import { formatDateTime } from "@/utils/helpers";
 import { getServerSession } from "next-auth";

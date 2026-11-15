@@ -1,5 +1,5 @@
-import BarChart from "@/components/Charts/barChart";
-import PieChart from "@/components/Charts/pieChart";
+import BarChart from "@/components/common/Charts/barChart";
+import PieChart from "@/components/common/Charts/pieChart";
 import React from "react";
 
 export default function StudentResult({

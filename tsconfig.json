@@ -29,8 +29,8 @@
     "**/*.tsx",
     "types/**/*.d.ts",
     ".next/types/**/*.ts",
-    "components/readindScoreClient",
-    "components/dashboardClient"
+    "components/ogrenci/readingScoreClient",
+    "components/ogrenci/homeClient"
   ],
   "exclude": ["node_modules"]
 }

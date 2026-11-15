@@ -1,6 +1,6 @@
 "use client";
 
-import FormBuilder from "@/components/formBuilder";
+import FormBuilder from "@/components/form/formBuilder";
 import { companyInfo } from "@/utils/constants";
 import { useFormHandler } from "@/utils/hooks";
 import React, { useState } from "react";
