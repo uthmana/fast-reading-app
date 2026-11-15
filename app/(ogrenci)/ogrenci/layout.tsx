@@ -1,14 +1,12 @@
 import React from "react";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../lib/authOptions";
-
 import ClientLayout from "./clientLayout";
 import { redirect } from "next/navigation";
-import "../../globals.css";
-
 import { Oswald } from "next/font/google";
 import SessionProvider from "@/providers/sessionProvider";
 import getMenuItems from "@/lib/api/getMenuItems";
+import "../../globals.css";
 
 const oswald = Oswald({
   subsets: ["latin"],

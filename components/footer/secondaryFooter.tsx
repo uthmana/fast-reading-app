@@ -1,5 +1,5 @@
 import React from "react";
-import LogOutInput from "../formInputs/logoutInput";
+import LogOutInput from "../form/formInputs/logoutInput";
 import { companyInfo } from "@/utils/constants";
 
 export default function SecondaryFooter() {

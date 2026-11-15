@@ -1,14 +1,14 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import FormBuilder from "../../../components/formBuilder";
 import { useState } from "react";
 import { fetchData } from "@/utils/fetchData";
 import { getInputTypeValue } from "@/utils/helpers";
 import Icon from "@/components/icon/icon";
 import { useSearchParams } from "next/navigation";
 import { companyInfo } from "@/utils/constants";
-import YearNow from "@/components/landingPage/yearNow";
+import YearNow from "@/app/(public)/landingClient/components/yearNow";
+import FormBuilder from "@/components/form/formBuilder";
 
 type ValuesTypes = {
   isValid: boolean;

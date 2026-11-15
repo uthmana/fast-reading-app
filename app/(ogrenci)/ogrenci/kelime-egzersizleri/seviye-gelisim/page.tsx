@@ -1,5 +1,5 @@
 "use client";
-import BarChart from "@/components/Charts/barChart";
+import BarChart from "@/components/common/Charts/barChart";
 import { companyInfo } from "@/utils/constants";
 import { fetchData } from "@/utils/fetchData";
 import { formatDateTime } from "@/utils/helpers";

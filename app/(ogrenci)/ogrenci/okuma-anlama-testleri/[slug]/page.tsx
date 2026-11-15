@@ -3,7 +3,7 @@ import { authOptions } from "@/lib/authOptions";
 import { getLessonExerciseData } from "@/lib/api/getLessonExerciseData";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import LessonTestClient from "@/components/lessons/lessonTestClient/LessonTestClient";
+import LessonTestClient from "@/components/ogrenci/lessons/lessonTestClient/LessonTestClient";
 import { getTestArticle } from "@/lib/api/getTestArticle";
 import getMenuItems from "@/lib/api/getMenuItems";
 

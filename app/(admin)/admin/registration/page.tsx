@@ -3,11 +3,11 @@
 import React, { useEffect, useState } from "react";
 import TableBuilder from "@/components/admin/tableBuilder";
 import { fetchData } from "@/utils/fetchData";
-import { useAuthHandler } from "../authHandler/authOptions";
-import Popup from "@/components/popup/popup";
+import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import Popup from "@/components/common/popup/popup";
 import { formatDateTime } from "@/utils/helpers";
 import Link from "next/link";
-import Button from "@/components/button/button";
+import Button from "@/components/common/button/button";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
