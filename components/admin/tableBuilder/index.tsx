@@ -21,8 +21,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import Search from "../search/search";
-import Button from "../../button/button";
+import Search from "../components/search/search";
+import Button from "../../common/button/button";
 import TablePagination from "./tablePagination";
 import TableEmpty from "./tableEmpty";
 import {
@@ -33,7 +33,7 @@ import {
 import { columnsData, ColumnsKey } from "./columnsData";
 import { TableCellSkeleton } from "../../skeleton/skeleton";
 import Link from "next/link";
-import Dropdown from "../dropdown/dropdown";
+import Dropdown from "../components/dropdown/dropdown";
 import Icon from "@/components/icon/icon";
 import { studyGroupOptions } from "@/utils/constants";
 

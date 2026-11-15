@@ -1,4 +1,4 @@
-import ExerciseDetail from "@/components/exerciseDetail/exerciseDetail";
+import ExerciseDetail from "@/components/ogrenci/exerciseDetail/exerciseDetail";
 
 export const metadata = {
   title: "Beyin Egzersiz | Etkin Hızlı Okuma",

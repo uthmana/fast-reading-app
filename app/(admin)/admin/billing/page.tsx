@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import TableBuilder from "@/components/admin/tableBuilder";
 import { fetchData } from "@/utils/fetchData";
-import { useAuthHandler } from "../authHandler/authOptions";
+import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);
@@ -24,7 +24,7 @@ export default function page() {
             return {
               id: dVal.id,
               name: dVal?.users.find(
-                (item: any) => item.subscriberId === dVal.id
+                (item: any) => item.subscriberId === dVal.id,
               )?.name,
               credit: dVal.credit,
               price: dVal.price ?? 0,
@@ -41,7 +41,7 @@ export default function page() {
         const query = encodeURIComponent(
           JSON.stringify({
             subscriberId: userData.subscriberId,
-          })
+          }),
         );
         const resData = await fetchData({
           apiPath: `/api/students?where=${query}`,

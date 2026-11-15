@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Menu from "../../../components/menu/menu";
-import Sidebar from "../../../components/sideBar/sideBar";
+import Sidebar from "../../../components/ogrenci/sideBar/sideBar";
 import { usePathname } from "next/navigation";
 import AudioPlayer from "../../../components/audioPlayer/audioPlayer";
 import { playlists } from "../../../utils/constants";
-import Breadcrumb from "../../../components/breadcrumb/breadcrumb";
+import Breadcrumb from "../../../components/common/breadcrumb/breadcrumb";
 import SecondaryFooter from "../../../components/footer/secondaryFooter";
 import { MenuPropsTypes } from "@/types/menu";
 import { MenuProvider } from "@/providers/menuProvider";

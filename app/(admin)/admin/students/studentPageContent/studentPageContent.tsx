@@ -2,15 +2,15 @@
 
 import StudentResult from "@/components/admin/studentResult/studentResult";
 import TableBuilder from "@/components/admin/tableBuilder";
-import FormBuilder from "@/components/formBuilder";
 import Icon from "@/components/icon/icon";
-import Popup from "@/components/popup/popup";
+import Popup from "@/components/common/popup/popup";
 import { fetchData } from "@/utils/fetchData";
 import { formatDateTime } from "@/utils/helpers";
 import { useFormHandler } from "@/utils/hooks";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "../../authHandler/authOptions";
+import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import FormBuilder from "@/components/admin/formBuilder";
 
 export default function StudentPageContent() {
   const searchParams = useSearchParams();

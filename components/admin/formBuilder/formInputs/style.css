@@ -1,0 +1,7 @@
+input {
+  border: 1px solid #cccccc;
+}
+
+input:required:user-invalid {
+  border: 1px solid #ff0000;
+}

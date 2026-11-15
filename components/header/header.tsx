@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LogOutInput from "../formInputs/logoutInput";
+import LogOutInput from "../form/formInputs/logoutInput";
 
 export default async function Header({
   session,

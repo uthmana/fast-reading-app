@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import LogOutInput from "../formInputs/logoutInput";
+import LogOutInput from "../form/formInputs/logoutInput";
 import Icon from "../icon/icon";
 import { companyInfo } from "@/utils/constants";
 import { useMenu } from "@/providers/menuProvider";

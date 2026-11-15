@@ -1,7 +1,7 @@
 "use client";
 
 import Icon from "@/components/icon/icon";
-import InfoSideBar from "@/components/sideBar/infoSideBar";
+import InfoSideBar from "@/components/ogrenci/sideBar/infoSideBar";
 import { useMenu } from "@/providers/menuProvider";
 
 export default function VideoLessonClient({

@@ -1,14 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import NavBar from "../../../components/admin/navBar/navBar";
-import SideBar from "../../../components/admin/sideBar/sideBar";
-import { SessionProvider } from "next-auth/react";
 import routes from "./routes";
-import { PopupProvider } from "../../contexts/popupContext";
-import Breadcrumb from "@/components/admin/breadcrumb/breadcrumb";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { SessionProvider } from "next-auth/react";
+
+import Breadcrumb from "@/components/admin/components/breadcrumb/breadcrumb";
+import SideBar from "@/components/admin/components/sideBar/sideBar";
+import NavBar from "@/components/admin/components/navBar/navBar";
 import "../../globals.css";
+import { PopupProvider } from "@/providers/popupProvider";
 
 export default function DashboardLayout({
   children,

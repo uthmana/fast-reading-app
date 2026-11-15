@@ -1,5 +1,5 @@
 import React from "react";
-import ExerciseDetail from "@/components/exerciseDetail/exerciseDetail";
+import ExerciseDetail from "@/components/ogrenci/exerciseDetail/exerciseDetail";
 
 export const metadata = {
   title: "Göz Egzersiz | Etkin Hızlı Okuma",
