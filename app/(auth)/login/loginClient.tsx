@@ -7,7 +7,7 @@ import { getInputTypeValue } from "@/utils/helpers";
 import Icon from "@/components/icons/icon";
 import { useSearchParams } from "next/navigation";
 import { companyInfo } from "@/utils/constants";
-import YearNow from "@/app/(public)/landingPageClient/components/yearNow";
+import YearNow from "@/app/(landing)/landingPageClient/components/yearNow";
 import FormBuilder from "@/components/form/formBuilder";
 import { loginFields } from "./loginFields";
 
