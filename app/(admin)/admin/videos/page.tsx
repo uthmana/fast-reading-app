@@ -1,19 +1,9 @@
+import getMenuItems from "@/lib/api/getMenuItems";
 import VideosClient from "./videosClient/VideosClient";
-import { prisma } from "@/lib/prisma";
 
 export default async function VideosPage() {
-  const menuItems = await prisma.menuItem.findMany({
-    include: {
-      subMenu: {
-        orderBy: {
-          order: "asc",
-        },
-      },
-    },
-    orderBy: {
-      order: "asc",
-    },
-  });
+  const menuItems = await getMenuItems();
+
   const videoItems = menuItems
     .filter((m) => m.youtubeId !== "")
     .map((item) => ({

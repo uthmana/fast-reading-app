@@ -1,7 +1,7 @@
 "use client";
 
 import Button from "@/components/common/button/button";
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import { useRouter } from "next/navigation";
 
 interface Props {
@@ -18,22 +18,36 @@ export default function LessonNavClient({ order, maxOrder }: Props) {
   return (
     <div className="flex gap-3 items-center whitespace-nowrap ml-auto justify-start font-medium">
       <Button
+        aria-label="Önceki Ders"
         text=""
         className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
-        icon={<Icon name="chevron-left" className="w-6 h-6 text-white" />}
+        icon={
+          <Icon
+            name="chevron-left"
+            aria-hidden="true"
+            className="w-6 h-6 text-white"
+          />
+        }
         onClick={() => router.push(`/ogrenci/dersler/${Math.max(prev, 1)}`)}
-      ></Button>
+      />
       {order || 1}. Ders
       <Button
+        aria-label="Sonraki Ders"
         text=""
-        icon={<Icon name="chevron-right" className="w-6 h-6 text-white" />}
+        icon={
+          <Icon
+            name="chevron-right"
+            aria-hidden="true"
+            className="w-6 h-6 text-white"
+          />
+        }
         className="border !p-1 rounded !bg-black/0 hover:!bg-brand-primary-50"
         onClick={() => {
           if (next <= maxOrder) {
             router.push(`/ogrenci/dersler/${next}`);
           }
         }}
-      ></Button>
+      />
     </div>
   );
 }

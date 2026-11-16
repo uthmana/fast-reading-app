@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Icon from "../icon/icon";
+import Icon from "../icons/icon";
 import { MdMusicNote } from "react-icons/md";
 
 type AudioTrack = {

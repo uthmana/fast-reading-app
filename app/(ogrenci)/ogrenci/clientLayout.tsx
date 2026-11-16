@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Menu from "../../../components/menu/menu";
-import Sidebar from "../../../components/ogrenci/sideBar/sideBar";
+import Menu from "@/components/menu/menu";
+import Sidebar from "@/components/ogrenci/sideBar/sideBar";
 import { usePathname } from "next/navigation";
-import AudioPlayer from "../../../components/audioPlayer/audioPlayer";
-import { playlists } from "../../../utils/constants";
-import Breadcrumb from "../../../components/common/breadcrumb/breadcrumb";
-import SecondaryFooter from "../../../components/footer/secondaryFooter";
+import AudioPlayer from "@/components/audioPlayer/audioPlayer";
+import { playlists } from "@/utils/constants";
+import Breadcrumb from "@/components/common/breadcrumb/breadcrumb";
+import SecondaryFooter from "@/components/footer/secondaryFooter";
 import { MenuPropsTypes } from "@/types/menu";
 import { MenuProvider } from "@/providers/menuProvider";
 
@@ -53,7 +53,7 @@ export default function ClientLayout({
         </div>
         <main className="w-full min-h-full relative">
           <div
-            className={`flex flex-col items-start bg-brand-tertiary-10 lg:shadow lg:rounded-xl lg:px-4  lg:border container`}
+            className={`flex flex-col items-start bg-white lg:shadow lg:rounded-xl lg:px-4  lg:border container`}
           >
             <Breadcrumb menuItem={currentMenu} />
             <div className="w-full flex h-full">

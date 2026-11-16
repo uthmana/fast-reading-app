@@ -1,20 +1,17 @@
 "use client";
-import Icon from "@/components/icon/icon";
-
+import Icon from "@/components/icons/icon";
 import { MdCreditScore } from "react-icons/md";
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import { useEffect, useState } from "react";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import Profile from "../../profile/profile";
 
 export default function NavBar({
   toggleSidebar,
-  isSidebarOpen,
 }: {
   toggleSidebar: () => void;
-  isSidebarOpen: boolean;
 }) {
-  const [credit, setCredit] = useState(0);
+  const [credit, setCredit] = useState(null);
   const { loading, userData } = useAuthHandler();
 
   useEffect(() => {
@@ -51,7 +48,7 @@ export default function NavBar({
         >
           <Icon name="menu" className="w-6 h-6 text-gray-600" />
         </button>
-        {userData?.role !== "ADMIN" ? (
+        {credit !== null && userData?.role !== "ADMIN" ? (
           <div className="bg-green-500 hover:bg-green-600 text-sm h-[60px] px-3 flex flex-col justify-center items-center text-white">
             <MdCreditScore className="w-5 h-5" />
             <b>{credit || 0} Kredi</b>

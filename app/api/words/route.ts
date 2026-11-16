@@ -1,9 +1,10 @@
+import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
-import { extractPrismaErrorMessage, shuffleArray } from "@/utils/helpers";
-import prisma from "@/lib/prisma";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import { shuffleArray } from "@/utils/helpers";
 
 export async function GET(req: NextRequest) {
   try {

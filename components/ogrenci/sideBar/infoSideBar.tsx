@@ -43,7 +43,7 @@ export default function InfoSideBar({
           />
         </Link>
       </div>
-      <ul className="space-y-[1px]">
+      <div className="space-y-[1px]">
         <Link
           href={"/ogrenci/dersler/videolar"}
           className={`block px-2 py-3 mb-1 bg-white border-2 border-brand-primary-50 group text-lg  hover:shadow-md hover:text-blue-600 rounded-lg  transition ${
@@ -56,7 +56,7 @@ export default function InfoSideBar({
             className={`flex justify-between transition-transform items-center`}
           >
             <span className="font-oswald font-normal">Ders Videoları</span>
-            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-50">
+            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-100">
               {videoItems.length}
             </span>
           </span>
@@ -72,7 +72,7 @@ export default function InfoSideBar({
             <span className="font-oswald font-normal">
               Takistoskop Gelişimi
             </span>
-            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-50">
+            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-100">
               {`${progressSummary.levelUp?.correct || "0"} / ${
                 progressSummary.levelUp?.durationSec || "0"
               } ms`.trim()}
@@ -89,7 +89,7 @@ export default function InfoSideBar({
             <span className="font-oswald font-normal">
               Hızlı Okuma Gelişimi
             </span>
-            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-50">
+            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-100">
               {`1 dk. ${
                 progressSummary.fastReadingProgress?.wpm || "0"
               } kl`.trim()}
@@ -104,14 +104,14 @@ export default function InfoSideBar({
             className={`flex justify-between transition-transform items-center`}
           >
             <span className="font-oswald font-normal">Anlama Gelişimi</span>
-            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-50">
+            <span className="font-bold max-h-fit text-xs text-white whitespace-nowrap px-1 py-[4px] bg-brand-primary-100">
               {`% ${
                 progressSummary.fastUnderstandingProgress?.correct || "0"
               }`.trim()}
             </span>
           </span>
         </Link>
-      </ul>
+      </div>
     </aside>
   );
 }

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { Oswald } from "next/font/google";
 import SessionProvider from "@/providers/sessionProvider";
 import getMenuItems from "@/lib/api/getMenuItems";
+import { verdana, tttkb } from "@/public/fonts/fonts";
 import "../../globals.css";
 
 const oswald = Oswald({
@@ -17,6 +18,15 @@ const oswald = Oswald({
 export const metadata = {
   title: "Etkin Hızlı Okuma",
   description: "Hızlı okuma pratik platformu",
+  manifest: "/favicons/site.webmanifest",
+  icons: {
+    icon: [
+      { url: "/favicons/favicon.ico" },
+      { url: "/favicons/favicon-16x16.png", sizes: "16x16" },
+      { url: "/favicons/favicon-32x32.png", sizes: "32x32" },
+    ],
+    apple: "/favicons/apple-touch-icon.png",
+  },
 };
 
 export default async function RootLayout({
@@ -38,7 +48,10 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="tr" className={oswald.variable}>
+    <html
+      lang="tr"
+      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable}`}
+    >
       <body className="bg-gray-100 w-full h-full">
         <SessionProvider>
           <ClientLayout menuItems={menuItems}>{children}</ClientLayout>

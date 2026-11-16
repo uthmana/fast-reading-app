@@ -1,11 +1,11 @@
 import React from "react";
 
 import {
-  MdHome,
+  // MdHome,
   MdPerson,
   MdOutlineArticle,
   MdGroups,
-  MdBusiness,
+  //  MdBusiness,
   MdPayment,
   MdAppRegistration,
 } from "react-icons/md";

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { speedMap } from "@/utils/constants";
-import { useMetronome } from "@/utils/hooks";
+import { useMetronome } from "@/utils/hooks/useMetronome";
 
 type MetronomeEyeProps = {
   controls?: {

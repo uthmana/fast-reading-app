@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Icon from "../../icon/icon";
+import Icon from "../../icons/icon";
 import { useMenu } from "@/providers/menuProvider";
 
 export default function Sidebar({

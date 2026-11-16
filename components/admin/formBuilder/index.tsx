@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import TextInput from "./formInputs/textInput";
 import Select from "./formInputs/select";
-import formFields from "./formFields";
+import formFields from "@/app/(admin)/admin/formFields";
 import TextArea from "./formInputs/textArea";
 import { convertToISO8601 } from "@/utils/helpers";
 import Button from "./button/button";

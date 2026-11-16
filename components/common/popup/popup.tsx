@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import Icon from "../../icon/icon";
+import Icon from "../../icons/icon";
 import { usePopup } from "@/providers/popupProvider";
 
 type Popup = {

@@ -30,7 +30,8 @@
     "types/**/*.d.ts",
     ".next/types/**/*.ts",
     "components/ogrenci/readingScoreClient",
-    "components/ogrenci/homeClient"
+    "components/ogrenci/homeClient",
+    "lib/fetchData"
   ],
   "exclude": ["node_modules"]
 }

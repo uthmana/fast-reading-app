@@ -2,7 +2,7 @@
 
 import ControlPanelGuide from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuide";
 import Whiteboard from "@/components/ogrenci/whiteboard/whiteboard";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import {
   countWords,
   getFullPathFromSlug,
@@ -230,11 +230,7 @@ export default function LessonTestClient({
         introTest={introTest}
         saveProgress={saveProgress}
         isLesson={isLesson}
-        className={
-          isPrimaryStudent
-            ? " !font-tttkbDikTemelAbece font-extrabold "
-            : " font-verdana "
-        }
+        className={isPrimaryStudent ? " font-tttkb " : " font-verdana "}
       />
     </Whiteboard>
   );

@@ -6,7 +6,7 @@ import TextInput from "@/components/form/formInputs/textInput";
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { MdThumbUp } from "react-icons/md";
 import { speedMap } from "@/utils/constants";
-import { useFeedbackSound } from "./hooks";
+import { useFeedbackSound } from "@/utils/hooks/useFeedbackSound";
 
 const TURKISH_LETTERS = [
   "A",

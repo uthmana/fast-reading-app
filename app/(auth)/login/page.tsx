@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { TableSkeleton } from "@/components/skeleton/skeleton";
+import { TableSkeleton } from "@/components/skeletons/skeleton";
 import LoginClient from "./loginClient";
 
 export default function Page() {
