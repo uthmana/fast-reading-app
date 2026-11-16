@@ -2,8 +2,8 @@
 
 import TableBuilder from "@/components/admin/tableBuilder";
 import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/utils/fetchData";
-import { useFormHandler } from "@/utils/hooks";
+import { fetchData } from "@/lib/fetchData/fetchData";
+import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useEffect, useState } from "react";
 import {
   closestCenter,
@@ -23,7 +23,7 @@ import {
 import SortableItem from "@/components/admin/components/sortableItem/sortableItem";
 import Button from "@/components/common/button/button";
 import dynamic from "next/dynamic";
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import FormBuilder from "@/components/admin/formBuilder";
 
 const DndContextWithNoSSR = dynamic(

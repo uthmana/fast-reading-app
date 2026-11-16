@@ -1,7 +1,7 @@
 "use client";
 import BarChart from "@/components/common/Charts/barChart";
 import { companyInfo } from "@/utils/constants";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import { formatDateTime } from "@/utils/helpers";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";

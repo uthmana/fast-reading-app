@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Article } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
 import prisma from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 
 export async function GET(req: NextRequest) {
   try {

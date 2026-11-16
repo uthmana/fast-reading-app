@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { Teacher } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

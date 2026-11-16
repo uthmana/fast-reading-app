@@ -1,3 +1,12 @@
+export const companyInfo = {
+  name: "HappyBrains",
+  email: "info@happybrains.com",
+  phone: "+90 545 643 24 XX",
+  logo: "Happy-Brains",
+  chartColor: "#1D4E89",
+  website: "https://happybrains.com.tr",
+};
+
 export const letterWords = [
   "bal",
   "suç",
@@ -103,11 +112,11 @@ export const letterWords = [
 export const playlists = [
   {
     type: "audio/mpeg",
-    src: "https://upload.wikimedia.org/wikipedia/commons/f/ff/Vivaldi_-_Four_Seasons_1_Spring_mvt_1_Allegro_-_John_Harrison_violin.oga",
+    src: "/music/music1.mp3",
   },
   {
     type: "audio/mpeg",
-    src: "https://www.coothead.co.uk/audio/You-Cant-Always-Get-What-You-Want.mp3",
+    src: "/music/music2.mp3",
   },
 ];
 export const speedMap: Record<number, number> = {
@@ -5884,13 +5893,4 @@ export const ExerciseDescription: ExerciseDescriptionMap = {
     howToPlay:
       "<p>Kategori ve makale seçip <span style='color:blue'>►</span> butonuna basarak anlama testine başlayın. Makaleyi sonuna kadar okuyup, bittiğinde  düğmesine basınız. Sistem size metin ile ilgili sorular soracaktır. Cevaplayıp gönder düğmesine basınız.</p>",
   },
-};
-
-export const companyInfo = {
-  name: "HappyBrains",
-  email: "info@happybrains.com",
-  phone: "+90 545 643 24 XX",
-  logo: "Happy-Brains",
-  chartColor: "#1D4E89",
-  website: "https://happybrains.com.tr",
 };

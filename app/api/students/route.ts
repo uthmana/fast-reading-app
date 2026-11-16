@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Student, User } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import prisma from "@/lib/prisma";
 import { lessonData } from "@/utils/constants";
 

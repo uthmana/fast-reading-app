@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { User } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       if (!user) {
         return NextResponse.json(
           { error: "Kullanıcı bulunamadı" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
       } catch (err) {
         return NextResponse.json(
           { error: "Invalid 'where' parameter" },
-          { status: 400 }
+          { status: 400 },
         );
       }
     }
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
         if (!user) {
           return NextResponse.json(
             { error: "Kullanıcı bulunamadı" },
-            { status: 404 }
+            { status: 404 },
           );
         }
         return NextResponse.json(user, { status: 200 });
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
       if (!user) {
         return NextResponse.json(
           { error: "Kullanıcı bulunamadı" },
-          { status: 404 }
+          { status: 404 },
         );
       }
 
@@ -106,7 +106,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -131,7 +131,7 @@ export async function POST(req: Request) {
   if (!name || !password || !role) {
     return NextResponse.json(
       { error: "Girdiğiniz bilgi hatalıdır" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -228,7 +228,7 @@ export async function POST(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Kullanıcı zaten mevcut." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }
@@ -250,7 +250,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Kullanıcı zaten mevcut değildir" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

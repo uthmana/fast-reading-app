@@ -4,14 +4,13 @@ import routes from "./routes";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { SessionProvider } from "next-auth/react";
-
 import Breadcrumb from "@/components/admin/components/breadcrumb/breadcrumb";
 import SideBar from "@/components/admin/components/sideBar/sideBar";
 import NavBar from "@/components/admin/components/navBar/navBar";
-import "../../globals.css";
 import { PopupProvider } from "@/providers/popupProvider";
+import "../../globals.css";
 
-export default function DashboardLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -57,7 +56,6 @@ export default function DashboardLayout({
                   onClick={() => setIsSidebarOpen(false)}
                 />
               )}
-
               {/* Main content: pushed on large screens when sidebar is open */}
               <div
                 className="flex w-full flex-col flex-1 transition-all duration-300 ease-in-out"
@@ -71,7 +69,6 @@ export default function DashboardLayout({
               >
                 <NavBar
                   toggleSidebar={() => setIsSidebarOpen((prev) => !prev)}
-                  isSidebarOpen={isSidebarOpen}
                 />
                 <main className="flex-1 p-5 overflow-y-auto">
                   <div>

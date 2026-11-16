@@ -3,12 +3,12 @@
 import TableBuilder from "@/components/admin/tableBuilder";
 import Button from "@/components/common/button/button";
 import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/utils/fetchData";
-import { useFormHandler } from "@/utils/hooks";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import React, { useEffect, useState } from "react";
 import { MdModeEdit, MdOutlineDelete } from "react-icons/md";
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import FormBuilder from "@/components/admin/formBuilder";
+import { useFormHandler } from "@/utils/hooks/useFormHandler";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);

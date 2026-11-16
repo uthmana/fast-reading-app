@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import prisma from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
@@ -58,13 +58,13 @@ export async function GET(req: NextRequest) {
         successStudents,
         newStudents,
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (e) {
     const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
     return NextResponse.json(
       { error: userMessage, details: technicalMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

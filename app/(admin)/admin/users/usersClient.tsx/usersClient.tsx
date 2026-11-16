@@ -2,10 +2,10 @@
 
 import TableBuilder from "@/components/admin/tableBuilder";
 import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/utils/fetchData";
-import { useFormHandler } from "@/utils/hooks";
+import { fetchData } from "@/lib/fetchData/fetchData";
+import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import { useSearchParams } from "next/navigation";
 import FormBuilder from "@/components/admin/formBuilder";
 

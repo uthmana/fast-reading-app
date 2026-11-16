@@ -3,15 +3,13 @@
 import React, { useState } from "react";
 import TextInput from "../formInputs/textInput";
 import Select from "../formInputs/select";
-import formFields from "./formFields";
 import TextArea from "../formInputs/textArea";
 import { convertToISO8601 } from "@/utils/helpers";
 import Button from "@/components/common/button/button";
 
-type FormId = keyof typeof formFields;
-
 type FormBuilderProps = {
-  id: FormId;
+  id: string;
+  fields: any[];
   data?: any;
   formTitle?: string;
   isSubmitting?: boolean;
@@ -37,15 +35,16 @@ export default function FormBuilder({
   resError,
   className,
   submitBtnProps,
+  fields,
 }: FormBuilderProps) {
-  let fieldsData = formFields[id] || undefined;
+  let fieldsData = fields || undefined;
 
   if (!fieldsData && !data) {
     return null;
   }
 
   if (fieldsData && data) {
-    fieldsData = [...formFields[id]].map((fd: any) => {
+    fieldsData = [...fieldsData].map((fd: any) => {
       const value = data[fd.key];
 
       if (value !== undefined) {
@@ -166,6 +165,7 @@ export default function FormBuilder({
       autoComplete="off"
       className={`w-full overflow-y-auto ${className}`}
       onSubmit={handleFormSubmit}
+      id={id}
     >
       {formTitle ? (
         <h2 className="text-xl font-bold mb-5"> {formTitle} </h2>

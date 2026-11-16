@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import Icon from "../../icon/icon";
+import Icon from "../../icons/icon";
 
 type ButtonProps = {
   type?: "button" | "submit" | "reset";
@@ -23,6 +23,7 @@ export default function Button({
   icon,
   loading,
   iconPosition = "left",
+  ...rest
 }: ButtonProps) {
   return (
     <button
@@ -32,6 +33,7 @@ export default function Button({
       className={`bg-blue-500 flex items-center justify-center gap-2 text-white px-4 py-2 rounded w-full ${
         disabled ? "opacity-30" : ""
       } ${className} ${iconPosition === "right" ? "flex-row-reverse" : ""}`}
+      {...rest}
     >
       {icon}
       {isSubmiting || loading ? (
