@@ -1,6 +1,6 @@
 "use client";
 
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import InfoSideBar from "@/components/ogrenci/sideBar/infoSideBar";
 import { useMenu } from "@/providers/menuProvider";
 

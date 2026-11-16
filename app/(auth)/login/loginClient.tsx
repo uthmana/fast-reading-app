@@ -2,13 +2,14 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import { getInputTypeValue } from "@/utils/helpers";
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import { useSearchParams } from "next/navigation";
 import { companyInfo } from "@/utils/constants";
-import YearNow from "@/app/(public)/landingClient/components/yearNow";
+import YearNow from "@/app/(landing)/landingPageClient/components/yearNow";
 import FormBuilder from "@/components/form/formBuilder";
+import { loginFields } from "./loginFields";
 
 type ValuesTypes = {
   isValid: boolean;
@@ -116,6 +117,7 @@ export default function LoginClient() {
 
           <FormBuilder
             id={"login"}
+            fields={loginFields}
             isSubmitting={isSubmitting}
             resError={resError}
             onSubmit={handleFormSubmit}

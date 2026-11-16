@@ -4,7 +4,7 @@ import ControlPanelGuide from "@/components/ogrenci/controlPanel/controlPanelGui
 import RenderExercise from "@/components/ogrenci/exercises";
 import Whiteboard from "@/components/ogrenci/whiteboard/whiteboard";
 import { useEffect, useState } from "react";
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import { ExerciseDescription } from "@/utils/constants";
 import { getFullPathFromSlug, isValidPathname } from "@/utils/helpers";
 import ControlPanelGuideSelectNew from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuideSelectNew";
@@ -178,11 +178,7 @@ export default function LessonExerciseClient({
         isLesson={isLesson}
         saveProgress={saveProgress}
         article={controlData.selectedData as any}
-        className={
-          isPrimaryStudent
-            ? "!font-tttkbDikTemelAbece font-extrabold "
-            : "font-verdana"
-        }
+        className={isPrimaryStudent ? " font-tttkb " : "font-verdana"}
       />
     </Whiteboard>
   );

@@ -31,10 +31,10 @@ import {
   formatNumberLocale,
 } from "@/utils/helpers";
 import { columnsData, ColumnsKey } from "./columnsData";
-import { TableCellSkeleton } from "../../skeleton/skeleton";
+import { TableCellSkeleton } from "../../skeletons/skeleton";
 import Link from "next/link";
 import Dropdown from "../components/dropdown/dropdown";
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import { studyGroupOptions } from "@/utils/constants";
 
 function TableBuilder({

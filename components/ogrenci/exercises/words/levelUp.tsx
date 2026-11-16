@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { calculateReadingSpeed } from "@/utils/helpers";
 import { frameTransitionDuration, speedMap } from "@/utils/constants";
-import { useAudioSound } from "@/utils/hooks";
+import { useAudioSound } from "@/utils/hooks/useAudioSound";
 
 type TachistoProps = {
   autoStart?: boolean;

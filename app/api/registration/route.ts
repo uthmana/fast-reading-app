@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Registration } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import { extractPrismaErrorMessage } from "@/utils/helpers";
+import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
       if (!registedUser) {
         return NextResponse.json(
           { error: "Registration not found" },
-          { status: 404 }
+          { status: 404 },
         );
       }
       return NextResponse.json(registedUser, { status: 200 });
@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
         error: userMessage,
         details: technicalMessage,
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       if (registerExist) {
         return NextResponse.json(
           { error: "Registration already exists" },
-          { status: 400 }
+          { status: 400 },
         );
       }
       // update logic needed
@@ -119,7 +119,7 @@ export async function DELETE(req: Request) {
     console.log(err);
     return NextResponse.json(
       { error: "Registration does not exist" },
-      { status: 400 }
+      { status: 400 },
     );
   }
 }

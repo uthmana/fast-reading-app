@@ -1,7 +1,8 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
-import { useMetronome } from "@/utils/hooks";
+import { useMetronome } from "@/utils/hooks/useMetronome";
+
 import React, { useEffect, useState } from "react";
 
 type EyeMuscleProps = {

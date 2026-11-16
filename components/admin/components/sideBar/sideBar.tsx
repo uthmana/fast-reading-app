@@ -1,8 +1,8 @@
 "use client";
 
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import { usePopup } from "@/providers/popupProvider";
 import { signOut } from "next-auth/react";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
-import { useAutoScrollIntoView } from "@/utils/hooks";
+import { useAutoScrollIntoView } from "@/utils/hooks/useAutoScrollIntoView";
 import React, { useEffect, useRef, useState } from "react";
 
 type ReadingFocusedBlockType = {

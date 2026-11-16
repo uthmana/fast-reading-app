@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchData } from "@/utils/fetchData";
+import { fetchData } from "@/lib/fetchData/fetchData";
 import { formatDateTime, mapStudyGroup } from "@/utils/helpers";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";

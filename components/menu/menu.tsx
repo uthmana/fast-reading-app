@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import LogOutInput from "../form/formInputs/logoutInput";
-import Icon from "../icon/icon";
+import Icon from "../icons/icon";
 import { companyInfo } from "@/utils/constants";
 import { useMenu } from "@/providers/menuProvider";
 

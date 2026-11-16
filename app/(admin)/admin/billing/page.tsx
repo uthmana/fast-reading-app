@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import TableBuilder from "@/components/admin/tableBuilder";
-import { fetchData } from "@/utils/fetchData";
-import { useAuthHandler } from "@/components/admin/authHandler/authOptions";
+import { fetchData } from "@/lib/fetchData/fetchData";
+import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 
 export default function page() {
   const [isLoading, setIsloading] = useState(false);

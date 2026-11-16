@@ -1,8 +1,8 @@
 import Button from "@/components/common/button/button";
 import { letterWords, speedMap } from "@/utils/constants";
+import { useFeedbackSound } from "@/utils/hooks/useFeedbackSound";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
-import { useFeedbackSound } from "./hooks";
 
 export default function FindTheWord({
   controls,

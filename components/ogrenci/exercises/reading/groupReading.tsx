@@ -1,7 +1,8 @@
 "use client";
 
 import { speedMap } from "@/utils/constants";
-import { useAutoScrollIntoView } from "@/utils/hooks";
+import { useAutoScrollIntoView } from "@/utils/hooks/useAutoScrollIntoView";
+
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 type GroupReadingType = {

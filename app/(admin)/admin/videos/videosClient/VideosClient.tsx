@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Icon from "@/components/icon/icon";
+import Icon from "@/components/icons/icon";
 import { updateMenuVideo } from "./actions";
+import { useAuthHandler } from "../../authHandler";
 
 type VideoItem = {
   id: string;
@@ -19,12 +20,11 @@ type Props = {
 export default function VideosClient({ videoItems }: Props) {
   const [items, setItems] = useState(videoItems);
   const [editingItem, setEditingItem] = useState<VideoItem | null>(null);
-
   const [youtubeId, setYoutubeId] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
-
   const [isPending, startTransition] = useTransition();
+  const { canEdit } = useAuthHandler();
 
   const handleEdit = (item: VideoItem) => {
     setEditingItem(item);
@@ -91,14 +91,16 @@ export default function VideosClient({ videoItems }: Props) {
                 </div>
               )}
 
-              <button
-                type="button"
-                onClick={() => handleEdit(item)}
-                title="Videoyu düzenle"
-                className="absolute top-3 right-3 p-2 rounded-md bg-blue-100 shadow hover:bg-gray-100 transition"
-              >
-                <Icon name="edit" className="w-5 h-5" fill="blue-500" />
-              </button>
+              {canEdit ? (
+                <button
+                  type="button"
+                  onClick={() => handleEdit(item)}
+                  title="Videoyu düzenle"
+                  className="absolute top-3 right-3 p-2 rounded-md bg-blue-100 shadow hover:bg-gray-100 transition"
+                >
+                  <Icon name="edit" className="w-5 h-5" fill="blue-500" />
+                </button>
+              ) : null}
             </div>
 
             <div className="px-3 flex items-start py-5 gap-2">
