@@ -13,7 +13,7 @@
 set -euo pipefail
 
 APP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BRANCH="${DEPLOY_BRANCH:-main}"
+BRANCH="${DEPLOY_BRANCH:-develop17.11.2026}"
 RUN_MIGRATIONS="${RUN_MIGRATIONS:-1}"
 RESTART_CMD="${RESTART_CMD:-}"
 
