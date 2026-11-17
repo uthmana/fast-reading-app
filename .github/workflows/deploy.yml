@@ -1,0 +1,35 @@
+name: Deploy to Plesk
+
+on:
+  push:
+    branches: [develop17.11.2026]
+  workflow_dispatch:
+    inputs:
+      run_migrations:
+        description: "Run database migration"
+        type: boolean
+        default: true
+
+concurrency:
+  group: deploy-plesk
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          RUN_MIGRATIONS: ${{ (github.event_name == 'push' || inputs.run_migrations) && '1' || '0' }}
+        with:
+          host: ${{ secrets.PLESK_HOST }}
+          username: ${{ secrets.PLESK_USER }}
+          key: ${{ secrets.PLESK_SSH_KEY }}
+          port: ${{ secrets.PLESK_SSH_PORT || 22 }}
+          envs: RUN_MIGRATIONS
+          script: |
+            # node/npm must be on PATH for non-interactive SSH sessions (see README).
+            cd "${{ secrets.PLESK_APP_PATH }}" || exit 1
+            export RESTART_CMD="${{ secrets.PLESK_RESTART_CMD }}"
+            bash scripts/deploy.sh

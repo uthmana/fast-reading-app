@@ -1,0 +1,25 @@
+ssh-keygen -t ed25519 -f %USERPROFILE%\.ssh\plesk_deploy
+
+ssh happybrains.com.tr_ovo937wrcp@happybrains.com.tr
+Bvu8t1unI2Pqud
+
+mkdir -p ~/.ssh && chmod 700 ~/.ssh
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHL0M36DkqKJPXy6E71DdZr8PwXSQgU9/xOLL5HxHcG7 Shiraz@DESKTOP-HM8UDLN
+" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+
+<PLESK_USER> happybrains.com.tr_ovo937wrcp
+<PLESK_HOST> happybrains.com.tr
+Bvu8t1unI2Pqud
+PLESK_SSH_KEY
+PLESK_APP_PATH
+
+ssh -i %USERPROFILE%\.ssh\plesk_deploy happybrains.com.tr_ovo937wrcp@happybrains.com.tr
+/var/www/vhosts/happybrains.com.tr/httpdocs/fastreadingProd
+
+docker run -d --name fastreading-mysql -p 3306:3306 -v fast_reading_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=ROOT_PW -e MYSQL_DATABASE=fast_reading -e MYSQL_USER=fast_reading_db -e MYSQL_PASSWORD=APP_PW mysql:8.0
+npx prisma generate     # build the Prisma client
+npx prisma db push      # sync the schema to the database (no migrations exist yet)
+npm run db:seed         # load the seed data from prisma/seed.ts
+npx prisma studio       # open a browser view of the data
