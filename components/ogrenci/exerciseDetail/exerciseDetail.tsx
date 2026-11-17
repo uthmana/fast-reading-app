@@ -8,8 +8,6 @@ import YouTubeEmbed from "@/components/common/youtubeEmbed/youbuteEmbed";
 
 export default function ExerciseDetail(pathName: { pathName?: string }) {
   const { menuItems } = useMenu();
-
-  console.log("menuItems", menuItems);
   const menuItem = pathName.pathName
     ? menuItems?.find((item) => item.link === pathName.pathName)
     : menuItems?.[0];

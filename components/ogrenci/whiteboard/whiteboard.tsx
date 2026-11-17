@@ -130,6 +130,7 @@ export default function Whiteboard({
           className={`!w-fit !h-10 my-4 z-10  absolute right-8 bottom-2 bg-brand-primary-100 hover:bg-brand-primary-150 shadow-lg  ml-auto`}
           icon={<MdPlayCircle className="w-6 h-6 text-white" />}
           onClick={handlePlay}
+          arial-label="Oynat"
         />
       </div>
 

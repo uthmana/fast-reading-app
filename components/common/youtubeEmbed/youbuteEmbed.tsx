@@ -1,4 +1,3 @@
-// components/YouTubeEmbed.tsx
 import React, { useMemo } from "react";
 
 type YouTubeEmbedProps = {
@@ -64,8 +63,8 @@ export default function YouTubeEmbed({
     // enable JS API if you want to postMessage later (optional)
     params.set("enablejsapi", "1");
 
-    return `https://www.youtube.com/embed/${encodeURIComponent(
-      videoId
+    return `https://www.youtube-nocookie.com/embed/${encodeURIComponent(
+      videoId,
     )}?${params.toString()}`;
   }, [videoId, autoplay, start, controls, loop, mute, rel, modestBranding]);
 
@@ -84,6 +83,7 @@ export default function YouTubeEmbed({
         height="100%"
         onLoad={onLoad}
         loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
         style={{
           position: "absolute",
           top: 0,
@@ -92,7 +92,7 @@ export default function YouTubeEmbed({
           height: "100%",
           border: 0,
         }}
-        allow={`accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture`}
+        allow={`accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share`}
         {...(allowFullScreen ? { allowFullScreen: true } : {})}
       />
     </div>
