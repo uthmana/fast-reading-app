@@ -1,15 +1,9 @@
-import { Roboto } from "next/font/google";
+import { roboto } from "@/public/fonts/googleFonts";
 import { companyInfo } from "@/utils/constants";
 import "../globals.css";
 import Header from "./landingPageClient/header";
 import Footer from "./landingPageClient/footer";
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 export const metadata = {
   title: `${companyInfo?.name} | Etkin Hızlı Okuma`,
   description: "Hızlı okuma pratik platformu giriş",
