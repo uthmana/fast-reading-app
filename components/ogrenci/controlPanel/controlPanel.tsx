@@ -95,6 +95,7 @@ export default function ControlPanel({
               icon={<MdPauseCircle className="w-6 h-6 text-white" />}
               className="!w-fit my-4 ml-3 bg-red-600 hover:bg-red-700 shadow-lg"
               onClick={onPause}
+              arial-label="Durdur"
             />
           )}
         </WoodenFrame>
