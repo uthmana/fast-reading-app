@@ -115,7 +115,7 @@ export default function SideBar({
               <div key={route.name + idx}>
                 {/* Parent row */}
                 <div
-                  className={`flex items-center justify-between px-3 py-2 rounded border-b cursor-pointer transition-colors duration-200 
+                  className={`flex items-center justify-between px-3 rounded border-b cursor-pointer transition-colors duration-200 
                 ${
                   active
                     ? "bg-blue-600 text-white font-semibold"
@@ -123,13 +123,13 @@ export default function SideBar({
                 }`}
                 >
                   {route.path && !hasChildren ? (
-                    <Link href={route.path} className="flex gap-3 w-full">
+                    <Link href={route.path} className="flex gap-3 py-2 w-full">
                       {route.icon} {route.name}
                     </Link>
                   ) : (
                     <div
                       onClick={() => toggleMenu(route.name)}
-                      className="flex gap-3 w-full"
+                      className="flex gap-3 w-full py-2"
                     >
                       {route.icon} {route.name}
                     </div>
