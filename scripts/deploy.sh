@@ -9,6 +9,7 @@
 #   RUN_MIGRATIONS  1 = migrate DB, 0 = skip    (default: 1)
 #   RESTART_CMD     command that restarts the app (e.g. "pm2 restart fast-reading-app")
 #
+# Note:
 # .env is NOT in git. It must already exist in the app folder on the server.
 set -euo pipefail
 
