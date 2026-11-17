@@ -104,6 +104,7 @@ function Select({
       ) : null}
 
       <select
+        aria-label={placeholder ?? "Seçiniz"}
         disabled={disabled}
         required={required}
         className={`w-full border h-10 px-2 ${
