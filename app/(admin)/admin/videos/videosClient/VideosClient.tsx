@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Icon from "@/components/icons/icon";
 import { updateMenuVideo } from "./actions";
-import { useAuthHandler } from "../../authHandler";
+import { AuthDataTypes } from "@/components/admin/model/admin";
 
 type VideoItem = {
   id: string;
@@ -15,16 +15,17 @@ type VideoItem = {
 
 type Props = {
   videoItems: VideoItem[];
+  authData: AuthDataTypes;
 };
 
-export default function VideosClient({ videoItems }: Props) {
+export default function VideosClient({ videoItems, authData }: Props) {
   const [items, setItems] = useState(videoItems);
   const [editingItem, setEditingItem] = useState<VideoItem | null>(null);
   const [youtubeId, setYoutubeId] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
-  const { canEdit } = useAuthHandler();
+  const { canEdit } = authData;
 
   const handleEdit = (item: VideoItem) => {
     setEditingItem(item);

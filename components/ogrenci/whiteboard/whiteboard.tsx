@@ -1,15 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { useState, ReactElement, useEffect, useRef } from "react";
-import { MdArrowBack, MdPlayCircle } from "react-icons/md";
-import Button from "@/components/common/button/button";
-
-import CountDown from "../../common/countDown/countDown";
-import BookLoader from "./bookLoader";
-import WoodenFrame from "../../common/woodenFrame/woodenFrame";
 import React from "react";
+import { useState, ReactElement, useEffect, useRef } from "react";
+import WoodenFrame from "../../common/woodenFrame/woodenFrame";
 import ControlPanel from "../controlPanel/controlPanel";
+import LessonExerciseTags from "../lessons/lessonExerciseTags/LessonExerciseTags";
 
 interface WhiteboardProps {
   description: ReactElement;
@@ -26,9 +21,11 @@ interface WhiteboardProps {
     order: string;
     pathname?: string;
   };
-  onPause?: () => void;
+  onPause?: (val: boolean) => void;
   countDownDuration?: (v: number) => void;
   isArticleSelectReq?: boolean;
+  setIsReadingTestPause?: (val: boolean) => void;
+  stopPlaying?: boolean;
 }
 
 export default function Whiteboard({
@@ -44,6 +41,8 @@ export default function Whiteboard({
   onPause,
   countDownDuration,
   isArticleSelectReq,
+  setIsReadingTestPause,
+  stopPlaying,
 }: WhiteboardProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,19 +58,19 @@ export default function Whiteboard({
   ];
 
   useEffect(() => {
-    if (pause !== undefined) {
-      setIsPlaying(pause ? !isPlaying : pause);
-    }
-  }, [pause, lessonData?.minDuration]);
+    const shouldStop = stopPlaying || (!isfastTest && pause);
 
-  useEffect(() => {
-    if (
-      lessonData?.pathname === "hizli-okuma-testi" ||
-      lessonData?.pathname === "anlama-testi"
-    ) {
-      setCountDownValue(5);
+    if (shouldStop && isPlaying) {
+      setIsPlaying(false);
     }
-  }, [lessonData?.pathname]);
+
+    document.documentElement.style.overflow =
+      isPlaying && !shouldStop ? "hidden" : "";
+
+    return () => {
+      document.documentElement.style.overflow = "";
+    };
+  }, [isPlaying, pause, isfastTest, stopPlaying]);
 
   useEffect(() => {
     if (countDownDuration) {
@@ -79,19 +78,18 @@ export default function Whiteboard({
     }
   }, [countDownValue, countDownDuration]);
 
-  useEffect(() => {
-    document.documentElement.style.overflow = isPlaying ? "hidden" : "";
-    return () => {
-      document.documentElement.style.overflow = "";
-    };
-  }, [isPlaying]);
-
   const handlePlay = () => {
     if (isArticleSelectReq && !controlData.articleSelect) {
       alert("Önce Kategori ve Makale seçmeniz gerekiyor");
       return;
     }
     setIsPlaying(true);
+    onPause?.(false);
+  };
+
+  const handleControlPause = (val: boolean) => {
+    setIsPlaying(false);
+    onPause?.(val);
   };
 
   return (
@@ -99,39 +97,24 @@ export default function Whiteboard({
       {/* Whiteboard preview */}
       <div className="relative w-full">
         <WoodenFrame
-          className="!min-h-[460px]"
+          className="!min-h-[460px] group"
           innerClassName={`bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto !top-3 !left-3 !w-[calc(100%-24px)] !h-[calc(100%-24px)]  ${isLoading ? "!overflow-hidden" : ""}`}
           font={controlData?.font}
+          isLoading={isLoading}
+          lessontags={
+            <LessonExerciseTags
+              lessonData={lessonData}
+              exerciseTestsPaths={exerciseTestsPaths}
+              countDownValue={countDownValue}
+              setCountDownValue={setCountDownValue}
+              isPlaying={isPlaying}
+              saveProgress={saveProgress}
+              handlePlay={handlePlay}
+            />
+          }
         >
-          {isLoading ? <BookLoader /> : null}
           <div className="py-8">{description}</div>
         </WoodenFrame>
-
-        {/* Countdown and navigation buttons */}
-
-        {lessonData?.minDuration &&
-        !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
-          <CountDown
-            className="absolute z-10 right-8 top-6"
-            initial={countDownValue}
-            start={isPlaying}
-            onTick={(v) => setCountDownValue(v)}
-          />
-        ) : null}
-        {lessonData?.id ? (
-          <Link
-            className="absolute flex items-center justify-center opacity-45 gap-2 bottom-6 z-10 transition hover:bg-blue-600 right-24 rounded-md bg-blue-500 text-white py-2 px-3"
-            href={`/ogrenci/dersler`}
-          >
-            <MdArrowBack className="text-white w-6 h-6" /> Derslere Dön
-          </Link>
-        ) : null}
-        <Button
-          className={`!w-fit !h-10 my-4 z-10  absolute right-8 bottom-2 bg-brand-primary-100 hover:bg-brand-primary-150 shadow-lg  ml-auto`}
-          icon={<MdPlayCircle className="w-6 h-6 text-white" />}
-          onClick={handlePlay}
-          arial-label="Oynat"
-        />
       </div>
 
       {/* Control panel */}
@@ -155,33 +138,25 @@ export default function Whiteboard({
             className={`relative group w-full mb-1  h-[calc(100%-32px)] mx-auto overflow-hidden rounded-xl border border-black flex lg:items-center justify-center shadow-[0_2px_6px_rgba(0,0,0,0.3)] `}
             innerClassName={`absolute z-10 !bg-white bg-[url('/images/slate.jpg')] !bg-repeat !bg-auto  top-3 left-3 w-[calc(100%-24px)] h-[calc(100%-24px)] !p-0 bg-white text-base rounded overflow-y-auto ${isLoading ? "!overflow-hidden" : ""}`}
             innerRef={readingContainerRef}
+            isLoading={isLoading}
+            lessontags={
+              <LessonExerciseTags
+                lessonData={lessonData}
+                isReadingTest={isfastTest}
+                isPlaying={isPlaying}
+                exerciseTestsPaths={exerciseTestsPaths}
+                countDownValue={countDownValue}
+                setCountDownValue={setCountDownValue}
+                saveProgress={saveProgress}
+                setIsReadingTestPause={setIsReadingTestPause}
+              />
+            }
           >
-            {isLoading ? <BookLoader /> : null}
             {React.isValidElement(children)
               ? React.cloneElement(children, {
-                  scrollContainerRef: readingContainerRef,
+                  scrollcontainerref: readingContainerRef,
                 } as any)
               : children}
-
-            {lessonData?.minDuration &&
-            !exerciseTestsPaths.includes(lessonData?.pathname ?? "") ? (
-              <CountDown
-                className="absolute right-3 top-3 !text-base"
-                initial={countDownValue}
-                start={isPlaying}
-                onTick={(v) => setCountDownValue(v)}
-                onFinish={saveProgress}
-              />
-            ) : null}
-            {lessonData?.id ? (
-              <a
-                className="absolute transition-opacity z-20 !text-base lg:opacity-0 group-hover:opacity-45 flex items-center justify-center gap-2 bottom-10  hover:bg-blue-600 right-28 rounded-md bg-blue-500 text-white py-2 px-3"
-                href={`/ogrenci/dersler`}
-              >
-                <MdArrowBack className="text-white w-6 h-6" />
-                <span className="hidden md:inline-block"> Derslere Dön</span>
-              </a>
-            ) : null}
           </WoodenFrame>
 
           <div className={`w-full`}>
@@ -193,7 +168,7 @@ export default function Whiteboard({
               lessonData={lessonData}
               readingStatus={readingStatus}
               showPauseButton={true}
-              onPause={onPause}
+              onPause={handleControlPause}
             />
           </div>
         </div>

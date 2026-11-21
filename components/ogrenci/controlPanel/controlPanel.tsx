@@ -1,11 +1,9 @@
 "use client";
 
 import { useParams } from "next/navigation";
-
 import ControlBuilder from "./controlBuilder/controlBuilder";
 import { controlFields } from "./controlBuilder/controlFields";
 import ControlReader from "./controlBuilder/controlReader";
-
 import { MdPauseCircle } from "react-icons/md";
 import WoodenFrame from "@/components/common/woodenFrame/woodenFrame";
 import Button from "@/components/common/button/button";
@@ -19,7 +17,7 @@ interface ControlPanelProps {
   setControlData?: any;
   lessonData?: { id: string; minDuration: string; order: string };
   showPauseButton?: boolean;
-  onPause?: () => void;
+  onPause?: (val: boolean) => void;
   noInitialDataRequest?: boolean;
 }
 
@@ -94,7 +92,7 @@ export default function ControlPanel({
             <Button
               icon={<MdPauseCircle className="w-6 h-6 text-white" />}
               className="!w-fit my-4 ml-3 bg-red-600 hover:bg-red-700 shadow-lg"
-              onClick={onPause}
+              onClick={() => onPause?.(true)}
               arial-label="Durdur"
             />
           )}

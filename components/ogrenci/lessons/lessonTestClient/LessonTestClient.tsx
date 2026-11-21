@@ -35,6 +35,8 @@ export default function LessonTestClient({
   const router = useRouter();
   const { menuItems } = useMenu();
   const [pause, setPause] = useState(false);
+  const [stopPlaying, setStopPlaying] = useState(false);
+  const [isReadingTestPause, setIsReadingTestPause] = useState(false);
   const [questions, setQuestions] = useState(testArticle?.tests ?? ([] as any));
   const [readingStatus, setReadingStatus] = useState({
     counter: 0,
@@ -107,12 +109,16 @@ export default function LessonTestClient({
       totalQuiz?: number;
     } | null,
   ) => {
+    setStopPlaying(false);
+    setIsReadingTestPause(false);
     if (!val || !session?.user?.student?.id) {
-      setPause(!pause);
+      //setPause(true);
+      setStopPlaying(true);
       return;
     }
 
     const { wpm, correct, counter, variant, totalQuiz } = val;
+
     try {
       // Todo: chech if introTest is anumber
       if (introTest && isNaN(parseInt(introTest))) {
@@ -159,7 +165,7 @@ export default function LessonTestClient({
             payload: studentData,
           });
           if (res && res.introTestTaken < 3) {
-            setPause(!pause);
+            setPause(true);
             window.location.href = `/ogrenci/okuma-anlama-testleri/anlama-testi?intro-test=${
               res.introTestTaken + 1
             }`;
@@ -184,6 +190,7 @@ export default function LessonTestClient({
           totalQuiz,
         },
       });
+      setPause(true);
     } catch (error) {
       console.error(error);
       setPause(true);
@@ -212,17 +219,27 @@ export default function LessonTestClient({
       pause={pause}
       isfastTest={true}
       controlData={controlData}
+      stopPlaying={stopPlaying}
       setControlData={setControlData}
+      setIsReadingTestPause={setIsReadingTestPause}
       readingStatus={readingStatus}
       lessonData={{ ...lessonConfigData, pathname }}
       isArticleSelectReq={isArticleSelectReq}
       saveProgress={saveProgress}
       description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      onPause={(val) => {
+        setPause(val);
+
+        if (!val) {
+          setStopPlaying(false);
+        }
+      }}
     >
       <FastReadingTest
         variant={variant}
         control={controlData}
         questions={questions}
+        isReadingTestPause={isReadingTestPause}
         onFinishTest={onFinishTest}
         article={controlData.selectedData as any}
         readingStatus={readingStatus}

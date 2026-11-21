@@ -1,15 +1,16 @@
 "use client";
 
-import ControlPanelGuide from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuide";
+import { useEffect, useState } from "react";
+
+import { useMenu } from "@/providers/menuProvider";
 import RenderExercise from "@/components/ogrenci/exercises";
 import Whiteboard from "@/components/ogrenci/whiteboard/whiteboard";
-import { useEffect, useState } from "react";
 import { fetchData } from "@/lib/fetchData/fetchData";
 import { ExerciseDescription } from "@/utils/constants";
 import { getFullPathFromSlug, isValidPathname } from "@/utils/helpers";
-import ControlPanelGuideSelectNew from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuideSelectNew";
-import { useMenu } from "@/providers/menuProvider";
 import NotFound from "@/app/(ogrenci)/ogrenci/not-found";
+import ControlPanelGuide from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuide";
+import ControlPanelGuideSelectNew from "@/components/ogrenci/controlPanel/controlPanelGuide/controlPanelGuideSelectNew";
 
 type LessonExerciseClientType = {
   lessonConfigData?: any;
@@ -92,7 +93,7 @@ export default function LessonExerciseClient({
     } | null,
   ) => {
     if (!val) {
-      setPause(!pause);
+      setPause(true);
       return;
     }
 
@@ -130,8 +131,11 @@ export default function LessonExerciseClient({
       ) {
         setContinueWithNewExercise(true);
       }
-      setPause(!pause);
+      setPause(true);
+      return;
     }
+
+    setPause(true);
   };
 
   const saveProgress = async () => {
@@ -154,7 +158,7 @@ export default function LessonExerciseClient({
   return (
     <Whiteboard
       pause={pause}
-      onPause={() => setPause(!pause)}
+      onPause={(val) => setPause(val)}
       controlData={controlData}
       setControlData={setControlData}
       lessonData={{ ...lessonConfigData, pathname }}
@@ -178,6 +182,7 @@ export default function LessonExerciseClient({
         isLesson={isLesson}
         saveProgress={saveProgress}
         article={controlData.selectedData as any}
+        isPrimaryStudent={isPrimaryStudent}
         className={isPrimaryStudent ? " font-tttkb " : "font-verdana"}
       />
     </Whiteboard>
