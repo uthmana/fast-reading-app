@@ -1,5 +1,6 @@
 import React, { RefObject } from "react";
 import wood_img from "/public/images/wood.jpg";
+import BookLoader from "@/components/ogrenci/whiteboard/bookLoader";
 
 export default function WoodenFrame({
   className = "",
@@ -7,12 +8,16 @@ export default function WoodenFrame({
   children,
   font,
   innerRef,
+  lessontags,
+  isLoading,
 }: {
   className?: string;
   innerClassName?: string;
   children?: React.ReactNode;
   font?: string;
   innerRef?: RefObject<HTMLDivElement>;
+  lessontags?: React.ReactNode;
+  isLoading?: boolean;
 }) {
   return (
     <div
@@ -34,10 +39,12 @@ export default function WoodenFrame({
       >
         {React.isValidElement(children)
           ? React.cloneElement(children, {
-              scrollContainerRef: innerRef,
+              scrollcontainerref: innerRef,
             } as any)
           : children}
       </div>
+      {lessontags}
+      {isLoading ? <BookLoader /> : null}
     </div>
   );
 }

@@ -2,8 +2,7 @@
 
 import { speedMap } from "@/utils/constants";
 import { useAutoScrollIntoView } from "@/utils/hooks/useAutoScrollIntoView";
-
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type ReadingBlockByErasingType = {
   article: { id: string; title: string; description: string; tests: any };
@@ -23,16 +22,16 @@ type ReadingBlockByErasingType = {
     wordsPerFrame: number;
   };
   className?: string;
-  pause?: boolean;
-  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+  scrollcontainerref?: React.RefObject<HTMLDivElement | null>;
+  isPrimaryStudent?: boolean;
 };
 export default function ReadingBlockByErasing({
   article,
   onFinishTest,
   controls,
   className = "",
-  pause = false,
-  scrollContainerRef,
+  scrollcontainerref,
+  isPrimaryStudent,
 }: ReadingBlockByErasingType) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -44,16 +43,19 @@ export default function ReadingBlockByErasing({
 
   useAutoScrollIntoView({
     elementRef: activeItemRef,
-    containerRef: scrollContainerRef,
+    containerRef: scrollcontainerref,
     dependencies: [activeWordIndex],
   });
 
-  const words = article?.description
-    ? article.description.trim().split(/\s+/)
-    : [];
+  const words = useMemo(
+    () => (article?.description ? article.description.trim().split(/\s+/) : []),
+    [article?.description],
+  );
 
-  const startInterval = (fromIndex: number, speed: number) => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+  const startInterval = (speed: number) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
 
     intervalRef.current = window.setInterval(() => {
       setActiveWordIndex((prev) => {
@@ -62,6 +64,15 @@ export default function ReadingBlockByErasing({
           clearInterval(intervalRef.current!);
           intervalRef.current = null;
           finishedRef.current = true;
+          setTimeout(() => {
+            //No record is to be saved
+            onFinishTest?.({
+              wpm: 0,
+              correct: 0,
+              counter: words.length,
+              variant: "fast-reading",
+            });
+          }, 500);
           return prev;
         }
         return next;
@@ -70,25 +81,12 @@ export default function ReadingBlockByErasing({
   };
 
   useEffect(() => {
-    if (!finishedRef.current) return;
-    setRunning(false);
-    onFinishTest?.({
-      wpm: 0,
-      correct: 0,
-      counter: words.length,
-      variant: "fast-reading",
-    });
-  }, [finishedRef.current]);
-
-  useEffect(() => {
-    if (!words.length) {
-      onFinishTest?.(null);
-      return;
-    }
     setActiveWordIndex(0);
-    setRunning(true);
+    setRunning(() => {
+      return true;
+    });
     currentLevelRef.current = level;
-    startInterval(0, speedMap[level]);
+    startInterval(speedMap[level]);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
@@ -96,27 +94,10 @@ export default function ReadingBlockByErasing({
 
   useEffect(() => {
     if (!running) return;
-    if (level === currentLevelRef.current) return;
 
     currentLevelRef.current = level;
-    startInterval(activeWordIndex, speedMap[level]);
-  }, [level]);
-
-  useEffect(() => {
-    if (pause) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      setRunning(false);
-      onFinishTest?.({
-        wpm: 0,
-        correct: 0,
-        counter: words.length,
-        variant: "fast-reading",
-      });
-    }
-  }, [pause, setRunning, onFinishTest]);
+    startInterval(speedMap[level]);
+  }, [level, wordsPerFrame, running]);
 
   // 🔹 Get the current highlighted frame as a single string
   const highlightedWords = words
@@ -136,8 +117,6 @@ export default function ReadingBlockByErasing({
             style={{
               fontSize: `${parseInt(font)}px`,
               lineHeight: `${parseInt(font) * 1.5}px`,
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
             }}
           >
             {/* Before highlighted */}
@@ -149,7 +128,9 @@ export default function ReadingBlockByErasing({
               className="text-white rounded-sm"
               style={{
                 backgroundColor: "#1e40af",
-                boxShadow: "0 0 0 2px #1e40af",
+                boxShadow: isPrimaryStudent
+                  ? "0 -4px 0 2px #1e40af, 0 0 0 2px #1e40af"
+                  : "0 0 0 2px #1e40af",
               }}
             >
               {highlightedWords}

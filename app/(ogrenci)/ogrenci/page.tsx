@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { redirect } from "next/navigation";
-import HomeClient from "@/components/ogrenci/homeClient/HomeClient";
+import HomeClient from "./homeClient";
 
 export const metadata = {
   title: "Ana sayfa | Etkin Hızlı Okuma",

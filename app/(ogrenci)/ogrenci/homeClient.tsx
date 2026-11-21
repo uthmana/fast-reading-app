@@ -10,11 +10,11 @@ import {
   MdHourglassTop,
   MdPlayCircle,
 } from "react-icons/md";
-import Popup from "../../common/popup/popup";
-import Button from "../../common/button/button";
-import PieChart from "../../common/Charts/pieChart";
-import Widget from "../../common/widget/widget";
-import BarChart from "../../common/Charts/barChart";
+import Popup from "@/components/common/popup/popup";
+import Button from "@/components/common/button/button";
+import PieChart from "@/components/common/Charts/pieChart";
+import Widget from "@/components/common/widget/widget";
+import BarChart from "@/components/common/Charts/barChart";
 import dynamic from "next/dynamic";
 import { companyInfo } from "@/utils/constants";
 

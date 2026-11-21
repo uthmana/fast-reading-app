@@ -1,104 +1,18 @@
-"use client";
+import { getBillings } from "@/lib/api/getBillings";
+import { getAuthHandlerServer } from "../authHandlerServer";
+import BillingClient from "./BillingClient";
 
-import React, { useEffect, useState } from "react";
-import TableBuilder from "@/components/admin/tableBuilder";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
+export const metadata = {
+  title: "Cari Hareketler | Yönetim Paneli",
+};
 
-export default function page() {
-  const [isLoading, setIsloading] = useState(false);
-  const [billings, setBillings] = useState([] as any);
-  const { canView, canEdit, canDelete, userData, loading } = useAuthHandler();
+export default async function page() {
+  const authData = await getAuthHandlerServer("billing");
 
-  useEffect(() => {
-    if (loading || !userData) return;
-    const requestData = async () => {
-      try {
-        setIsloading(true);
+  const billings = await getBillings({
+    role: authData.userData?.role ?? "",
+    subscriberId: authData.userData?.subscriberId,
+  });
 
-        if (userData.role === "ADMIN") {
-          const resData = await fetchData({
-            apiPath: `/api/subscribers`,
-          });
-          const allData = resData.map((dVal: any) => {
-            return {
-              id: dVal.id,
-              name: dVal?.users.find(
-                (item: any) => item.subscriberId === dVal.id,
-              )?.name,
-              credit: dVal.credit,
-              price: dVal.price ?? 0,
-              currency: "TL",
-              startDate: dVal.createdAt,
-            };
-          });
-
-          setBillings(allData);
-          setIsloading(false);
-          return;
-        }
-
-        const query = encodeURIComponent(
-          JSON.stringify({
-            subscriberId: userData.subscriberId,
-          }),
-        );
-        const resData = await fetchData({
-          apiPath: `/api/students?where=${query}`,
-        });
-
-        //let resData = await fetchData({ apiPath: "/api/students" });
-        const allData = resData.map((dVal: any) => {
-          const { user, ...rest } = dVal;
-          const { id, ...userRest } = user;
-          return {
-            ...userRest,
-            id: rest.id,
-            name: userRest.username,
-            fee: rest.fee,
-            currency: "TL",
-            startDate: user.createdAt,
-          };
-        });
-        setBillings(allData);
-        setIsloading(false);
-      } catch (error) {
-        setIsloading(false);
-        console.error(error);
-        return;
-      }
-    };
-
-    requestData();
-  }, [userData, loading]);
-
-  return (
-    <div className="w-full">
-      {userData?.role === "ADMIN" ? (
-        <TableBuilder
-          showEditColumn={false}
-          isLoading={isLoading}
-          key={isLoading}
-          tableData={billings}
-          showAddButton={false}
-          columnKey="adminBillingColumn"
-          showEditRow={canEdit}
-          showDeleteRow={canDelete}
-        />
-      ) : canView ? (
-        <TableBuilder
-          showEditColumn={false}
-          isLoading={isLoading}
-          key={isLoading}
-          tableData={billings}
-          showAddButton={false}
-          columnKey="billingColumn"
-          showEditRow={canEdit}
-          showDeleteRow={canDelete}
-        />
-      ) : null}
-
-      {}
-    </div>
-  );
+  return <BillingClient billings={billings} authData={authData} />;
 }

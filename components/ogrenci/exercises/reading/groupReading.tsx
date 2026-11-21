@@ -2,8 +2,7 @@
 
 import { speedMap } from "@/utils/constants";
 import { useAutoScrollIntoView } from "@/utils/hooks/useAutoScrollIntoView";
-
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 type GroupReadingType = {
   article: { id: string; title: string; description: string; tests: any };
@@ -24,7 +23,7 @@ type GroupReadingType = {
   };
   className?: string;
   pause?: boolean;
-  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+  scrollcontainerref?: React.RefObject<HTMLDivElement | null>;
 };
 
 export default function GroupReading({
@@ -32,8 +31,7 @@ export default function GroupReading({
   onFinishTest,
   controls,
   className = "",
-  pause = false,
-  scrollContainerRef,
+  scrollcontainerref,
 }: GroupReadingType) {
   const [activeWordIndex, setActiveWordIndex] = useState(0);
   const [running, setRunning] = useState(false);
@@ -41,21 +39,23 @@ export default function GroupReading({
   const currentLevelRef = useRef<number>(controls.level);
   const finishedRef = useRef(false);
   const { font, level, wordsPerFrame } = controls;
-  const highlightedRef = useRef<HTMLSpanElement>(null);
+  const activeItemRef = useRef<HTMLSpanElement>(null);
 
   useAutoScrollIntoView({
-    elementRef: highlightedRef,
-    containerRef: scrollContainerRef,
+    elementRef: activeItemRef,
+    containerRef: scrollcontainerref,
     dependencies: [activeWordIndex],
-    disabled: pause,
   });
 
-  const words = article?.description
-    ? article.description.trim().split(/\s+/)
-    : [];
+  const words = useMemo(
+    () => (article?.description ? article.description.trim().split(/\s+/) : []),
+    [article?.description],
+  );
 
-  const startInterval = (fromIndex: number, speed: number) => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
+  const startInterval = (speed: number) => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
 
     intervalRef.current = window.setInterval(() => {
       setActiveWordIndex((prev) => {
@@ -64,6 +64,15 @@ export default function GroupReading({
           clearInterval(intervalRef.current!);
           intervalRef.current = null;
           finishedRef.current = true;
+          setTimeout(() => {
+            //No record is to be saved
+            onFinishTest?.({
+              wpm: 0,
+              correct: 0,
+              counter: words.length,
+              variant: "fast-reading",
+            });
+          }, 500);
           return prev;
         }
         return next;
@@ -72,22 +81,12 @@ export default function GroupReading({
   };
 
   useEffect(() => {
-    if (!finishedRef.current) return;
-    setRunning(false);
-    onFinishTest?.({
-      wpm: 0,
-      correct: 0,
-      counter: words.length,
-      variant: "fast-reading",
-    });
-  }, [finishedRef.current]);
-
-  useEffect(() => {
-    if (!words.length) return;
     setActiveWordIndex(0);
-    setRunning(true);
+    setRunning(() => {
+      return true;
+    });
     currentLevelRef.current = level;
-    startInterval(0, speedMap[level]);
+    startInterval(speedMap[level]);
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
@@ -95,58 +94,10 @@ export default function GroupReading({
 
   useEffect(() => {
     if (!running) return;
-    if (level === currentLevelRef.current) return;
 
     currentLevelRef.current = level;
-    startInterval(activeWordIndex, speedMap[level]);
-  }, [level]);
-
-  useEffect(() => {
-    if (pause) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      setRunning(false);
-      onFinishTest?.({
-        wpm: 0,
-        correct: 0,
-        counter: words.length,
-        variant: "fast-reading",
-      });
-    }
-  }, [pause, setRunning, onFinishTest]);
-
-  useLayoutEffect(() => {
-    const element = highlightedRef.current;
-    const container = scrollContainerRef?.current;
-
-    if (!element || !container || pause) return;
-
-    const elementRect = element.getBoundingClientRect();
-    const containerRect = container.getBoundingClientRect();
-
-    // Actual visible boundaries of the scrollable container.
-    const visibleTop = containerRect.top + container.clientTop;
-    const visibleBottom = visibleTop + container.clientHeight;
-
-    // Scroll only if the highlighted text is below the visible area.
-    if (elementRect.bottom > visibleBottom) {
-      const overflow = elementRect.bottom - visibleBottom;
-
-      const targetScroll = Math.min(
-        container.scrollTop + overflow,
-        container.scrollHeight - container.clientHeight,
-      );
-
-      if (targetScroll > container.scrollTop) {
-        container.scrollTo({
-          top: targetScroll,
-          behavior: "smooth",
-        });
-      }
-    }
-  }, [activeWordIndex, pause, scrollContainerRef]);
+    startInterval(speedMap[level]);
+  }, [level, wordsPerFrame, running]);
 
   // 🔹 Get the current highlighted frame as a single string
   const highlightedWords = words
@@ -166,8 +117,6 @@ export default function GroupReading({
             style={{
               fontSize: `${parseInt(font)}px`,
               lineHeight: `${parseInt(font) * 1.5}px`,
-              whiteSpace: "pre-wrap",
-              wordWrap: "break-word",
             }}
           >
             {/* Before highlighted */}
@@ -175,7 +124,7 @@ export default function GroupReading({
 
             {/* Highlighted section (no gaps) */}
             <span
-              ref={highlightedRef}
+              ref={activeItemRef}
               className="bg-blue-800/0  text-black rounded-sm"
             >
               {highlightedWords}
