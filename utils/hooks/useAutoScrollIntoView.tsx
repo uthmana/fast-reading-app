@@ -28,21 +28,29 @@ export function useAutoScrollIntoView({
     const visibleTop = containerRect.top + container.clientTop;
     const visibleBottom = visibleTop + container.clientHeight;
 
-    // Scroll only if the element is below the visible area.
-    if (elementRect.bottom > visibleBottom) {
-      const overflow = elementRect.bottom - visibleBottom;
+    // Check whether the entire highlighted text is visible.
+    const isFullyVisible =
+      elementRect.top >= visibleTop && elementRect.bottom <= visibleBottom;
 
-      const targetScroll = Math.min(
-        container.scrollTop + overflow,
-        container.scrollHeight - container.clientHeight,
-      );
+    if (isFullyVisible) return;
 
-      if (targetScroll > container.scrollTop) {
-        container.scrollTo({
-          top: targetScroll,
-          behavior,
-        });
-      }
-    }
+    // Calculate the centers.
+    const elementCenter = elementRect.top + elementRect.height / 2;
+    const containerCenter = visibleTop + container.clientHeight / 2;
+
+    const offset = elementCenter - containerCenter;
+
+    // Keep scrolling within container boundaries.
+    const maxScroll = container.scrollHeight - container.clientHeight;
+
+    const targetScroll = Math.max(
+      0,
+      Math.min(container.scrollTop + offset, maxScroll),
+    );
+
+    container.scrollTo({
+      top: targetScroll,
+      behavior,
+    });
   }, [elementRef, containerRef, disabled, behavior, ...dependencies]);
 }

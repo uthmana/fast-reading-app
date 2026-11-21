@@ -43,6 +43,7 @@ type FastReadingTestProps = {
   className?: string;
   saveProgress?: () => void;
   isLesson?: boolean;
+  isReadingTestPause?: boolean;
 };
 
 const MAXIMUM_READING_SPEED = 2000; // Maximum reading speed in words per minute
@@ -59,6 +60,7 @@ export default function FastReadingTest({
   className = "",
   saveProgress,
   isLesson,
+  isReadingTestPause,
 }: FastReadingTestProps) {
   const [isReading, setIsReading] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -82,8 +84,22 @@ export default function FastReadingTest({
     }
   }, [article?.description, control.font]);
 
+  useEffect(() => {
+    if (!setReadingStatus) return;
+    const countWord = countWords(article?.description || "");
+    const wpm = calculateReadingSpeed(countWord || 1, counter || 1);
+    setReadingStatus({ counter: counter || 1, totalWords: countWord, wpm });
+  }, [counter, article?.description]);
+
+  useEffect(() => {
+    if (isReadingTestPause) {
+      handlePause();
+    }
+  }, [isReadingTestPause]);
+
   const handlePause = () => {
     if (!article?.description) {
+      alert("Makale bulunamadı, daha sonra tekra edin.");
       onFinishTest(null);
       return;
     }
@@ -160,13 +176,6 @@ export default function FastReadingTest({
     }
   };
 
-  useEffect(() => {
-    if (!setReadingStatus) return;
-    const countWord = countWords(article?.description || "");
-    const wpm = calculateReadingSpeed(countWord || 1, counter || 1);
-    setReadingStatus({ counter: counter || 1, totalWords: countWord, wpm });
-  }, [counter, article?.description]);
-
   return (
     <div className={`w-full px-4 py-5 ${className}`}>
       <div className="w-full text-right top-0 absolute left-0">
@@ -196,11 +205,11 @@ export default function FastReadingTest({
             </p>
           )}
 
-          <Button
+          {/* <Button
             icon={<MdPauseCircle className="w-6 h-6 text-white" />}
             className="max-w-fit my-4 ml-auto bg-red-600 hover:bg-red-700 shadow-lg"
             onClick={handlePause}
-          />
+          /> */}
         </div>
       ) : (
         <div className="w-full h-full flex flex-col items-center">
