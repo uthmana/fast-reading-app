@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Breadcrumb from "@/components/admin/components/breadcrumb/breadcrumb";
 import SideBar from "@/components/admin/components/sideBar/sideBar";
 import NavBar from "@/components/admin/components/navBar/navBar";
-import { AdminRouteTypes } from "@/components/admin/model/admin";
+import { AdminRouteTypes } from "@/app/(admin)/admin/dataModel";
 
 export default function Navigation({
   children,

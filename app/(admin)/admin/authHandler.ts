@@ -1,47 +1,7 @@
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-
-export const authOptions: any = {
-  ADMIN: {
-    classes: ["view", "create", "edit", "delete"],
-    students: ["view", "create", "edit", "delete"],
-    teachers: ["view", "create", "edit", "delete"],
-    lessons: ["view", "create", "edit", "delete"],
-    category: ["view", "create", "edit", "delete"],
-    articles: ["view", "create", "edit", "delete"],
-    words: ["view", "create", "edit", "delete"],
-    users: ["view", "create", "edit", "delete"],
-    billing: ["view", "create", "edit", "delete"],
-    registration: ["view", "create", "edit", "delete"],
-    videos: ["view", "create", "edit", "delete"],
-    datatransfers: ["view", "create", "edit", "delete"],
-  },
-  SUBSCRIBER: {
-    classes: ["view", "create", "edit", "delete"],
-    students: ["view", "create", "edit", "delete"],
-    teachers: ["view", "create", "edit", "delete"],
-    lessons: ["view", "create", "edit", "delete"],
-    category: ["view", "create", "edit", "delete"],
-    articles: ["view", "create", "edit", "delete"],
-    words: ["view", "create", "edit", "delete"],
-    users: ["view"],
-    billing: ["view"],
-    registration: [],
-  },
-  TEACHER: {
-    classes: ["view", "create", "edit", "delete"],
-    students: ["view", "create", "edit", "delete"],
-    teachers: ["view"],
-    lessons: ["view", "create", "edit", "delete"],
-    category: ["view", "create", "edit", "delete"],
-    articles: ["view", "create", "edit", "delete"],
-    words: ["view", "create", "edit", "delete"],
-    users: ["view"],
-    billing: ["view"],
-    registration: [],
-  },
-};
+import { authPermissions } from "./authPermissions";
 
 export const useAuthHandler = () => {
   const { data: session, status } = useSession();
@@ -62,7 +22,7 @@ export const useAuthHandler = () => {
 
     const role = session?.user?.role || "";
     const pageName = pathname?.split("/")?.[2];
-    const permissions = authOptions[role]?.[pageName] || [];
+    const permissions = authPermissions[role]?.[pageName] || [];
 
     return {
       loading: false,
@@ -75,7 +35,7 @@ export const useAuthHandler = () => {
       canViewMenu: (page: string) => {
         if (!page) return false;
         const pName = page.split("/")?.[2];
-        const pPerms = authOptions[role]?.[pName];
+        const pPerms = authPermissions[role]?.[pName];
         return pPerms?.includes("view") ?? false;
       },
     };

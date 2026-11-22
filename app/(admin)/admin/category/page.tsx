@@ -1,5 +1,5 @@
-import { getCategories } from "@/lib/api/getCategories";
 import { getAuthHandlerServer } from "../authHandlerServer";
+import { getCategories } from "../dataRequest";
 import CategoryClient from "./CategoryClient";
 
 export const metadata = {

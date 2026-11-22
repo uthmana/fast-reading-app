@@ -1,6 +1,6 @@
 import WordsClient from "./WordsClient";
 import { getAuthHandlerServer } from "../authHandlerServer";
-import { getWords } from "@/lib/api/getWords";
+import { getWords } from "../dataRequest";
 
 export const metadata = {
   title: "Kelimeler | Yönetim Paneli",

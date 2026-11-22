@@ -6,7 +6,7 @@ import { fetchData } from "@/lib/fetchData/fetchData";
 import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useState } from "react";
 import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, WordsTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes, WordsTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   authData: AuthDataTypes;

@@ -28,13 +28,13 @@ import {
 import * as XLSX from "xlsx";
 import saveAs from "file-saver";
 import { exportToExcel } from "@/utils/helpers";
-import { fetchData } from "@/utils/fetchData";
 import {
   DATA_TYPES,
   DATA_TYPE_META,
   DataType,
   ImportSummary,
 } from "@/lib/datatransfers/meta";
+import { fetchData } from "@/lib/fetchData/fetchData";
 
 type OperationStatus = "idle" | "loading" | "success" | "error";
 type Results = Partial<Record<DataType, ImportSummary>>;
@@ -97,10 +97,18 @@ const ResultsView = ({ results }: { results: Results }) => {
             const r = results[t]!;
             return (
               <tr key={t} className="border-t border-gray-100">
-                <td className="px-3 py-2 text-gray-700">{DATA_TYPE_META[t].label}</td>
-                <td className="px-3 py-2 text-right text-green-600">{r.created}</td>
-                <td className="px-3 py-2 text-right text-blue-600">{r.updated}</td>
-                <td className={`px-3 py-2 text-right ${r.errors.length ? "text-amber-600" : "text-gray-400"}`}>
+                <td className="px-3 py-2 text-gray-700">
+                  {DATA_TYPE_META[t].label}
+                </td>
+                <td className="px-3 py-2 text-right text-green-600">
+                  {r.created}
+                </td>
+                <td className="px-3 py-2 text-right text-blue-600">
+                  {r.updated}
+                </td>
+                <td
+                  className={`px-3 py-2 text-right ${r.errors.length ? "text-amber-600" : "text-gray-400"}`}
+                >
                   {r.errors.length}
                 </td>
               </tr>
@@ -137,12 +145,14 @@ export default function DataTransfersPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // --- all-types state ---
-  const [allExportStatus, setAllExportStatus] = useState<OperationStatus>("idle");
+  const [allExportStatus, setAllExportStatus] =
+    useState<OperationStatus>("idle");
   const [allMessage, setAllMessage] = useState("");
   const [allFile, setAllFile] = useState<File | null>(null);
   const [allSheets, setAllSheets] = useState<SheetData[]>([]);
   const [allSkipped, setAllSkipped] = useState<string[]>([]);
-  const [allImportStatus, setAllImportStatus] = useState<OperationStatus>("idle");
+  const [allImportStatus, setAllImportStatus] =
+    useState<OperationStatus>("idle");
   const [allResults, setAllResults] = useState<Results | null>(null);
   const allInputRef = useRef<HTMLInputElement>(null);
 
@@ -154,7 +164,9 @@ export default function DataTransfersPage() {
     setExportStatus("loading");
     setStatusMessage("");
     try {
-      const rows = await fetchData({ apiPath: `/api/datatransfers?type=${activeTab}` });
+      const rows = await fetchData({
+        apiPath: `/api/datatransfers?type=${activeTab}`,
+      });
       if (!Array.isArray(rows) || rows.length === 0) {
         setExportStatus("error");
         setStatusMessage("Dışa aktarılacak veri bulunamadı.");
@@ -182,9 +194,13 @@ export default function DataTransfersPage() {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
         setPreviewData(jsonData.slice(0, 5));
-        setStatusMessage(`${jsonData.length} satır okundu. İçe aktarmaya hazır.`);
+        setStatusMessage(
+          `${jsonData.length} satır okundu. İçe aktarmaya hazır.`,
+        );
       } catch {
-        setStatusMessage("Dosya okunamadı. Lütfen geçerli bir Excel dosyası seçin.");
+        setStatusMessage(
+          "Dosya okunamadı. Lütfen geçerli bir Excel dosyası seçin.",
+        );
         setSelectedFile(null);
         setPreviewData(null);
       }
@@ -279,9 +295,9 @@ export default function DataTransfersPage() {
     setAllExportStatus("loading");
     setAllMessage("");
     try {
-      const all = (await fetchData({ apiPath: "/api/datatransfers?type=all" })) as Partial<
-        Record<DataType, any[]>
-      >;
+      const all = (await fetchData({
+        apiPath: "/api/datatransfers?type=all",
+      })) as Partial<Record<DataType, any[]>>;
 
       const workbook = XLSX.utils.book_new();
       let total = 0;
@@ -297,7 +313,8 @@ export default function DataTransfersPage() {
         total += rows.length;
         sheetCount++;
       }
-      if (sheetCount === 0) throw new Error("Dışa aktarılacak veri bulunamadı.");
+      if (sheetCount === 0)
+        throw new Error("Dışa aktarılacak veri bulunamadı.");
 
       const out = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
       const today = new Date().toISOString().slice(0, 10);
@@ -350,7 +367,9 @@ export default function DataTransfersPage() {
   };
 
   const handleAllImport = async () => {
-    const importable = allSheets.filter((s) => DATA_TYPE_META[s.type].importable);
+    const importable = allSheets.filter(
+      (s) => DATA_TYPE_META[s.type].importable,
+    );
     if (importable.length === 0) {
       setAllMessage("İçe aktarılacak sayfa yok.");
       return;
@@ -365,7 +384,9 @@ export default function DataTransfersPage() {
     setAllMessage("İçe aktarılıyor...");
     setAllResults(null);
     try {
-      const sheets = Object.fromEntries(importable.map((s) => [s.type, s.rows]));
+      const sheets = Object.fromEntries(
+        importable.map((s) => [s.type, s.rows]),
+      );
       const res = await fetch("/api/datatransfers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -408,7 +429,9 @@ export default function DataTransfersPage() {
 
       {/* ===== ALL DATA ===== */}
       <section className="mb-10">
-        <h2 className="text-lg font-semibold text-gray-700 mb-1">Tüm Veriler</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-1">
+          Tüm Veriler
+        </h2>
         <p className="text-sm text-gray-500 mb-4">
           Bütün veri türleri tek bir Excel dosyasında, her biri ayrı bir sayfada
           olacak şekilde indirilir. Aynı dosya tekrar yüklenerek topluca içe
@@ -423,8 +446,12 @@ export default function DataTransfersPage() {
                 <MdLibraryBooks className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Tümünü Dışa Aktar</h3>
-                <p className="text-emerald-100 text-sm">Tek Excel dosyası, çok sayfalı</p>
+                <h3 className="text-lg font-semibold text-white">
+                  Tümünü Dışa Aktar
+                </h3>
+                <p className="text-emerald-100 text-sm">
+                  Tek Excel dosyası, çok sayfalı
+                </p>
               </div>
             </div>
             <div className="p-6">
@@ -438,7 +465,9 @@ export default function DataTransfersPage() {
                 ) : (
                   <MdFileDownload className="w-5 h-5" />
                 )}
-                {allExportStatus === "loading" ? "Hazırlanıyor..." : "Tümünü Excel Olarak İndir"}
+                {allExportStatus === "loading"
+                  ? "Hazırlanıyor..."
+                  : "Tümünü Excel Olarak İndir"}
               </button>
               {allExportStatus === "success" && allMessage && (
                 <div className="mt-4 flex items-center gap-2 text-emerald-600 text-sm bg-emerald-50 p-3 rounded-lg">
@@ -462,8 +491,12 @@ export default function DataTransfersPage() {
                 <MdFileUpload className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-white">Tümünü İçe Aktar</h3>
-                <p className="text-blue-100 text-sm">Çok sayfalı Excel dosyasını yükleyin</p>
+                <h3 className="text-lg font-semibold text-white">
+                  Tümünü İçe Aktar
+                </h3>
+                <p className="text-blue-100 text-sm">
+                  Çok sayfalı Excel dosyasını yükleyin
+                </p>
               </div>
             </div>
             <div className="p-6">
@@ -488,7 +521,9 @@ export default function DataTransfersPage() {
                 {allFile ? (
                   <div className="flex items-center justify-center gap-3">
                     <MdCheckCircle className="w-8 h-8 text-green-500" />
-                    <p className="font-medium text-gray-700 break-all text-left">{allFile.name}</p>
+                    <p className="font-medium text-gray-700 break-all text-left">
+                      {allFile.name}
+                    </p>
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -504,17 +539,24 @@ export default function DataTransfersPage() {
                   <>
                     <MdCloudUpload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
                     <p className="text-gray-600 font-medium">Dosyayı seçin</p>
-                    <p className="text-gray-400 text-sm mt-1">.xlsx veya .xls</p>
+                    <p className="text-gray-400 text-sm mt-1">
+                      .xlsx veya .xls
+                    </p>
                   </>
                 )}
               </div>
 
               {allSheets.length > 0 && (
                 <div className="mb-4 p-3 bg-gray-50 rounded-xl border border-gray-200 text-sm">
-                  <p className="font-medium text-gray-700 mb-2">Bulunan sayfalar:</p>
+                  <p className="font-medium text-gray-700 mb-2">
+                    Bulunan sayfalar:
+                  </p>
                   <ul className="space-y-1">
                     {allSheets.map((s) => (
-                      <li key={s.type} className="flex justify-between text-gray-600">
+                      <li
+                        key={s.type}
+                        className="flex justify-between text-gray-600"
+                      >
                         <span>{DATA_TYPE_META[s.type].label}</span>
                         <span>
                           {DATA_TYPE_META[s.type].importable
@@ -534,7 +576,9 @@ export default function DataTransfersPage() {
 
               <button
                 onClick={handleAllImport}
-                disabled={allSheets.length === 0 || allImportStatus === "loading"}
+                disabled={
+                  allSheets.length === 0 || allImportStatus === "loading"
+                }
                 className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-xl transition-colors duration-200"
               >
                 {allImportStatus === "loading" ? (
@@ -542,10 +586,14 @@ export default function DataTransfersPage() {
                 ) : (
                   <MdFileUpload className="w-5 h-5" />
                 )}
-                {allImportStatus === "loading" ? "İçe Aktarılıyor..." : "Tümünü İçe Aktar"}
+                {allImportStatus === "loading"
+                  ? "İçe Aktarılıyor..."
+                  : "Tümünü İçe Aktar"}
               </button>
 
-              {allImportStatus === "success" && allResults && <ResultsView results={allResults} />}
+              {allImportStatus === "success" && allResults && (
+                <ResultsView results={allResults} />
+              )}
               {allImportStatus === "error" && (
                 <div className="mt-4 flex items-center gap-2 text-red-600 text-sm bg-red-50 p-3 rounded-lg">
                   <MdError className="w-5 h-5 shrink-0" />
@@ -562,7 +610,9 @@ export default function DataTransfersPage() {
 
       {/* ===== SINGLE TYPE ===== */}
       <section>
-        <h2 className="text-lg font-semibold text-gray-700 mb-3">Tek Veri Türü</h2>
+        <h2 className="text-lg font-semibold text-gray-700 mb-3">
+          Tek Veri Türü
+        </h2>
 
         {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-6 bg-gray-100 p-1 rounded-xl w-fit max-w-full">
@@ -591,8 +641,12 @@ export default function DataTransfersPage() {
                   <MdFileDownload className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">Dışa Aktar</h3>
-                  <p className="text-emerald-100 text-sm">Mevcut verileri Excel olarak indirin</p>
+                  <h3 className="text-lg font-semibold text-white">
+                    Dışa Aktar
+                  </h3>
+                  <p className="text-emerald-100 text-sm">
+                    Mevcut verileri Excel olarak indirin
+                  </p>
                 </div>
               </div>
             </div>
@@ -618,7 +672,9 @@ export default function DataTransfersPage() {
                 ) : (
                   <MdFileDownload className="w-5 h-5" />
                 )}
-                {exportStatus === "loading" ? "İndiriliyor..." : "Excel Olarak İndir"}
+                {exportStatus === "loading"
+                  ? "İndiriliyor..."
+                  : "Excel Olarak İndir"}
               </button>
 
               {exportStatus === "success" && (
@@ -644,8 +700,12 @@ export default function DataTransfersPage() {
                   <MdFileUpload className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-white">İçe Aktar</h3>
-                  <p className="text-blue-100 text-sm">Excel dosyasından veri yükleyin</p>
+                  <h3 className="text-lg font-semibold text-white">
+                    İçe Aktar
+                  </h3>
+                  <p className="text-blue-100 text-sm">
+                    Excel dosyasından veri yükleyin
+                  </p>
                 </div>
               </div>
             </div>
@@ -655,8 +715,8 @@ export default function DataTransfersPage() {
                 <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 text-sm text-gray-600 flex gap-2">
                   <MdInfo className="w-5 h-5 text-gray-400 shrink-0 mt-0.5" />
                   <span>
-                    {meta.label} yalnızca dışa aktarılabilir. Bu veri türü için içe
-                    aktarma yapılamaz.
+                    {meta.label} yalnızca dışa aktarılabilir. Bu veri türü için
+                    içe aktarma yapılamaz.
                   </span>
                 </div>
               </div>
@@ -687,7 +747,9 @@ export default function DataTransfersPage() {
                     <div className="flex items-center justify-center gap-3">
                       <MdCheckCircle className="w-8 h-8 text-green-500" />
                       <div className="text-left">
-                        <p className="font-medium text-gray-700 break-all">{selectedFile.name}</p>
+                        <p className="font-medium text-gray-700 break-all">
+                          {selectedFile.name}
+                        </p>
                         <p className="text-sm text-gray-500">
                           {(selectedFile.size / 1024).toFixed(1)} KB
                         </p>
@@ -706,8 +768,12 @@ export default function DataTransfersPage() {
                   ) : (
                     <>
                       <MdCloudUpload className="w-10 h-10 text-gray-400 mx-auto mb-2" />
-                      <p className="text-gray-600 font-medium">Dosyayı sürükleyip bırakın</p>
-                      <p className="text-gray-400 text-sm mt-1">veya tıklayarak seçin (.xlsx, .xls)</p>
+                      <p className="text-gray-600 font-medium">
+                        Dosyayı sürükleyip bırakın
+                      </p>
+                      <p className="text-gray-400 text-sm mt-1">
+                        veya tıklayarak seçin (.xlsx, .xls)
+                      </p>
                     </>
                   )}
                 </div>
@@ -762,7 +828,9 @@ export default function DataTransfersPage() {
                   ) : (
                     <MdFileUpload className="w-5 h-5" />
                   )}
-                  {importStatus === "loading" ? "İçe Aktarılıyor..." : "İçe Aktar"}
+                  {importStatus === "loading"
+                    ? "İçe Aktarılıyor..."
+                    : "İçe Aktar"}
                 </button>
 
                 {importStatus === "success" && importResult && (
@@ -770,8 +838,9 @@ export default function DataTransfersPage() {
                     <div className="flex items-center gap-2 text-green-600 text-sm bg-green-50 p-3 rounded-lg">
                       <MdCheckCircle className="w-5 h-5 shrink-0" />
                       <span>
-                        <strong>{importResult.created}</strong> yeni kayıt oluşturuldu,{" "}
-                        <strong>{importResult.updated}</strong> kayıt güncellendi.
+                        <strong>{importResult.created}</strong> yeni kayıt
+                        oluşturuldu, <strong>{importResult.updated}</strong>{" "}
+                        kayıt güncellendi.
                       </span>
                     </div>
                     {importResult.errors.length > 0 && (
@@ -807,10 +876,14 @@ export default function DataTransfersPage() {
           <h3 className="text-base font-semibold text-gray-700 mb-4">
             Alan Bilgileri – <span className="text-blue-600">{meta.label}</span>
           </h3>
-          <div className={`grid grid-cols-1 ${meta.importable ? "md:grid-cols-2" : ""} gap-4`}>
+          <div
+            className={`grid grid-cols-1 ${meta.importable ? "md:grid-cols-2" : ""} gap-4`}
+          >
             {meta.importable && (
               <div>
-                <h4 className="text-sm font-medium text-red-600 mb-2">Zorunlu Alanlar</h4>
+                <h4 className="text-sm font-medium text-red-600 mb-2">
+                  Zorunlu Alanlar
+                </h4>
                 <div className="flex flex-wrap gap-2">
                   {meta.required.map((f) => (
                     <span
@@ -825,7 +898,9 @@ export default function DataTransfersPage() {
             )}
             <div>
               <h4 className="text-sm font-medium text-gray-500 mb-2">
-                {meta.importable ? "Opsiyonel Alanlar" : "Dışa Aktarılan Sütunlar"}
+                {meta.importable
+                  ? "Opsiyonel Alanlar"
+                  : "Dışa Aktarılan Sütunlar"}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {meta.optional.map((f) => (
@@ -846,11 +921,11 @@ export default function DataTransfersPage() {
           )}
           <div className="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
             <p className="text-sm text-blue-700">
-              <strong>İpucu:</strong> Önce mevcut veriyi dışa aktararak Excel şablon
-              formatını görün, ardından aynı formatta dosya hazırlayıp içe aktarın.{" "}
-              <span className="font-mono">id</span> alanı varsa mevcut kayıt güncellenir,
-              yoksa yeni kayıt oluşturulur. Boş bırakılan hücreler mevcut değeri
-              değiştirmez.
+              <strong>İpucu:</strong> Önce mevcut veriyi dışa aktararak Excel
+              şablon formatını görün, ardından aynı formatta dosya hazırlayıp
+              içe aktarın. <span className="font-mono">id</span> alanı varsa
+              mevcut kayıt güncellenir, yoksa yeni kayıt oluşturulur. Boş
+              bırakılan hücreler mevcut değeri değiştirmez.
             </p>
           </div>
         </div>
