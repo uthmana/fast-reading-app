@@ -1,5 +1,5 @@
-import { getArticles } from "@/lib/api/getArticles";
 import { getAuthHandlerServer } from "../authHandlerServer";
+import { getArticles } from "../dataRequest";
 import ArticlesClient from "./ArticlesClient";
 
 export const metadata = {

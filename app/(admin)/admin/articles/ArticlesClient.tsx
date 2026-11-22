@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { MdModeEdit, MdOutlineDelete } from "react-icons/md";
 import FormBuilder from "@/components/admin/formBuilder";
 import { useFormHandler } from "@/utils/hooks/useFormHandler";
-import { ArticleTypes, AuthDataTypes } from "@/components/admin/model/admin";
+import { ArticleTypes, AuthDataTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   authData: AuthDataTypes;

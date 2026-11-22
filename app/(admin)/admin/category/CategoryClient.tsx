@@ -5,7 +5,7 @@ import Popup from "@/components/common/popup/popup";
 import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useState } from "react";
 import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, CategoryTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes, CategoryTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   categories: CategoryTypes[];

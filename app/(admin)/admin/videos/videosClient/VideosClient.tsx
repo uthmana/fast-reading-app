@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Icon from "@/components/icons/icon";
 import { updateMenuVideo } from "./actions";
-import { AuthDataTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes } from "@/app/(admin)/admin/dataModel";
 
 type VideoItem = {
   id: string;

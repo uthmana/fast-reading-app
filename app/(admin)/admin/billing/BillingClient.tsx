@@ -1,7 +1,7 @@
 "use client";
 
 import TableBuilder from "@/components/admin/tableBuilder";
-import { AuthDataTypes, BillingTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes, BillingTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   billings: BillingTypes[];

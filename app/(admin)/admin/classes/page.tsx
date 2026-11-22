@@ -1,5 +1,5 @@
-import { getClasses } from "@/lib/api/getClasses";
 import { getAuthHandlerServer } from "../authHandlerServer";
+import { getClasses } from "../dataRequest";
 import ClassesClient from "./ClassesClient";
 
 export const metadata = {

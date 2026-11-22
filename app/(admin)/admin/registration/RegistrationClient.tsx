@@ -9,7 +9,7 @@ import Button from "@/components/common/button/button";
 import {
   AuthDataTypes,
   RegistrationTypes,
-} from "@/components/admin/model/admin";
+} from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   authData: AuthDataTypes;

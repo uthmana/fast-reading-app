@@ -1,5 +1,5 @@
-import { getBillings } from "@/lib/api/getBillings";
 import { getAuthHandlerServer } from "../authHandlerServer";
+import { getBillings } from "../dataRequest";
 import BillingClient from "./BillingClient";
 
 export const metadata = {

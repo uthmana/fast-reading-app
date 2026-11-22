@@ -161,7 +161,6 @@ export const getArticleByStudyGroup = async ({
     console.error(error);
   }
 };
-
 export const getWordListByLetterCount = async (
   letterCount: number,
   wpc: number,
@@ -181,7 +180,6 @@ export const getWordListByLetterCount = async (
     console.error(error);
   }
 };
-
 export const getWordListPerCountWithLimit = async (letterCount: number) => {
   const query = encodeURIComponent(
     JSON.stringify({
@@ -197,7 +195,6 @@ export const getWordListPerCountWithLimit = async (letterCount: number) => {
     console.error(error);
   }
 };
-
 export const getWordListPerCount = async (letterCount: number) => {
   const query = encodeURIComponent(
     JSON.stringify({
