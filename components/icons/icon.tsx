@@ -388,7 +388,7 @@ function Icon({
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 160 40"
+          viewBox="0 0 180 40"
           preserveAspectRatio="xMinYMid meet"
           role="img"
           aria-labelledby="happybrains-logo-title"
@@ -397,16 +397,65 @@ function Icon({
         >
           <title id="happybrains-logo-title">HappyBrains</title>
 
+          {/* HappyBrains icon */}
+          <g transform="translate(0 2) scale(0.75)">
+            <defs>
+              <linearGradient id="hb-background" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#087BFA" />
+                <stop offset="100%" stopColor="#0045C9" />
+              </linearGradient>
+
+              <linearGradient id="hb-orange" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#FFB900" />
+                <stop offset="100%" stopColor="#FF7900" />
+              </linearGradient>
+            </defs>
+
+            {/* Blue rounded background */}
+            <rect width="48" height="48" rx="9" fill="url(#hb-background)" />
+
+            {/* H */}
+            <path
+              d="M7 15 Q7 13 9 13 H13 Q15 13 15 15 V21 H21 V15 Q21 13 23 13 H27 Q29 13 29 15 V32 Q29 35 26 35 H23 Q21 35 21 33 V27 H15 V33 Q15 35 13 35 H10 Q7 35 7 32 Z"
+              fill="#FFFFFF"
+            />
+
+            {/* B */}
+            <path
+              d="M27 15 Q27 13 30 13 H39 Q44 13 44 19 Q44 22 41 24 Q45 25 45 29 Q45 35 39 35 H29 Q27 35 27 33 Z
+             M33 18 V22 H38 Q40 22 40 20 Q40 18 38 18 Z
+             M33 27 V31 H38 Q41 31 41 29 Q41 27 38 27 Z"
+              fill="url(#hb-orange)"
+              fillRule="evenodd"
+            />
+
+            {/* Accent rays */}
+            <g stroke="#FFD500" strokeWidth="2.5" strokeLinecap="round">
+              <path d="M40 8 L41 5" />
+              <path d="M44 11 L47 8" />
+              <path d="M47 16 L49 16" />
+            </g>
+
+            {/* Underline */}
+            <path
+              d="M7 41 Q21 33 43 38"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+          </g>
+
+          {/* Logo text */}
           <text
-            x="0"
+            x="40"
             y="30"
-            fontFamily="Inter, Poppins, Montserrat, Arial, sans-serif"
+            fontFamily="var(--font-oswald), 'Arial Narrow', 'Roboto Condensed', 'Liberation Sans Narrow', sans-serif"
             fontSize="24"
-            fontWeight="600"
-            letterSpacing="0"
+            fontWeight="400"
           >
             <tspan fill="#03A7EB">{logoText?.split("-")[0]}</tspan>
-            <tspan fill="#FD8029">{logoText?.split("-")[1]}</tspan>
+            <tspan fill="#FF7900">{logoText?.split("-")[1]}</tspan>
           </text>
         </svg>
       );
