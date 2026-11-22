@@ -8,6 +8,7 @@ import {
   //  MdBusiness,
   MdPayment,
   MdAppRegistration,
+  MdImportExport,
 } from "react-icons/md";
 
 const routes = [
@@ -54,6 +55,11 @@ const routes = [
     name: "Cari Hareketler",
     path: "/admin/billing",
     icon: <MdPayment className="w-6 h-6" />,
+  },
+  {
+    name: "Veri Aktarımları",
+    path: "/admin/datatransfers",
+    icon: <MdImportExport className="w-6 h-6" />,
   },
   // {
   //   name: "Firma Bilgileri",
