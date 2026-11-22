@@ -6,7 +6,7 @@ import { fetchData } from "@/lib/fetchData/fetchData";
 import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useEffect, useState } from "react";
 import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, TeacherTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes, TeacherTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   teachers: TeacherTypes[];

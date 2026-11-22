@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, ClassesTypes } from "@/components/admin/model/admin";
+import { AuthDataTypes, ClassesTypes } from "@/app/(admin)/admin/dataModel";
 
 type Props = {
   classes: ClassesTypes[];

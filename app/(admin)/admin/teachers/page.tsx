@@ -1,5 +1,5 @@
-import { getTeachers } from "@/lib/api/getTeachers";
 import { getAuthHandlerServer } from "../authHandlerServer";
+import { getTeachers } from "../dataRequest";
 import TeacherClient from "./TeacherClient";
 
 export default async function page() {
