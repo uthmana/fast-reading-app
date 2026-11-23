@@ -8,7 +8,15 @@
 }
 
 .font-verdana {
-  font-family: var(--font-verdana), Verdana, sans-serif;
+  font-family: var(--font-verdana), Arial, sans-serif;
+}
+
+.font-roboto {
+  font-family: var(--font-roboto), Arial, sans-serif;
+}
+
+.font-oswald {
+  font-family: var(--font-oswald), Arial, sans-serif;
 }
 
 .container {

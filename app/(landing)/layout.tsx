@@ -1,15 +1,9 @@
-import { Roboto } from "next/font/google";
 import { companyInfo } from "@/utils/constants";
-import "../globals.css";
 import Header from "./landingPageClient/header";
 import Footer from "./landingPageClient/footer";
+import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
+import "../globals.css";
 
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-roboto",
-  display: "swap",
-});
 export const metadata = {
   title: `${companyInfo?.name} | Etkin Hızlı Okuma`,
   description: "Hızlı okuma pratik platformu giriş",
@@ -30,8 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" style={{ scrollBehavior: "smooth" }}>
-      <body className={`scroll-smooth ${roboto.variable} bg-white text-black`}>
+    <html
+      lang="en"
+      style={{ scrollBehavior: "smooth" }}
+      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable} ${roboto.variable}`}
+    >
+      <body className={`scroll-smooth`}>
         <Header />
         {children}
         <Footer />

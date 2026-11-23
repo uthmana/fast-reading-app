@@ -453,6 +453,7 @@ function Icon({
             fontFamily="var(--font-oswald), 'Arial Narrow', 'Roboto Condensed', 'Liberation Sans Narrow', sans-serif"
             fontSize="24"
             fontWeight="400"
+            letterSpacing="0"
           >
             <tspan fill="#03A7EB">{logoText?.split("-")[0]}</tspan>
             <tspan fill="#FF7900">{logoText?.split("-")[1]}</tspan>

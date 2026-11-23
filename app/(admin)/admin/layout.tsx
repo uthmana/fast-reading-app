@@ -1,6 +1,7 @@
 import routes from "./routes";
 import Navigation from "@/components/admin/components/navigation/Navigation";
 import RootProvider from "@/components/admin/components/rootProvider/RootProvider";
+import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
 import "../../globals.css";
 
 export const metadata = {
@@ -24,7 +25,10 @@ export default function RootLayout({
   route: any;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable} ${roboto.variable}`}
+    >
       <body className="overflow-x-hidden">
         <RootProvider>
           <Navigation routes={routes}>{children}</Navigation>
