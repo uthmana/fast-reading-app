@@ -1,8 +1,8 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 import NotFound from "../not-found";
-import Lesson from "@/components/ogrenci/lessons/lesson/lessonList";
+import Lesson from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lesson/lessonList";
 
 const MAXIMUM_LESSON_COUNT = 40;
 

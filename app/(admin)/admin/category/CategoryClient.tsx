@@ -1,11 +1,11 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useState } from "react";
-import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, CategoryTypes } from "@/app/(admin)/admin/dataModel";
+import { AuthDataTypes, CategoryTypes } from "../(utils)/lib/dataModel";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
+import Popup from "../(utils)/components/popup/popup";
 
 type Props = {
   categories: CategoryTypes[];

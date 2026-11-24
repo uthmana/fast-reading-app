@@ -1,0 +1,16 @@
+export const studyGroupOptions = [
+  { value: "ILKOKUL_2_3", name: "İlkokul (2-3)" },
+  { value: "ILKOKUL_4", name: "İlkokul (4)" },
+  { value: "ORTAOKUL", name: "Ortaokul" },
+  { value: "LISE", name: "Lise" },
+  { value: "UNIVERSITE", name: "Üniversite" },
+  { value: "DOKTORA", name: "Doktora" },
+  { value: "GENEL", name: "Genel" },
+  { value: "YETISKIN", name: "Yetişkin" },
+  { value: "DISLEKSI", name: "Disleksi" },
+  { value: "TIP", name: "Tıp" },
+  { value: "IELTS", name: "IELTS" },
+  { value: "LGS_HAZIRLIK", name: "LGS Hazırlık" },
+  { value: "TYT_AYT_HAZIRLIK", name: "TYT-AYT Hazırlık" },
+  { value: "DEMO", name: "Demo" },
+];

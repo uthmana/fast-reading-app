@@ -25,10 +25,10 @@ export default withAuth(
     callbacks: {
       authorized: () => true,
     },
-  }
+  },
 );
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|.*\\.[^/]+$|login|register|bayilik|blog|kurumsal|basvur).*)",
+    "/((?!api|_next/static|_next/image|.*\\.[^/]+$|kurum-giris|ogrenci-giris|login|register|bayilik|blog|kurumsal|basvur).*)",
   ],
 };

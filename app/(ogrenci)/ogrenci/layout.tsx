@@ -1,19 +1,12 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../lib/authOptions";
-import ClientLayout from "./clientLayout";
+import { authOptions } from "../../(auth)/api/auth/authOptions";
+import ClientLayout from "./(utils)/clientLayout";
 import { redirect } from "next/navigation";
-import { Oswald } from "next/font/google";
-import SessionProvider from "@/providers/sessionProvider";
-import getMenuItems from "@/lib/api/getMenuItems";
-import { verdana, tttkb } from "@/public/fonts/fonts";
+import SessionProvider from "@/app/(ogrenci)/ogrenci/(utils)/providers/sessionProvider";
+import getMenuItems from "@/app/(ogrenci)/ogrenci/(utils)/api/getMenuItems";
+import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
 import "../../globals.css";
-
-const oswald = Oswald({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-oswald",
-});
 
 export const metadata = {
   title: "Etkin Hızlı Okuma",
@@ -38,7 +31,7 @@ export default async function RootLayout({
     await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect("/ogrenci-giris");
   }
 
   const menuItems = await getMenuItems();
@@ -50,7 +43,7 @@ export default async function RootLayout({
   return (
     <html
       lang="tr"
-      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable}`}
+      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable} ${roboto.variable}`}
     >
       <body className="bg-gray-100 w-full h-full">
         <SessionProvider>

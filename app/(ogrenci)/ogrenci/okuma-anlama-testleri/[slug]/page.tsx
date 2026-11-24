@@ -1,11 +1,12 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
-import { getLessonExerciseData } from "@/lib/api/getLessonExerciseData";
-import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import LessonTestClient from "@/components/ogrenci/lessons/lessonTestClient/LessonTestClient";
-import { getTestArticle } from "@/lib/api/getTestArticle";
-import getMenuItems from "@/lib/api/getMenuItems";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
+import { getLessonExerciseData } from "@/app/(ogrenci)/ogrenci/(utils)/api/getLessonExerciseData";
+import { redirect } from "next/navigation";
+
+import LessonTestClient from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lessonTestClient/LessonTestClient";
+import { getTestArticle } from "@/app/(ogrenci)/ogrenci/(utils)/api/getTestArticle";
+import getMenuItems from "@/app/(ogrenci)/ogrenci/(utils)/api/getMenuItems";
 
 export async function generateMetadata({
   params,

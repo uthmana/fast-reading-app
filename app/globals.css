@@ -2,13 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+.font-verdana {
+  font-family: var(--font-verdana), Arial, sans-serif;
+}
+
+.font-roboto {
+  font-family: var(--font-roboto), Arial, sans-serif;
+}
+
+.font-oswald {
+  font-family: var(--font-oswald), Arial, sans-serif;
+}
+
 .font-tttkb {
   font-family: var(--font-tttkb), Arial, sans-serif !important;
   font-weight: bolder !important;
-}
-
-.font-verdana {
-  font-family: var(--font-verdana), Verdana, sans-serif;
 }
 
 .container {

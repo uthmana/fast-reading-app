@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { companyInfo } from "@/utils/constants";
+import prisma from "@/prisma/prisma";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 
 // export type Certificate = {
 //   serial: string;

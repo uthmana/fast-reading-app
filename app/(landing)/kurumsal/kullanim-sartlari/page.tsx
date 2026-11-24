@@ -1,4 +1,4 @@
-import { companyInfo } from "@/utils/constants";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 
 export default function TermsOfUsePage() {
   return (

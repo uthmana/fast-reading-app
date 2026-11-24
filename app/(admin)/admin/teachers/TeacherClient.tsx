@@ -1,12 +1,12 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useEffect, useState } from "react";
-import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, TeacherTypes } from "@/app/(admin)/admin/dataModel";
+import { useFormHandler } from "@/app/(ogrenci)/ogrenci/(utils)/hooks/useFormHandler";
+import { AuthDataTypes, TeacherTypes } from "../(utils)/lib/dataModel";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import Popup from "../(utils)/components/popup/popup";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
 
 type Props = {
   teachers: TeacherTypes[];

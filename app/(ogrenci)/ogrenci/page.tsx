@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 import { redirect } from "next/navigation";
-import HomeClient from "./homeClient";
+import HomeClient from "./(utils)/homeClient";
 
 export const metadata = {
   title: "Ana sayfa | Etkin Hızlı Okuma",
@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function Page() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) redirect("/login");
+  if (!session?.user?.id) redirect("/ogrenci-giris");
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_PATH;
   if (!baseUrl) {

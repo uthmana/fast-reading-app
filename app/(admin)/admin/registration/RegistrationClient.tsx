@@ -1,15 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { formatDateTime } from "@/utils/helpers";
 import Link from "next/link";
-import Button from "@/components/common/button/button";
-import {
-  AuthDataTypes,
-  RegistrationTypes,
-} from "@/app/(admin)/admin/dataModel";
+import React, { useState } from "react";
+import { AuthDataTypes, RegistrationTypes } from "../(utils)/lib/dataModel";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import { formatDateTime } from "../(utils)/helpers";
+import Button from "../(utils)/components/formBuilder/button/button";
+import Popup from "../(utils)/components/popup/popup";
 
 type Props = {
   authData: AuthDataTypes;

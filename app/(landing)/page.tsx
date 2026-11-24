@@ -1,4 +1,4 @@
-import LandingClient from "./landingPageClient";
+import LandingClient from "./(utils)/components/LandingClient";
 
 export const metadata = {
   title: "Ana Sayfa | Etkin Hızlı Okuma",
