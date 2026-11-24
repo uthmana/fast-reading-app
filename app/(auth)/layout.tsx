@@ -1,3 +1,4 @@
+import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
 import "../globals.css";
 
 export const metadata = {
@@ -20,7 +21,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${oswald.variable} ${tttkb.variable} ${verdana.variable} ${roboto.variable}`}
+    >
       <body className="w-screen h-screen">
         <main className="w-full h-full bg-gradient-to-r from-brand-primary-200 to-brand-secondary-50">
           {children}

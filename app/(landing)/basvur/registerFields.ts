@@ -1,4 +1,4 @@
-import { studyGroupOptions } from "@/utils/constants";
+import { studyGroupOptions } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 
 export const registerFields = [
   {

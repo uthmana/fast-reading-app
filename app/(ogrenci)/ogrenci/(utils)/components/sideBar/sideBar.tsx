@@ -1,0 +1,58 @@
+"use client";
+
+import Link from "next/link";
+import { useMenu } from "@/app/(ogrenci)/ogrenci/(utils)/providers/menuProvider";
+import Icon from "../icons/Icon";
+
+export default function Sidebar({
+  activeMenu,
+  pathname,
+}: {
+  activeMenu: string | null;
+  pathname: string;
+}) {
+  const { menuItems } = useMenu();
+  let selected = menuItems.find((m) => m.name === activeMenu);
+  if (!activeMenu) {
+    selected = menuItems.find((menu) => menu.link === pathname);
+    if (!selected) {
+      selected = menuItems.find((menu) =>
+        menu.subMenu?.find((sub) => sub.link.includes(pathname)),
+      );
+    }
+  }
+
+  if (pathname === "/ogrenci" || pathname.includes("/ogrenci/dersler")) {
+    return null;
+  }
+
+  return (
+    <aside className="hidden min-h-96 lg:block w-64 pl-4">
+      <ul className="space-y-[1px]">
+        {selected?.subMenu?.map((item) => {
+          return (
+            <li key={item.name}>
+              <Link
+                href={item.link || "#"}
+                className={`block px-3 py-2 font-semibold border text-xs rounded-lg whitespace-nowrap text-white bg-brand-primary-100 group  transition ${
+                  pathname === item.link
+                    ? "bg-gradient-to-r from-brand-primary-100 to-brand-primary-200 shadow-lg"
+                    : ""
+                }`}
+              >
+                <span className="flex gap-[6px] items-center transition-transform group-hover:translate-x-2">
+                  <Icon
+                    name={`${selected.icon as "menu"}`}
+                    className="w-4 h-4"
+                    fill="white"
+                  />{" "}
+                  {item.name}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
+  );
+}

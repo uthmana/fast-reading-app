@@ -29,7 +29,7 @@
     "**/*.tsx",
     "types/**/*.d.ts",
     ".next/types/**/*.ts",
-    "components/ogrenci/readingScoreClient",
+    "app/(ogrenci)/ogrenci/(utils)/components/readingScoreClient",
     "lib/fetchData"
   ],
   "exclude": ["node_modules"]

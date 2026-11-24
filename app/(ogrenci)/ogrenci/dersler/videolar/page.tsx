@@ -1,4 +1,4 @@
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import VideoLessonClient from "./VideoLessonClient";
@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function page() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) redirect("/login");
+  if (!session?.user?.id) redirect("/ogrenci-giris");
   const baseUrl = process.env.NEXT_PUBLIC_BASE_PATH;
   if (!baseUrl) {
     throw new Error("NEXT_PUBLIC_BASE_PATH is not defined");

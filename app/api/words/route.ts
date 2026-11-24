@@ -1,10 +1,10 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
-import { shuffleArray } from "@/utils/helpers";
+import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
+import { shuffleArray } from "@/app/(ogrenci)/ogrenci/(utils)/helpers/helpers";
 
 export async function GET(req: NextRequest) {
   try {
@@ -77,7 +77,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(words, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
-    const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
+    const { userMessage, technicalMessage } = extractPrismaErrMsg(e);
     return NextResponse.json(
       {
         error: userMessage,

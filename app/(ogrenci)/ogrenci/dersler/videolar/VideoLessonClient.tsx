@@ -1,8 +1,8 @@
 "use client";
 
-import Icon from "@/components/icons/icon";
-import InfoSideBar from "@/components/ogrenci/sideBar/infoSideBar";
-import { useMenu } from "@/providers/menuProvider";
+import InfoSideBar from "@/app/(ogrenci)/ogrenci/(utils)/components/sideBar/infoSideBar";
+import { useMenu } from "@/app/(ogrenci)/ogrenci/(utils)/providers/menuProvider";
+import Icon from "../../(utils)/components/icons/Icon";
 
 export default function VideoLessonClient({
   progressSummary,

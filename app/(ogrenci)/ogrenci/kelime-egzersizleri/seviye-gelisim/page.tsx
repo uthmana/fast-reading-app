@@ -1,10 +1,10 @@
 "use client";
-import BarChart from "@/components/common/Charts/barChart";
-import { companyInfo } from "@/utils/constants";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { formatDateTime } from "@/utils/helpers";
+import BarChart from "@/app/(ogrenci)/ogrenci/(utils)/components/Charts/barChart";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import { formatDateTime } from "@/app/(ogrenci)/ogrenci/(utils)/helpers/helpers";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
+import { fetchData } from "../../(utils)/lib/fetchData/fetchData";
 
 export default function page() {
   const { data: session } = useSession();

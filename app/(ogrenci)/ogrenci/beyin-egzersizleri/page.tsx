@@ -1,4 +1,4 @@
-import ExerciseDetail from "@/components/ogrenci/exerciseDetail/exerciseDetail";
+import ExerciseDetail from "@/app/(ogrenci)/ogrenci/(utils)/components/exerciseDetail/exerciseDetail";
 
 export const metadata = {
   title: "Beyin Egzersiz | Etkin Hızlı Okuma",

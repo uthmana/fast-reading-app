@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
-import { companyInfo } from "@/utils/constants";
-import FormBuilder from "@/components/form/formBuilder";
+import { useFormHandler } from "@/app/(ogrenci)/ogrenci/(utils)/hooks/useFormHandler";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import FormBuilder from "@/app/(ogrenci)/ogrenci/(utils)/components/form/formBuilder";
 import { franchiseFields } from "./franchiseFields";
 
 export default function FranchisePage() {

@@ -1,5 +1,5 @@
 export default function NotFound({
-  redirectPath = "/",
+  redirectPath = "/ogrenci",
 }: {
   redirectPath?: string;
 }) {

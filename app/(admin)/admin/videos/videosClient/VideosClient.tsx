@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import Icon from "@/components/icons/icon";
 import { updateMenuVideo } from "./actions";
-import { AuthDataTypes } from "@/app/(admin)/admin/dataModel";
+import { AuthDataTypes } from "../../(utils)/lib/dataModel";
+import Icon from "../../(utils)/components/icons/Icon";
 
 type VideoItem = {
   id: string;

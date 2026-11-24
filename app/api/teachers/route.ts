@@ -1,8 +1,8 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/prisma/prisma";
 import { Teacher } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
-import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
+import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(teachers, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
-    const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
+    const { userMessage, technicalMessage } = extractPrismaErrMsg(e);
     return NextResponse.json(
       {
         error: userMessage,

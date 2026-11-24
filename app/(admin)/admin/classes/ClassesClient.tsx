@@ -1,14 +1,13 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
-import FormBuilder from "@/components/admin/formBuilder";
-import { AuthDataTypes, ClassesTypes } from "@/app/(admin)/admin/dataModel";
+import React, { useState } from "react";
+import { AuthDataTypes, ClassesTypes } from "../(utils)/lib/dataModel";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
+import Popup from "../(utils)/components/popup/popup";
 
 type Props = {
   classes: ClassesTypes[];
@@ -26,40 +25,6 @@ export default function page({ classes: classesData, authData }: Props) {
     role: "ADMIN",
     active: true,
   } as any);
-
-  //   useEffect(() => {
-  //     if (!userData) return;
-
-  //     const requestData = async () => {
-  //       try {
-  //         setIsloading(true);
-  //         let resData = [] as any;
-  //         if (userData.role && userData.role !== "ADMIN") {
-  //           const query = encodeURIComponent(
-  //             JSON.stringify({
-  //               subscriberId: userData.subscriberId,
-  //             }),
-  //           );
-  //           setIsloading(true);
-  //           resData = await fetchData({
-  //             apiPath: `/api/classes?where=${query}&subscriber=true`,
-  //           });
-  //         } else {
-  //           resData = await fetchData({
-  //             apiPath: `/api/classes?subscriber=true`,
-  //           });
-  //         }
-  //         setClasses(resData);
-  //         setIsloading(false);
-  //       } catch (error) {
-  //         setIsloading(false);
-  //         console.error(error);
-  //         return;
-  //       }
-  //     };
-
-  //     requestData();
-  //   }, [userData]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;

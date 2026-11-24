@@ -1,9 +1,9 @@
-import { getAuthHandlerServer } from "../authHandlerServer";
-import { getClasses } from "../dataRequest";
+import { getAuthHandlerServer } from "../(utils)/authHandler/authHandlerServer";
+import { getClasses } from "../(utils)/lib/dataRequest";
 import ClassesClient from "./ClassesClient";
 
 export const metadata = {
-  title: "Kategoriler | Yönetim Paneli",
+  title: "Sınıflar | Yönetim Paneli",
 };
 
 export default async function page() {

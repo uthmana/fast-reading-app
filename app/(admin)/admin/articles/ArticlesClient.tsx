@@ -1,14 +1,14 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Button from "@/components/common/button/button";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
 import React, { useState } from "react";
 import { MdModeEdit, MdOutlineDelete } from "react-icons/md";
-import FormBuilder from "@/components/admin/formBuilder";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
-import { ArticleTypes, AuthDataTypes } from "@/app/(admin)/admin/dataModel";
+import { ArticleTypes, AuthDataTypes } from "../(utils)/lib/dataModel";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
+import Button from "../(utils)/components/formBuilder/button/button";
+import Popup from "../(utils)/components/popup/popup";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
 
 type Props = {
   authData: AuthDataTypes;

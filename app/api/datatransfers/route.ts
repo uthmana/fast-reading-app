@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
-import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
+import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
 import {
   DATA_TYPES,
   DATA_TYPE_META,
@@ -9,8 +9,8 @@ import {
   IMPORT_ORDER,
   ImportSummary,
   isDataType,
-} from "@/lib/datatransfers/meta";
-import { HANDLERS } from "@/lib/datatransfers/entities";
+} from "@/app/(admin)/admin/(utils)/lib/datatransfers/meta";
+import { HANDLERS } from "@/app/(admin)/admin/(utils)/lib/datatransfers/entities";
 
 const MAX_IMPORT_ROWS = 5000;
 
@@ -45,7 +45,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(rows, { status: 200 });
   } catch (err) {
     console.error("Data export error:", err);
-    const { userMessage, technicalMessage } = extractPrismaErrorMessage(err);
+    const { userMessage, technicalMessage } = extractPrismaErrMsg(err);
     return NextResponse.json(
       { error: userMessage, details: technicalMessage },
       { status: 500 },
@@ -53,13 +53,18 @@ export async function GET(req: NextRequest) {
   }
 }
 
-async function importSheet(type: DataType, data: unknown): Promise<ImportSummary> {
+async function importSheet(
+  type: DataType,
+  data: unknown,
+): Promise<ImportSummary> {
   const summary: ImportSummary = { created: 0, updated: 0, errors: [] };
   const meta = DATA_TYPE_META[type];
   const handler = HANDLERS[type];
 
   if (!meta.importable || !handler.importRow) {
-    summary.errors.push(`${meta.label} içe aktarılamaz (yalnızca dışa aktarılabilir).`);
+    summary.errors.push(
+      `${meta.label} içe aktarılamaz (yalnızca dışa aktarılabilir).`,
+    );
     return summary;
   }
   if (!Array.isArray(data)) {
@@ -67,7 +72,9 @@ async function importSheet(type: DataType, data: unknown): Promise<ImportSummary
     return summary;
   }
   if (data.length > MAX_IMPORT_ROWS) {
-    summary.errors.push(`Tek seferde en fazla ${MAX_IMPORT_ROWS} satır içe aktarılabilir.`);
+    summary.errors.push(
+      `Tek seferde en fazla ${MAX_IMPORT_ROWS} satır içe aktarılabilir.`,
+    );
     return summary;
   }
 
@@ -87,9 +94,10 @@ async function importSheet(type: DataType, data: unknown): Promise<ImportSummary
       if (outcome === "created") summary.created++;
       else summary.updated++;
     } catch (err: any) {
-      const isPrisma = typeof err?.code === "string" && err.code.startsWith("P");
+      const isPrisma =
+        typeof err?.code === "string" && err.code.startsWith("P");
       const message = isPrisma
-        ? extractPrismaErrorMessage(err).userMessage
+        ? extractPrismaErrMsg(err).userMessage
         : err?.message || "Bilinmeyen hata";
       summary.errors.push(`Satır ${excelRow}: ${message}`);
     }
@@ -107,7 +115,11 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
 
   let sheets: Record<string, unknown>;
-  if (body?.sheets && typeof body.sheets === "object" && !Array.isArray(body.sheets)) {
+  if (
+    body?.sheets &&
+    typeof body.sheets === "object" &&
+    !Array.isArray(body.sheets)
+  ) {
     sheets = body.sheets;
   } else if (isDataType(body?.type)) {
     sheets = { [body.type]: body.data };
