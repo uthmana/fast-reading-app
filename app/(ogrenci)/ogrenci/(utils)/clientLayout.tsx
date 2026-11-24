@@ -1,0 +1,70 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { playlists } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import { MenuPropsTypes } from "@/app/(ogrenci)/ogrenci/(utils)/types/menu";
+import { MenuProvider } from "@/app/(ogrenci)/ogrenci/(utils)/providers/menuProvider";
+import AudioPlayer from "./components/audioPlayer/audioPlayer";
+import Sidebar from "@/app/(ogrenci)/ogrenci/(utils)/components/sideBar/sideBar";
+import Breadcrumb from "@/app/(ogrenci)/ogrenci/(utils)/components/breadcrumb/breadcrumb";
+import Footer from "@/app/(ogrenci)/ogrenci/(utils)/components/footer/Footer";
+import Header from "@/app/(ogrenci)/ogrenci/(utils)/components/header/Header";
+
+interface ClientLayoutProps {
+  children: React.ReactNode;
+}
+
+export default function ClientLayout({
+  children,
+  menuItems,
+}: ClientLayoutProps & { menuItems: MenuPropsTypes[] }) {
+  const [activeMenu, setActiveMenu] = useState("" as string | null);
+  const [currentMenu, setCurrentMenu] = useState([] as any);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const firstSegment = pathname?.split("/")[2] || "";
+    const menuItem = menuItems.find(
+      (item) => item.link === `/ogrenci/${firstSegment}`,
+    );
+    if (pathname) {
+      setCurrentMenu(
+        menuItem?.subMenu?.filter(
+          (item: any) => item.link === menuItem?.link || item.link === pathname,
+        ),
+      );
+    }
+
+    setActiveMenu(menuItem?.name ?? null);
+  }, [pathname]);
+
+  return (
+    <MenuProvider menuItems={menuItems}>
+      <div className="w-full pb-16 relative flex flex-col min-h-screen lg:bg-[url('/images/kutuphane-millet.png')]  bg-fixed bg-cover bg-no-repeat bg-center">
+        <div
+          className="lg:bg-black/0 w-full lg:before:fixed lg:before:z-0 lg:before:top-0 lg:before:left-0 lg:before:w-full  lg:before:h-screen  lg:before:bg-gradient-to-b from-[#000000]/50   to-transparent  lg:before:bg-cover lg:before:bg-no-repeat lg:before:bg-top 
+    lg:after:fixed lg:after:z-1 lg:after:top-0 lg:after:left-0  lg:after:bg-brand-primary-100 lg:after:h-[170px] lg:after:shadow-2xl  lg:after:w-full lg:after:bg-cover lg:after:bg-no-repeat lg:after:bg-top"
+        >
+          <Header
+            pathname={pathname}
+            onActiveMenu={(menuName) => setActiveMenu(menuName)}
+          />
+        </div>
+        <main className="w-full min-h-full relative">
+          <div
+            className={`flex flex-col items-start bg-white lg:shadow lg:rounded-xl lg:px-4  lg:border container`}
+          >
+            <Breadcrumb menuItem={currentMenu} />
+            <div className="w-full flex h-full">
+              <Sidebar pathname={pathname} activeMenu={activeMenu} />
+              <div className="flex-1 min-h-[650px]">{children}</div>
+            </div>
+            <Footer />
+          </div>
+        </main>
+        <AudioPlayer playlists={playlists} />
+      </div>
+    </MenuProvider>
+  );
+}

@@ -1,6 +1,6 @@
-import ReadingScoreClient from "@/components/ogrenci/readingScoreClient/readingScoreClient";
-import { authOptions } from "@/lib/authOptions";
-import { formatDateTime } from "@/utils/helpers";
+import ReadingScoreClient from "@/app/(ogrenci)/ogrenci/(utils)/components/readingScoreClient/readingScoreClient";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
+import { formatDateTime } from "@/app/(ogrenci)/ogrenci/(utils)/helpers/helpers";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
@@ -20,7 +20,7 @@ export const metadata = {
 
 export default async function page() {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.id) redirect("/login");
+  if (!session?.user?.id) redirect("/ogrenci-giris");
   const baseUrl = process.env.NEXT_PUBLIC_BASE_PATH;
   if (!baseUrl) {
     throw new Error("NEXT_PUBLIC_BASE_PATH is not defined");

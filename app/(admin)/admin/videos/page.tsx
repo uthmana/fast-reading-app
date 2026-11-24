@@ -1,6 +1,10 @@
-import getMenuItems from "@/lib/api/getMenuItems";
+import getMenuItems from "@/app/(ogrenci)/ogrenci/(utils)/api/getMenuItems";
 import VideosClient from "./videosClient/VideosClient";
-import { getAuthHandlerServer } from "../authHandlerServer";
+import { getAuthHandlerServer } from "../(utils)/authHandler/authHandlerServer";
+
+export const metadata = {
+  title: "Videolar | Yönetim Paneli",
+};
 
 export default async function VideosPage() {
   const authData = await getAuthHandlerServer("videos");

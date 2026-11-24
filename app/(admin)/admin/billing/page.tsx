@@ -1,5 +1,5 @@
-import { getAuthHandlerServer } from "../authHandlerServer";
-import { getBillings } from "../dataRequest";
+import { getAuthHandlerServer } from "../(utils)/authHandler/authHandlerServer";
+import { getBillings } from "../(utils)/lib/dataRequest";
 import BillingClient from "./BillingClient";
 
 export const metadata = {

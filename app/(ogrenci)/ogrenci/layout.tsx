@@ -1,10 +1,10 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../lib/authOptions";
-import ClientLayout from "./clientLayout";
+import { authOptions } from "../../(auth)/api/auth/authOptions";
+import ClientLayout from "./(utils)/clientLayout";
 import { redirect } from "next/navigation";
-import SessionProvider from "@/providers/sessionProvider";
-import getMenuItems from "@/lib/api/getMenuItems";
+import SessionProvider from "@/app/(ogrenci)/ogrenci/(utils)/providers/sessionProvider";
+import getMenuItems from "@/app/(ogrenci)/ogrenci/(utils)/api/getMenuItems";
 import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
 import "../../globals.css";
 
@@ -31,7 +31,7 @@ export default async function RootLayout({
     await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect("/ogrenci-giris");
   }
 
   const menuItems = await getMenuItems();

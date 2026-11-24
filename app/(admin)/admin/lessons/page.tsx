@@ -1,9 +1,7 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
+import dynamic from "next/dynamic";
+
 import React, { useEffect, useState } from "react";
 import {
   closestCenter,
@@ -20,11 +18,15 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableItem from "@/components/admin/components/sortableItem/sortableItem";
-import Button from "@/components/common/button/button";
-import dynamic from "next/dynamic";
-import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
-import FormBuilder from "@/components/admin/formBuilder";
+
+import { useAuthHandler } from "../(utils)/authHandler/authHandler";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import SortableItem from "../(utils)/components/sortableItem/sortableItem";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
+import Popup from "../(utils)/components/popup/popup";
+import Button from "../(utils)/components/formBuilder/button/button";
 
 const DndContextWithNoSSR = dynamic(
   () => import("@dnd-kit/core").then((mod) => mod.DndContext),

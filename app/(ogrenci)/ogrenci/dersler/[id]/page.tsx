@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import LessonLoader from "@/components/ogrenci/lessons/lesson/lessonLoader";
+import LessonLoader from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lesson/lessonLoader";
 import LessonsClient from "../lessonsClient";
 
 export const metadata = {

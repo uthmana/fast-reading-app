@@ -1,13 +1,13 @@
 "use client";
 
-import TableBuilder from "@/components/admin/tableBuilder";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
 import { useSearchParams } from "next/navigation";
-import FormBuilder from "@/components/admin/formBuilder";
+import { useAuthHandler } from "../../(utils)/authHandler/authHandler";
+import TableBuilder from "../../(utils)/components/tableBuilder";
+import FormBuilder from "../../(utils)/components/formBuilder";
+import { fetchData } from "../../(utils)/lib/fetchData/fetchData";
+import { useFormHandler } from "../../(utils)/hooks/useFormHandler";
+import Popup from "../../(utils)/components/popup/popup";
 
 export default function UsersClient() {
   const searchParams = useSearchParams();

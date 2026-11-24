@@ -1,16 +1,16 @@
 "use client";
 
-import StudentResult from "@/components/admin/studentResult/studentResult";
-import TableBuilder from "@/components/admin/tableBuilder";
-import Icon from "@/components/icons/icon";
-import Popup from "@/components/common/popup/popup";
-import { fetchData } from "@/lib/fetchData/fetchData";
-import { formatDateTime } from "@/utils/helpers";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "@/app/(admin)/admin/authHandler";
-import FormBuilder from "@/components/admin/formBuilder";
+import { useAuthHandler } from "../../(utils)/authHandler/authHandler";
+import TableBuilder from "../../(utils)/components/tableBuilder";
+import FormBuilder from "../../(utils)/components/formBuilder";
+import StudentResult from "../../(utils)/components/studentResult/studentResult";
+import { formatDateTime } from "../../(utils)/helpers";
+import { fetchData } from "../../(utils)/lib/fetchData/fetchData";
+import { useFormHandler } from "../../(utils)/hooks/useFormHandler";
+import Popup from "../../(utils)/components/popup/popup";
+import Icon from "../../(utils)/components/icons/Icon";
 
 export default function StudentPageContent() {
   const searchParams = useSearchParams();
@@ -87,27 +87,7 @@ export default function StudentPageContent() {
           return {
             ...userRest,
             id: rest.id,
-            name: `
-            <span style="display:flex; width:100%; gap:12px; align-items:center">
-               <span style="display:flex; align-items:center;justify-content:center; background:lightGray; padding: 6px;border-radius:100%">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#FFFFFF">
-                <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm6 2H6a6 6 0 00-6 6v1h24v-1a6 6 0 00-6-6z"/>
-              </svg>
-             </span>
-              <span>
-             <span style="display:block; font-size:14px; text-transform:capitalize;margin-bottom: 4px"> ${userRest.name} </span>
-             <span style="display:flex;align-items:center; gap:4px">
-             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="lightGray">
-                <path d="M12 12a5 5 0 100-10 5 5 0 000 10zm6 2H6a6 6 0 00-6 6v1h24v-1a6 6 0 00-6-6z"/>
-              </svg>
-             ${userRest.username}</span>
-             <span style="display:flex;align-items:center; gap:4px"> 
-              <svg xmlns="http://www.w3.org/2000/svg"  width="12" height="12" viewBox="0 0 24 24"  fill="lightGray">
-                <path d="M17 8V7a5 5 0 0 0-10 0v1H5v14h14V8h-2Zm-8-1a3 3 0 0 1 6 0v1H9V7Zm3 6a2 2 0 1 1-2 2 2 2 0 0 1 2-2Z"/>
-              </svg>
-             ${userRest.password}</span>
-            </span>
-            </span> `,
+            name: userRest.name,
             studyGroup: rest.studyGroup,
             startDate: rest.startDate,
             endDate: rest.endDate,

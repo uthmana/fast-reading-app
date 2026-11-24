@@ -1,8 +1,8 @@
 "use client";
 
-import FormBuilder from "@/components/form/formBuilder";
-import { companyInfo } from "@/utils/constants";
-import { useFormHandler } from "@/utils/hooks/useFormHandler";
+import FormBuilder from "@/app/(ogrenci)/ogrenci/(utils)/components/form/formBuilder";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import { useFormHandler } from "@/app/(ogrenci)/ogrenci/(utils)/hooks/useFormHandler";
 import React, { useState } from "react";
 import { registerFields } from "./registerFields";
 

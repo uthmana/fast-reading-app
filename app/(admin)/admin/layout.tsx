@@ -1,7 +1,7 @@
-import routes from "./routes";
-import Navigation from "@/components/admin/components/navigation/Navigation";
-import RootProvider from "@/components/admin/components/rootProvider/RootProvider";
+import routes from "./(utils)/constants/routes";
 import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
+import RootProvider from "./(utils)/components/rootProvider/RootProvider";
+import Navigation from "./(utils)/components/navigation/Navigation";
 import "../../globals.css";
 
 export const metadata = {

@@ -1,7 +1,7 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Attempt } from "@prisma/client";
-import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
+import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
 
 export async function GET(req: NextRequest) {
   try {
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(attempts, { status: 200 });
   } catch (e) {
     console.error("Prisma Error:", e);
-    const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
+    const { userMessage, technicalMessage } = extractPrismaErrMsg(e);
     return NextResponse.json(
       {
         error: userMessage,

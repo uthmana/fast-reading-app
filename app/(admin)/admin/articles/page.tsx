@@ -1,5 +1,5 @@
-import { getAuthHandlerServer } from "../authHandlerServer";
-import { getArticles } from "../dataRequest";
+import { getAuthHandlerServer } from "../(utils)/authHandler/authHandlerServer";
+import { getArticles } from "../(utils)/lib/dataRequest";
 import ArticlesClient from "./ArticlesClient";
 
 export const metadata = {

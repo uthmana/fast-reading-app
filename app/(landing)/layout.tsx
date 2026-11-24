@@ -1,6 +1,6 @@
-import { companyInfo } from "@/utils/constants";
-import Header from "./landingPageClient/header";
-import Footer from "./landingPageClient/footer";
+import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import Header from "./(utils)/components/header";
+import Footer from "./(utils)/components/footer";
 import { verdana, tttkb, oswald, roboto } from "@/public/fonts/fonts";
 import "../globals.css";
 

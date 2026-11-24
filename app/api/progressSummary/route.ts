@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { extractPrismaErrorMessage } from "@/lib/extractPrismaErrorMessage/extractPrismaErrorMessage";
-import prisma from "@/lib/prisma";
+import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import prisma from "@/prisma/prisma";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/authOptions";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 
 export async function GET(req: NextRequest) {
   try {
@@ -83,7 +83,7 @@ export async function GET(req: NextRequest) {
       { status: 200 },
     );
   } catch (e) {
-    const { userMessage, technicalMessage } = extractPrismaErrorMessage(e);
+    const { userMessage, technicalMessage } = extractPrismaErrMsg(e);
     return NextResponse.json(
       { error: userMessage, details: technicalMessage },
       { status: 500 },
