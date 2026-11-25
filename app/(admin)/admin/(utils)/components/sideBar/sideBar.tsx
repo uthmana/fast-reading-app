@@ -3,7 +3,6 @@
 import { usePopup } from "@/app/(ogrenci)/ogrenci/(utils)/providers/popupProvider";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
 import { IoMdGlobe } from "react-icons/io";
 import { MdLogout } from "react-icons/md";
@@ -23,16 +22,16 @@ export default function SideBar({
   setIsSidebarOpen,
   sidebarWidth,
   routes,
+  pathname = "/",
 }: {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (v: boolean) => void;
   sidebarWidth: number;
   routes: Route[];
+  pathname: string;
 }) {
-  const pathname = usePathname() || "/";
   const { isShow } = usePopup();
   const { canViewMenu } = useAuthHandler();
-
   const normalize = (p: string) => (p === "/" ? "/" : p.replace(/\/+$/, ""));
   const cur = normalize(pathname);
 
@@ -79,8 +78,11 @@ export default function SideBar({
       style={{ width: `${sidebarWidth}px` }}
     >
       <div className="flex items-center justify-between p-4 border-b">
-        <h2 className="text-xl ml-4 font-semibold font-roboto">
-          Yönetim Paneli
+        <h2
+          className="text-xl ml-4 flex items-center font-semibold font-oswald"
+          title="HappyBrains | Yönetim Paneli "
+        >
+          <Icon name="logo-without-text" className="w-8 h-9" /> Yönetim Paneli
         </h2>
 
         <button

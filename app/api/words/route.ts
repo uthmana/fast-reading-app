@@ -2,7 +2,7 @@ import prisma from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Words } from "@prisma/client";
 import { getServerSession } from "next-auth";
-import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { extractPrismaErrMsg } from "@/prisma/prismaExtractErrMsg/prismaExtractErrMsg";
 import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 import { shuffleArray } from "@/app/(ogrenci)/ogrenci/(utils)/helpers/helpers";
 

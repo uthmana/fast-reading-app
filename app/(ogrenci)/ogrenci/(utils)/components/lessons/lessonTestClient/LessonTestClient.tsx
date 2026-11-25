@@ -166,7 +166,7 @@ export default function LessonTestClient({
           });
           if (res && res.introTestTaken < 3) {
             setPause(true);
-            window.location.href = `/ogrenci/okuma-anlama-testleri/anlama-testi?intro-test=${
+            window.location.href = `/ogrenci/okuma-anlama-testleri/anlama-testi?introtest=${
               res.introTestTaken + 1
             }`;
           } else if (res && res.introTestTaken >= 3) {
@@ -226,7 +226,12 @@ export default function LessonTestClient({
       lessonData={{ ...lessonConfigData, pathname }}
       isArticleSelectReq={isArticleSelectReq}
       saveProgress={saveProgress}
-      description={<ControlPanelGuide data={ExerciseDescription[pathname]} />}
+      description={
+        <ControlPanelGuide
+          data={ExerciseDescription[pathname]}
+          intoTest={introTest}
+        />
+      }
       onPause={(val) => {
         setPause(val);
 

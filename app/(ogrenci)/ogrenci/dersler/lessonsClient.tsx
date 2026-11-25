@@ -6,6 +6,15 @@ import Lesson from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lesson/le
 
 const MAXIMUM_LESSON_COUNT = 40;
 
+type StudentSession = {
+  student: {
+    introTestTaken: number;
+  } | null;
+  Student?: {
+    introTestTaken: number;
+  };
+};
+
 export default async function LessonContent({
   params,
 }: {
@@ -15,6 +24,13 @@ export default async function LessonContent({
   const studentId = session?.user?.student?.id;
   let studentLesson = params.id;
   const lessonOrder = Number(params.id ?? 1);
+
+  const { student, Student } = session?.user as StudentSession;
+  const _student = student ?? Student;
+
+  if (_student && _student?.introTestTaken < 3) {
+    redirect(`/ogrenci`);
+  }
 
   if (Number.isInteger(lessonOrder)) {
     if (lessonOrder < 1 || lessonOrder > MAXIMUM_LESSON_COUNT) {

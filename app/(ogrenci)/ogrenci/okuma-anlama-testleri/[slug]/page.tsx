@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/(auth)/api/auth/authOptions";
-import { getLessonExerciseData } from "@/app/(ogrenci)/ogrenci/(utils)/api/getLessonExerciseData";
 import { redirect } from "next/navigation";
-
-import LessonTestClient from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lessonTestClient/LessonTestClient";
+import { authOptions } from "@/app/(auth)/api/auth/authOptions";
 import { getTestArticle } from "@/app/(ogrenci)/ogrenci/(utils)/api/getTestArticle";
 import getMenuItems from "@/app/(ogrenci)/ogrenci/(utils)/api/getMenuItems";
+import { getLessonExerciseData } from "@/app/(ogrenci)/ogrenci/(utils)/api/getLessonExerciseData";
+import LessonTestClient from "@/app/(ogrenci)/ogrenci/(utils)/components/lessons/lessonTestClient/LessonTestClient";
 
 export async function generateMetadata({
   params,
@@ -36,10 +35,10 @@ export default async function Page({
   searchParams,
   params,
 }: {
-  searchParams: Promise<{ q?: string; intotest?: string }>;
+  searchParams: Promise<{ q?: string; introtest?: string }>;
   params: { slug: string };
 }) {
-  const { q, intotest } = await searchParams;
+  const { q, introtest } = await searchParams;
   const session = await getServerSession(authOptions);
   const studyGroup = session?.user?.student?.studyGroup;
 
@@ -58,7 +57,7 @@ export default async function Page({
     <LessonTestClient
       session={session}
       pathname={params.slug}
-      introTest={intotest}
+      introTest={introtest}
       testArticle={testArticle}
       lessonConfigData={{ ...lessonConfigData, pahtname: params.slug, session }}
       exerciseControls={exerciseControls}
