@@ -34,10 +34,11 @@ export default function Navigation({
   return (
     <div className="flex min-h-screen bg-gray-100 relative">
       <SideBar
+        routes={routes}
+        pathname={pathname}
+        sidebarWidth={sidebarWidth}
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
-        sidebarWidth={sidebarWidth}
-        routes={routes}
       />
 
       {/* Backdrop shown only on small screens when sidebar is open */}

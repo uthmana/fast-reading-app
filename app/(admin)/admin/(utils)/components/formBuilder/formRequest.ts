@@ -1,4 +1,4 @@
-import { fetchData } from "./fetchData/fetchData";
+import { fetchData } from "../../lib/fetchData/fetchData";
 
 export const getCategoryOptions = async () => {
   try {

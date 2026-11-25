@@ -1,4 +1,4 @@
-import { studyGroupOptions } from "../constants/constant";
+import { studyGroupOptions } from "../../constants/constant";
 import {
   getCategoryOptions,
   getClassOptions,
@@ -255,6 +255,19 @@ export default {
       styleClass: "!w-[calc(50%-6px)]",
     },
     {
+      key: "introTestTaken",
+      name: "Seviye Testi Yapsın mı ?",
+      placeholder: "Seçiniz",
+      type: "select",
+      options: [
+        { value: "0", name: "Evet" },
+        { value: "3", name: "Hayır" },
+      ],
+      value: { key: "introTestTaken", type: "number", value: "3" },
+      required: true,
+      styleClass: "!w-[calc(50%-6px)]",
+    },
+    {
       key: "fee",
       name: "Ücret (TL)",
       placeholder: " ",
@@ -412,6 +425,19 @@ export default {
         },
       ],
       value: { key: "active", type: "boolean", value: "true" },
+      required: true,
+      styleClass: "!w-[calc(50%-6px)]",
+    },
+    {
+      key: "introTestTaken",
+      name: "Seviye Testi Yapsın mı ?",
+      placeholder: "Seçiniz",
+      type: "select",
+      options: [
+        { value: "0", name: "Evet" },
+        { value: "3", name: "Hayır" },
+      ],
+      value: { key: "introTestTaken", type: "number", value: "3" },
       required: true,
       styleClass: "!w-[calc(50%-6px)]",
     },

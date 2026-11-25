@@ -2,17 +2,17 @@
 
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "../../(utils)/authHandler/authHandler";
-import TableBuilder from "../../(utils)/components/tableBuilder";
-import FormBuilder from "../../(utils)/components/formBuilder";
-import StudentResult from "../../(utils)/components/studentResult/studentResult";
-import { formatDateTime } from "../../(utils)/helpers";
-import { fetchData } from "../../(utils)/lib/fetchData/fetchData";
-import { useFormHandler } from "../../(utils)/hooks/useFormHandler";
-import Popup from "../../(utils)/components/popup/popup";
-import Icon from "../../(utils)/components/icons/Icon";
+import { useAuthHandler } from "../(utils)/authHandler/authHandler";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import StudentResult from "../(utils)/components/studentResult/studentResult";
+import { formatDateTime } from "../(utils)/helpers";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
+import Popup from "../(utils)/components/popup/popup";
+import Icon from "../(utils)/components/icons/Icon";
 
-export default function StudentPageContent() {
+export default function StudentClient() {
   const searchParams = useSearchParams();
   const classId = searchParams.get("classId");
   const regno = searchParams.get("regno");
@@ -120,6 +120,7 @@ export default function StudentPageContent() {
       const tempData = [...studentsRaw].find(
         (item) => item.id === currentUser.id,
       );
+
       const { user, Progress, ...rest } = tempData;
       const { id, ...restUser } = user;
       setData({
@@ -155,7 +156,6 @@ export default function StudentPageContent() {
         }
       }
     }
-
     if (actionType === "showStudyResult") {
       setLoadingResult(true);
       setIsShowStudyResultPopUp(true);
@@ -269,7 +269,6 @@ export default function StudentPageContent() {
           />
         </Popup>
       ) : null}
-
       <Popup
         show={isShowStudyResultPopUp}
         onClose={() => setIsShowStudyResultPopUp(false)}

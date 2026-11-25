@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Class } from "@prisma/client";
-import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { extractPrismaErrMsg } from "@/prisma/prismaExtractErrMsg/prismaExtractErrMsg";
 import prisma from "@/prisma/prisma";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/(auth)/api/auth/authOptions";

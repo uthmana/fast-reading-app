@@ -4,10 +4,10 @@ import {
   exerciseData,
   lessonData,
   menuItems,
+  mockArticles,
   studyGroupOptions,
 } from "./mockData";
 import { StudyGroup } from "@prisma/client";
-import { mockArticles } from "./mockArticles";
 
 async function main() {
   // Seed data for menu items and submenus
