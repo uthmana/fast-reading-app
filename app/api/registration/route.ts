@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Registration } from "@prisma/client";
 import prisma from "@/prisma/prisma";
-import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { extractPrismaErrMsg } from "@/prisma/prismaExtractErrMsg/prismaExtractErrMsg";
 
 export async function GET(req: NextRequest) {
   try {

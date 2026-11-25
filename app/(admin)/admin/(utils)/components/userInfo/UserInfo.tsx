@@ -8,7 +8,7 @@ type Props = {
 
 export default function UserInfo({ userInfo }: Props) {
   return (
-    <div className="flex w-full gap-3 text-sm items-center">
+    <span className="flex w-full gap-3 text-sm items-center">
       <span className="flex items-center justify-center bg-[lightGray] p-2 rounded-full">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -47,6 +47,6 @@ export default function UserInfo({ userInfo }: Props) {
           {userInfo?.password}
         </span>
       </span>
-    </div>
+    </span>
   );
 }

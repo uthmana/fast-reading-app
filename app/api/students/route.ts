@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Student, User } from "@prisma/client";
-import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { extractPrismaErrMsg } from "@/prisma/prismaExtractErrMsg/prismaExtractErrMsg";
 import prisma from "@/prisma/prisma";
 import { lessonData } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 
@@ -168,6 +168,7 @@ export async function POST(req: Request) {
     fee,
     subscriberId,
     regno,
+    introTestTaken,
   }: User | any = await req.json();
 
   if (
@@ -215,6 +216,7 @@ export async function POST(req: Request) {
                 endDate,
                 studyGroup: studyGroup,
                 gender: gender,
+                introTestTaken,
                 fee,
                 class: {
                   connect: { id: parseInt(classId) },
@@ -260,6 +262,7 @@ export async function POST(req: Request) {
                   startDate,
                   endDate,
                   fee,
+                  introTestTaken,
                   gender: gender,
                   studyGroup: studyGroup,
                   class: {

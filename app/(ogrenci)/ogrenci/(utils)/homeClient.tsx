@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-
+import dynamic from "next/dynamic";
+import { useEffect, useMemo, useState } from "react";
 import {
   formatDateTime,
   mapStudyGroup,
 } from "@/app/(ogrenci)/ogrenci/(utils)/helpers/helpers";
-import { useEffect, useMemo, useState } from "react";
 import {
   MdGroups,
   MdHourglassBottom,
@@ -18,7 +18,6 @@ import Button from "@/app/(ogrenci)/ogrenci/(utils)/components/button/button";
 import PieChart from "@/app/(ogrenci)/ogrenci/(utils)/components/Charts/pieChart";
 import Widget from "@/app/(ogrenci)/ogrenci/(utils)/components/widget/widget";
 import BarChart from "@/app/(ogrenci)/ogrenci/(utils)/components/Charts/barChart";
-import dynamic from "next/dynamic";
 import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 import Popup from "./components/popup/popup";
 import { fetchData } from "./lib/fetchData/fetchData";
@@ -32,7 +31,7 @@ const SpeedGauge = dynamic(
 );
 
 export default function HomeClient({ user, progressSummary }: any) {
-  const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [isShowTermsAgreedPopUp, setIsShowTermsAgreedPopUp] = useState(false);
   const [isShowIntroTestPopUp, setIsShowIntroTestPopUp] = useState(false);
   const [isTermsPolicy, setIsTermsPolicy] = useState(false);
 
@@ -40,7 +39,7 @@ export default function HomeClient({ user, progressSummary }: any) {
     // check termsAgreed and introTestTaken
     if (!user?.Student) return;
     if (!user.Student.termsAgreed) {
-      setIsShowPopUp(true);
+      setIsShowTermsAgreedPopUp(true);
       setIsShowIntroTestPopUp(false);
       return;
     }
@@ -93,16 +92,16 @@ export default function HomeClient({ user, progressSummary }: any) {
         payload: studentData,
       });
       if (res && res.introTestTaken < 3) {
-        setIsShowPopUp(false);
+        setIsShowTermsAgreedPopUp(false);
         setIsShowIntroTestPopUp(true);
         return;
       }
-      setIsShowPopUp(false);
+      setIsShowTermsAgreedPopUp(false);
       setIsShowIntroTestPopUp(false);
       setIsTermsPolicy(false);
     } catch (error) {
       console.error("Error updating termsAgreed status:", error);
-      setIsShowPopUp(false);
+      setIsShowTermsAgreedPopUp(false);
       setIsShowIntroTestPopUp(false);
       setIsTermsPolicy(false);
     }
@@ -296,12 +295,12 @@ export default function HomeClient({ user, progressSummary }: any) {
         </div>
       </div>
 
-      {isShowPopUp ? (
+      {isShowTermsAgreedPopUp ? (
         <Popup
           overlayClass="z-[51]"
           showCloseIcon={false}
-          show={isShowPopUp}
-          onClose={() => setIsShowPopUp(false)}
+          show={isShowTermsAgreedPopUp}
+          onClose={() => setIsShowTermsAgreedPopUp(false)}
           bodyClass="!py-0"
         >
           <h1 className="text-xl font-bold mb-5 py-4 border-b-2 border-blue-400 px-8 bg-[#f5f5f5]">
@@ -341,7 +340,7 @@ export default function HomeClient({ user, progressSummary }: any) {
           showCloseIcon={false}
           show={isShowIntroTestPopUp}
           onClose={() => setIsShowIntroTestPopUp(false)}
-          bodyClass="block !py-0"
+          bodyClass="block !py-0 w-full"
         >
           <h1 className="text-xl font-bold mb-5 py-5 border-b-2 border-blue-400 px-8 bg-[#f5f5f5]">
             🎉 Seviye Belirleme Testi 🎉

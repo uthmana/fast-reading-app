@@ -5,7 +5,7 @@ import TextInput from "./formInputs/textInput";
 import Select from "./formInputs/select";
 import TextArea from "./formInputs/textArea";
 import Button from "./button/button";
-import formFields from "../../lib/formFields";
+import formFields from "./formFields";
 import { convertToISO8601 } from "../../helpers";
 
 type FormId = keyof typeof formFields;

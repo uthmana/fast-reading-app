@@ -1,7 +1,7 @@
 import prisma from "@/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { Attempt } from "@prisma/client";
-import { extractPrismaErrMsg } from "@/prisma/extractPrismaErrMsg/extractPrismaErrMsg";
+import { extractPrismaErrMsg } from "@/prisma/prismaExtractErrMsg/prismaExtractErrMsg";
 
 export async function GET(req: NextRequest) {
   try {
