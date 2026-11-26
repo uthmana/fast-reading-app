@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import UsersClient from "./usersClient.tsx/usersClient";
 import { TableSkeleton } from "../(utils)/components/skeletons/skeleton";
+import UserClient from "./UserClient";
 
 export const metadata = {
   title: "Kullanıcılar | Yönetim Paneli",
@@ -9,7 +9,7 @@ export const metadata = {
 export default function Page() {
   return (
     <Suspense fallback={<TableSkeleton />}>
-      <UsersClient />
+      <UserClient />
     </Suspense>
   );
 }

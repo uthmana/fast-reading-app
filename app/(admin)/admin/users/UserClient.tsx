@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAuthHandler } from "../../(utils)/authHandler/authHandler";
-import TableBuilder from "../../(utils)/components/tableBuilder";
-import FormBuilder from "../../(utils)/components/formBuilder";
-import { fetchData } from "../../(utils)/lib/fetchData/fetchData";
-import { useFormHandler } from "../../(utils)/hooks/useFormHandler";
-import Popup from "../../(utils)/components/popup/popup";
+import { useAuthHandler } from "../(utils)/authHandler/authHandler";
+import TableBuilder from "../(utils)/components/tableBuilder";
+import FormBuilder from "../(utils)/components/formBuilder";
+import { fetchData } from "../(utils)/lib/fetchData/fetchData";
+import { useFormHandler } from "../(utils)/hooks/useFormHandler";
+import Popup from "../(utils)/components/popup/popup";
 
-export default function UsersClient() {
+export default function UserClient() {
   const searchParams = useSearchParams();
   const regno = searchParams.get("regno");
   const [isLoading, setIsloading] = useState(false);
