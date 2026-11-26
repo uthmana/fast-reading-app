@@ -155,6 +155,55 @@ export const getRegistrations = async () => {
     return [];
   }
 };
+export const getStudents = async ({ role, subscriberId }: Props) => {
+  try {
+    const where: any = subscriberId ? { subscriberId } : undefined;
+
+    let students = await prisma.student.findMany({
+      ...(role !== "ADMIN" && where ? { where } : {}),
+      include: {
+        user: true,
+        class: true,
+        attempts: true,
+        lessons: {
+          include: { LessonExercise: true },
+        },
+        Subscriber: true,
+      },
+      orderBy: {
+        user: {
+          createdAt: "desc",
+        },
+      },
+    });
+
+    if (!students || !students.length) {
+      return [];
+    }
+
+    const enhancedData = students?.map((student: any) => {
+      const totalLessonExercises = student?.lessons?.flatMap(
+        (lesson: any) => lesson.LessonExercise,
+      );
+
+      const completedCount = totalLessonExercises.filter(
+        (exercise: any) => exercise.isDone,
+      ).length;
+
+      const lessonsPercent =
+        totalLessonExercises.length > 0
+          ? Math.round((completedCount / totalLessonExercises.length) * 100)
+          : 0;
+
+      return { ...student, progressPercent: lessonsPercent };
+    });
+
+    return enhancedData;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return [];
+  }
+};
 export const getTeachers = async ({
   role,
   subscriberId,
@@ -173,6 +222,41 @@ export const getTeachers = async ({
     return teachers;
   } catch (error) {
     console.error("Error fetching billings:", error);
+    return [];
+  }
+};
+export const getUsers = async ({ role, subscriberId }: Props) => {
+  try {
+    if (role === "TEACHER" || role === "SUBSCRIBER") {
+      const where: any = {
+        subscriberId,
+      };
+
+      const user = await prisma.user.findFirst({
+        where,
+        include: {
+          Subscriber: true,
+        },
+      });
+      return user ? [user] : [];
+    } else {
+      const users = await prisma.user.findMany({
+        where: {
+          role: {
+            in: ["ADMIN", "SUBSCRIBER"],
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        include: {
+          Subscriber: true,
+        },
+      });
+      return users.filter(
+        (val: any) => val.role === "ADMIN" || val.role === "SUBSCRIBER",
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching users:", error);
     return [];
   }
 };
