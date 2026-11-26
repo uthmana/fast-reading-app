@@ -2,79 +2,47 @@
 
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAuthHandler } from "../(utils)/authHandler/authHandler";
 import TableBuilder from "../(utils)/components/tableBuilder";
 import FormBuilder from "../(utils)/components/formBuilder";
 import { fetchData } from "../(utils)/lib/fetchData/fetchData";
 import { useFormHandler } from "../(utils)/hooks/useFormHandler";
 import Popup from "../(utils)/components/popup/popup";
+import { AuthDataTypes } from "../(utils)/lib/dataModel";
 
-export default function UserClient() {
+type Props = {
+  authData: AuthDataTypes;
+  users: any[];
+};
+
+export default function UserClient({ authData, users: initialUsers }: Props) {
   const searchParams = useSearchParams();
   const regno = searchParams.get("regno");
   const [isLoading, setIsloading] = useState(false);
-  const [users, setUsers] = useState([] as any);
+  const [users, setUsers] = useState(initialUsers);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
-
-  const { loading, canView, canCreate, canEdit, canDelete, userData } =
-    useAuthHandler();
+  const { canView, canCreate, canEdit, canDelete } = authData;
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
   const [data, setData] = useState({} as any);
 
   useEffect(() => {
-    if (loading || !userData) return;
-
-    const requestData = async () => {
-      try {
-        if (userData.role === "TEACHER" || userData.role === "SUBSCRIBER") {
-          const query = encodeURIComponent(
-            JSON.stringify({
-              subscriberId: userData.subscriberId,
-            }),
-          );
+    const handleRegno = async () => {
+      if (regno) {
+        try {
           setIsloading(true);
-          const resData = await fetchData({
-            apiPath: `/api/users?where=${query}`,
-          });
-          setUsers([resData]);
-          setIsloading(false);
-        } else {
-          const query = encodeURIComponent(
-            JSON.stringify({
-              role: {
-                in: ["ADMIN", "SUBSCRIBER"],
-              },
-            }),
-          );
-          setIsloading(true);
-          const res = await fetchData({
-            apiPath: `/api/users?where=${query}&many=true`,
-          });
-
-          setUsers(
-            res.filter(
-              (val: any) => val.role === "ADMIN" || val.role === "SUBSCRIBER",
-            ),
-          );
-        }
-
-        if (regno) {
           const resData = await fetchData({
             apiPath: `/api/registration?id=${regno}`,
           });
           setData({ name: resData.name, email: resData.email, regno });
           setIsShowPopUp(true);
+          setIsloading(false);
+        } catch (error) {
+          setIsloading(false);
+          console.error(error);
         }
-        setIsloading(false);
-      } catch (error) {
-        setIsloading(false);
-        console.error(error);
-        return;
       }
     };
-
-    requestData();
-  }, [loading, userData, regno]);
+    handleRegno();
+  }, [regno]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;
