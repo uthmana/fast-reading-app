@@ -1,15 +1,18 @@
-import { Suspense } from "react";
-import UsersClient from "./usersClient.tsx/usersClient";
-import { TableSkeleton } from "../(utils)/components/skeletons/skeleton";
+import { getAuthHandlerServer } from "../(utils)/authHandler/authHandlerServer";
+import { getUsers } from "../(utils)/lib/dataRequest";
+import UserClient from "./UserClient";
 
 export const metadata = {
   title: "Kullanıcılar | Yönetim Paneli",
 };
 
-export default function Page() {
-  return (
-    <Suspense fallback={<TableSkeleton />}>
-      <UsersClient />
-    </Suspense>
-  );
+export default async function Page() {
+  const authData = await getAuthHandlerServer("users");
+
+  const users = await getUsers({
+    role: authData.userData?.role ?? "",
+    subscriberId: authData.userData?.subscriberId,
+  });
+
+  return <UserClient users={users} authData={authData} />;
 }
