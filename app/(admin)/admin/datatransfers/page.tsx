@@ -419,15 +419,7 @@ export default function DataTransfersPage() {
   };
 
   return (
-    <div className="p-4 md:p-6 max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-800">Veri Aktarımları</h1>
-        <p className="text-gray-500 mt-1">
-          Verileri Excel olarak dışa aktarın veya içe aktarın
-        </p>
-      </div>
-
+    <div className="w-full">
       {/* ===== ALL DATA ===== */}
       <section className="mb-10">
         <h2 className="text-lg font-semibold text-gray-700 mb-1">
