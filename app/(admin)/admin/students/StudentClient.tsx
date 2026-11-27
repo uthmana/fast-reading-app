@@ -2,71 +2,61 @@
 
 import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useAuthHandler } from "../(utils)/authHandler/authHandler";
 import TableBuilder from "../(utils)/components/tableBuilder";
 import FormBuilder from "../(utils)/components/formBuilder";
 import StudentResult from "../(utils)/components/studentResult/studentResult";
-import { formatDateTime } from "../(utils)/helpers";
+import { convertToISO8601, formatDateTime } from "../(utils)/helpers";
 import { fetchData } from "../(utils)/lib/fetchData/fetchData";
 import { useFormHandler } from "../(utils)/hooks/useFormHandler";
 import Popup from "../(utils)/components/popup/popup";
 import Icon from "../(utils)/components/icons/Icon";
+import { AuthDataTypes } from "../(utils)/lib/dataModel";
 
-export default function StudentClient() {
+type Props = {
+  authData: AuthDataTypes;
+  studentsRawData: any[];
+};
+
+export default function StudentClient({ authData, studentsRawData }: Props) {
   const searchParams = useSearchParams();
   const classId = searchParams.get("classId");
   const regno = searchParams.get("regno");
   const editmodel = searchParams.get("editmodel");
   const [isLoading, setIsloading] = useState(false);
   const [students, setStudents] = useState([] as any);
-  const [studentsRaw, setStudentsRaw] = useState([] as any);
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [isShowStudyResultPopUp, setIsShowStudyResultPopUp] = useState(false);
   const [studentResult, setStudentResult] = useState({} as any);
   const [loadingResult, setLoadingResult] = useState(false);
-  const { loading, canView, canCreate, canEdit, canDelete, userData } =
-    useAuthHandler();
+  const { canView, canCreate, canEdit, canDelete, userData } = authData;
   const { isSubmitting, resError, handleFormSubmit } = useFormHandler();
+
   const [data, setData] = useState({
     role: "STUDENT",
     active: true,
   } as any);
 
   useEffect(() => {
-    if (loading || !userData) return;
-
     const requestData = async () => {
       try {
         setIsloading(true);
 
-        let resData = [] as any;
-        if (userData.role && userData.role !== "ADMIN") {
-          const query = encodeURIComponent(
-            JSON.stringify({
-              subscriberId: userData.subscriberId,
-            }),
-          );
-          resData = await fetchData({
-            apiPath: `/api/students?where=${query}&progresspercent=true`,
-          });
-        } else {
-          resData = await fetchData({
-            apiPath: `/api/students?progresspercent=true`,
-          });
-        }
+        let resData = [...studentsRawData];
 
-        setStudentsRaw(resData);
+        //Get students by classs Ids
         if (classId && !editmodel) {
-          resData = [...resData].filter((item) => {
+          resData = resData.filter((item) => {
             return item.classId === parseInt(classId);
           });
         }
 
+        //Add student to a class
         if (editmodel && classId) {
-          setData({ classId, subscriberId: userData.subscriberId });
+          setData({ classId, subscriberId: userData?.subscriberId });
           setIsShowPopUp(true);
         }
 
+        // Register new studuent
         if (regno) {
           const resData = await fetchData({
             apiPath: `/api/registration?id=${regno}`,
@@ -98,6 +88,7 @@ export default function StudentClient() {
             subscriberId: rest.subscriberId,
           };
         });
+
         setStudents(allData);
         setIsloading(false);
       } catch (error) {
@@ -108,7 +99,7 @@ export default function StudentClient() {
     };
 
     requestData();
-  }, [loading, userData, classId, editmodel, regno]);
+  }, [classId, editmodel, regno]);
 
   const handleAction = async (actionType: string, info: any) => {
     const currentUser = info?.row?.original;
@@ -117,7 +108,7 @@ export default function StudentClient() {
       setIsShowPopUp(true);
     }
     if (actionType === "edit") {
-      const tempData = [...studentsRaw].find(
+      const tempData = [...studentsRawData].find(
         (item) => item.id === currentUser.id,
       );
 
@@ -126,8 +117,8 @@ export default function StudentClient() {
       setData({
         ...restUser,
         ...rest,
-        startDate: currentUser.startDate?.split("T")[0],
-        endDate: currentUser.endDate?.split("T")[0],
+        startDate: convertToISO8601(currentUser.startDate)?.split("T")?.[0],
+        endDate: convertToISO8601(currentUser.endDate)?.split("T")?.[0],
         active: restUser.active,
       });
       setIsShowPopUp(true);
@@ -159,7 +150,7 @@ export default function StudentClient() {
     if (actionType === "showStudyResult") {
       setLoadingResult(true);
       setIsShowStudyResultPopUp(true);
-      const tempData = [...studentsRaw].find(
+      const tempData = [...studentsRawData].find(
         (item) => item.id === currentUser.id,
       );
 
@@ -221,8 +212,8 @@ export default function StudentClient() {
     <div className="w-full">
       {canView ? (
         <TableBuilder
-          isLoading={isLoading || loading}
-          key={isLoading}
+          isLoading={isLoading}
+          key={isLoading || students}
           tableData={students}
           columnKey="studentColumn"
           onAction={handleAction}
