@@ -14,7 +14,10 @@ type Props = {
   authData: AuthDataTypes;
 };
 
-export default function page({ classes: classesData, authData }: Props) {
+export default function classesClient({
+  classes: classesData,
+  authData,
+}: Props) {
   const router = useRouter();
   const [isLoading, setIsloading] = useState(false);
   const [classes, setClasses] = useState(classesData);

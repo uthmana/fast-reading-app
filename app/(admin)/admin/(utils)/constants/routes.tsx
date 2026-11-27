@@ -15,11 +15,13 @@ const routes = [
   // {
   //   name: "Panel",
   //   path: "/admin",
+  //   description: "",
   //   icon: <MdHome className="w-6 h-6" />,
   //   roles: ["ADMIN", "TEACHER"],
   // },
   {
     name: "Kurs Yönetimi",
+    description: "",
     path: "/admin/classes",
     icon: <MdGroups className="w-6 h-6" />,
     children: [
@@ -30,6 +32,7 @@ const routes = [
   },
   {
     name: "Özelleştirme",
+    description: "",
     path: "/admin/category",
     icon: <MdOutlineArticle className="w-6 h-6" />,
     children: [
@@ -43,27 +46,32 @@ const routes = [
   {
     name: "Kullanıcı Ayarları",
     path: "/admin/users",
+    description: "",
     icon: <MdPerson className="w-6 h-6" />,
     children: [{ name: "Kullanıcılar", path: "/admin/users" }],
   },
   {
     name: "Başvurular",
     path: "/admin/registration",
+    description: "",
     icon: <MdAppRegistration className="w-6 h-6" />,
   },
   {
     name: "Cari Hareketler",
     path: "/admin/billing",
+    description: "",
     icon: <MdPayment className="w-6 h-6" />,
   },
   {
     name: "Veri Aktarımları",
     path: "/admin/datatransfers",
+    description: "Verileri Excel olarak dışa aktarın veya içe aktarın",
     icon: <MdImportExport className="w-6 h-6" />,
   },
   // {
   //   name: "Firma Bilgileri",
   //   path: "/admin/company",
+  //   description: "",
   //   icon: <MdBusiness className="w-6 h-6" />,
   //   roles: ["ADMIN"],
   // },
