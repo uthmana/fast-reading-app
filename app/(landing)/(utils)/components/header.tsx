@@ -26,7 +26,7 @@ export default function Header() {
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-4">
             <NavLinks />
-            <div className="flex gap-3">
+            <div className="flex ml-3 gap-3">
               <Link
                 href="/ogrenci-giris"
                 className="rounded-lg bg-brand-secondary-150 px-4 py-2 font-semibold text-brand-primary-200 hover:bg-brand-secondary-200 transition"

@@ -1,16 +1,19 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import HeroVisual from "../heroVisual";
+import PremiumBackground from "../premiumBackground";
 import TypingText from "../typingText";
 
 export default function Hero() {
   return (
-    <section className="bg-brand-primary-100">
-      <div className="mx-auto landing-container px-6 py-24 grid gap-12 lg:grid-cols-2 items-center">
+    <section className="hero-full-height relative isolate flex items-center overflow-hidden bg-brand-primary-100">
+      <PremiumBackground />
+
+      <div className="relative z-10 mx-auto w-full landing-container grid items-center gap-10 px-6 py-14 sm:gap-12 sm:py-20 lg:grid-cols-2 lg:py-24">
         {/* Text */}
-        <div className="mx-auto md:ml-auto">
-          <h1 className="text-4xl text-center  text-white md:text-left font-extrabold sm:text-6xl leading-tight">
+        <div className="mx-auto w-full max-w-xl md:ml-auto">
+          <h1 className="text-center text-4xl font-extrabold leading-tight text-white sm:text-5xl md:text-left lg:text-6xl">
             {companyInfo?.name} ile
             <span className="block text-brand-secondary-150">
               Daha Hızlı Oku, Daha İyi Anla
@@ -19,19 +22,19 @@ export default function Hero() {
 
           <TypingText
             text="Okuma hızınızı 2–4 kat artırın, odaklanmanızı güçlendirin ve zamandan tasarruf edin."
-            className="mt-6 pb-5 leading-5 min-h-24 max-w-xl text-brand-tertiary-50 text-lg text-center md:text-left"
+            className="mx-auto mt-6 min-h-24 max-w-xl pb-5 text-center text-base leading-7 text-brand-tertiary-50 sm:text-lg md:mx-0 md:text-left"
           />
 
-          <div className="flex gap-4 max-w-fit mx-auto md:ml-0">
+          <div className="mx-auto flex w-full max-w-sm flex-col gap-3 sm:max-w-fit sm:flex-row sm:gap-4 md:mx-0">
             <Link
               href="/basvur"
-              className="rounded-lg bg-brand-secondary-150 px-3 py-2 md:px-6 md:py-3 font-semibold text-brand-primary-200 hover:bg-brand-secondary-200 transition"
+              className="rounded-lg bg-brand-secondary-150 px-4 py-2.5 text-center font-semibold text-brand-primary-200 transition hover:bg-brand-secondary-200 sm:px-6 sm:py-3"
             >
               Hemen Başvur
             </Link>
             <Link
               href="/#nasil-calisir"
-              className="rounded-lg border border-brand-tertiary-50 px-3 py-2 md:px-6 md:py-3 font-semibold text-brand-tertiary-50 hover:bg-white/10 transition"
+              className="rounded-lg border border-brand-tertiary-50 px-4 py-2.5 text-center font-semibold text-brand-tertiary-50 transition hover:bg-white/10 sm:px-6 sm:py-3"
             >
               Nasıl Çalışır
             </Link>
@@ -39,21 +42,10 @@ export default function Hero() {
         </div>
 
         {/* Image */}
-        <div className="relative mx-auto md:ml-auto animate-reading">
-          <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-white/10 to-transparent animate-pulse" />
-          </div>
-          <div className="rounded-2xl animate-focus">
-            <Image
-              src="/images/hero-digital-reading.png"
-              className="rounded-2xl shadow-lg"
-              alt={`${companyInfo?.name} hızlı okuma`}
-              width={460}
-              height={360}
-              priority
-            />
-          </div>
-        </div>
+        <HeroVisual
+          src="/images/hero-digital-reading.png"
+          alt={`${companyInfo?.name} hızlı okuma`}
+        />
       </div>
     </section>
   );

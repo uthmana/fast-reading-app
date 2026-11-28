@@ -1,6 +1,7 @@
 import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
 import Image from "next/image";
 import Link from "next/link";
+import Reveal from "../reveal";
 
 const steps = [
   {
@@ -26,40 +27,48 @@ export default function HowItWorks() {
     <section className="py-20 bg-brand-tertiary-10" id="nasil-calisir">
       <div className="landing-container mx-auto px-6">
         {/* Title */}
-        <h2 className="text-3xl md:text-4xl mb-4 font-bold text-center text-brand-primary-200">
-          {companyInfo?.name} Nasıl Çalışır?
-        </h2>
+        <Reveal>
+          <h2 className="text-3xl md:text-4xl mb-4 font-bold text-center text-brand-primary-200">
+            {companyInfo?.name} Nasıl Çalışır?
+          </h2>
+        </Reveal>
 
-        <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg">
-          {companyInfo?.name}, bilimsel okuma tekniklerini dijital egzersizlerle
-          birleştirerek okuma hızınızı ve anlama becerinizi adım adım
-          geliştirir.
-        </p>
+        <Reveal delay={0.08}>
+          <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg">
+            {companyInfo?.name}, bilimsel okuma tekniklerini dijital egzersizlerle
+            birleştirerek okuma hızınızı ve anlama becerinizi adım adım
+            geliştirir.
+          </p>
+        </Reveal>
 
         {/* Content Grid */}
         <div className="mt-14 grid gap-12 lg:grid-cols-2 items-center">
           {/* Visual */}
-          <Image
-            src="/images/online-study.webp"
-            alt={`${companyInfo?.name} eğitim süreci`}
-            width={520}
-            height={420}
-            className="rounded-2xl mx-auto shadow-lg"
-            priority
-          />
+          <Reveal>
+            <Image
+              src="/images/online-study.webp"
+              alt={`${companyInfo?.name} eğitim süreci`}
+              width={520}
+              height={420}
+              className="rounded-2xl mx-auto shadow-lg"
+              priority
+            />
+          </Reveal>
 
           {/* Steps */}
           <div className="text-black mx-auto">
             <ul className="space-y-6 text-lg">
               {steps.map((item, index) => (
-                <li key={index} className="flex gap-4">
-                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary-100 text-white font-semibold">
-                    {index + 1}
-                  </span>
-                  <div>
-                    <h3 className="font-semibold">{item.title}</h3>
-                    <p className="text-gray-700 text-base">{item.desc}</p>
-                  </div>
+                <li key={index}>
+                  <Reveal className="flex gap-4" delay={index * 0.08}>
+                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-primary-100 text-white font-semibold">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <h3 className="font-semibold">{item.title}</h3>
+                      <p className="text-gray-700 text-base">{item.desc}</p>
+                    </div>
+                  </Reveal>
                 </li>
               ))}
             </ul>
@@ -67,7 +76,7 @@ export default function HowItWorks() {
         </div>
 
         {/* CTA (layout-safe) */}
-        <div className="mt-16 text-center">
+        <Reveal className="mt-16 text-center">
           <p className="mb-6 text-gray-700">
             {companyInfo?.name} ile okuma hızınızı ve anlama becerinizi
             geliştirmeye hazır mısınız?
@@ -87,7 +96,7 @@ export default function HowItWorks() {
           >
             Hemen Başla
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
