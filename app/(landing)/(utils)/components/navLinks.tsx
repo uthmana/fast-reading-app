@@ -12,7 +12,7 @@ type NavLinksProps = {
 export default function NavLinks({ mobile, onClick }: NavLinksProps) {
   const linkBase = mobile
     ? "block text-base font-medium transition hover:text-brand-secondary-150"
-    : "text-sm font-roboto font-medium transition hover:text-brand-secondary-150";
+    : "text-base font-roboto font-medium transition hover:text-brand-secondary-150";
 
   const dropdownWrapper = mobile ? "space-y-2" : "relative group";
 
