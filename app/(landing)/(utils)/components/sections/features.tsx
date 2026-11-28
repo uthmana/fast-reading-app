@@ -50,10 +50,10 @@ export default function Features() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-9 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((item, index) => (
             <Reveal key={item.title} delay={(index % 3) * 0.08}>
-              <div className="flex gap-7">
+              <div className="flex gap-5 hover:border-gray-300 hover:bg-white border-transparent border rounded-lg p-3">
                 <div>
                   <Icon
                     name={`${item.icon as "menu"}`}
