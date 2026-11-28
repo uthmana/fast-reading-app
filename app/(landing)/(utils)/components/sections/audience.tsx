@@ -1,4 +1,5 @@
 import { companyInfo } from "@/app/(ogrenci)/ogrenci/(utils)/constants/constants";
+import Reveal from "../reveal";
 
 const audience = [
   {
@@ -47,39 +48,48 @@ export default function Audience() {
   return (
     <section className="py-20 " id="egitim-grubu">
       <div className="landing-container mx-auto px-6">
-        <h2 className="text-3xl text-center font-bold">Kimler İçin?</h2>
-        <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg mt-3">
-          {companyInfo?.name} eğitim grupları, yaş ve seviyeye göre özel olarak
-          hazırlanır. Her katılımcı, kendi düzeyine uygun içeriklerle okuma
-          hızını ve anlama becerisini geliştirebilir.
-        </p>
+        <Reveal>
+          <h2 className="text-3xl text-center font-bold">Kimler İçin?</h2>
+        </Reveal>
+        <Reveal delay={0.08}>
+          <p className="max-w-2xl mx-auto text-center text-gray-700 text-lg mt-3">
+            {companyInfo?.name} eğitim grupları, yaş ve seviyeye göre özel
+            olarak hazırlanır. Her katılımcı, kendi düzeyine uygun içeriklerle
+            okuma hızını ve anlama becerisini geliştirebilir.
+          </p>
+        </Reveal>
 
         <div className="mt-10 w-full md:mb-5 mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 items-stretch">
-          {audience.map((item) => (
-            <div
+          {audience.map((item, index) => (
+            <Reveal
               key={item.group}
-              className="h-full relative group flex flex-col rounded-xl overflow-hidden border font-medium"
+              delay={(index % 4) * 0.07}
+              className="h-full"
             >
-              {/* Image */}
-              <div
-                className="w-full min-h-[200px] bg-center bg-cover"
-                style={{ backgroundImage: `url('${item.image}')` }}
-              />
+              <div className="h-full relative group flex flex-col rounded-xl overflow-hidden border font-medium">
+                {/* Image */}
+                <div
+                  className="w-full min-h-[200px] bg-center bg-cover"
+                  style={{ backgroundImage: `url('${item.image}')` }}
+                />
 
-              {/* Content */}
-              <div
-                className="
-              absolute left-0 bottom-0 h-full w-full
-              bg-brand-primary-150/60
-              px-4 py-3 space-y-2 text-white
-              transform translate-y-[calc(100%-50px)]
-              transition-transform duration-400 ease-in
-              group-hover:translate-y-0"
-              >
-                <h3 className="text-lg drop-shadow-xl">{item.group}</h3>
-                <p className="text-sm drop-shadow-xl">{item.desc}</p>
+                {/* Content */}
+                <div
+                  className="
+                absolute left-0 bottom-0 h-full w-full
+                bg-brand-primary-150/60
+                px-4 py-3 space-y-2 text-white
+                transform translate-y-[calc(100%-50px)]
+                transition-transform duration-400 ease-in
+                group-hover:sm:translate-y-0"
+                >
+                  <h3 className="text-lg whitespace-nowrap truncate line-clamp-1 drop-shadow-xl">
+                    {item.group}
+                  </h3>
+                  <p className="text-sm drop-shadow-xl">{item.desc}</p>
+                </div>
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </div>

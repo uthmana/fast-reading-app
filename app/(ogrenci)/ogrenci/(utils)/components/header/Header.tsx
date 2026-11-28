@@ -53,7 +53,7 @@ export default function Header({ onActiveMenu, pathname }: MenuProps) {
                 {item.link ? (
                   <Link
                     href={item.link}
-                    className={`flex relative font-oswald font-normal  whitespace-nowrap  group flex-col items-center text-base -tracking-tighter text-white hover:shadow border border-black/0  hover:bg-brand-secondary-150 rounded-md px-2 py-2 ${
+                    className={`flex relative font-oswald font-normal  whitespace-nowrap  group flex-col items-center text-lg text-white hover:shadow border border-black/0  hover:bg-brand-secondary-150 rounded-md px-2 py-2 ${
                       pathname?.includes(item.link)
                         ? "!bg-brand-secondary-150 shadow !border-white"
                         : ""

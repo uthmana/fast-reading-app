@@ -13,7 +13,7 @@ export default function Footer() {
           <h3 className="text-xl font-bold text-white">
             <Icon name="logo" logoText={companyInfo.logo} className="h-10" />
           </h3>
-          <p className="mt-4 text-sm leading-relaxed">
+          <p className="mt-4 text-base leading-relaxed">
             {companyInfo.name}, öğrenciler ve eğitmenler için geliştirilmiş
             modern hızlı okuma ve odaklanma eğitim platformudur.
           </p>
@@ -22,7 +22,7 @@ export default function Footer() {
         {/* Quick Links */}
         <div>
           <h4 className="font-semibold text-white mb-4">Hızlı Bağlantılar</h4>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-base">
             <li>
               <Link
                 href="/#hizliokuma"
@@ -71,7 +71,7 @@ export default function Footer() {
         {/* Corporate */}
         <div>
           <h4 className="font-semibold text-white mb-4">Kurumsal</h4>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2 text-base">
             <li>
               <Link
                 href="/kurumsal/hakkimizda"
@@ -141,13 +141,13 @@ export default function Footer() {
           <div className="flex gap-4">
             <Link
               href="/kurumsal/gizlilik-politikasi"
-              className="hover:text-brand-secondary-150 transition"
+              className="hover:text-brand-secondary-150 hover:underline transition"
             >
               Gizlilik Politikası
             </Link>
             <Link
               href="/kurumsal/kullanim-sartlari"
-              className="hover:text-brand-secondary-150 transition"
+              className="hover:text-brand-secondary-150  hover:underline  transition"
             >
               Kullanım Şartları
             </Link>

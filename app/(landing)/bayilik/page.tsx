@@ -32,7 +32,7 @@ export default function FranchisePage() {
 
   return (
     <section className="bg-brand-tertiary-10 py-16 text-black">
-      <div className="container text-center mb-10">
+      <div className="container text-center mb-12 px-6">
         <h2 className="text-3xl font-bold">
           Kârlı Bir İş Fırsatını Kaçırmayın
         </h2>

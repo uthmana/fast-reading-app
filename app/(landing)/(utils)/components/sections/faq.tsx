@@ -1,3 +1,5 @@
+import Reveal from "../reveal";
+
 const faqs = [
   {
     q: "Gerçekten hızlı okuma mümkün mü?",
@@ -25,17 +27,20 @@ export default function FAQ() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl font-bold text-center">Sık Sorulan Sorular</h2>
+        <Reveal>
+          <h2 className="text-3xl font-bold text-center">
+            Sık Sorulan Sorular
+          </h2>
+        </Reveal>
 
         <div className="mt-10 max-w-2xl mx-auto md:mb-10 space-y-4">
-          {faqs.map((faq) => (
-            <details
-              key={faq.q}
-              className="rounded-lg border border-brand-tertiary-50 p-4 open:bg-gray-50 bg-white"
-            >
-              <summary className="cursor-pointer font-medium">{faq.q}</summary>
-              <p className="mt-2 text-gray-700">{faq.a}</p>
-            </details>
+          {faqs.map((faq, index) => (
+            <Reveal key={faq.q} delay={index * 0.06}>
+              <details className="faq-item">
+                <summary>{faq.q}</summary>
+                <p>{faq.a}</p>
+              </details>
+            </Reveal>
           ))}
         </div>
       </div>
